@@ -216,12 +216,22 @@ Long prompt (122,902 prompt tokens, one request, `max_tokens` 128):
 | Config | KV cache | TTFT (prefill) | Decode |
 |---|---|---|---|
 | No draft | 546,503 tokens | 107.0 s (about 1,150 tok/s) | 26.2 tok/s |
-| MTP k=2 | 402,630 tokens (1.54x at 262k) | 110.6 s | about 43 tok/s (128 tokens in 2.94 s), acceptance 2.5-2.65 |
+| MTP k=2 | 402,630 tokens (1.54x at 262k) | 110.6 s | about 43 tok/s (128 tokens in 2.94 s), acceptance 2.49-2.65; probe coherent 4/4 |
 
 Decode speed at 123k tokens of context is within a few percent of the short-prompt
 numbers, so context length is not what limits decode on this model. Both runs
-returned a coherent one-sentence answer about the prompt. A stretch above
-262,144 is being measured and will be added here.
+returned a coherent one-sentence answer about the prompt.
+
+262,144 is the model's `max_position_embeddings`, so it is the context ceiling
+without RoPE overrides. Raising utilization instead buys concurrency:
+
+| Config | KV cache | MemAvailable while serving | Decode (short prompt) | 123k-token prompt |
+|---|---|---|---|---|
+| util 0.80, 2 sequences, no draft | 546,503 tokens (2.08x) | about 19 GiB | 26.2-27.5 tok/s | TTFT 107 s, decode 26.2 tok/s |
+| util 0.85, 4 sequences, no draft | 759,773 tokens (2.90x) | 11.5 GiB | 27.1 tok/s | TTFT 107.5 s, decode 27.4 tok/s |
+
+Keep a memory watchdog when running at 0.85; 11.5 GiB is the least headroom
+measured in this recipe.
 
 ## Where the time goes (torch profiler, no draft, 32 decode steps)
 
