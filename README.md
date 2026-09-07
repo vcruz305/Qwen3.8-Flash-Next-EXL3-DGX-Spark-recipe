@@ -27,11 +27,11 @@ to produce the numbers below.
 
 Decode tok/s excludes TTFT (see `scripts/bench_v1.py`). Greedy output with
 the MTP draft matched the no-draft text exactly on 1 of 4 fixed prompts and
-diverged partway through -- with coherent text -- on the other 3. That is
-expected of greedy-consistent speculation (the target either accepts or
-rejects each draft token; it never emits a token the target itself would not
-have chosen), not evidence of a bit-exact match end to end. A DeepSeek V4
-Flash regression on this same plugin build passed.
+diverged partway through -- with coherent text -- on the other 3, for k=1
+and k=2 alike. That is expected of greedy-consistent speculation (the target
+either accepts or rejects each draft token; it never emits a token the
+target itself would not have chosen), not evidence of a bit-exact match end
+to end. A DeepSeek V4 Flash regression on this same plugin build passed.
 
 ## Hardware
 
@@ -70,11 +70,12 @@ tower.
   imports the compiled `exllamav3_ext` module, so the pure-Python wheel alone
   is not enough.
 - `torch`/CUDA 13.0 for aarch64 (matches the nightly vLLM build above).
-- The `vllm-exl3` plugin from branch `feat/native-turboderp-packs`:
+- The `vllm-exl3` plugin, from `main`. Native-pack support merged there as
+  unreleased `0.4.0`:
   ```bash
-  pip install git+https://github.com/vcruz305/vllm-exl3@feat/native-turboderp-packs
+  pip install git+https://github.com/vcruz305/vllm-exl3@main
   ```
-  A tagged release will follow; until then, install from that branch.
+  A tagged release will follow; until then, install from `main`.
 
 ## Quick start
 
@@ -179,6 +180,7 @@ python scripts/bench_v1.py --base-url http://127.0.0.1:8899/v1 --model Qwen3.8-F
 # Greedy-consistency probe: 4 fixed prompts, temperature 0, max_tokens 256
 python scripts/probe_greedy.py no-draft no_draft.json http://127.0.0.1:8899
 python scripts/probe_greedy.py mtp-k1   mtp_k1.json   http://127.0.0.1:8899
+python scripts/probe_greedy.py mtp-k2   mtp_k2.json   http://127.0.0.1:8899
 ```
 
 ## Memory
