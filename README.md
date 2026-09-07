@@ -198,6 +198,25 @@ python scripts/probe_greedy.py mtp-k2   mtp_k2.json   http://127.0.0.1:8899
 - Load takes about 9.5 minutes from NVMe; the server is ready in 12-13
   minutes.
 
+## Where the time goes (torch profiler, no draft, 32 decode steps)
+
+Share of GPU kernel time, one request at 32k context:
+
+| Kernel family | Share |
+|---|---|
+| EXL3 dense GEMV/GEMM (K5 attention, linear-attention, lm_head projections) | 47% |
+| EXL3 fused MoE (`exl3_moe`, K3 experts) | 34% |
+| bf16 GEMMs (hyper-connection mixers, router) | 5% |
+| linear attention (gated delta rule) | 2% |
+| norms | 1% |
+| everything else (tiny elementwise launches) | 11% |
+
+Decode is bound by trellis dequantization, not by memory bandwidth: the EXL3
+kernels take roughly 3-5x the time the weight bytes would need at the GB10's
+273 GB/s. That is why MTP helps (fewer dequant passes per emitted token) and
+why k=3 does not beat k=2: vLLM's Qwen MTP replays the single draft layer and
+the K5 lm_head once per extra draft token.
+
 ## Known limitations
 
 - Tensor-parallel size 1 only -- the padded dense geometry and the n-gram
