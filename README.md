@@ -6,8 +6,9 @@ Serves [turboderp's Qwen3.8-Flash-Next EXL3 pack](https://huggingface.co/turbode
 [vllm-exl3](https://github.com/vcruz305/vllm-exl3) plugin. Measured on
 2026-09-07 on `cruz-spark`: **27.2-28.0 tok/s decode with no draft**, and
 **33.8-36.4 tok/s with a single MTP draft token** (mean acceptance 1.86 of a
-possible 2 per step), both single in-flight request, excluding TTFT. These
-are preliminary numbers; the MTP k=2 and k=3 rows below are pending.
+possible 2 per step) and **37.3-41.3 tok/s with two draft tokens** (mean
+acceptance 2.54 of a possible 3), all single in-flight request, excluding
+TTFT. These are preliminary numbers; the MTP k=3 row below is pending.
 
 This recipe covers install, pack preparation (the pack as published needs
 three one-time rewrites before vLLM's native loader will serve it), the
@@ -21,7 +22,7 @@ to produce the numbers below.
 |---|---|---|---|
 | No draft | 27.97 / 27.56 / 27.16 / 27.35 | 0.185 s @ 128 tok | KV cache: 385,570 tokens |
 | MTP k=1 | 36.37 / 33.80 / 35.26 / 35.28 | 0.199 s | mean acceptance 1.855 / 2; KV cache: 275,636 tokens |
-| MTP k=2 | pending | pending | |
+| MTP k=2 | 37.30 / 38.88 / 41.34 / 39.32 | 0.201 s | mean acceptance 2.535 / 3 |
 | MTP k=3 | pending | pending | |
 
 Decode tok/s excludes TTFT (see `scripts/bench_v1.py`). Greedy output with
@@ -154,7 +155,7 @@ No draft:
 MODEL_DIR=~/models/Qwen3.8-Flash-Next-EXL3 bash scripts/serve_one_spark_qwen.sh
 ```
 
-MTP k=1 (the measured draft configuration):
+MTP k=2 (the fastest measured draft configuration; use `"num_speculative_tokens":1` for k=1):
 
 ```bash
 MODEL_DIR=~/models/Qwen3.8-Flash-Next-EXL3 \
