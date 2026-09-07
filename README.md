@@ -8,7 +8,8 @@ Serves [turboderp's Qwen3.8-Flash-Next EXL3 pack](https://huggingface.co/turbode
 **33.8-36.4 tok/s with a single MTP draft token** (mean acceptance 1.86 of a
 possible 2 per step) and **37.3-41.3 tok/s with two draft tokens** (mean
 acceptance 2.54 of a possible 3), all single in-flight request, excluding
-TTFT. These are preliminary numbers; the MTP k=3 row below is pending.
+TTFT. k=3 reaches 34.4-38.2 tok/s (mean acceptance 2.95 of 4) with less KV cache,
+so k=2 is the recommended draft setting. These are preliminary numbers.
 
 This recipe covers install, pack preparation (the pack as published needs
 three one-time rewrites before vLLM's native loader will serve it), the
@@ -23,11 +24,12 @@ to produce the numbers below.
 | No draft | 27.97 / 27.56 / 27.16 / 27.35 | 0.185 s @ 128 tok | KV cache: 385,570 tokens |
 | MTP k=1 | 36.37 / 33.80 / 35.26 / 35.28 | 0.199 s | mean acceptance 1.855 / 2; KV cache: 275,636 tokens |
 | MTP k=2 | 37.30 / 38.88 / 41.34 / 39.32 | 0.201 s | mean acceptance 2.535 / 3 |
-| MTP k=3 | pending | pending | |
+| MTP k=3 | 37.91 / 34.44 / 36.73 / 38.18 / 35.08 / 37.35 / 35.22 (7 runs) | 0.21 s | mean acceptance 2.951 / 4; KV cache: 224,694 tokens; k=2 remains the best setting |
 
 Decode tok/s excludes TTFT (see `scripts/bench_v1.py`). Greedy output with
-the MTP draft matched the no-draft text exactly on 1 of 4 fixed prompts and
-diverged partway through -- with coherent text -- on the other 3, for k=1
+the MTP draft matched the no-draft text exactly on 1 of 4 fixed prompts (k=1,
+k=2) or 2 of 4 (k=3) and diverged partway through -- with coherent text -- on the
+others, for k=1
 and k=2 alike. That is expected of greedy-consistent speculation (the target
 either accepts or rejects each draft token; it never emits a token the
 target itself would not have chosen), not evidence of a bit-exact match end
