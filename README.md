@@ -198,6 +198,20 @@ python scripts/probe_greedy.py mtp-k2   mtp_k2.json   http://127.0.0.1:8899
 - Load takes about 9.5 minutes from NVMe; the server is ready in 12-13
   minutes.
 
+## Long context (262,144 tokens)
+
+Measured 2026-09-07 with `MAX_MODEL_LEN=262144 GPU_MEM_UTIL=0.80 MAX_NUM_SEQS=2`, no draft:
+
+| Item | Value |
+|---|---|
+| GPU KV cache | 546,503 tokens (vLLM: "Maximum concurrency for 262,144 tokens per request: 2.08x") |
+| MemAvailable while serving | about 19 GiB |
+| Weights load | 515 s (ready in about 11 minutes) |
+
+The KV capacity is higher than at 32k with four sequences because fewer
+sequences reserve less per-sequence state. Long-prompt TTFT and decode (128k
+tokens) and the MTP k=2 arm at 262k are pending and will be added here.
+
 ## Where the time goes (torch profiler, no draft, 32 decode steps)
 
 Share of GPU kernel time, one request at 32k context:
