@@ -209,8 +209,19 @@ Measured 2026-09-07 with `MAX_MODEL_LEN=262144 GPU_MEM_UTIL=0.80 MAX_NUM_SEQS=2`
 | Weights load | 515 s (ready in about 11 minutes) |
 
 The KV capacity is higher than at 32k with four sequences because fewer
-sequences reserve less per-sequence state. Long-prompt TTFT and decode (128k
-tokens) and the MTP k=2 arm at 262k are pending and will be added here.
+sequences reserve less per-sequence state.
+
+Long prompt (122,902 prompt tokens, one request, `max_tokens` 128):
+
+| Config | KV cache | TTFT (prefill) | Decode |
+|---|---|---|---|
+| No draft | 546,503 tokens | 107.0 s (about 1,150 tok/s) | 26.2 tok/s |
+| MTP k=2 | 402,630 tokens (1.54x at 262k) | 110.6 s | about 43 tok/s (128 tokens in 2.94 s), acceptance 2.5-2.65 |
+
+Decode speed at 123k tokens of context is within a few percent of the short-prompt
+numbers, so context length is not what limits decode on this model. Both runs
+returned a coherent one-sentence answer about the prompt. A stretch above
+262,144 is being measured and will be added here.
 
 ## Where the time goes (torch profiler, no draft, 32 decode steps)
 
