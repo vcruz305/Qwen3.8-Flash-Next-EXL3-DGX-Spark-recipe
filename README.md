@@ -23,7 +23,7 @@ to produce the numbers below.
 |---|---|---|---|
 | No draft | 27.97 / 27.56 / 27.16 / 27.35 | 0.185 s @ 128 tok | KV cache: 385,570 tokens |
 | MTP k=1 | 36.37 / 33.80 / 35.26 / 35.28 | 0.199 s | mean acceptance 1.855 / 2; KV cache: 275,636 tokens |
-| MTP k=2 | 37.30 / 38.88 / 41.34 / 39.32 | 0.201 s | mean acceptance 2.535 / 3 |
+| MTP k=2 | 37.30 / 38.88 / 41.34 / 39.32 | 0.201 s | mean acceptance 2.535 / 3; KV cache: 235,412 tokens |
 | MTP k=3 | 37.91 / 34.44 / 36.73 / 38.18 / 35.08 / 37.35 / 35.22 (7 runs) | 0.21 s | mean acceptance 2.951 / 4; KV cache: 224,694 tokens; k=2 remains the best setting |
 
 Decode tok/s excludes TTFT (see `scripts/bench_v1.py`). Greedy output with
