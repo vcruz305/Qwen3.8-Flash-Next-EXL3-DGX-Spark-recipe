@@ -1,5 +1,23 @@
 # Qwen3.8-Flash-Next EXL3 on one NVIDIA DGX Spark
 
+## Interactive benchmark
+
+[**Open the animated benchmark**](https://vcruz305.github.io/Qwen3.8-Flash-Next-EXL3-DGX-Spark-recipe/)
+
+Explore the recorded MTP sweep and separate long-prompt probe in a landscape
+viewer with a 30-second recording tour, PNG export, and downloadable HTML/data.
+No model hardware is needed to view or render the presentation.
+
+[**MTP sweep**](https://vcruz305.github.io/Qwen3.8-Flash-Next-EXL3-DGX-Spark-recipe/?scene=sweep) ·
+[**Long prompt**](https://vcruz305.github.io/Qwen3.8-Flash-Next-EXL3-DGX-Spark-recipe/?scene=long) ·
+[**Source and local-render instructions**](docs/README.md)
+
+The full k sweep uses **32K configured context**. The separate long-prompt probe
+uses **122,902 input tokens** with a **262,144-token configured limit**.
+This viewer displays saved results; it does not run inference in the browser.
+
+---
+
 Serves [turboderp's Qwen3.8-Flash-Next EXL3 pack](https://huggingface.co/turboderp/Qwen3.8-Flash-Next-exl3)
 (revision `3.05bpw_h5_ng5`, about 80 GB) on a single NVIDIA DGX Spark (GB10,
 128 GB unified memory, aarch64) through a vLLM nightly and the

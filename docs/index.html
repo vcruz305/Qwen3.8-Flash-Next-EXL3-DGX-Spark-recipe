@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Qwen3.8-Flash-Next EXL3 | One Spark Benchmark</title>
+<meta name="description" content="Self-contained 16:9 animated presentation of recorded Qwen3.8-Flash-Next EXL3 benchmarks. No scrolling, no external assets, no live telemetry.">
+<meta name="theme-color" content="#080d1d">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Qwen3.8-Flash-Next EXL3 on one DGX Spark">
+<meta property="og:description" content="Explore the recorded MTP sweep and separate long-prompt probe. Interactive 16:9 benchmark, source data and PNG export.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:creator" content="@ViC305">
+<style>
+:root{color-scheme:dark;--ink:#edf2ff;--muted:#a5b0d0;--edge:#39435d;--mint:#96f4d7;--bg:#04070e}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font:14px/1.5 system-ui,-apple-system,Segoe UI,Arial,sans-serif}
+button,select{font:inherit}button{cursor:pointer}
+#app{position:fixed;inset:0;overflow:hidden;background:#03050a}
+#frame{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);box-shadow:0 22px 100px #0009;overflow:hidden}
+canvas{display:block;width:100%;height:100%;background:#080d1d}
+#dock{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);width:max-content;max-width:calc(100vw - 24px);padding:8px 12px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;border:1px solid #333f5b;border-radius:14px;background:#11192bee;backdrop-filter:blur(16px);box-shadow:0 10px 44px #0008;transition:opacity .2s;z-index:5}
+#dock button,#dock select{background:#1d2840;color:#e8efff;border:1px solid #3c4863;border-radius:8px;padding:9px 11px;white-space:nowrap}
+#dock button:hover,#dock select:hover{border-color:#94f0dc}
+#dock button:focus-visible,#dock select:focus-visible,input:focus-visible{outline:3px solid var(--mint);outline-offset:3px}
+#dock .primary{background:var(--mint);border-color:var(--mint);color:#071f22;font-weight:750}
+#dock .sep{width:1px;height:28px;background:#39415b;margin:0 1px}
+#dock .clock{font:12px ui-monospace,Consolas,monospace;color:#bdc8e1;min-width:76px;text-align:center}
+#dock label{display:flex;align-items:center;gap:5px;font-size:12px;color:#c7d0e5;white-space:nowrap}
+input{accent-color:var(--mint)}
+#hint{position:absolute;left:50%;transform:translateX(-50%);bottom:85px;text-align:center;font-size:12px;color:#8490aa;letter-spacing:.015em;white-space:nowrap;pointer-events:none;transition:opacity .2s}
+.clean #dock,.clean #hint{opacity:0;pointer-events:none;visibility:hidden}.clean,.clean canvas{cursor:none}
+#countdown{display:none;position:absolute;inset:0;align-items:center;justify-content:center;background:#03050ad9;z-index:4;flex-direction:column;backdrop-filter:blur(7px)}
+#countdown.show{display:flex}
+#countdown strong{font-size:clamp(70px,15vw,160px);color:var(--mint);line-height:1.1}
+#countdown span{letter-spacing:.16em;text-transform:uppercase;font-size:14px;margin-top:15px;color:#c5d0ec}
+#countdown small{color:#98a7c5;margin-top:14px}
+#toast{position:absolute;left:50%;top:18px;transform:translateX(-50%);background:#142239;border:1px solid #4a6480;padding:10px 16px;border-radius:8px;color:#eef5ff;z-index:12;max-width:90%;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.show{opacity:1}.sr-only{position:absolute;width:1px;height:1px;clip-path:inset(50%);overflow:hidden;white-space:nowrap}
+dialog{color:var(--ink);background:#0d1425;border:1px solid #4c5b7a;border-radius:18px;width:min(1120px,92vw);max-height:86vh;padding:28px;box-shadow:0 30px 90px #000b}
+dialog::backdrop{background:#01040bd9;backdrop-filter:blur(9px)}
+dialog h2{font-size:25px;margin:4px 0 8px}dialog h3{font-size:18px;margin-top:24px}dialog p{color:#c0cbe3}
+dialog a{color:#97f1df;overflow-wrap:anywhere}dialog button{float:right;background:#26344d;color:white;border:1px solid #61708b;border-radius:8px;padding:8px 14px}
+dialog table{border-collapse:collapse;width:100%;font-size:13px}dialog th,dialog td{border-bottom:1px solid #35405a;padding:10px;text-align:left;vertical-align:top}
+dialog th{color:#9af3d9}dialog .table-wrap{overflow-x:auto}dialog code{color:#b3bfff}
+dialog .note{border-left:3px solid #99f4d7;background:#19233b;padding:12px 16px}
+.downloads[hidden]{display:none}.downloads{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}.downloads button{float:none}.downloads input{min-width:220px;flex:1;background:#18243a;color:#edf2ff;border:1px solid #607294;padding:9px;border-radius:6px}
+@media(max-width:1080px){#dock{gap:5px;padding:7px}#dock button,#dock select{font-size:12px;padding:8px}#hint{bottom:80px;font-size:10px}#dock .optional{display:none}}
+@media(max-width:700px){#hint{display:none}#dock{bottom:8px;width:calc(100% - 16px)}#dock .clock,#dock label,#dock .sep{display:none}#dock button{padding:7px}dialog{padding:18px}}
+@media(prefers-reduced-motion:reduce){#dock,#hint,#toast{transition:none}}
+</style>
+</head>
+<body>
+<div id="app">
+ <div id="frame"><canvas id="card" width="1920" height="1080" role="img" aria-label="Recorded Qwen3.8-Flash-Next benchmarks on one DGX Spark. The full MTP sweep used 32K configured context; the separate long-prompt probe used 122902 input tokens with 256K configured context.">This benchmark needs a browser with Canvas and JavaScript support.</canvas></div>
+ <div id="countdown" aria-live="polite"><strong id="count">3</strong><span>Recording view ready</span><small>30-second tour follows. H restores controls.</small></div>
+ <div id="hint">1920 × 1080 design • F fullscreen • Space play / pause • R restart tour • H controls • 1 / 2 / 3 scenes</div>
+ <nav id="dock" aria-label="Presentation and recording controls">
+  <select id="sceneSelect" aria-label="Benchmark scene"><option value="0">01 · Overview</option><option value="1">02 · MTP sweep</option><option value="2">03 · Long prompt</option></select>
+  <button id="start" class="primary" title="3-second countdown, then a 30-second tour. Controls and cursor disappear.">Start 30s tour</button>
+  <button id="pause" title="Space">Play</button><button id="final" title="Show a complete static frame">Final frame</button>
+  <span class="sep" aria-hidden="true"></span>
+  <button id="full" title="F">Fullscreen</button><button id="hide" title="H to bring controls back">Hide controls</button>
+  <button id="png" title="Save this scene at 1920 × 1080">Save PNG</button>
+  <button id="share" class="optional" title="Copy a link to this scene on the hosted site">Copy link</button>
+  <button id="info" class="optional" title="Source data, methodology and instructions">Info</button>
+  <label><input id="loop" type="checkbox">Loop</label><span class="clock" id="clock">00:00 / 00:30</span>
+ </nav>
+ <div id="toast" role="status"></div>
+ <div class="sr-only" id="status" role="status" aria-live="polite">Final overview frame. Choose fullscreen and start the tour to record.</div>
+ <dialog id="infoDialog"><button id="closeInfo">Close</button><h2>Landscape recording studio</h2><p>Every scene is exactly 16:9. The entire card fits inside your browser without scrolling. On a non-16:9 monitor, black letterboxing preserves the design.</p>
+ <h3>Screen recording</h3><p>1. Open this page in a desktop browser. 2. Click <strong>Fullscreen</strong>. 3. Start your screen recorder. 4. Click <strong>Start 30s tour</strong>. A three-second countdown lets the controls clear before playback. Trim that countdown from the recording. Each scene holds for ten seconds, then the tour finishes on the completed overview. Enable <strong>Loop</strong> to repeat.</p><p><strong>H</strong> shows or hides controls; <strong>Space</strong> pauses or resumes; <strong>R</strong> restarts the tour; <strong>1 / 2 / 3</strong> and arrow keys select scenes; <strong>S</strong> freezes the completed current scene; <strong>F</strong> toggles fullscreen. Escape exits fullscreen and restores controls. Moving the mouse does not bring controls into your recording. <strong>Save PNG</strong> exports a complete frame without the controls, even during animation.</p>
+ <p class="note">The animation reveals bars and decorative light effects. Numerical labels stay at their recorded values. This is not live inference, and nothing here contacts an inference server.</p>
+ <h3>Share, download or render locally</h3><p>This page is a recorded-results viewer, not a remote model demo. Viewing, animating, and exporting it do not require a DGX Spark, a vLLM install, or model weights.</p>
+ <div class="downloads"><button id="downloadHtml">Download standalone HTML</button><button id="downloadData">Download data JSON</button><button id="copyScene">Copy scene link</button><button id="copyTour">Copy tour link</button></div>
+ <div id="manualLink" class="downloads" hidden><input id="linkText" readonly aria-label="Share URL. Select and copy this field."></div>
+ <p>Scene links support <code>?scene=overview</code>, <code>?scene=sweep</code> and <code>?scene=long</code>. Add <code>&amp;clean=1</code> for a controls-free view. <code>?autoplay=1</code> starts the tour after a three-second countdown; add <code>&amp;loop=1</code> to repeat it. Fullscreen still requires a button or keypress.</p>
+ <p>Open the downloaded HTML directly for offline playback. For automated PNG export, use <code>scripts/render_benchmark.py</code> in the recipe. Links copied from the hosted page point to the deployment on which you opened it, including your own fork.</p><div id="evidence"></div>
+ </dialog>
+</div>
+<noscript><p style="position:fixed;inset:20px;z-index:20;background:#0d1425;padding:24px">Enable JavaScript to view the animation. <a href="benchmark-data.json">Download the recorded benchmark data</a> or <a href="https://github.com/vcruz305/Qwen3.8-Flash-Next-EXL3-DGX-Spark-recipe">read the recipe</a>.</p></noscript>
+<script type="application/json" id="benchmark-data">{"model": "Qwen3.8-Flash-Next", "pack": "turboderp/Qwen3.8-Flash-Next-exl3", "pack_revision": "3.05bpw_h5_ng5", "measurement_date": "2026-09-07", "source_commit": "ed93c1505835f01c7b28f209d544171199ea5210", "source_url": "https://github.com/vcruz305/Qwen3.8-Flash-Next-EXL3-DGX-Spark-recipe/blob/ed93c1505835f01c7b28f209d544171199ea5210/README.md", "recipe_url": "https://github.com/vcruz305/Qwen3.8-Flash-Next-EXL3-DGX-Spark-recipe", "hardware": "One NVIDIA DGX Spark GB10, 128 GB unified memory", "runtime": "vLLM 0.28.1rc1.dev324+ga56654d6d with vllm-exl3 (native pack integration on main, unreleased 0.4.0)", "model_resident_gib": 78.57, "ple_resident_gib": 30.4, "ple_bits": 5, "ple_nvme_offload": false, "sweep": {"configured_context": 32768, "max_num_seqs": 4, "in_flight_requests": 1, "gpu_memory_utilization": 0.8, "rows": [{"k": 0, "label": "No draft", "runs": [27.97, 27.56, 27.16, 27.35], "ttft_s": 0.185, "kv_tokens": 385570, "tokens_per_step": null, "mean": 27.509999999999998, "minimum": 27.16, "maximum": 27.97, "n": 4}, {"k": 1, "label": "MTP k=1", "runs": [36.37, 33.8, 35.26, 35.28], "ttft_s": 0.199, "kv_tokens": 275636, "tokens_per_step": 1.855, "mean": 35.177499999999995, "minimum": 33.8, "maximum": 36.37, "n": 4}, {"k": 2, "label": "MTP k=2", "runs": [37.3, 38.88, 41.34, 39.32], "ttft_s": 0.201, "kv_tokens": 235412, "tokens_per_step": 2.535, "mean": 39.21, "minimum": 37.3, "maximum": 41.34, "n": 4}, {"k": 3, "label": "MTP k=3", "runs": [37.91, 34.44, 36.73, 38.18, 35.08, 37.35, 35.22], "ttft_s": 0.21, "kv_tokens": 224694, "tokens_per_step": 2.951, "mean": 36.41571428571429, "minimum": 34.44, "maximum": 38.18, "n": 7}], "mean_definition": "Arithmetic mean of all listed per-run decode rates. Calculated from the published, rounded run values. Not pooled throughput, not a paired speedup, and not a confidence interval."}, "long_prompt": {"configured_context": 262144, "actual_prompt_tokens": 122902, "max_num_seqs": 2, "in_flight_requests": 1, "gpu_memory_utilization": 0.8, "requested_completion_tokens": 128, "rows": [{"k": 0, "decode_tok_s": 26.2, "approximate_decode": false, "ttft_s": 107.0, "kv_tokens": 546503}, {"k": 2, "decode_tok_s": 43, "approximate_decode": true, "ttft_s": 110.6, "reported_generation_s": 2.94, "kv_tokens": 402630, "reported_acceptance_length_range": [2.49, 2.65]}], "scope": "Separate long-prompt probe, not a complete k=0..3 sweep at 256K, and not a full 262144-token prefill. Retain the source rounded label about 43 tok/s rather than inventing extra precision."}, "profiler": {"configured_context": 32768, "draft": false, "decode_steps": 32, "gpu_kernel_time_percent": {"EXL3 dense GEMV/GEMM": 47, "EXL3 fused MoE": 34, "BF16 GEMM": 5, "Linear attention": 2, "Norms": 1, "Other": 11}}, "caveats": ["Preliminary, source-reported timings. No independent GPU rerun was performed to make this card.", "MTP k is the number of speculative draft tokens, not quantization bit width.", "The full draft-depth sweep has 32K configured context; the separate 123K prompt probe has 256K configured context.", "KV pool capacity is shared serving capacity, not validated per-request input length.", "Bit-exact full-output equivalence is not established. These are timing/probe results, not a quality evaluation.", "No raw per-request JSON logs were present in the inspected recipe tree; listed README values are preserved.", "The recipe serve example is labeled k=2 but passes num_speculative_tokens=1. Use 2 to select k=2; this artifact does not edit the repository."]}</script>
+<script>
+'use strict';
+const D=JSON.parse(document.getElementById('benchmark-data').textContent),rows=D.sweep.rows;
+const gain=(rows[2].mean/rows[0].mean-1)*100;
+const canvas=document.getElementById('card'),ctx=canvas.getContext('2d',{alpha:false});
+const app=document.getElementById('app'),frame=document.getElementById('frame');
+const C={bg:'#080d1d',panel:'#10182d',edge:'#2c3955',white:'#f3f6ff',muted:'#a9b7d3',dim:'#7183a3',mint:'#9af5d8',cyan:'#6edcff',purple:'#a592ff',bar:'#7588e4',grid:'#26334c'};
+const S={scene:0,playing:false,tour:false,elapsed:0,local:4500,last:0,raf:0,clean:false,countTimer:null,countGeneration:0,reduce:matchMedia('(prefers-reduced-motion: reduce)').matches};
+const W=1920,H=1080,SEG=10000,TOTAL=30000,$=id=>document.getElementById(id);
+const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),ease=v=>1-Math.pow(1-clamp(v),3),phase=(p,i=0)=>ease((p-i*.09)/.7);
+const family='"Segoe UI", Arial, sans-serif',mono='"Cascadia Code", Consolas, "Liberation Mono", monospace';
+let currentTextBounds=[];
+function pathRound(x,y,w,h,r=18){ctx.beginPath();ctx.roundRect(x,y,w,h,r);}
+function rect(x,y,w,h,color,r=0){if(w<=0||h<=0)return;ctx.fillStyle=color;pathRound(x,y,w,h,r);ctx.fill();}
+function line(x1,y1,x2,y2,color=C.edge,width=1){ctx.strokeStyle=color;ctx.lineWidth=width;ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();}
+function text(x,y,str,size=24,color=C.white,weight=400,align='left',font=family){ctx.font=`${weight} ${size}px ${font}`;ctx.textAlign=align;ctx.textBaseline='alphabetic';ctx.fillStyle=color;ctx.fillText(str,x,y);const m=ctx.measureText(str);currentTextBounds.push({text:str,x,y,width:m.width,size,align});}
+function label(x,y,str,color=C.muted,size=18){text(x,y,str,size,color,650,'left',mono);}
+function panel(x,y,w,h,accent=false){
+ const g=ctx.createLinearGradient(x,y,x+w,y+h);g.addColorStop(0,accent?'#122534':'#131b33');g.addColorStop(1,accent?'#101b32':'#0d1629');
+ rect(x,y,w,h,g,24);ctx.strokeStyle=accent?'#365b62':C.edge;ctx.lineWidth=1.2;pathRound(x,y,w,h,24);ctx.stroke();line(x+28,y+1,x+w-28,y+1,accent?'#75d9c166':'#718abd33');
+}
+function pill(x,y,w,str,color=C.mint){rect(x,y,w,42,color+'14',10);ctx.strokeStyle=color+'60';ctx.lineWidth=1;pathRound(x,y,w,42,10);ctx.stroke();text(x+14,y+28,str,20,color,650);}
+function glowText(x,y,str,size=100){ctx.save();ctx.shadowColor='#74e9d64d';ctx.shadowBlur=35;text(x,y,str,size,C.mint,750);ctx.restore();}
+function bar(x,y,w,h,ratio,p=1,color=C.purple){
+ rect(x,y,w,h,'#1c2942',8);let ww=w*ratio*p;if(ww<1)return;
+ const g=ctx.createLinearGradient(x,y,x+w,y);g.addColorStop(0,color===C.mint?'#3e9391':'#4f5ca5');g.addColorStop(.7,color);g.addColorStop(1,color===C.mint?'#c0ffe9':'#c0b4ff');
+ ctx.save();ctx.shadowBlur=16;ctx.shadowColor=color+'35';rect(x,y,ww,h,g,8);ctx.restore();line(x+8,y+1,x+Math.max(8,ww-8),y+1,color+'ad');
+}
+function background(time=0){
+ rect(0,0,W,H,C.bg);
+ let g=ctx.createRadialGradient(1570,180,1,1570,180,1130);g.addColorStop(0,'#37326355');g.addColorStop(.55,'#132d4844');g.addColorStop(1,'#080d1d00');rect(0,0,W,H,g);
+ let gg=ctx.createRadialGradient(80,1080,2,80,1080,900);gg.addColorStop(0,'#14676c28');gg.addColorStop(1,'#0c213900');rect(0,0,W,H,gg);
+ ctx.save();ctx.lineWidth=1;
+ for(let y=0;y<1080;y+=54)line(0,y,1920,y,'#7388b409');for(let x=0;x<1920;x+=64)line(x,0,x,1080,'#7388b408');
+ ctx.translate(1580,310);ctx.rotate(time*.016);[285,385,490].forEach((r,i)=>{ctx.strokeStyle=i===1?'#829ceb17':'#7484bc0b';ctx.beginPath();ctx.ellipse(0,0,r,r*.66,-.3,0,Math.PI*2);ctx.stroke();});ctx.restore();
+ for(let i=0;i<36;i++){const x=((i*347+173)%1850)+35,y=((i*179+41)%1000)+30;const a=.13+.12*Math.sin(time*.8+i*.9);ctx.fillStyle=`rgba(154,211,255,${a})`;ctx.beginPath();ctx.arc(x,y,i%6===0?1.8:1.1,0,7);ctx.fill();}
+ line(80,232,1840,232,'#3a4b6e');
+ const scan=(time*66)%1760,lg=ctx.createLinearGradient(80+scan-80,0,80+scan+80,0);lg.addColorStop(0,'#70efd600');lg.addColorStop(.5,'#70efd6a0');lg.addColorStop(1,'#70efd600');line(80+Math.max(0,scan-80),232,80+Math.min(1760,scan+80),232,lg,2);
+ // These edge brackets and orbital lines are decorative, not data.
+ for(const [x,y,dir] of [[25,28,1],[1895,28,-1],[25,1052,1],[1895,1052,-1]]){line(x,y,x+dir*24,y,'#668caa66',2);line(x,y,x,y+(y>500?-22:22),'#668caa66',2);}
+}
+function header(scene){
+ const titles=['01 / PERFORMANCE OVERVIEW','02 / DRAFT-DEPTH SWEEP','03 / LONG-PROMPT PROBE'];label(80,63,'@ViC305  /  '+titles[scene],C.cyan,18);
+ text(80,155,'Qwen3.8-Flash-Next',74,C.white,740);text(84,204,'3.05 bpw EXL3   ·   vLLM + vllm-exl3   ·   Single-request timings',24,C.muted,450);
+ panel(1402,75,438,135,true);label(1428,108,'128 GB UNIFIED MEMORY',C.muted,18);text(1427,155,'ONE DGX SPARK',38,C.mint,760);label(1428,185,'GB10  /  BLACKWELL',C.muted,18);
+}
+function footer(scene,note){
+ const names=['OVERVIEW','MTP SWEEP','LONG PROMPT'];for(let i=0;i<3;i++){rect(82+i*150,983,130,3,i===scene?C.mint:'#283550',2);label(82+i*150,1008,names[i],i===scene?C.mint:C.dim,13);}
+ text(1840,1008,note,18,C.muted,450,'right');text(80,1045,'Pack + kernels: Turboderp / ExLlamaV3   ·   Serving: vLLM   ·   Integration + tests: @ViC305',19,C.muted,450);text(1840,1045,'RECORDED RESULTS / 07 SEP 2026',17,C.dim,500,'right',mono);
+}
+function metricCard(x,w,title,val,sub){panel(x,754,w,199);label(x+27,792,title,C.muted,18);text(x+25,875,val,59,C.white,730);text(x+28,922,sub,22,C.muted);}
+function overview(p,time){
+ header(0);panel(80,263,650,463,true);label(109,304,'LONG-PROMPT DECODE',C.mint,20);glowText(102,488,'~43',192);text(450,484,'tok/s',48,C.mint,600);
+ text(110,548,'after 122,902 prompt tokens',35,C.white,600);pill(110,590,375,'256K configured  ·  MTP k=2',C.cyan);text(110,681,'~123K actual input, not a full 256K prompt.',21,C.muted);
+ panel(758,263,1082,463);text(790,321,'Two draft tokens. Best mean.',38,C.white,700);text(792,363,'32K-configured sweep  ·  Arithmetic mean decode',22,C.muted);
+ const x=1020,w=622;rows.forEach((r,i)=>{const y=413+i*66;if(i===2){rect(780,y-21,1040,59,'#8cf1d30b',11);line(781,y-10,781,y+25,C.mint,3);}text(794,y+12,r.label,25,i===2?C.mint:C.muted,i===2?700:550);bar(x,y-16,w,34,r.mean/45,phase(p,i),i===2?C.mint:C.bar);text(1807,y+13,r.mean.toFixed(2),34,i===2?C.mint:C.white,720,'right',mono);});
+ text(791,696,'+'+gain.toFixed(1)+'% mean decode vs no draft',24,C.mint,650);text(1808,696,'tok/s · excludes TTFT',19,C.muted,450,'right');
+ metricCard(80,563,'WHOLE MODEL ON DEVICE','78.57 GiB','Includes the packed PLE table');metricCard(679,562,'PLE TABLE / STILL RESIDENT','30.4 GiB','5-bit packed · no NVMe PLE offload');metricCard(1277,563,'SWEEP WINNER / MTP k=2','39.21 tok/s','Mean of 4 listed runs · 32K configured');
+ footer(0,'Two separate tests. One in-flight request. Preliminary timings.');
+}
+function sweep(p,time){
+ header(1);panel(80,263,1140,690);text(111,320,'Every depth. Every listed run.',40,C.white,700);text(114,361,'32K configured  ·  Bars = mean  ·  Dots = individual runs',23,C.muted);
+ const x0=340,w=650,scale=v=>x0+w*v/45;[0,10,20,30,40,45].forEach(v=>{ctx.save();ctx.setLineDash([2,8]);line(scale(v),403,scale(v),842,C.grid);ctx.restore();text(scale(v),883,String(v),20,C.dim,500,'center',mono);});
+ rows.forEach((r,i)=>{const y=441+i*111;if(i===2){rect(101,y-46,1098,98,'#8cf1d30a',12);line(102,y-28,102,y+38,C.mint,3);}text(116,y+2,r.label,28,i===2?C.mint:C.white,i===2?750:550);text(117,y+35,r.n+' runs',20,C.muted);bar(x0,y-27,w,37,r.mean/45,phase(p,i),i===2?C.mint:C.bar);ctx.save();ctx.globalAlpha=.2+.8*phase(p,i);line(scale(r.minimum),y+32,scale(r.maximum),y+32,C.muted,2);r.runs.forEach((v,j)=>{ctx.beginPath();ctx.arc(scale(v),y+32+(j%2?5:-5),5,0,Math.PI*2);ctx.fillStyle=i===2?C.mint:'#b6bfe9';ctx.fill();});ctx.restore();text(1184,y+3,r.mean.toFixed(2),40,i===2?C.mint:C.white,750,'right',mono);text(1184,y+34,'tok/s mean',19,C.muted,450,'right');});
+ text(652,928,'Zero-based scale · Decode excludes time to first token',20,C.muted,450,'center');panel(1250,263,590,690,true);label(1280,309,'BEST TESTED DRAFT DEPTH',C.mint,21);glowText(1271,454,'k=2',126);text(1280,550,'39.21 tok/s',67,C.white,750);pill(1281,586,278,'+'+gain.toFixed(1)+'% vs no draft',C.mint);line(1280,665,1810,665,C.edge);text(1280,712,'k=2',30,C.mint,700);text(1807,712,'2.535 / step',33,C.white,650,'right',mono);text(1280,761,'k=3',30,C.muted,650);text(1807,761,'2.951 / step',33,C.muted,650,'right');text(1280,834,'More tokens per step does not',26,C.white,550);text(1280,871,'always mean faster decode.',26,C.white,550);text(1280,925,'Extra drafting has an execution cost.',22,C.muted);footer(1,'k = draft depth, not quantization bits. 4 / 4 / 4 / 7 listed runs.');
+}
+function longPrompt(p,time){
+ header(2);panel(80,263,1760,169,true);label(110,306,'ACTUAL INPUT',C.mint,20);text(104,387,'122,902',85,C.white,740,'left',mono);text(500,384,'prompt tokens',28,C.muted,500);text(1809,306,'CONFIGURED CONTEXT LIMIT',20,C.muted,600,'right',mono);text(1810,381,'262,144 tokens',56,C.white,700,'right');rect(110,412,1700,5,'#263749',3);rect(110,412,1700*122902/262144*phase(p),5,C.mint,3);
+ panel(80,458,1100,495);text(111,516,'Faster decode after a long prompt.',39,C.white,700);text(114,558,'Decode in tok/s  ·  128 requested output tokens  ·  1 request',23,C.muted);
+ const x=360,w=595;[{name:'MTP k=2',value:43,display:'~43',color:C.mint},{name:'No draft',value:26.2,display:'26.2',color:C.bar}].forEach((r,i)=>{const y=631+i*102;text(115,y+15,r.name,30,r.color,650);bar(x,y-25,w,49,r.value/50,phase(p,i),r.color);text(1145,y+18,r.display,53,r.color,750,'right',mono);});
+ line(111,806,1148,806,C.edge);label(113,852,'TIME TO FIRST TOKEN',C.muted,19);text(113,905,'MTP k=2: 110.6 s',31,C.white,650);text(1144,905,'No draft: 107.0 s',31,C.muted,600,'right');
+ panel(1210,458,630,495);label(1240,504,'PACKED PLE / ON DEVICE',C.mint,22);text(1238,600,'78.57 GiB',69,C.white,750);text(1242,641,'Whole model, including 30.4 GiB PLE',24,C.muted);pill(1241,670,308,'No NVMe PLE offload',C.cyan);line(1240,754,1810,754,C.edge);text(1240,822,'402,630',56,C.mint,730,'left',mono);text(1242,864,'KV-pool tokens with MTP k=2',25,C.white,550);text(1242,918,'Pool capacity is not tested input length.',21,C.muted);footer(2,'~123K actual prompt · 256K configured · Timing probe, not quality/parity testing.');
+}
+function draw(scene=S.scene,p=1,time=0){currentTextBounds=[];ctx.save();background(time);[overview,sweep,longPrompt][scene](p,time);ctx.restore();}
+function layout(){const vw=app.clientWidth||innerWidth,vh=app.clientHeight||innerHeight;const reserve=S.clean?0:($('dock').getBoundingClientRect().height+45);const scale=Math.max(.1,Math.min((vw-(S.clean?0:24))/W,(vh-reserve-(S.clean?0:12))/H));frame.style.width=(W*scale)+'px';frame.style.height=(H*scale)+'px';frame.style.top=((vh-reserve)/2)+'px';$('hint').style.bottom=($('dock').getBoundingClientRect().height+25)+'px';}
+function clean(value){S.clean=value;app.classList.toggle('clean',value);layout();}
+function syncUI(){$('sceneSelect').value=String(S.scene);$('pause').textContent=S.playing?'Pause':'Play';const sec=Math.min(30,Math.floor(S.elapsed/1000));$('clock').textContent='00:'+String(sec).padStart(2,'0')+' / 00:30';}
+function announce(msg){$('status').textContent=msg;}
+let toastTimer;
+function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),3300);}
+function stopClock(){cancelAnimationFrame(S.raf);S.playing=false;syncUI();}
+function cancelCountdown(){S.countGeneration++;clearInterval(S.countTimer);S.countTimer=null;$('countdown').classList.remove('show');}
+function finish(){stopClock();S.tour=false;S.elapsed=TOTAL;S.scene=0;S.local=4500;draw(0,1,0);syncUI();announce('Tour complete. Completed overview held on screen. Press H for controls.');}
+function tick(now){
+ if(!S.playing)return;const dt=Math.max(0,now-S.last);S.last=now;S.elapsed+=dt;S.local+=dt;
+ if(S.tour){if(S.elapsed>=TOTAL){if($('loop').checked){S.elapsed=S.elapsed%TOTAL;}else{finish();return;}}S.scene=Math.floor(S.elapsed/SEG);S.local=S.elapsed%SEG;}
+ else if(S.local>=8000){stopClock();S.local=4500;draw(S.scene,1,0);announce('Scene animation complete.');return;}
+ const progress=S.reduce?1:clamp(S.local/2200);draw(S.scene,progress,S.reduce?0:S.local/1000);syncUI();S.raf=requestAnimationFrame(tick);
+}
+function startTour(withCountdown=true){
+ cancelCountdown();stopClock();clean(true);S.scene=0;S.tour=true;S.elapsed=0;S.local=0;draw(0,1,0);syncUI();
+ const go=()=>{S.playing=true;S.last=performance.now();draw(0,S.reduce?1:0,0);syncUI();announce('Playing three ten-second benchmark scenes. Press H to restore controls.');S.raf=requestAnimationFrame(tick);};
+ if(!withCountdown){go();return;}let n=3,generation=S.countGeneration;$('count').textContent=String(n);$('countdown').classList.add('show');
+ S.countTimer=setInterval(()=>{if(generation!==S.countGeneration)return;n--;if(n<=0){clearInterval(S.countTimer);S.countTimer=null;$('countdown').classList.remove('show');go();}else $('count').textContent=String(n);},1000);
+}
+function pauseToggle(){if(S.countTimer){cancelCountdown();S.tour=false;clean(false);draw(S.scene,1,0);return;}if(S.playing){stopClock();announce('Playback paused. H restores controls.');return;}if(S.tour&&S.elapsed<TOTAL){S.playing=true;S.last=performance.now();syncUI();S.raf=requestAnimationFrame(tick);}else startTour(false);}
+function showScene(i){cancelCountdown();stopClock();S.tour=false;S.scene=(Number(i)+3)%3;S.elapsed=S.scene*SEG;S.local=4500;draw(S.scene,1,0);syncUI();announce('Scene '+(S.scene+1)+' selected. Complete static frame.');}
+function finalFrame(){cancelCountdown();stopClock();S.tour=false;S.local=4500;draw(S.scene,1,0);announce('Complete static frame.');}
+async function full(){try{if(document.fullscreenElement)await document.exitFullscreen();else if(app.requestFullscreen)await app.requestFullscreen();else toast('Fullscreen is not available in this viewer. Open the downloaded HTML in your desktop browser.');}catch(err){toast('Fullscreen was blocked. Use the browser fullscreen command, or open the HTML directly.');}layout();}
+function savePNG(){
+ const selected=S.scene,out=document.createElement('canvas');out.width=W;out.height=H;draw(selected,1,0);out.getContext('2d').drawImage(canvas,0,0);
+ if(S.playing)draw(S.scene,S.reduce?1:clamp(S.local/2200),S.reduce?0:S.local/1000);
+ out.toBlob(blob=>{if(!blob){toast('PNG export unavailable. Use a screenshot of the completed scene.');return;}const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='QWEN_'+['OVERVIEW','MTP_SWEEP','LONG_PROMPT'][selected]+'_1920x1080.png';a.click();setTimeout(()=>URL.revokeObjectURL(u),10000);},'image/png');
+}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+function evidence(){
+ $('evidence').innerHTML=`<h3>Source snapshot</h3><p>This presentation uses a fixed snapshot of the recipe's recorded measurements. No new runs are represented. Measurements dated ${esc(D.measurement_date)}. <a target="_blank" rel="noopener" href="${esc(D.source_url)}">Recipe at commit ${esc(D.source_commit.slice(0,12))}</a>.</p><p>Pack: ${esc(D.pack)}; revision <code>${esc(D.pack_revision)}</code>. Runtime in that snapshot: ${esc(D.runtime)}. Current release status is not inferred from this historical capture.</p><h3>32K-configured MTP sweep</h3><p>One in-flight request; max_num_seqs 4; GPU utilization setting 0.80. k is speculative draft depth, not quantization precision. The +${gain.toFixed(1)}% compares arithmetic means, not a paired-trial speedup. n differs between modes.</p><div class="table-wrap"><table><thead><tr><th>Mode</th><th>All listed runs, tok/s</th><th>Mean</th><th>n</th><th>KV pool</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.label)}</td><td>${r.runs.map(v=>v.toFixed(2)).join(' / ')}</td><td>${r.mean.toFixed(2)}</td><td>${r.n}</td><td>${r.kv_tokens.toLocaleString('en-US')}</td></tr>`).join('')}</tbody></table></div><h3>Separate long-prompt probe</h3><p>122,902 actual input tokens, 262,144 configured limit, one in-flight request, 128 requested output tokens, utilization 0.80, max_num_seqs 2. MTP k=2: approximately 43 tok/s, 110.6 seconds TTFT, 402,630-token KV pool. No draft: 26.2 tok/s, 107.0 seconds TTFT, 546,503-token KV pool. This is not a full 256K prompt and not a complete k sweep at 256K.</p><h3>Memory, interpretation and credits</h3><p>Whole-model on-device allocation: 78.57 GiB, including 30.4 GiB packed 5-bit PLE. It is not total server memory including caches and scratch. No NVMe PLE offload is used in these runs. All throughput is single-request decode excluding TTFT, not aggregate concurrency throughput. Coherent text and timing are not a quality evaluation or proof of full-output equivalence.</p><p>Pack, format and kernels: Turboderp / ExLlamaV3. Serving engine: vLLM. Plugin integration and measured runs: Victor Cruz (@ViC305). The plugin also credits Mia's AI Lab and plotarmordev; consult its third-party notices. Independent community work, not an endorsement.</p><p><a target="_blank" rel="noopener" href="${esc(D.recipe_url)}">Recipe</a> · <a target="_blank" rel="noopener" href="https://github.com/vcruz305/vllm-exl3">Plugin</a> · <a target="_blank" rel="noopener" href="https://huggingface.co/turboderp/Qwen3.8-Flash-Next-exl3/tree/3.05bpw_h5_ng5">Turboderp pack</a></p><h3>Display notes</h3><p>All graphics and benchmark data are embedded. No external fonts, images, libraries, analytics, or network requests are needed. Fullscreen is entered from a button or keypress. Reduced-motion preferences keep chart reveals static while manual scene playback still works. Hidden browser tabs pause the tour.</p>`;
+}
+$('start').onclick=()=>startTour(true);$('pause').onclick=pauseToggle;$('final').onclick=finalFrame;$('full').onclick=full;$('hide').onclick=()=>clean(!S.clean);$('png').onclick=savePNG;$('sceneSelect').onchange=e=>showScene(e.target.value);
+function pauseForInfo(){cancelCountdown();if(S.playing)stopClock();clean(false);}
+$('info').onclick=()=>{pauseForInfo();$('infoDialog').showModal();};$('closeInfo').onclick=()=>$('infoDialog').close();
+$('infoDialog').addEventListener('click',e=>{if(e.target===$('infoDialog')){const r=e.target.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)e.target.close();}});
+document.addEventListener('keydown',e=>{if($('infoDialog').open)return;if(/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)&&e.key!=='Escape')return;const k=e.key.toLowerCase();if(k===' '){e.preventDefault();pauseToggle();}else if(k==='f'){e.preventDefault();full();}else if(k==='h'){e.preventDefault();clean(!S.clean);}else if(k==='r'){e.preventDefault();startTour(false);}else if(k==='s'){e.preventDefault();finalFrame();}else if(['1','2','3'].includes(k)){e.preventDefault();showScene(Number(k)-1);}else if(k==='arrowright'){e.preventDefault();showScene(S.scene+1);}else if(k==='arrowleft'){e.preventDefault();showScene(S.scene-1);}else if(k==='escape'){cancelCountdown();clean(false);}});
+document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement)clean(false);layout();});
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&S.playing){stopClock();announce('Paused because the tab is hidden. Press Space to resume.');}});
+window.addEventListener('resize',layout);
+window.benchmarkStudio={data:D,show:showScene,final:finalFrame,play:()=>startTour(false),pause:stopClock,clean,exportPNG:savePNG,render:(scene,p=1,t=0)=>{showScene(scene);draw(scene,p,t);},state:()=>({...S,raf:undefined,countTimer:undefined}),textBounds:()=>currentTextBounds};
+evidence();draw(0,1,0);syncUI();layout();
+// Share links use the current deployment, including forks. The local download stays offline.
+function downloadBlob(contents,type,name){const blob=new Blob([contents],{type}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),10000);}
+function downloadHTML(){const doc=document.documentElement.cloneNode(true);doc.querySelector('#app').classList.remove('clean');doc.querySelector('#countdown').classList.remove('show');doc.querySelector('#toast').classList.remove('show');doc.querySelector('#infoDialog').removeAttribute('open');doc.querySelector('#manualLink').hidden=true;doc.querySelector('#linkText').value='';downloadBlob('<!doctype html>\n'+doc.outerHTML,'text/html;charset=utf-8','QWEN_BENCHMARK_LANDSCAPE.html');}
+function shareURL(href=location.href,tour=false){const u=new URL(href);if(!['http:','https:'].includes(u.protocol))return null;u.search='';u.hash='';if(tour){u.searchParams.set('autoplay','1');if($('loop').checked)u.searchParams.set('loop','1');}else{u.searchParams.set('scene',['overview','sweep','long'][S.scene]);if(S.clean)u.searchParams.set('clean','1');}return u.href;}
+async function copyShare(tour=false){const link=shareURL(location.href,tour);if(!link){toast('This is a local file. Use Download HTML to share it, or copy links from the published website.');return;}try{await navigator.clipboard.writeText(link);toast(tour?'Tour link copied.':'Scene link copied.');}catch(e){pauseForInfo();if(!$('infoDialog').open)$('infoDialog').showModal();$('manualLink').hidden=false;$('linkText').value=link;$('linkText').focus();$('linkText').select();}}
+function applyLaunchOptions(search=location.search){const q=new URLSearchParams(search),scenes={overview:0,sweep:1,long:2};if(Object.hasOwn(scenes,q.get('scene')))showScene(scenes[q.get('scene')]);if(q.get('loop')==='1')$('loop').checked=true;if(q.get('clean')==='1')clean(true);if(q.get('autoplay')==='1')startTour(true);}
+$('share').onclick=()=>copyShare(false);$('downloadHtml').onclick=downloadHTML;$('downloadData').onclick=()=>downloadBlob(JSON.stringify(D,null,2)+'\n','application/json','benchmark-data.json');$('copyScene').onclick=()=>copyShare(false);$('copyTour').onclick=()=>copyShare(true);applyLaunchOptions();
+</script>
+</body>
+</html>
