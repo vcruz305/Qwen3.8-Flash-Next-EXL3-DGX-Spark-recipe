@@ -272,6 +272,43 @@ kernels take roughly 3-5x the time the weight bytes would need at the GB10's
 why k=3 does not beat k=2: vLLM's Qwen MTP replays the single draft layer and
 the K5 lm_head once per extra draft token.
 
+## Benchmark results (2026-09-08, one DGX Spark)
+
+Setup: single DGX Spark (GB10, 121.7 GiB unified memory). EXL3 side: this recipe's pack (3.05 bpw), vllm-exl3 main 6b26e5c, MTP k=2, 65536 context, vendor sampling (thinking on, temperature 1.0, top_p 0.95, top_k 20), served with `--reasoning-parser qwen3`. GGUF side: vcruz305/Qwen3.8-Flash-Next-GGUF Q4_K_M with BF16 PLE table file-backed, llama.cpp with qwen4exp NextN/MTP draft head (upstream PR 27836), `--spec-type draft-mtp --spec-draft-n-max 3`, same context and sampling. Benchmark: sixcat-eval v0.5.1, vendor policy, 20 items per category, one request at a time.
+
+Quality (sixcat scores, percent). Each category holds 20 items, so one item equals five points. The two runs are within one item everywhere.
+
+| Category | EXL3 | GGUF |
+|---|---|---|
+| Knowledge | 90.0 | 85.0 |
+| Math | 100.0 | 100.0 |
+| Truth | 80.0 | 85.0 |
+| Instruct | 85.0 | 90.0 |
+| Code | 90.0 | 88.9 |
+| Mean | 89.0 | 89.8 |
+
+The GGUF run stopped after 98 of 120 items (code row covers 18 items). Tools were excluded from both: EXL3 scored 15.0 only because the harness used a JSON tool-call parser while the model emits XML-style calls, which `--tool-call-parser qwen3_xml` fixes; the GGUF run never reached that category.
+
+Speed (tokens per second, decode excludes time to first token, 256-token completions):
+
+| Setting | EXL3 | GGUF |
+|---|---|---|
+| Greedy | 44.7-46.2 | 30.0-31.5 |
+| Vendor instruct settings | 41.7-44.7 | 24.7-26.5 |
+| Vendor thinking settings | 35.3-40.5 | 21.8-28.3 |
+| Whole 120-item suite | 37.8 | 25.1-27.0 |
+| Prefill 15,654-token prompt | 1,067-1,090 | 353 |
+| TTFT 32-token prompt | 0.27 s | 0.33 s |
+
+Resident memory:
+
+| System | Configuration |
+|---|---|
+| EXL3 | 78.6 GiB weights with n-gram embedding quantized and resident |
+| GGUF | 80.2 GiB backbone, 95.4 GiB BF16 PLE table paged from disk |
+
+The GGUF backbone paging explains its threefold-slower prefill. Draft acceptance was 2.42 of 3 for EXL3 over the eval and 0.57 to 0.68 with mean accepted length 2.7 to 3.0 of 4 for GGUF. An upstream change to llama.cpp that reads PLE rows with explicit preads instead of demand paging (pull request 28136, reported to raise prefill from 300 to 750 to 800 tokens per second on this hardware) builds but aborts during decode when combined with the MTP draft head, so it is not usable yet.
+
 ## Known limitations
 
 - Fat-expert prefill bug (fixed 2026-09-08, vllm-exl3 PR #5). Before the fix, any prompt that routed more than 256 tokens to one expert produced wrong hidden states while short prompts looked normal: mean NLL over a 6000-token corpus was 4.21 through vLLM against 0.94 through exllamav3 on the same pack. With the fix the served model scores 0.941 to 0.944. The long-context decode speeds in this README were measured before the fix; the speeds stand, but any output quality claims for prompts beyond a few hundred tokens made before 2026-09-08 do not.
