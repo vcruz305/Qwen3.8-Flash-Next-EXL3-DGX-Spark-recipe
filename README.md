@@ -95,7 +95,7 @@ tower.
   ```bash
   pip install git+https://github.com/vcruz305/vllm-exl3@main
   ```
-  The install must be from main at commit e70a459 (2026-09-08) or newer; earlier mains and every 0.3.x release carry a fat-expert prefill bug that silently corrupts long prompts on this pack (see Known limitations).
+  The install must be from main at commit 6b26e5c (2026-09-08) or newer; main carries fixes for the fat-expert prefill bug (PR #5) that silently corrupts long prompts on older builds, and for the engine wedge on the vLLM nightly V2 runner (PR #7) that could hang on 33 to 144-token prefills and MTP evaluation runs.
   A tagged release will follow; until then, install from `main`.
 
 ## Quick start
@@ -275,7 +275,7 @@ the K5 lm_head once per extra draft token.
 ## Known limitations
 
 - Fat-expert prefill bug (fixed 2026-09-08, vllm-exl3 PR #5). Before the fix, any prompt that routed more than 256 tokens to one expert produced wrong hidden states while short prompts looked normal: mean NLL over a 6000-token corpus was 4.21 through vLLM against 0.94 through exllamav3 on the same pack. With the fix the served model scores 0.941 to 0.944. The long-context decode speeds in this README were measured before the fix; the speeds stand, but any output quality claims for prompts beyond a few hundred tokens made before 2026-09-08 do not.
-- Mid-length prefill wedge on the vLLM nightly V2 runner. Prompts of roughly 33 to 144 tokens never return (EngineCore at 100% CPU, GPU busy at idle power, engine never recovers) unless the plugin runs with `VLLM_EXL3_PREFILL_SYNC=256` (vllm-exl3 PR #6, main e70a459). The serve script sets it. Cost: about 0.1 s more time to first token on those prompt lengths; decode unchanged. Root cause upstream not yet identified; sampling settings, CUDA graphs, prefix caching and async scheduling were ruled out.
+- Engine wedge on the vLLM nightly V2 runner (fixed 2026-09-08, vllm-exl3 PR #7). Root cause: exllamav3 dispatches dense calls by row count; up to 2 rows use non-cooperative GEMV, 3 to 144 rows use cooperative trellis GEMM (cudaLaunchCooperativeKernel with grid barriers), above 144 rows it reconstructs the weight and runs hgemm. On vLLM's nightly V2 runner the cooperative GEMM wedged the engine (EngineCore at 100% CPU, GPU idle power, no recovery) deterministically on 33 to 144-token prompts and on MTP k=2 evaluation after 30-60 minutes. The fix routes dense calls with 17 to 144 rows through the reconstruct path (exact); rows up to 16 keep the original dispatch. Validation: a 4-worker stress with random 15-220-word prompts that wedged the previous build in 161 seconds ran clean for 45 minutes (1085 requests, 77 tok/s aggregate), with the deterministic cases (72-token thinking, 128-token logprobs) running in about a second each. Decode is unchanged (44.6 tok/s greedy MTP k=2); TTFT on a 32-token prompt is about 0.25 s. Knobs: `VLLM_EXL3_RECONSTRUCT_MIN_ROWS` moves the threshold (default 17), `VLLM_EXL3_COOP_GEMM=1` restores the old dispatch for A/B runs.
 - Tensor-parallel size 1 only -- the padded dense geometry and the n-gram
   table are not sharded for TP > 1.
 - Vision attention q/k/v is served from the pack's bf16 fused copy, not the
