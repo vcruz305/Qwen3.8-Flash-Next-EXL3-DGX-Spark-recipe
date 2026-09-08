@@ -38,6 +38,8 @@ fi
 
 export PYTORCH_CUDA_ALLOC_CONF="${PYTORCH_CUDA_ALLOC_CONF:-expandable_segments:True}"
 export VLLM_EXL3_NGRAM_KERNEL="${VLLM_EXL3_NGRAM_KERNEL:-ext}"
+# workaround for the vLLM nightly V2 runner wedge on 33 to 144-token prefills (plugin main e70a459 or newer); decode unchanged
+export VLLM_EXL3_PREFILL_SYNC=256
 
 ARGS=(
   serve "$MODEL_DIR"
@@ -50,6 +52,7 @@ ARGS=(
   --gpu-memory-utilization "$GPU_MEM_UTIL"
   --enable-prefix-caching
   --trust-remote-code
+  --reasoning-parser qwen3
 )
 
 if [[ -n "$SPEC_CONFIG" ]]; then

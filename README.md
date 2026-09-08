@@ -95,6 +95,7 @@ tower.
   ```bash
   pip install git+https://github.com/vcruz305/vllm-exl3@main
   ```
+  The install must be from main at commit e70a459 (2026-09-08) or newer; earlier mains and every 0.3.x release carry a fat-expert prefill bug that silently corrupts long prompts on this pack (see Known limitations).
   A tagged release will follow; until then, install from `main`.
 
 ## Quick start
@@ -219,6 +220,7 @@ python scripts/probe_greedy.py mtp-k2   mtp_k2.json   http://127.0.0.1:8899
 ## Long context (262,144 tokens)
 
 Measured 2026-09-07 with `MAX_MODEL_LEN=262144 GPU_MEM_UTIL=0.80 MAX_NUM_SEQS=2`, no draft:
+These runs predate the fat-expert fix of 2026-09-08 (see Known limitations); the throughput numbers are unaffected by the fix, the quality of those long-prompt outputs was not.
 
 | Item | Value |
 |---|---|
@@ -272,6 +274,8 @@ the K5 lm_head once per extra draft token.
 
 ## Known limitations
 
+- Fat-expert prefill bug (fixed 2026-09-08, vllm-exl3 PR #5). Before the fix, any prompt that routed more than 256 tokens to one expert produced wrong hidden states while short prompts looked normal: mean NLL over a 6000-token corpus was 4.21 through vLLM against 0.94 through exllamav3 on the same pack. With the fix the served model scores 0.941 to 0.944. The long-context decode speeds in this README were measured before the fix; the speeds stand, but any output quality claims for prompts beyond a few hundred tokens made before 2026-09-08 do not.
+- Mid-length prefill wedge on the vLLM nightly V2 runner. Prompts of roughly 33 to 144 tokens never return (EngineCore at 100% CPU, GPU busy at idle power, engine never recovers) unless the plugin runs with `VLLM_EXL3_PREFILL_SYNC=256` (vllm-exl3 PR #6, main e70a459). The serve script sets it. Cost: about 0.1 s more time to first token on those prompt lengths; decode unchanged. Root cause upstream not yet identified; sampling settings, CUDA graphs, prefix caching and async scheduling were ruled out.
 - Tensor-parallel size 1 only -- the padded dense geometry and the n-gram
   table are not sharded for TP > 1.
 - Vision attention q/k/v is served from the pack's bf16 fused copy, not the
@@ -292,6 +296,7 @@ the K5 lm_head once per extra draft token.
 | `no module or parameter named 'lm_head.mul1' in Qwen4ExpMTP` | `patch_vllm_mtp_lmhead.py` was not applied |
 | `EXL3 linear load shape mismatch ... (4304,) != (4352,)` | the `vllm-exl3` plugin is older than 0.4.0 |
 | `torch.compile`: `Attempted to call function marked as skipped` | the `vllm-exl3` plugin is older than 0.4.0 |
+| Evaluation harness scores the reasoning text as the answer | serve with `--reasoning-parser qwen3` so the `<think>` block is returned as `reasoning_content` (the serve script does this) |
 | memory watchdog kills the process, or MemAvailable runs low | lower `GPU_MEM_UTIL` or `MAX_MODEL_LEN` |
 
 ## Related repositories
