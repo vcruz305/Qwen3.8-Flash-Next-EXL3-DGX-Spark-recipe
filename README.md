@@ -5,7 +5,7 @@
 [**Open the animated benchmark**](https://vcruz305.github.io/Qwen3.8-Flash-Next-EXL3-DGX-Spark-recipe/)
 
 Explore the recorded MTP sweep and separate long-prompt probe in a landscape
-viewer with a 30-second recording tour, PNG export, and downloadable HTML/data.
+viewer with a 19.5-second recording tour, PNG export, and downloadable HTML/data.
 No model hardware is needed to view or render the presentation.
 
 [**MTP sweep**](https://vcruz305.github.io/Qwen3.8-Flash-Next-EXL3-DGX-Spark-recipe/?scene=sweep) ·

@@ -22,7 +22,7 @@ Scene and recording links:
 - `?scene=sweep`: MTP draft-depth sweep
 - `?scene=long`: separate long-prompt probe
 - `?scene=sweep&clean=1`: sweep with controls hidden
-- `?autoplay=1`: three-second countdown, then a 30-second tour
+- `?autoplay=1`: three-second countdown, then a 19.5-second tour
 - `?autoplay=1&loop=1`: repeat the tour
 
 Use **Copy link** or the links in **Info** to share the current scene. Copied
@@ -31,9 +31,9 @@ file does not pretend to have a public URL.
 
 ## Screen recording and export
 
-Choose **Fullscreen**, start the screen recorder, then **Start 30s tour**.
+Choose **Fullscreen**, start the screen recorder, then **Start 19.5s tour**.
 After the three-second countdown, the controls and cursor disappear. Each
-scene holds for ten seconds, and the tour finishes on the completed overview.
+scene holds for 6.5 seconds, and the tour finishes on the completed overview.
 
 - **H** restores or hides controls; mouse movement does not reveal them.
 - **Space** pauses or resumes; **R** restarts the tour.

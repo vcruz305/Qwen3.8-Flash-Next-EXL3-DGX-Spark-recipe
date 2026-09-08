@@ -53,23 +53,23 @@ dialog .note{border-left:3px solid #99f4d7;background:#19233b;padding:12px 16px}
 <body>
 <div id="app">
  <div id="frame"><canvas id="card" width="1920" height="1080" role="img" aria-label="Recorded Qwen3.8-Flash-Next benchmarks on one DGX Spark. The full MTP sweep used 32K configured context; the separate long-prompt probe used 122902 input tokens with 256K configured context.">This benchmark needs a browser with Canvas and JavaScript support.</canvas></div>
- <div id="countdown" aria-live="polite"><strong id="count">3</strong><span>Recording view ready</span><small>30-second tour follows. H restores controls.</small></div>
+ <div id="countdown" aria-live="polite"><strong id="count">3</strong><span>Recording view ready</span><small>19.5-second tour follows. H restores controls.</small></div>
  <div id="hint">1920 × 1080 design • F fullscreen • Space play / pause • R restart tour • H controls • 1 / 2 / 3 scenes</div>
  <nav id="dock" aria-label="Presentation and recording controls">
   <select id="sceneSelect" aria-label="Benchmark scene"><option value="0">01 · Overview</option><option value="1">02 · MTP sweep</option><option value="2">03 · Long prompt</option></select>
-  <button id="start" class="primary" title="3-second countdown, then a 30-second tour. Controls and cursor disappear.">Start 30s tour</button>
+  <button id="start" class="primary" title="3-second countdown, then a 19.5-second tour. Controls and cursor disappear.">Start 19.5s tour</button>
   <button id="pause" title="Space">Play</button><button id="final" title="Show a complete static frame">Final frame</button>
   <span class="sep" aria-hidden="true"></span>
   <button id="full" title="F">Fullscreen</button><button id="hide" title="H to bring controls back">Hide controls</button>
   <button id="png" title="Save this scene at 1920 × 1080">Save PNG</button>
   <button id="share" class="optional" title="Copy a link to this scene on the hosted site">Copy link</button>
   <button id="info" class="optional" title="Source data, methodology and instructions">Info</button>
-  <label><input id="loop" type="checkbox">Loop</label><span class="clock" id="clock">00:00 / 00:30</span>
+  <label><input id="loop" type="checkbox">Loop</label><span class="clock" id="clock">00:00.0 / 00:19.5</span>
  </nav>
  <div id="toast" role="status"></div>
  <div class="sr-only" id="status" role="status" aria-live="polite">Final overview frame. Choose fullscreen and start the tour to record.</div>
  <dialog id="infoDialog"><button id="closeInfo">Close</button><h2>Landscape recording studio</h2><p>Every scene is exactly 16:9. The entire card fits inside your browser without scrolling. On a non-16:9 monitor, black letterboxing preserves the design.</p>
- <h3>Screen recording</h3><p>1. Open this page in a desktop browser. 2. Click <strong>Fullscreen</strong>. 3. Start your screen recorder. 4. Click <strong>Start 30s tour</strong>. A three-second countdown lets the controls clear before playback. Trim that countdown from the recording. Each scene holds for ten seconds, then the tour finishes on the completed overview. Enable <strong>Loop</strong> to repeat.</p><p><strong>H</strong> shows or hides controls; <strong>Space</strong> pauses or resumes; <strong>R</strong> restarts the tour; <strong>1 / 2 / 3</strong> and arrow keys select scenes; <strong>S</strong> freezes the completed current scene; <strong>F</strong> toggles fullscreen. Escape exits fullscreen and restores controls. Moving the mouse does not bring controls into your recording. <strong>Save PNG</strong> exports a complete frame without the controls, even during animation.</p>
+ <h3>Screen recording</h3><p>1. Open this page in a desktop browser. 2. Click <strong>Fullscreen</strong>. 3. Start your screen recorder. 4. Click <strong>Start 19.5s tour</strong>. A three-second countdown lets the controls clear before playback. Trim that countdown from the recording. Each scene holds for 6.5 seconds, then the tour finishes on the completed overview. Enable <strong>Loop</strong> to repeat.</p><p><strong>H</strong> shows or hides controls; <strong>Space</strong> pauses or resumes; <strong>R</strong> restarts the tour; <strong>1 / 2 / 3</strong> and arrow keys select scenes; <strong>S</strong> freezes the completed current scene; <strong>F</strong> toggles fullscreen. Escape exits fullscreen and restores controls. Moving the mouse does not bring controls into your recording. <strong>Save PNG</strong> exports a complete frame without the controls, even during animation.</p>
  <p class="note">The animation reveals bars and decorative light effects. Numerical labels stay at their recorded values. This is not live inference, and nothing here contacts an inference server.</p>
  <h3>Share, download or render locally</h3><p>This page is a recorded-results viewer, not a remote model demo. Viewing, animating, and exporting it do not require a DGX Spark, a vLLM install, or model weights.</p>
  <div class="downloads"><button id="downloadHtml">Download standalone HTML</button><button id="downloadData">Download data JSON</button><button id="copyScene">Copy scene link</button><button id="copyTour">Copy tour link</button></div>
@@ -88,7 +88,7 @@ const canvas=document.getElementById('card'),ctx=canvas.getContext('2d',{alpha:f
 const app=document.getElementById('app'),frame=document.getElementById('frame');
 const C={bg:'#080d1d',panel:'#10182d',edge:'#2c3955',white:'#f3f6ff',muted:'#a9b7d3',dim:'#7183a3',mint:'#9af5d8',cyan:'#6edcff',purple:'#a592ff',bar:'#7588e4',grid:'#26334c'};
 const S={scene:0,playing:false,tour:false,elapsed:0,local:4500,last:0,raf:0,clean:false,countTimer:null,countGeneration:0,reduce:matchMedia('(prefers-reduced-motion: reduce)').matches};
-const W=1920,H=1080,SEG=10000,TOTAL=30000,$=id=>document.getElementById(id);
+const W=1920,H=1080,SEG=6500,TOTAL=SEG*3,$=id=>document.getElementById(id);
 const clamp=(v,a=0,b=1)=>Math.min(b,Math.max(a,v)),ease=v=>1-Math.pow(1-clamp(v),3),phase=(p,i=0)=>ease((p-i*.09)/.7);
 const family='"Segoe UI", Arial, sans-serif',mono='"Cascadia Code", Consolas, "Liberation Mono", monospace';
 let currentTextBounds=[];
@@ -156,7 +156,7 @@ function longPrompt(p,time){
 function draw(scene=S.scene,p=1,time=0){currentTextBounds=[];ctx.save();background(time);[overview,sweep,longPrompt][scene](p,time);ctx.restore();}
 function layout(){const vw=app.clientWidth||innerWidth,vh=app.clientHeight||innerHeight;const reserve=S.clean?0:($('dock').getBoundingClientRect().height+45);const scale=Math.max(.1,Math.min((vw-(S.clean?0:24))/W,(vh-reserve-(S.clean?0:12))/H));frame.style.width=(W*scale)+'px';frame.style.height=(H*scale)+'px';frame.style.top=((vh-reserve)/2)+'px';$('hint').style.bottom=($('dock').getBoundingClientRect().height+25)+'px';}
 function clean(value){S.clean=value;app.classList.toggle('clean',value);layout();}
-function syncUI(){$('sceneSelect').value=String(S.scene);$('pause').textContent=S.playing?'Pause':'Play';const sec=Math.min(30,Math.floor(S.elapsed/1000));$('clock').textContent='00:'+String(sec).padStart(2,'0')+' / 00:30';}
+function syncUI(){$('sceneSelect').value=String(S.scene);$('pause').textContent=S.playing?'Pause':'Play';const sec=Math.min(TOTAL,Math.max(0,S.elapsed))/1000;$('clock').textContent='00:'+sec.toFixed(1).padStart(4,'0')+' / 00:'+(TOTAL/1000).toFixed(1);}
 function announce(msg){$('status').textContent=msg;}
 let toastTimer;
 function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),3300);}
@@ -171,7 +171,7 @@ function tick(now){
 }
 function startTour(withCountdown=true){
  cancelCountdown();stopClock();clean(true);S.scene=0;S.tour=true;S.elapsed=0;S.local=0;draw(0,1,0);syncUI();
- const go=()=>{S.playing=true;S.last=performance.now();draw(0,S.reduce?1:0,0);syncUI();announce('Playing three ten-second benchmark scenes. Press H to restore controls.');S.raf=requestAnimationFrame(tick);};
+ const go=()=>{S.playing=true;S.last=performance.now();draw(0,S.reduce?1:0,0);syncUI();announce('Playing three 6.5-second benchmark scenes. Press H to restore controls.');S.raf=requestAnimationFrame(tick);};
  if(!withCountdown){go();return;}let n=3,generation=S.countGeneration;$('count').textContent=String(n);$('countdown').classList.add('show');
  S.countTimer=setInterval(()=>{if(generation!==S.countGeneration)return;n--;if(n<=0){clearInterval(S.countTimer);S.countTimer=null;$('countdown').classList.remove('show');go();}else $('count').textContent=String(n);},1000);
 }
