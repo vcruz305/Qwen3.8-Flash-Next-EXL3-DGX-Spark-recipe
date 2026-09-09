@@ -22,12 +22,15 @@ Serves [turboderp's Qwen3.8-Flash-Next EXL3 pack](https://huggingface.co/turbode
 (revision `3.05bpw_h5_ng5`, about 80 GB) on a single NVIDIA DGX Spark (GB10,
 128 GB unified memory, aarch64) through a vLLM nightly and the
 [vllm-exl3](https://github.com/vcruz305/vllm-exl3) plugin. Measured on
-2026-09-07 on `cruz-spark`: **27.2-28.0 tok/s decode with no draft**, and
-**33.8-36.4 tok/s with a single MTP draft token** (mean acceptance 1.86 of a
-possible 2 per step) and **37.3-41.3 tok/s with two draft tokens** (mean
-acceptance 2.54 of a possible 3), all single in-flight request, excluding
-TTFT. k=3 reaches 34.4-38.2 tok/s (mean acceptance 2.95 of 4) with less KV cache,
-so k=2 is the recommended draft setting. These are preliminary numbers.
+`cruz-spark` on 2026-09-08, single in-flight request at 65,536-token context
+with MTP k=2: **47.6 tok/s greedy decode (p50)** at **0.300 s TTFT (p50)**,
+**38.4 tok/s at vendor thinking settings**, and **1,122 tok/s prefill** on a
+9,483-token prompt. The whole model including the n-gram embedding table stays
+resident in about 102 GiB, leaving 11.04 GiB of KV cache, which is 303,951
+tokens at 64k context. k=2 is the recommended draft setting; k=1 and k=3 are
+both slower (see the k-sweep below). Full numbers, and the comparison against
+the Q4_K_M GGUF of the same model, are in
+[Benchmark results](#benchmark-results-2026-09-08-one-dgx-spark).
 
 This recipe covers install, pack preparation (the pack as published needs
 three one-time rewrites before vLLM's native loader will serve it), the
@@ -35,7 +38,13 @@ three runtime patches vLLM needs until this architecture is upstreamed,
 serving with and without the MTP draft, and the benchmark/probe tools used
 to produce the numbers below.
 
-## Headline (measured 2026-09-07, cruz-spark)
+## Draft-depth sweep (measured 2026-09-07, cruz-spark)
+
+These four rows are the k-sweep that picked k=2, measured at 32k context on the
+build that predates the fat-expert fix (PR #5) and the dense-routing fix (PR #7).
+They are kept for the KV-cache and acceptance comparison across k. For current
+speeds use [Benchmark results](#benchmark-results-2026-09-08-one-dgx-spark),
+where the same k=2 configuration measures faster on the fixed build.
 
 | Config | Decode tok/s (4 runs) | TTFT | Notes |
 |---|---|---|---|
