@@ -325,9 +325,9 @@ Memory on one machine:
 |---|---|---|
 | Weights | 79.96 GiB resident, n-gram table quantized and resident | 80.2 GiB backbone resident, 95.4 GiB BF16 PLE table paged from NVMe |
 | KV cache | 11.04 GiB, 303,951 tokens at 64k context | not separately reported |
-| Device allocation | 95.4 GiB idle, 96.3 GiB under load | 84.5 GiB |
+| Device allocation | 93.2 GiB idle, 94.1 GiB under load | 82.5 GiB |
 | System memory in use | 102.4 GiB idle, 103.2 GiB under load | 86.9 GiB idle, 91.7 GiB under load, 95.7 GiB after the run |
-| Disk footprint | 78.6 GiB | 183 GiB |
+| On-disk serving set | 79.4 GiB (30.4 GiB of it the n-gram table) | 175.6 GiB (95.4 GiB of it the BF16 embedding table) |
 
 The GGUF's smaller resident figure is the 95.4 GiB embedding table living on disk rather than in memory, which is why its page cache and process size climb through a run and why its prefill is about half the speed. The EXL3 pack holds the whole model, embedding table included, in memory and still leaves room for 304k tokens of KV cache. Draft acceptance was 2.42 of 3 for EXL3 across the eval. An upstream llama.cpp change that reads PLE rows with explicit preads instead of demand paging (pull request 28136, reported to raise prefill from 300 to 750-800 tokens per second on this hardware) builds but aborts during decode when combined with the MTP draft head, so it is not usable yet.
 
