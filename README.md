@@ -289,15 +289,19 @@ Quality (sixcat scores, percent). Each category holds 20 items, so one item is w
 
 | Category | EXL3 | GGUF |
 |---|---|---|
-| Knowledge | 90.0 | 85.0 |
+| Knowledge | 85.0 | 85.0 |
 | Math | 100.0 | 100.0 |
 | Truth | 80.0 | 85.0 |
 | Instruct | 85.0 | 90.0 |
 | Code | 90.0 | 85.0 |
 | Tools | 80.0 | 90.0 |
-| Overall | 87.5 | 89.2 |
+| Overall | 86.7 | 89.2 |
 
-The tools row needs a serving flag rather than a better model: this model emits XML-style calls, so `--tool-call-parser qwen3_xml` is required. With the default JSON parser the same run scores 15.0. The EXL3 column scores the first answer recorded for each of the 120 items. Its result file also holds 34 retry answers taken after the parser fix, and the harness prints 90.0 overall when those are counted; the GGUF column is a single pass throughout, so the single-pass numbers are the ones compared here.
+The tools row needs a serving flag rather than a better model: this model emits XML-style calls, so `--tool-call-parser qwen3_xml` is required. With the default JSON parser the same run scores 15.0. Both columns score the first answer recorded for each of the 120 items, except the EXL3 tools row, which comes
+from the corrected-parser pass because the original attempts measured the parser rather than the model. Note that
+sixcat's printed overall is best-of-attempts: the EXL3 log carries 29 retried items and prints 90.0 on that basis,
+where 17 of those retries are the unparseable tools answers and 12 are genuine failures, 6 of which flipped on a
+second sample. The GGUF run was never offered a retry, so the table compares first attempts on both sides.
 
 Latency and throughput. Twenty streamed requests per row, each with a unique prefix so prefix caching cannot flatter the numbers; prefill uses fresh random prompts.
 
