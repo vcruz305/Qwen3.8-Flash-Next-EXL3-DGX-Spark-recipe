@@ -302,9 +302,9 @@ Latency and throughput. Twenty streamed requests per row, each with a unique pre
 | Thinking decode p50 | 38.4 tok/s | 24.0 tok/s |
 | Prefill, 1,221-token prompt | 902 tok/s | 439 tok/s |
 | Prefill, 9,483-token prompt | 1,122 tok/s | 634 tok/s |
-| Whole 120-item suite | 38.1 tok/s | 26.5 tok/s |
+| Whole 120-item suite | 37.8 tok/s | 26.5 tok/s |
 
-That is 1.45x the greedy decode rate, 1.60x the thinking decode rate, 1.8 to 2.0x the prefill rate, and 1.44x the suite throughput.
+Suite throughput is each side's own 120-item pass, 105,254 completion tokens for EXL3 against 101,034 for the GGUF, timed over the 80 items the harness rates. That is 1.45x the greedy decode rate, 1.60x the thinking decode rate, 1.8 to 2.0x the prefill rate, and 1.44x the suite throughput.
 
 Memory on one machine:
 
