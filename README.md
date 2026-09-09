@@ -274,9 +274,9 @@ the K5 lm_head once per extra draft token.
 
 ## Benchmark results (2026-09-08, one DGX Spark)
 
-Setup: single DGX Spark (GB10, 121.7 GiB unified memory). EXL3 side: this recipe's pack (3.05 bpw), vllm-exl3 main 6b26e5c, MTP k=2, 65536 context, vendor sampling (thinking on, temperature 1.0, top_p 0.95, top_k 20), served with `--reasoning-parser qwen3`. GGUF side: vcruz305/Qwen3.8-Flash-Next-GGUF Q4_K_M with BF16 PLE table file-backed, llama.cpp with qwen4exp NextN/MTP draft head (upstream PR 27836), `--spec-type draft-mtp --spec-draft-n-max 3`, same context and sampling. Benchmark: sixcat-eval v0.5.1, vendor policy, 20 items per category, one request at a time.
+Setup: single DGX Spark (GB10, 121.7 GiB unified memory). EXL3 side: this recipe's pack (3.05 bpw), vllm-exl3 main 6b26e5c, MTP k=2, 65536 context, served with `--reasoning-parser qwen3 --enable-auto-tool-choice --tool-call-parser qwen3_xml`. GGUF side: vcruz305/Qwen3.8-Flash-Next-GGUF Q4_K_M with the BF16 PLE table file-backed, llama.cpp with the qwen4exp NextN/MTP draft head (upstream pull request 27836), `--spec-type draft-mtp --spec-draft-n-max 3`, same context. Both sides run their own speculative draft head, vendor sampling (thinking on, temperature 1.0, top_p 0.95, top_k 20), and one request at a time. Benchmark: sixcat-eval v0.5.1, vendor policy, 20 items per category, 120 items per side.
 
-Quality (sixcat scores, percent). Each category holds 20 items, so one item equals five points. The two runs are within one item everywhere.
+Quality (sixcat scores, percent). Each category holds 20 items, so one item is worth five points. The two runs land within one or two items of each other everywhere, which is a tie.
 
 | Category | EXL3 | GGUF |
 |---|---|---|
@@ -284,30 +284,41 @@ Quality (sixcat scores, percent). Each category holds 20 items, so one item equa
 | Math | 100.0 | 100.0 |
 | Truth | 80.0 | 85.0 |
 | Instruct | 85.0 | 90.0 |
-| Code | 90.0 | 88.9 |
-| Mean | 89.0 | 89.8 |
+| Code | 90.0 | 85.0 |
+| Tools | 80.0 | 90.0 |
+| Overall | 87.5 | 89.2 |
 
-The GGUF run stopped after 98 of 120 items (code row covers 18 items). Tools were excluded from both: EXL3 scored 15.0 only because the harness used a JSON tool-call parser while the model emits XML-style calls, which `--tool-call-parser qwen3_xml` fixes; the GGUF run never reached that category.
+The tools row needs a serving flag rather than a better model: this model emits XML-style calls, so `--tool-call-parser qwen3_xml` is required. With the default JSON parser the same run scores 15.0.
 
-Speed (tokens per second, decode excludes time to first token, 256-token completions):
+Latency and throughput. Twenty streamed requests per row, each with a unique prefix so prefix caching cannot flatter the numbers; prefill uses fresh random prompts.
 
-| Setting | EXL3 | GGUF |
+| Metric | EXL3 | GGUF |
 |---|---|---|
-| Greedy | 44.7-46.2 | 30.0-31.5 |
-| Vendor instruct settings | 41.7-44.7 | 24.7-26.5 |
-| Vendor thinking settings | 35.3-40.5 | 21.8-28.3 |
-| Whole 120-item suite | 37.8 | 25.1-27.0 |
-| Prefill 15,654-token prompt | 1,067-1,090 | 353 |
-| TTFT 32-token prompt | 0.27 s | 0.33 s |
+| Greedy TTFT p50 | 0.300 s | 0.383 s |
+| Greedy TTFT p95 | 0.323 s | 0.574 s |
+| Greedy decode p50 | 47.6 tok/s | 32.9 tok/s |
+| Greedy decode p05 / p95 | 43.4 / 50.6 tok/s | 28.2 / 40.1 tok/s |
+| Thinking TTFT p50 / p95 | 0.361 / 0.388 s | 0.439 / 0.488 s |
+| Thinking decode p50 | 38.4 tok/s | 24.0 tok/s |
+| Prefill, 1,221-token prompt | 902 tok/s | 439 tok/s |
+| Prefill, 9,483-token prompt | 1,122 tok/s | 634 tok/s |
+| Whole 120-item suite | 38.1 tok/s | 26.5 tok/s |
 
-Resident memory:
+That is 1.45x the greedy decode rate, 1.60x the thinking decode rate, 1.8 to 2.0x the prefill rate, and 1.44x the suite throughput.
 
-| System | Configuration |
-|---|---|
-| EXL3 | 78.6 GiB weights with n-gram embedding quantized and resident |
-| GGUF | 80.2 GiB backbone, 95.4 GiB BF16 PLE table paged from disk |
+Memory on one machine:
 
-The GGUF backbone paging explains its threefold-slower prefill. Draft acceptance was 2.42 of 3 for EXL3 over the eval and 0.57 to 0.68 with mean accepted length 2.7 to 3.0 of 4 for GGUF. An upstream change to llama.cpp that reads PLE rows with explicit preads instead of demand paging (pull request 28136, reported to raise prefill from 300 to 750 to 800 tokens per second on this hardware) builds but aborts during decode when combined with the MTP draft head, so it is not usable yet.
+| Measure | EXL3 | GGUF |
+|---|---|---|
+| Weights | 79.96 GiB resident, n-gram table quantized and resident | 80.2 GiB backbone resident, 95.4 GiB BF16 PLE table paged from NVMe |
+| KV cache | 11.04 GiB, 303,951 tokens at 64k context | not separately reported |
+| Device allocation | 95.4 GiB idle, 96.3 GiB under load | 84.5 GiB |
+| System memory in use | 102.4 GiB idle, 103.2 GiB under load | 86.9 GiB idle, 91.7 GiB under load, 95.7 GiB after the run |
+| Disk footprint | 78.6 GiB | 183 GiB |
+
+The GGUF's smaller resident figure is the 95.4 GiB embedding table living on disk rather than in memory, which is why its page cache and process size climb through a run and why its prefill is about half the speed. The EXL3 pack holds the whole model, embedding table included, in memory and still leaves room for 304k tokens of KV cache. Draft acceptance was 2.42 of 3 for EXL3 across the eval. An upstream llama.cpp change that reads PLE rows with explicit preads instead of demand paging (pull request 28136, reported to raise prefill from 300 to 750-800 tokens per second on this hardware) builds but aborts during decode when combined with the MTP draft head, so it is not usable yet.
+
+NVFP4 does not fit on one Spark for this model: the weights alone come to 123.6 GiB before any KV cache, against 121.7 GiB of unified memory.
 
 ## Known limitations
 
