@@ -288,7 +288,7 @@ Quality (sixcat scores, percent). Each category holds 20 items, so one item is w
 | Tools | 80.0 | 90.0 |
 | Overall | 87.5 | 89.2 |
 
-The tools row needs a serving flag rather than a better model: this model emits XML-style calls, so `--tool-call-parser qwen3_xml` is required. With the default JSON parser the same run scores 15.0.
+The tools row needs a serving flag rather than a better model: this model emits XML-style calls, so `--tool-call-parser qwen3_xml` is required. With the default JSON parser the same run scores 15.0. The EXL3 column scores the first answer recorded for each of the 120 items. Its result file also holds 34 retry answers taken after the parser fix, and the harness prints 90.0 overall when those are counted; the GGUF column is a single pass throughout, so the single-pass numbers are the ones compared here.
 
 Latency and throughput. Twenty streamed requests per row, each with a unique prefix so prefix caching cannot flatter the numbers; prefill uses fresh random prompts.
 
