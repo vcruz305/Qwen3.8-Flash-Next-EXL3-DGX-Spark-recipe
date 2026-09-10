@@ -83,17 +83,28 @@ tower.
 ## Prerequisites
 
 - One DGX Spark (GB10, aarch64), NVMe with room for the ~80 GB pack.
-- A vLLM **nightly** aarch64 build containing the `Qwen4ExpForConditionalGeneration`
-  model class. Verified with `0.28.1rc1.dev324+ga56654d6d` in the venv
-  `/home/markus/venvs/vllm-vl`; confirm your own build with:
+- A vLLM aarch64 build containing the `Qwen4ExpForConditionalGeneration`
+  model class. vLLM 0.29.0 carries the `Qwen4Exp` model classes in-tree
+  and installs from PyPI as a prebuilt aarch64 wheel with
+  `pip install vllm==0.29.0`, keeping `torch` 2.13.0+cu130. This removes
+  the need to obtain a nightly build. Alternatively, for a nightly build,
+  see the [GLM-5.3-Flash recipe](https://github.com/vcruz305/GLM-5.3-Flash-EXL3-K2-DGX-Spark-recipe)
+  and the [DeepSeek-V4-Flash-Vision recipe](https://github.com/vcruz305/DeepSeek-V4-Flash-Vision-EXL3-MixedK-DGX-Spark-recipe)
+  for how to build an aarch64 nightly and verify it on this box.
+  The benchmark numbers in this README were measured on vLLM 0.28.1 nightly,
+  verified with `0.28.1rc1.dev324+ga56654d6d` in the venv
+  `/home/markus/venvs/vllm-vl`. Confirm your build with:
   ```bash
   pip show vllm
   python -c "import vllm; print(vllm.__version__)"
   ```
-  See the [GLM-5.3-Flash recipe](https://github.com/vcruz305/GLM-5.3-Flash-EXL3-K2-DGX-Spark-recipe)
-  and the [DeepSeek-V4-Flash-Vision recipe](https://github.com/vcruz305/DeepSeek-V4-Flash-Vision-EXL3-MixedK-DGX-Spark-recipe)
-  for how a vLLM nightly aarch64 build is obtained and verified on this box;
-  use the same route and confirm the version string above once installed.
+  vLLM 0.29.0 was checked on one DGX Spark at TP1 with this pack on 2026-09-10, in both
+  serving configurations. The plugin binds the n-gram table at 30.40 GiB packed, corpus mean
+  NLL against the exllamav3 reference of 0.9422 is 0.9398 with no draft head and 0.9426 with
+  MTP k=2, greedy decode is 28.0 tok/s with no draft and 45.2 tok/s with MTP k=2 at mean
+  acceptance 2.33, and prefill is about 970 tok/s on a 1,218-token prompt. The three vLLM
+  patches in Quick start step 4 are required there exactly as they are on the nightly.
+  Serving other models on 0.29.0 is untested.
 - `exllamav3` **1.4.7, built from source**, with the aarch64 patch shipped in
   the plugin repo (`tools/patch_exllamav3_aarch64.py`) applied. The plugin
   imports the compiled `exllamav3_ext` module, so the pure-Python wheel alone
@@ -353,12 +364,17 @@ NVFP4 does not fit on one Spark for this model: the weights alone come to 123.6 
 | Symptom | Cause / fix |
 |---|---|
 | `EXL3 n-gram table: N of 128 shards never loaded` | `model.safetensors.index.json` was not regenerated -- run `scripts/prepare_pack.sh` (step 3) |
-| `There is no module or parameter named 'blocks.0.attn.k_proj'` | `patch_vllm_vision_split.py` was not applied |
-| `no module or parameter named 'lm_head.mul1' in Qwen4ExpMTP` | `patch_vllm_mtp_lmhead.py` was not applied |
+| model loading consumes all system memory and dies with `CUDACachingAllocator ... memory mapping failed with OOM`, or the process is killed partway through loading | the per-layer n-gram embedding table was allocated dense at roughly 95 GiB rather than 30.4 GiB packed, because vLLM did not receive a quant_config for it. Run `patch_vllm_qwen4_ple.py` (Quick start step 4). Confirm the fix by looking for the line `EXL3 n-gram embedding ready: ... 30.40 GiB packed` in the server log during loading. |
+| `ValueError: There is no module or parameter named 'lm_head.mul1'` | run `patch_vllm_qwen4_ple.py`, which also adds quant_config to the language model head. When serving with an MTP draft head, `patch_vllm_mtp_lmhead.py` is required as well. |
+| `ValueError: There is no module or parameter named 'blocks.0.attn.k_proj'` | run `patch_vllm_vision_split.py`. The pack ships split vision attention q/k/v tensors alongside the fused bf16 copy, and the fused copy is the one served. |
+| `ModuleNotFoundError: No module named 'exllamav3_ext'` | the compiled exllamav3 extension is missing from the active environment. Build exllamav3 1.4.7 from source with the aarch64 patch from the plugin repo. A pure-Python wheel is not sufficient, because the plugin imports the compiled module. |
+| `ValueError: No available memory for the cache blocks` | `--gpu-memory-utilization` is set too low to hold the weights plus a KV cache. The pack is about 79 GiB, so 0.60 of 121.7 GiB leaves nothing for the cache. Use 0.80. |
 | `EXL3 linear load shape mismatch ... (4304,) != (4352,)` | the `vllm-exl3` plugin is older than 0.4.0 |
 | `torch.compile`: `Attempted to call function marked as skipped` | the `vllm-exl3` plugin is older than 0.4.0 |
 | Evaluation harness scores the reasoning text as the answer | serve with `--reasoning-parser qwen3` so the `<think>` block is returned as `reasoning_content` (the serve script does this) |
 | memory watchdog kills the process, or MemAvailable runs low | lower `GPU_MEM_UTIL` or `MAX_MODEL_LEN` |
+
+These failures appear in a fixed order, each reached only after the previous is resolved. The first is the most misleading, because a missing patch step presents as an out-of-memory failure that reads like insufficient hardware. The `scripts/preflight.py` script checks all of these in a couple of seconds and is worth running before a serve attempt, since each model load takes about ten minutes.
 
 ## Related repositories
 
