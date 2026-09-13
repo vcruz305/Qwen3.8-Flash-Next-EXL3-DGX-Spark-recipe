@@ -19,7 +19,7 @@ from pathlib import Path
 import re
 import sys
 
-SCENES = ("overview", "mtp_sweep", "long_prompt")
+SCENES = ("overview", "mtp_sweep", "long_prompt", "acceptance_cliff")
 
 
 def main() -> int:
