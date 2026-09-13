@@ -166,19 +166,31 @@ KV pool measured, but the kernel log then carries
 `NVRM: Check failed: Out of memory [NV_ERR_NO_MEMORY]` during startup, so that
 combination is not recommended as a default.
 
-**The prefill lever that matters is prefix caching, and it is worth 11.5x.**
-Every benchmark above deliberately uses a unique prompt prefix so that prefix
-caching cannot fake a cold prefill. For the real workload, a fixed document or
-system prompt with a new question each turn, the cached path is what you get:
+**The prefill lever that matters is prefix caching, and it is worth 114x of
+TTFT.** Every benchmark above deliberately uses a unique prompt prefix so that
+prefix caching cannot fake a cold prefill. For the real workload, a fixed
+document or system prompt with a new question each turn, the cached path is
+what you get. Hit rates are vLLM's own counters, not inferred from timing:
 
-| 196,010-token prompt | TTFT | Effective prefill |
+| 196k-token prompt | TTFT | Cached |
 |---|---:|---:|
-| cold, first time | 179.63 s | 1,091 tok/s |
-| warm, prefix cached | 15.66 s | 12,517 tok/s |
+| cold, novel prefix | 178.72 s | 0.0% (0 / 196,022) |
+| same document, new question | 2.33 s | 98.9% (193,856 / 196,010) |
+| identical repeat | 1.56 s | 99.3% (194,688 / 196,010) |
 
-So the 180-second TTFT that the cold numbers imply is a first-turn cost, not a
-per-turn cost. `--enable-prefix-caching` is on by default in the serve script
-and is the single most valuable flag in it for agent and document workloads.
+So the 180-second TTFT is a first-turn cost, not a per-turn cost.
+`--enable-prefix-caching` is on by default in the serve script and is the most
+valuable flag in it for agent and document workloads.
+
+Do not convert those into a prefill tok/s figure. Dividing the full prompt
+length by the warm TTFT gives a number in the tens of thousands for tokens the
+engine never computed. What it actually computes is the uncached tail, and that
+runs at the same rate as everything else: 1,322 tokens in 1.56 s is 847 tok/s,
+and 2,154 tokens in 2.33 s is 924 tok/s, both consistent with the ~1,100 tok/s
+cold path. Nothing unusual is happening; the work is simply skipped.
+
+The 0.0% hit rate on a novel prefix is also the check that validates every cold
+number in this file: the unique-prefix methodology really does defeat the cache.
 
 Cold prefill running this far below the box's arithmetic capability points at
 the quantized-weight path rather than the GEMMs. The profiler section below
