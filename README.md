@@ -143,6 +143,48 @@ indexer rather than more grepping. Until it is understood:
 `scripts/serve_one_spark_qwen.sh` defaults to k=3 and prints a warning when
 `MAX_MODEL_LEN` exceeds the cliff.
 
+### Prefill
+
+Cold prefill sits at 1,075 to 1,180 tok/s across an 80x range of prompt sizes,
+from 3k to 252k tokens. That flatness is real and is not a scheduling artifact.
+
+Raising the prefill chunk does almost nothing. vLLM warns that speculation
+clamps `max_num_scheduled_tokens` to 2048 and suggests raising
+`max_num_batched_tokens`, so it is worth testing, and the answer is that an 8x
+larger chunk buys 2%:
+
+| max-num-batched-tokens | util | prefill @ 24k | prefill @ 97k | KV pool |
+|---:|---:|---:|---:|---:|
+| 2,048 (clamped by MTP) | 0.80 | 1,142.3 | 1,104.3 | 416,163 |
+| 16,384 | 0.85 | 1,166.0 | 1,128.7 | 512,619 |
+
+Two things to note there. At 0.80 the larger chunk costs enough activation
+memory to drop the KV pool below what one 262,144-token request needs, and the
+engine refuses to start with a clear message naming 260,416 as the achievable
+length. Raising utilisation to 0.85 fixes that and actually gives the largest
+KV pool measured, but the kernel log then carries
+`NVRM: Check failed: Out of memory [NV_ERR_NO_MEMORY]` during startup, so that
+combination is not recommended as a default.
+
+**The prefill lever that matters is prefix caching, and it is worth 11.5x.**
+Every benchmark above deliberately uses a unique prompt prefix so that prefix
+caching cannot fake a cold prefill. For the real workload, a fixed document or
+system prompt with a new question each turn, the cached path is what you get:
+
+| 196,010-token prompt | TTFT | Effective prefill |
+|---|---:|---:|
+| cold, first time | 179.63 s | 1,091 tok/s |
+| warm, prefix cached | 15.66 s | 12,517 tok/s |
+
+So the 180-second TTFT that the cold numbers imply is a first-turn cost, not a
+per-turn cost. `--enable-prefix-caching` is on by default in the serve script
+and is the single most valuable flag in it for agent and document workloads.
+
+Cold prefill running this far below the box's arithmetic capability points at
+the quantized-weight path rather than the GEMMs. The profiler section below
+shows 81% of *decode* time inside EXL3 kernels; whether prefill shares that
+profile has not been measured, so treat the cause as unconfirmed.
+
 ### Greedy probing does not work on this engine
 
 `scripts/probe_greedy.py` cannot distinguish faithful speculation from
