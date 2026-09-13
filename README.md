@@ -88,9 +88,16 @@ to enable it and the speed gain as unproven.
 
 ### The MTP acceptance cliff
 
-Draft acceptance collapses to exactly 0.000 at every position between 163,428
-and 178,287 tokens of context. The draft head keeps drafting and the target
-rejects all of it, so past the cliff you pay the full draft cost for no benefit.
+Draft acceptance collapses to exactly 0.000 at every position at **163,840
+tokens (160 x 1024)**, pinned to within 273 tokens. The draft head keeps
+drafting and the target rejects all of it, so past the cliff you pay the full
+draft cost for no benefit.
+
+| Prompt tokens | Tokens per chunk | Decode tok/s | |
+|---:|---:|---:|---|
+| 163,506 | 2.86 | 53.14 | healthy |
+| 163,818 | 2.86 | 51.76 | healthy, 22 tokens below the boundary |
+| 164,091 | 1.00 | 21.99 | dead, 251 tokens above it |
 
 | Context (real tokens) | Tokens per stream chunk | Decode tok/s |
 |---:|---:|---:|
@@ -98,6 +105,7 @@ rejects all of it, so past the cliff you pay the full draft cost for no benefit.
 | 24,354 | 2.98 | 50.53 |
 | 97,362 | 2.88 | 48.13 |
 | 148,569 | 2.91 | 50.72 |
+| 163,818 | 2.86 | 51.76 |
 | 156,018 | 2.91 | **51.98** |
 | 163,428 | 2.75 | 48.71 |
 | 178,287 | **1.00** | 21.95 |
@@ -110,11 +118,27 @@ at 97,362, and 26.59 at 188,661. So above the cliff, turning speculation **off**
 is worth about 21% (26.59 against 21.95, measured at comparable context). That
 comparison is established around 180k; no-draft was not measured at 252k.
 
-The boundary sits within 15k of 163,840 (160Ki), which is where to look first for
-a cause. Until it is understood:
+**The mechanism is not identified.** Three candidates were checked and all
+three are ruled out, recorded here so nobody re-chases them:
 
-- Below about 163k: MTP k=3, which is where the 1.8x lives.
-- Above it: `SPEC_CONFIG=none`.
+- `VLLM_MAX_TOKENS_PER_EXPERT_FP4_MOE = 163840` in `vllm/envs.py` is an exact
+  numeric match, but it is read only by the NVFP4 CUTLASS MoE helpers in
+  `_custom_ops.py`, which an EXL3 pack never calls, and exceeding it raises
+  rather than degrading silently.
+- A draft model config with a smaller `max_position_embeddings` is impossible
+  here: `vllm/config/speculative.py:1175` sets
+  `draft_model_config = target_model_config` for `method="mtp"`.
+- `get_max_prefill_buffer_size()` in `v1/attention/backends/mla/indexer.py`
+  mentions 163840 in a comment, but returns `max_model_len * 40` and is
+  imported only by `deepseek_v2.py` and `deepseek_v32/attention.py`.
+
+No hardcoded 163840 exists anywhere in the qwen4_exp or exl3 path, yet the
+boundary lands on it to within 273 tokens. A power-of-two multiple that exact
+is not coincidence, so the next step is runtime instrumentation of the QSA
+indexer rather than more grepping. Until it is understood:
+
+- Below 163,840 tokens: MTP k=3, which is where the 1.8x lives.
+- At or above it: `SPEC_CONFIG=none`.
 
 `scripts/serve_one_spark_qwen.sh` defaults to k=3 and prints a warning when
 `MAX_MODEL_LEN` exceeds the cliff.

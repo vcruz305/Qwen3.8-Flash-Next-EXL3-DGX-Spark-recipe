@@ -25,7 +25,7 @@ MAX_NUM_SEQS="${MAX_NUM_SEQS:-4}"
 # no draft. k=4 wedges the engine after torch.compile and never allocates KV.
 #
 # IMPORTANT: draft acceptance collapses to exactly 0.000 at every position
-# somewhere between 163,428 and 178,287 tokens of context. Past that the draft
+# at 163,840 tokens (160 x 1024). Past that the draft
 # head still drafts and the target rejects all of it, so you pay the draft cost
 # for nothing: 21.9 tok/s with MTP against 26.6 with none. Set SPEC_CONFIG=none
 # for workloads that routinely run past ~163k. See README "Operating envelope".
@@ -33,7 +33,7 @@ SPEC_CONFIG="${SPEC_CONFIG:-{\"method\":\"mtp\",\"num_speculative_tokens\":3\}}"
 # bf16 recurrent state for the 36 linear-attention layers. Worth about 8% more
 # KV pool (385,422 -> 416,163 tokens); any decode gain is inside sample noise.
 MAMBA_SSM_DTYPE="${MAMBA_SSM_DTYPE:-bfloat16}"
-MTP_SAFE_CONTEXT=163428
+MTP_SAFE_CONTEXT=163840
 SERVED_NAME="${SERVED_NAME:-Qwen3.8-Flash-Next}"
 PROFILER_DIR="${PROFILER_DIR:-}"
 
@@ -83,7 +83,7 @@ if [[ -n "$SPEC_CONFIG" && "$SPEC_CONFIG" != "none" ]]; then
   ARGS+=(--speculative-config "$SPEC_CONFIG")
   if (( MAX_MODEL_LEN > MTP_SAFE_CONTEXT )); then
     echo "note: MAX_MODEL_LEN=$MAX_MODEL_LEN is above the measured MTP acceptance cliff" >&2
-    echo "      (~$MTP_SAFE_CONTEXT tokens). Speculation is a large win below it and a" >&2
+    echo "      ($MTP_SAFE_CONTEXT tokens, 160Ki). Speculation is a large win below it and a" >&2
     echo "      ~21% loss above it. Use SPEC_CONFIG=none for long-context workloads." >&2
   fi
 fi

@@ -202,8 +202,8 @@
   },
   "cliff": {
    "bounds": [
-    163428,
-    178287
+    163818,
+    164091
    ],
    "curve": [
     {
@@ -235,6 +235,21 @@
      "tokens": 163428,
      "tokens_per_chunk": 2.75,
      "decode_tok_s": 48.71
+    },
+    {
+     "tokens": 163506,
+     "tokens_per_chunk": 2.86,
+     "decode_tok_s": 53.14
+    },
+    {
+     "tokens": 163818,
+     "tokens_per_chunk": 2.86,
+     "decode_tok_s": 51.76
+    },
+    {
+     "tokens": 164091,
+     "tokens_per_chunk": 1.0,
+     "decode_tok_s": 21.99
     },
     {
      "tokens": 178287,
@@ -270,8 +285,26 @@
      "decode_tok_s": 26.59
     }
    ],
-   "finding": "Draft acceptance collapses to exactly 0.000 at every position between 163,428 and 178,287 tokens. Past the cliff the draft head keeps drafting and the target rejects all of it, so speculation costs about 21 percent against no draft. A chunk carrying 1.00 tokens means nothing was accepted.",
-   "recommendation": "MTP k=3 below about 163k tokens. SPEC_CONFIG=none above it."
+   "finding": "Draft acceptance collapses to exactly 0.000 at every position at 163,840 tokens (160 x 1024), pinned to within 273 tokens: healthy at 163,818 and dead at 164,091. Past the cliff the draft head keeps drafting and the target rejects all of it, so speculation costs about 21 percent against no draft. The mechanism is not identified; no hardcoded 163840 exists in the qwen4_exp or exl3 code path.",
+   "recommendation": "MTP k=3 below 163,840 tokens. SPEC_CONFIG=none at or above it.",
+   "boundary": 163840,
+   "pin": [
+    {
+     "tokens": 163506,
+     "tokens_per_chunk": 2.86,
+     "decode_tok_s": 53.14
+    },
+    {
+     "tokens": 163818,
+     "tokens_per_chunk": 2.86,
+     "decode_tok_s": 51.76
+    },
+    {
+     "tokens": 164091,
+     "tokens_per_chunk": 1.0,
+     "decode_tok_s": 21.99
+    }
+   ]
   }
  }
 }
