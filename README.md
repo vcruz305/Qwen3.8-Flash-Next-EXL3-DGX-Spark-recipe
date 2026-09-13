@@ -62,6 +62,85 @@ either accepts or rejects each draft token; it never emits a token the
 target itself would not have chosen), not evidence of a bit-exact match end
 to end. A DeepSeek V4 Flash regression on this same plugin build passed.
 
+## Operating envelope (measured 2026-09-13, vllm-exl3 0.4.2)
+
+Re-swept on the current build (vLLM 0.29.0, exllamav3 1.4.7, vllm-exl3 0.4.2)
+with `MAX_MODEL_LEN=262144 GPU_MEM_UTIL=0.80 MAX_NUM_SEQS=4`. Decode excludes
+TTFT; each figure is the median of four samples, and every sample uses a unique
+prompt prefix so prefix caching cannot fake a cold prefill.
+
+**k=3 is now the best setting.** The 2026-09-07 sweep above picked k=2 on the
+build that predated the fat-expert and dense-routing fixes. On the fixed build
+the ranking flips:
+
+| Config | Decode @ 4k | Decode @ 32k | KV pool | Per-position acceptance |
+|---|---|---|---|---|
+| No draft | 27.77 | 27.58 | 512,439 | n/a |
+| MTP k=2 | 47.39 | 46.60 | 411,319 | 0.829 / 0.671 |
+| MTP k=3 | **50.09** | **49.73** | 385,422 | 0.863 / 0.675 / 0.571 |
+| MTP k=4 | wedges | wedges | n/a | engine hangs after torch.compile, never allocates KV |
+
+`--mamba-ssm-cache-dtype bfloat16` for the 36 linear-attention layers raises the
+KV pool from 385,422 to 416,163 tokens, about 8%. Decode measured 52.22 at 4k
+against 50.09 without it, but the sample ranges overlap almost entirely at the
++/-5% spread that speculation introduces, so treat the memory gain as the reason
+to enable it and the speed gain as unproven.
+
+### The MTP acceptance cliff
+
+Draft acceptance collapses to exactly 0.000 at every position between 163,428
+and 178,287 tokens of context. The draft head keeps drafting and the target
+rejects all of it, so past the cliff you pay the full draft cost for no benefit.
+
+| Context (real tokens) | Tokens per stream chunk | Decode tok/s |
+|---:|---:|---:|
+| 3,060 | 3.03 | 52.22 |
+| 24,354 | 2.98 | 50.53 |
+| 97,362 | 2.88 | 48.13 |
+| 148,569 | 2.91 | 50.72 |
+| 156,018 | 2.91 | **51.98** |
+| 163,428 | 2.75 | 48.71 |
+| 178,287 | **1.00** | 21.95 |
+| 208,005 | 1.00 | 21.94 |
+| 252,582 | 1.00 | 21.30 |
+
+A chunk carrying 1.00 tokens means zero drafts were accepted. For comparison the
+no-draft baseline holds up across the whole range: 27.77 at 3,060 tokens, 27.29
+at 97,362, and 26.59 at 188,661. So above the cliff, turning speculation **off**
+is worth about 21% (26.59 against 21.95, measured at comparable context). That
+comparison is established around 180k; no-draft was not measured at 252k.
+
+The boundary sits within 15k of 163,840 (160Ki), which is where to look first for
+a cause. Until it is understood:
+
+- Below about 163k: MTP k=3, which is where the 1.8x lives.
+- Above it: `SPEC_CONFIG=none`.
+
+`scripts/serve_one_spark_qwen.sh` defaults to k=3 and prints a warning when
+`MAX_MODEL_LEN` exceeds the cliff.
+
+### Greedy probing does not work on this engine
+
+`scripts/probe_greedy.py` cannot distinguish faithful speculation from
+unfaithful speculation here, because the engine is not deterministic at
+temperature 0 to begin with. Same server, same request, `temperature: 0`,
+`seed: 0`:
+
+```
+"Summarize the causes of the 1929 stock market crash in one paragraph."
+  -> 4 distinct outputs from 5 identical requests
+
+"What is 17 * 23? Show the steps."
+  -> 1 distinct output from 5
+```
+
+Running the probe spec-on against spec-on, same boot and same config, scores the
+same 2 of 6 as spec-on against spec-off. The control is indistinguishable from
+the test, so a text diff measures engine noise. Open-ended generations diverge;
+tightly constrained ones do not, which is what you would expect if near-ties in
+the logits are being resolved differently by varying reduction order. Use the
+acceptance-rate metrics from `/metrics` instead, which are meaningful.
+
 ## Hardware
 
 ```text
@@ -191,26 +270,36 @@ python /path/to/vllm-exl3/tools/patch_vllm_qwen4_exp/patch_vllm_mtp_lmhead.py "$
 
 ### 5. Serve
 
-No draft:
+Defaults are the measured-best configuration: MTP k=3, bf16 recurrent state,
+and the full 262,144 context. `MODEL_DIR` is auto-detected from either
+`~/models/Qwen3.8-Flash-Next-exl3-3.05bpw` or `~/models/Qwen3.8-Flash-Next-EXL3`.
 
 ```bash
-MODEL_DIR=~/models/Qwen3.8-Flash-Next-EXL3 bash scripts/serve_one_spark_qwen.sh
+bash scripts/serve_one_spark_qwen.sh
 ```
 
-MTP k=2 (the fastest measured draft configuration; use `"num_speculative_tokens":1` for k=1):
+For workloads that routinely exceed about 163k tokens, turn the draft off. Past
+the acceptance cliff it is a net loss of roughly 21%, see
+[Operating envelope](#operating-envelope-measured-2026-09-13-vllm-exl3-042):
 
 ```bash
-MODEL_DIR=~/models/Qwen3.8-Flash-Next-EXL3 \
-  SPEC_CONFIG='{"method":"mtp","num_speculative_tokens":1}' \
-  bash scripts/serve_one_spark_qwen.sh
+SPEC_CONFIG=none bash scripts/serve_one_spark_qwen.sh
 ```
 
-Both boot at `MAX_MODEL_LEN=32768`, `GPU_MEM_UTIL=0.80`, `MAX_NUM_SEQS=4`,
-port 8899. Load takes about 9.5 minutes from NVMe; the server is ready in
-12-13 minutes. See `scripts/serve_one_spark_qwen.sh` for every override
-(`PORT`, `MAX_MODEL_LEN`, `GPU_MEM_UTIL`, `MAX_NUM_SEQS`, `SPEC_CONFIG`,
-`SERVED_NAME`, `PROFILER_DIR`) and `VLLM_EXL3_NGRAM_KERNEL=ext|torch`
-(default `ext`) for the n-gram embedding kernel.
+Other depths, noting that vLLM's `num_speculative_tokens` counts *drafted*
+tokens, so k=3 drafts three and verifies up to four per step:
+
+```bash
+SPEC_CONFIG='{"method":"mtp","num_speculative_tokens":2}' bash scripts/serve_one_spark_qwen.sh
+```
+
+Defaults are `MAX_MODEL_LEN=262144`, `GPU_MEM_UTIL=0.80`, `MAX_NUM_SEQS=4`,
+`MAMBA_SSM_DTYPE=bfloat16`, port 8899. Load takes about 9.5 minutes from cold
+NVMe and roughly 2.5 minutes when the pack is still in page cache. See
+`scripts/serve_one_spark_qwen.sh` for every override (`PORT`, `MAX_MODEL_LEN`,
+`GPU_MEM_UTIL`, `MAX_NUM_SEQS`, `SPEC_CONFIG`, `MAMBA_SSM_DTYPE`, `SERVED_NAME`,
+`PROFILER_DIR`) and `VLLM_EXL3_NGRAM_KERNEL=ext|torch` (default `ext`) for the
+n-gram embedding kernel.
 
 ### 6. Benchmark and probe
 
