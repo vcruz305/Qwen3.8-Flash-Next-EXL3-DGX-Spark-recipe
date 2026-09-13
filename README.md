@@ -197,6 +197,57 @@ the quantized-weight path rather than the GEMMs. The profiler section below
 shows 81% of *decode* time inside EXL3 kernels; whether prefill shares that
 profile has not been measured, so treat the cause as unconfirmed.
 
+### Sampling, concurrency, and the levers that turned out empty
+
+**MTP holds up under real sampling.** Every figure above is greedy, which is
+where draft acceptance is highest, so this needed checking. k=3 at 4k context,
+three samples per point, acceptance from `/metrics`:
+
+| temperature | decode tok/s | acceptance |
+|---:|---:|---:|
+| 0.0 | 51.38 | 68.0% |
+| 0.3 | 49.64 | 68.6% |
+| 0.7 | 51.04 | 66.7% |
+| 1.0 | 48.14 | 64.4% |
+
+At a realistic 0.7 the speedup is intact. At 1.0 it costs about 6%.
+
+**The engine does not scale past two concurrent streams,** with or without a
+draft. Four-thousand-token prompts, 128 tokens each, aggregate over the slowest
+stream's decode window:
+
+| streams | MTP k=3 aggregate | no draft aggregate |
+|---:|---:|---:|
+| 1 | 54.3 | 28.9 |
+| 2 | 77.9 | 45.8 |
+| 4 | 71.8 | 44.0 |
+| 8 | not run | 43.0 |
+
+Per-stream rates at N=8 without a draft spread from 5.0 to 13.8 tok/s. MTP k=3
+wins at every concurrency, so it is the right setting for multi-user serving
+too, and the sag past two streams belongs to the engine. Zero scaling from two
+to eight streams on a bandwidth-bound MoE is the tell: with 384 fine-grained
+experts, more streams touch more distinct experts per step, so weight reads grow
+rather than amortise, and the EXL3 kernels have a known slow regime for small
+dense batches on top. **Throughput sweet spot: MTP k=3 at two streams, about 78
+tok/s aggregate.**
+
+**Levers that measured empty, so nobody re-tests them:**
+
+- `--max-num-seqs 2` against 4: 52.84 vs 52.22 tok/s at 4k, inside noise, KV pool
+  up 2%. Keep 4 for burst tolerance.
+- CUDA graph mode: already `FULL_AND_PIECEWISE` on every boot; nothing to enable.
+- `--max-num-batched-tokens`: see Prefill above, 8x buys 2%.
+- `--kv-cache-dtype fp8`: refused outright, `Qwen4Exp QSA requires a BF16 main
+  KV cache`.
+
+**On the cliff, one observation that narrows the search.** At 163,818 prompt
+tokens with 40 generated, roughly half the generated positions sit past 163,840,
+and acceptance stayed at 2.86 tokens per chunk. So the failure keys on **prompt
+length at prefill**, not on decode position. Whatever breaks is built once
+during prefill, which points at the QSA block index rather than rotary
+embeddings.
+
 ### Greedy probing does not work on this engine
 
 `scripts/probe_greedy.py` cannot distinguish faithful speculation from
