@@ -305,6 +305,79 @@
      "decode_tok_s": 21.99
     }
    ]
+  },
+  "sampling": {
+   "context": 4096,
+   "k": 3,
+   "samples_per_point": 3,
+   "rows": [
+    {
+     "temperature": 0.0,
+     "decode_tok_s": 51.38,
+     "acceptance": 0.68
+    },
+    {
+     "temperature": 0.3,
+     "decode_tok_s": 49.64,
+     "acceptance": 0.686
+    },
+    {
+     "temperature": 0.7,
+     "decode_tok_s": 51.04,
+     "acceptance": 0.667
+    },
+    {
+     "temperature": 1.0,
+     "decode_tok_s": 48.14,
+     "acceptance": 0.644
+    }
+   ],
+   "finding": "MTP speedup survives real sampling. Acceptance falls 68.0 to 64.4 percent from greedy to temperature 1.0, costing about 6 percent."
+  },
+  "concurrency": {
+   "context": 4096,
+   "tokens_per_stream": 128,
+   "rounds": 2,
+   "method": "Aggregate is total tokens over the slowest stream's decode window. Unique prompt prefix per stream.",
+   "rows": [
+    {
+     "streams": 1,
+     "mtp_k3": 54.3,
+     "no_draft": 28.9
+    },
+    {
+     "streams": 2,
+     "mtp_k3": 77.9,
+     "no_draft": 45.8
+    },
+    {
+     "streams": 4,
+     "mtp_k3": 71.8,
+     "no_draft": 44.0
+    },
+    {
+     "streams": 8,
+     "mtp_k3": null,
+     "no_draft": 43.0
+    }
+   ],
+   "no_draft_per_stream_n8": [
+    5.0,
+    5.7,
+    6.4,
+    7.3,
+    8.9,
+    10.4,
+    13.8,
+    13.8
+   ],
+   "finding": "Aggregate plateaus at two streams with or without a draft. MTP k=3 wins at every concurrency. Sweet spot is k=3 at two streams, about 78 tok/s aggregate.",
+   "empty_levers": [
+    "max-num-seqs 2 vs 4: 52.84 vs 52.22 tok/s, inside noise, KV pool +2%",
+    "CUDA graph mode: already FULL_AND_PIECEWISE on every boot",
+    "max-num-batched-tokens 16384 vs 2048: +2% prefill",
+    "kv-cache-dtype fp8: refused, QSA requires BF16 main KV cache"
+   ]
   }
  }
 }
