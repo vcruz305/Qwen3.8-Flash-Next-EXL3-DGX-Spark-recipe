@@ -16,8 +16,8 @@ request at a time, full 262,144-token context configured:
 | Cold prefill | about 1,100 tok/s, flat from 3k to 252k |
 | Cached-prefix TTFT, 196k prompt | **1.56 s** (cold: 178.7 s) |
 | Aggregate throughput, 4 streams, MTP k=3 | **156 tok/s** steady on short prompts, 103 on 3k-token prompts |
-| exllamav3 directly, same pack, k=3 | 58.8 tok/s one stream, 152.0 aggregate at 8 streams (vLLM: 54.8 and 157.6) |
-| exllamav3 directly, GB10-tuned (2026-09-16), k≤5 dynamic | **71 to 73 tok/s** greedy on code (78 in-process), **47 on prose**; see [tuning](#tuning-the-native-engine-on-gb10-2026-09-16-56--73-toks) |
+| exllamav3 directly, same pack, stock 1.5.0, k=3 | 58.8 tok/s one stream, 152.0 aggregate at 8 streams (vLLM: 54.8 and 157.6) |
+| exllamav3 directly, [tuned for GB10](#the-native-engine-tuned-for-gb10-2026-09-16) | **71 to 73 tok/s** on code, **46.5** on prose, one stream, greedy, through `chat.py` (78 / 47 in-process) |
 | KV pool at the default config | 416,163 tokens, 1.6x concurrency at max context |
 | 4.05 bpw at 262k, n-gram table on NVMe | boots at util 0.80, 954k-token KV pool, 41 to 48 tok/s at k=3 |
 
@@ -49,7 +49,7 @@ inference. Source and local-render notes are in [docs/README.md](docs/README.md)
   - [Levers that measured empty](#levers-that-measured-empty)
   - [The 4.05 bpw revision](#the-405-bpw-revision)
   - [Running the pack through exllamav3 directly](#running-the-pack-through-exllamav3-directly)
-    - [Tuning the native engine on GB10: 56 → 73 tok/s](#tuning-the-native-engine-on-gb10-2026-09-16-56--73-toks)
+    - [The native engine, tuned for GB10](#the-native-engine-tuned-for-gb10-2026-09-16)
 - [How things were measured](#how-things-were-measured)
 - [Hardware, model, memory](#hardware-model-memory)
 - [Historical results (2026-09-07 and 09-08, earlier build)](#historical-results-2026-09-07-and-09-08-earlier-build)
@@ -538,8 +538,10 @@ it is set against the steady aggregate from the Concurrency section above)
 | MemAvailable while running, 3.05 / 4.05 | 17.5 / 3.4 GiB | 62.7 / 47.8 GiB |
 | Draft acceptance per position, k=3, 3.05 | 0.86 / 0.68 / 0.57 | 0.88 / 0.73 / 0.62 |
 
-**What the numbers say.** Single-stream decode is 8 to 20% faster on the same
-weights and prefill is the same engine speed. Under concurrency the two are at
+**What the numbers say.** At stock settings single-stream decode is 8 to 20%
+faster on the same weights, and with the GB10 configuration in the next
+subsection it is 71 to 73 tok/s on code against the recipe's 52, about 40%;
+prefill is the same engine speed. Under concurrency the two are at
 parity on short prompts (both reach 150 to 158 tok/s aggregate at eight
 streams, vLLM ahead at four with MTP), and exllamav3 pulls ahead on 3k-token
 prompts at eight streams (135.8 against 90.5), where vLLM pays more per batched
@@ -633,78 +635,59 @@ separates native from the recipe is above the kernels:
 Everything else that could plausibly matter was measured empty earlier in this
 README (`max-num-seqs`, CUDA graph mode, batched-token size, fp8 KV).
 
-**Which to use.** For one user on one Spark, exllamav3 directly is the faster,
-roomier and simpler engine, and it loads in under a minute. The vLLM path is
+**Which to use.** For one user on one Spark, exllamav3 directly is the faster
+(71 to 73 tok/s on code tuned, against 52), roomier and simpler engine, and it
+loads in under a minute. The vLLM path is
 for what needs vLLM: the OpenAI API with its parsers and structured output,
 tensor parallel across two Sparks, tooling that assumes a vLLM endpoint, and
 packs exllamav3 cannot run.
 
-#### Tuning the native engine on GB10 (2026-09-16): 56 → 73 tok/s
+#### The native engine, tuned for GB10 (2026-09-16)
 
-A second pass on the native path, this time against exllamav3 master
-(`02aef45`, post-1.5.0) built from my fork with the aarch64 guards committed
-([vcruz305/exllamav3#1](https://github.com/vcruz305/exllamav3/pull/1)) instead
-of patched at install time. Measured with `examples/chat.py` through
-`scripts/exl3_native/tuning/bench.sh`: page cache dropped before every load,
-400 new tokens, the nginx-parser code prompt, `-tps`. Numbers are decode tok/s.
+The numbers above ran exllamav3 1.5.0 with its stock defaults. This is the same
+engine at exllamav3 master (`02aef45`) from
+[my fork](https://github.com/vcruz305/exllamav3) with the aarch64 guards
+committed ([#1](https://github.com/vcruz305/exllamav3/pull/1)), configured for
+this box. `scripts/exl3_native/tuning/run-qwen38-exl3.sh` is that configuration:
 
-| Change (cumulative) | chat.py, greedy | chat.py, temp 0.8 | in-process `sweep.py` |
-|---|---:|---:|---:|
-| `-mtp -ndt 3` (starting point) | | 62.8 | 64.6 |
-| `-ndt 4` | | ~61 | 69.4 |
-| + pin to the ten Cortex-X925 cores, `taskset -c 5-9,15-19` | | | 71.0 |
-| + `EXL3_INT8_GEMV=0` | | 64.5 | 71.9 |
-| + `EXL3_MOE_COOP_WIDE=1` | | | 76.2 |
-| + `-ndt 5` | **73.0 ± 0.3** (4 cold runs) | 60.3 to 73.3 | **77.0** |
-| `-ndt 6` | 72.2 | 65.5 | |
-| prose prompt, same config | | 37 to 41 | 37.5 |
+```sh
+export EXL3_INT8_GEMV=0 EXL3_MOE_COOP_WIDE=1
+taskset -c 5-9,15-19 python examples/chat.py -m $MODEL -mode qwen35 -mtp -ndt 5 -dds -dc 0.6 -cs 32768
+```
 
-Three levers did the work, and none is a flag you would guess from the docs:
+**Decode, single stream, greedy, 400 new tokens** (`bench.sh`: page cache
+dropped before every load, `chat.py -tps`, so this includes console streaming;
+`sweep.py` drives the generator in-process and reads ~4 tok/s higher):
 
-- **`EXL3_INT8_GEMV=0`.** The fused int8-activation GEMV path for mul1 tensors
-  is *slower* on GB10; disabling it is worth about 3 tok/s.
-- **`EXL3_MOE_COOP_WIDE=1`.** The fused decode MoE kernel picks its tile
-  geometry per architecture, and the default only chooses the wide 128-column,
-  4-way k-split tile on datacenter Blackwell. GB10 has 48 SMs and wants it too:
-  about 5 tok/s.
-- **Big-core affinity.** GB10 pairs ten Cortex-X925 (capacity 997–1024) with
-  ten A725 (718–731). Left to the scheduler, the launch thread lands on little
-  cores often enough to cost 2 tok/s.
+| Prompt | `chat.py`, cold | in-process | draft acceptance | stock 1.5.0, k=3 (above) |
+|---|---:|---:|---:|---:|
+| code (nginx log parser) | **71 to 73** | **78** | 77% | 56.4 |
+| DevOps explainer + YAML | | 56 | | |
+| prose (350-word story) | **46.5** | **47** | 51% | ~41 |
+| no draft, any prompt | | 33 | | 32.9 |
 
-Deeper drafts stop paying at 5: the verify forward scales steeply with draft
-length (q=2 → 37 ms, q=5 → 52, q=7 → 59, q=9 → 86, `split_time.py`).
+Greedy runs reproduce to ±0.3 tok/s. The default temperature-0.8 sampler moves
+MTP acceptance 58–75% run to run and the code number with it, 60–73 on the same
+prompt; measure with `-topk 1`.
 
-**Sampling temperature is now the largest source of variance.** Greedy runs
-reproduce to ±0.3 tok/s with an identical 315/425 acceptance every time; the
-default temperature-0.8 sampler swings acceptance 58–75% run to run and with it
-60–73 tok/s on the same prompt. A/B anything with `-topk 1`.
+**What the configuration does, and what each part is worth** (code prompt,
+in-process, each measured on top of the rest):
 
-**Where a verify round goes** (q=6, 58 ms GPU, `kern_rounds.py`): fused MoE
-coop kernels 29%; the 5-bit `lm_head` 17%; the GatedResidual hyper-connection
-mixer (`gr_dots`/`gr_finalize`, 113 launches per round) 20%; attention and GDN
-projections 14%; the recurrent GDN kernel 6%. Unified memory measured 215 GB/s
-(`bw.py`), so the ~48 GB weight read per round is only ~5 ms of the 58: decode
-here is launch count and small-kernel latency, not weight bandwidth.
+| | tok/s | Why |
+|---|---:|---|
+| `EXL3_INT8_GEMV=0` | +3 | the fused int8-activation GEMV for mul1 tensors is slower on GB10 than the fp16 kernel it replaces |
+| `EXL3_MOE_COOP_WIDE=1` | +5 | the fused decode MoE kernel only picks its wide 128-column, 4-way k-split tile on datacenter Blackwell by default; GB10's 48 SMs want it too |
+| `taskset -c 5-9,15-19` | +2 | GB10 pairs ten Cortex-X925 with ten A725; the launch thread lands on a little core often enough to show |
+| `-ndt 5` (from 3) | +8 | the verify forward costs 37 ms at q=2, 52 at q=5, 59 at q=7, 86 at q=9; on code, acceptance stays high enough that 5 is the peak |
+| `-dds -dc 0.6` | +3 code, **+9.5 prose** | dynamic draft length; see below |
 
-**One kernel change, measured empty.** I wrote row-batched GatedResidual
-kernels (`gr_dots_rb`/`gr_finalize_rb`, in the fork behind `EXL3_GR_RB=1`,
-default off) that stream each site's ~13 MB of low-rank weights once per call
-instead of once per row. Parity with the fp32 reference is identical to the
-originals (max rel 4.3e-4) and the mixer drops 9.1 → 7.7 ms/round at R=6, but
-end to end it is inside run-to-run noise (73–78 either way over four A/Bs), and
-the different accumulation order shifts greedy trajectories enough to move MTP
-acceptance. A 15% win on a 20% slice does not show under speculative decoding's
-variance. `gr_parity.py` and `ab_greedy.py` reproduce both results.
+Env knobs that measured empty (±2): `EXL3_MOE_COOP_KSPLIT`, `EXL3_GEMV=2`,
+`EXL3_INT8_GEMV=1`, `EXL3_INT8_GEMV_MAX_K`, `EXL3_GEMV_SMEM`, `-ngr` (the n-gram
+table in RAM is slower with MTP and costs 30 GB).
 
-**What is left is in the pack, not the runtime.** `lm_head` is 5-bit over the
-248,320-token vocabulary, 397 MB, read six times per round (five draft steps
-plus the verify): about 2.4 GB and 11 ms of the 58, at ~240 GB/s effective. It
-does not get faster without fewer bytes, which means re-quantizing with
-`head_bits 3` (and possibly `mtp_bits 2`) for an estimated 4 ms/round, ~7%.
-Not done; it would be a `vcruz305` pack rather than turboderp's revision.
-
-**Why prose is slow, and the fix.** Per-position draft acceptance, greedy
-(`accept.py`), P(draft position *i* accepted | reached):
+**Why prose is slower than code, and why `-dds` is in the launcher.**
+Per-position MTP acceptance, P(draft position *i* accepted | reached), greedy
+(`accept.py`):
 
 | | pos 0 | pos 1 | pos 2 | pos 3 | pos 4 | rounds accepting all 5 |
 |---|---:|---:|---:|---:|---:|---:|
@@ -713,35 +696,44 @@ Not done; it would be a `vcruz305` pack rather than turboderp's revision.
 | essay (argumentative) | 0.65 | 0.38 | 0.17 | 0.08 | 0.03 | 6 / 172 |
 
 It is all natural-language text, not "creative writing": the essay collapses
-identically. Position 0, where the MTP head is fed the true hidden state, is
-already 0.68 vs 0.91, so the gap is the entropy of English, not the 3-bit head;
-positions 1+ then compound on a possibly-wrong guess. Consequence: on prose every
-draft token past the second is almost surely rejected but still paid for in the
-verify forward, so a fixed `-ndt 5` is a self-inflicted 9 tok/s penalty (prose
-peaks at `-ndt 2`, 46.9).
+identically. Position 0 is fed the true hidden state, so the 0.68-vs-0.91 gap
+there is the entropy of English, not the 3-bit MTP head; positions 1+ compound
+on a possibly-wrong guess. A fixed `-ndt 5` therefore has prose drafting 840
+tokens to accept 240, paying the q=6 verify for each round: 37.5 tok/s, when a
+fixed `-ndt 2` gets 46.9. Dynamic drafting stops when the running confidence
+product falls below the target and serves both: at `-dc 0.6`, code 78.1 and
+prose 47.0 (the stock `-dc 0.4`: 78.7 and 46.2). Prose's ceiling with this
+drafter is ~47; only a stronger drafter moves it. Dequantizing the MTP head
+(1.0 GB at 3 bits, ~5.5 GB in BF16, +10–15 ms/round of draft bandwidth) was
+ruled out by the position-0 numbers.
 
-`-dds -dc 0.6` (dynamic draft length, stop when the running confidence product
-falls below 0.6) fixes both at once:
+**Where a verify round goes** (q=6, 58 ms GPU, `kern_rounds.py`): fused MoE
+coop kernels 29%; the 5-bit `lm_head` 17%; the GatedResidual hyper-connection
+mixer 20% (113 launches per round); attention and GDN projections 14%; the
+recurrent GDN kernel 6%. Unified memory measured 215 GB/s (`bw.py`), so the
+~48 GB weight read per round is ~5 ms of the 58: decode here is launch count
+and small-kernel latency, not weight bandwidth.
 
-| | code | prose |
-|---|---:|---:|
-| `-ndt 5` fixed | 74.9 | 37.5 |
-| `-ndt 2` fixed | 65.1 | 46.9 |
-| `-ndt 5 -dds -dc 0.4` (the default confidence) | 78.7 | 46.2 |
-| **`-ndt 5 -dds -dc 0.6`** | **78.1** | **47.0** |
+Two things follow from that and were tried or costed:
 
-(in-process greedy; through `chat.py` cold: 71.2–71.7 code, 46.5 prose, vs 73.0
-and 37.5 fixed). Prose drafts 443 tokens instead of 840 for the same 400 output.
-The launcher now ships `-mtp -ndt 5 -dds -dc 0.6`. Dequantizing the MTP head to
-BF16 (about 1.0 GB at 3 bits, ~5.5 GB unquantized, ~+10–15 ms/round of extra
-draft bandwidth) was considered and not done: position-0 acceptance rules
-quantization out as the main term, and dynamic drafting already trims the
-compounding tail it could have helped.
+- *Row-batched GatedResidual kernels* (`gr_dots_rb`/`gr_finalize_rb`, in the
+  fork behind `EXL3_GR_RB=1`, default off): stream each site's ~13 MB of
+  low-rank weights once per call instead of once per row. Parity with the fp32
+  reference identical to the originals (max rel 4.3e-4), mixer 9.1 → 7.7
+  ms/round at R=6, and **no end-to-end change** (73–78 either way over four
+  A/Bs; the accumulation order shifts greedy trajectories enough to move
+  acceptance). Kept as a negative result: a 15% win on a 20% slice does not
+  show under speculative decoding's variance.
+- *`lm_head`* is 5-bit over the 248,320-token vocabulary, 397 MB, read six
+  times per round (five draft steps plus the verify), about 11 ms of the 58 at
+  ~240 GB/s effective. Fewer bytes is the only lever: a `head_bits 3` re-quant
+  is an estimated 4 ms/round, ~7%. Not done; it would be a `vcruz305` pack
+  rather than turboderp's revision.
 
-`scripts/exl3_native/tuning/run-qwen38-exl3.sh` is the launcher with all of the
-above baked in; `accept.py` is the per-position acceptance harness; `bench.sh`, `sweep.py`, `split_time.py`, `kern_rounds.py`,
-`bw.py` are the harnesses; `gr-row-batched.patch` is the kernel change as a
-format-patch.
+`scripts/exl3_native/tuning/` holds the launcher, `bench.sh`, and the harnesses
+(`sweep.py`, `accept.py`, `split_time.py`, `kern_rounds.py`, `bw.py`,
+`gr_parity.py`, `ab_greedy.py`) plus `gr-row-batched.patch`; its README lists
+what each does.
 
 ## How things were measured
 
