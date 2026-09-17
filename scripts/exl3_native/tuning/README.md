@@ -16,6 +16,7 @@ script if yours differ.
 | `kern_rounds.py` | torch.profiler kernel table normalized per verify round. |
 | `bw.py` | Unified-memory copy/read bandwidth (215 GB/s copy measured). |
 | `gr_parity.py` | Row-batched vs original GatedResidual kernels against the fp32 torch reference, R=1..8, plus timing over all 97 sites. `EXL3_GR_RB=0/1`. |
+| `accept.py` | Per-position MTP draft acceptance P(pos i accepted \| reached) per prompt and `NDTS`; `DDS=0.6` enables dynamic drafting. The harness that explains prose. |
 | `ab_greedy.py` | Greedy token-id dump for A/B between two env configs; diff the JSON files. |
 | `gr-row-batched.patch` | The kernel change as a `git format-patch`, already merged in the fork; here for reference. |
 

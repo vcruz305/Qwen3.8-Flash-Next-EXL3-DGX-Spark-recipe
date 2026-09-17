@@ -17,7 +17,7 @@ request at a time, full 262,144-token context configured:
 | Cached-prefix TTFT, 196k prompt | **1.56 s** (cold: 178.7 s) |
 | Aggregate throughput, 4 streams, MTP k=3 | **156 tok/s** steady on short prompts, 103 on 3k-token prompts |
 | exllamav3 directly, same pack, k=3 | 58.8 tok/s one stream, 152.0 aggregate at 8 streams (vLLM: 54.8 and 157.6) |
-| exllamav3 directly, GB10-tuned (2026-09-16), k=5 | **73.0 tok/s** greedy on code (77 in-process), 37 to 41 on prose; see [tuning](#tuning-the-native-engine-on-gb10-2026-09-16-56--73-toks) |
+| exllamav3 directly, GB10-tuned (2026-09-16), k≤5 dynamic | **71 to 73 tok/s** greedy on code (78 in-process), **47 on prose**; see [tuning](#tuning-the-native-engine-on-gb10-2026-09-16-56--73-toks) |
 | KV pool at the default config | 416,163 tokens, 1.6x concurrency at max context |
 | 4.05 bpw at 262k, n-gram table on NVMe | boots at util 0.80, 954k-token KV pool, 41 to 48 tok/s at k=3 |
 
@@ -703,8 +703,43 @@ does not get faster without fewer bytes, which means re-quantizing with
 `head_bits 3` (and possibly `mtp_bits 2`) for an estimated 4 ms/round, ~7%.
 Not done; it would be a `vcruz305` pack rather than turboderp's revision.
 
+**Why prose is slow, and the fix.** Per-position draft acceptance, greedy
+(`accept.py`), P(draft position *i* accepted | reached):
+
+| | pos 0 | pos 1 | pos 2 | pos 3 | pos 4 | rounds accepting all 5 |
+|---|---:|---:|---:|---:|---:|---:|
+| code | 0.91 | 0.85 | 0.76 | 0.65 | 0.54 | 46 / 85 |
+| prose (short story) | 0.68 | 0.38 | 0.20 | 0.09 | 0.02 | 4 / 168 |
+| essay (argumentative) | 0.65 | 0.38 | 0.17 | 0.08 | 0.03 | 6 / 172 |
+
+It is all natural-language text, not "creative writing": the essay collapses
+identically. Position 0, where the MTP head is fed the true hidden state, is
+already 0.68 vs 0.91, so the gap is the entropy of English, not the 3-bit head;
+positions 1+ then compound on a possibly-wrong guess. Consequence: on prose every
+draft token past the second is almost surely rejected but still paid for in the
+verify forward, so a fixed `-ndt 5` is a self-inflicted 9 tok/s penalty (prose
+peaks at `-ndt 2`, 46.9).
+
+`-dds -dc 0.6` (dynamic draft length, stop when the running confidence product
+falls below 0.6) fixes both at once:
+
+| | code | prose |
+|---|---:|---:|
+| `-ndt 5` fixed | 74.9 | 37.5 |
+| `-ndt 2` fixed | 65.1 | 46.9 |
+| `-ndt 5 -dds -dc 0.4` (the default confidence) | 78.7 | 46.2 |
+| **`-ndt 5 -dds -dc 0.6`** | **78.1** | **47.0** |
+
+(in-process greedy; through `chat.py` cold: 71.2–71.7 code, 46.5 prose, vs 73.0
+and 37.5 fixed). Prose drafts 443 tokens instead of 840 for the same 400 output.
+The launcher now ships `-mtp -ndt 5 -dds -dc 0.6`. Dequantizing the MTP head to
+BF16 (about 1.0 GB at 3 bits, ~5.5 GB unquantized, ~+10–15 ms/round of extra
+draft bandwidth) was considered and not done: position-0 acceptance rules
+quantization out as the main term, and dynamic drafting already trims the
+compounding tail it could have helped.
+
 `scripts/exl3_native/tuning/run-qwen38-exl3.sh` is the launcher with all of the
-above baked in; `bench.sh`, `sweep.py`, `split_time.py`, `kern_rounds.py`,
+above baked in; `accept.py` is the per-position acceptance harness; `bench.sh`, `sweep.py`, `split_time.py`, `kern_rounds.py`,
 `bw.py` are the harnesses; `gr-row-batched.patch` is the kernel change as a
 format-patch.
 

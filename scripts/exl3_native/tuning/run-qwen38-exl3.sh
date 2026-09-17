@@ -8,7 +8,10 @@
 #   baseline (stream ngram from NVMe)       ~32 t/s
 #   -mtp (default 4 draft tokens)           60-61 t/s code / 37 t/s prose
 #   -mtp -ndt 3                             63 t/s code / 43 t/s prose
-#   + INT8_GEMV=0 COOP_WIDE=1 bigcores -ndt 5  73 t/s code / 37 t/s prose   <-- default here
+#   + INT8_GEMV=0 COOP_WIDE=1 bigcores -ndt 5  73 t/s code / 37 t/s prose
+#   + -dds -dc 0.6 (dynamic draft length)       78 t/s code / 47 t/s prose   <-- default here
+#     prose acceptance collapses past draft pos 1 (0.68/0.38/0.20/0.09/0.02); dynamic drafting
+#     stops early there and costs code nothing. See the recipe README for the sweep.
 #   -ngr (ngram table in unified RAM)       34 t/s alone, 31 t/s with -mtp -- SLOWER, and +30 GB. Don't.
 set -euo pipefail
 export PATH="$HOME/exllamav3/.venv/bin:/usr/local/cuda/bin:$PATH"
@@ -25,4 +28,4 @@ cd "$HOME/exllamav3"
 "$HOME/drop-model-cache.sh" >/dev/null 2>&1 || true
 # -mtp -ndt 3: speculative decoding with the model's own MTP head, 3 draft tokens (best measured).
 # -mode qwen35: reasoning-aware ChatML (Qwen3.x family). -cs: KV cache tokens.
-exec taskset -c $BIGCORES python examples/chat.py -m "$MODEL" -mode qwen35 -mtp -ndt 5 -cs 32768 -tps "$@"
+exec taskset -c $BIGCORES python examples/chat.py -m "$MODEL" -mode qwen35 -mtp -ndt 5 -dds -dc 0.6 -cs 32768 -tps "$@"
