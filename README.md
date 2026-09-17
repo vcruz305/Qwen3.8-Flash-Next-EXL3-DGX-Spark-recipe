@@ -17,6 +17,7 @@ request at a time, full 262,144-token context configured:
 | Cached-prefix TTFT, 196k prompt | **1.56 s** (cold: 178.7 s) |
 | Aggregate throughput, 4 streams, MTP k=3 | **156 tok/s** steady on short prompts, 103 on 3k-token prompts |
 | exllamav3 directly, same pack, k=3 | 58.8 tok/s one stream, 152.0 aggregate at 8 streams (vLLM: 54.8 and 157.6) |
+| exllamav3 directly, GB10-tuned (2026-09-16), k=5 | **73.0 tok/s** greedy on code (77 in-process), 37 to 41 on prose; see [tuning](#tuning-the-native-engine-on-gb10-2026-09-16-56--73-toks) |
 | KV pool at the default config | 416,163 tokens, 1.6x concurrency at max context |
 | 4.05 bpw at 262k, n-gram table on NVMe | boots at util 0.80, 954k-token KV pool, 41 to 48 tok/s at k=3 |
 
@@ -48,6 +49,7 @@ inference. Source and local-render notes are in [docs/README.md](docs/README.md)
   - [Levers that measured empty](#levers-that-measured-empty)
   - [The 4.05 bpw revision](#the-405-bpw-revision)
   - [Running the pack through exllamav3 directly](#running-the-pack-through-exllamav3-directly)
+    - [Tuning the native engine on GB10: 56 → 73 tok/s](#tuning-the-native-engine-on-gb10-2026-09-16-56--73-toks)
 - [How things were measured](#how-things-were-measured)
 - [Hardware, model, memory](#hardware-model-memory)
 - [Historical results (2026-09-07 and 09-08, earlier build)](#historical-results-2026-09-07-and-09-08-earlier-build)
@@ -637,6 +639,75 @@ for what needs vLLM: the OpenAI API with its parsers and structured output,
 tensor parallel across two Sparks, tooling that assumes a vLLM endpoint, and
 packs exllamav3 cannot run.
 
+#### Tuning the native engine on GB10 (2026-09-16): 56 → 73 tok/s
+
+A second pass on the native path, this time against exllamav3 master
+(`02aef45`, post-1.5.0) built from my fork with the aarch64 guards committed
+([vcruz305/exllamav3#1](https://github.com/vcruz305/exllamav3/pull/1)) instead
+of patched at install time. Measured with `examples/chat.py` through
+`scripts/exl3_native/tuning/bench.sh`: page cache dropped before every load,
+400 new tokens, the nginx-parser code prompt, `-tps`. Numbers are decode tok/s.
+
+| Change (cumulative) | chat.py, greedy | chat.py, temp 0.8 | in-process `sweep.py` |
+|---|---:|---:|---:|
+| `-mtp -ndt 3` (starting point) | | 62.8 | 64.6 |
+| `-ndt 4` | | ~61 | 69.4 |
+| + pin to the ten Cortex-X925 cores, `taskset -c 5-9,15-19` | | | 71.0 |
+| + `EXL3_INT8_GEMV=0` | | 64.5 | 71.9 |
+| + `EXL3_MOE_COOP_WIDE=1` | | | 76.2 |
+| + `-ndt 5` | **73.0 ± 0.3** (4 cold runs) | 60.3 to 73.3 | **77.0** |
+| `-ndt 6` | 72.2 | 65.5 | |
+| prose prompt, same config | | 37 to 41 | 37.5 |
+
+Three levers did the work, and none is a flag you would guess from the docs:
+
+- **`EXL3_INT8_GEMV=0`.** The fused int8-activation GEMV path for mul1 tensors
+  is *slower* on GB10; disabling it is worth about 3 tok/s.
+- **`EXL3_MOE_COOP_WIDE=1`.** The fused decode MoE kernel picks its tile
+  geometry per architecture, and the default only chooses the wide 128-column,
+  4-way k-split tile on datacenter Blackwell. GB10 has 48 SMs and wants it too:
+  about 5 tok/s.
+- **Big-core affinity.** GB10 pairs ten Cortex-X925 (capacity 997–1024) with
+  ten A725 (718–731). Left to the scheduler, the launch thread lands on little
+  cores often enough to cost 2 tok/s.
+
+Deeper drafts stop paying at 5: the verify forward scales steeply with draft
+length (q=2 → 37 ms, q=5 → 52, q=7 → 59, q=9 → 86, `split_time.py`).
+
+**Sampling temperature is now the largest source of variance.** Greedy runs
+reproduce to ±0.3 tok/s with an identical 315/425 acceptance every time; the
+default temperature-0.8 sampler swings acceptance 58–75% run to run and with it
+60–73 tok/s on the same prompt. A/B anything with `-topk 1`.
+
+**Where a verify round goes** (q=6, 58 ms GPU, `kern_rounds.py`): fused MoE
+coop kernels 29%; the 5-bit `lm_head` 17%; the GatedResidual hyper-connection
+mixer (`gr_dots`/`gr_finalize`, 113 launches per round) 20%; attention and GDN
+projections 14%; the recurrent GDN kernel 6%. Unified memory measured 215 GB/s
+(`bw.py`), so the ~48 GB weight read per round is only ~5 ms of the 58: decode
+here is launch count and small-kernel latency, not weight bandwidth.
+
+**One kernel change, measured empty.** I wrote row-batched GatedResidual
+kernels (`gr_dots_rb`/`gr_finalize_rb`, in the fork behind `EXL3_GR_RB=1`,
+default off) that stream each site's ~13 MB of low-rank weights once per call
+instead of once per row. Parity with the fp32 reference is identical to the
+originals (max rel 4.3e-4) and the mixer drops 9.1 → 7.7 ms/round at R=6, but
+end to end it is inside run-to-run noise (73–78 either way over four A/Bs), and
+the different accumulation order shifts greedy trajectories enough to move MTP
+acceptance. A 15% win on a 20% slice does not show under speculative decoding's
+variance. `gr_parity.py` and `ab_greedy.py` reproduce both results.
+
+**What is left is in the pack, not the runtime.** `lm_head` is 5-bit over the
+248,320-token vocabulary, 397 MB, read six times per round (five draft steps
+plus the verify): about 2.4 GB and 11 ms of the 58, at ~240 GB/s effective. It
+does not get faster without fewer bytes, which means re-quantizing with
+`head_bits 3` (and possibly `mtp_bits 2`) for an estimated 4 ms/round, ~7%.
+Not done; it would be a `vcruz305` pack rather than turboderp's revision.
+
+`scripts/exl3_native/tuning/run-qwen38-exl3.sh` is the launcher with all of the
+above baked in; `bench.sh`, `sweep.py`, `split_time.py`, `kern_rounds.py`,
+`bw.py` are the harnesses; `gr-row-batched.patch` is the kernel change as a
+format-patch.
+
 ## How things were measured
 
 **Decode** is `(completion_tokens - 1) / (wall - TTFT)`, counting tokens from
@@ -881,6 +952,7 @@ out-of-memory failure that reads like insufficient hardware.
 |---|---|
 | [turboderp/Qwen3.8-Flash-Next-exl3](https://huggingface.co/turboderp/Qwen3.8-Flash-Next-exl3) | the pack this recipe serves |
 | [vllm-exl3](https://github.com/vcruz305/vllm-exl3) | the EXL3 plugin: source, releases, issues, and the pack-prep / vLLM-patch tools this recipe calls |
+| [vcruz305/exllamav3](https://github.com/vcruz305/exllamav3) | my exllamav3 fork: master = upstream + the aarch64 build guards and the opt-in row-batched GatedResidual kernels ([#1](https://github.com/vcruz305/exllamav3/pull/1)); what the native-engine tuning numbers were measured on |
 | [GLM-5.3-Flash-EXL3-K2-DGX-Spark-recipe](https://github.com/vcruz305/GLM-5.3-Flash-EXL3-K2-DGX-Spark-recipe) | sibling recipe this one is modeled on |
 | [DeepSeek-V4-Flash-Vision-EXL3-MixedK-DGX-Spark-recipe](https://github.com/vcruz305/DeepSeek-V4-Flash-Vision-EXL3-MixedK-DGX-Spark-recipe) | sibling recipe this one is modeled on |
 
