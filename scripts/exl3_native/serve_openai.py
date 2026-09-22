@@ -42,6 +42,10 @@ CONFIG = None
 PROMPT_FORMAT = None
 STOP_IDS: list[Any] = []
 GEN_LOCK = threading.Lock()
+# None = legacy hand-rolled qwen35 formatter; a string = the model's own Jinja chat template
+# (read at startup from the checkpoint or from a file). See --chat-template.
+CHAT_TEMPLATE_TEXT: str | None = None
+CHAT_TEMPLATE_NAME = "legacy"
 
 
 def parse_qwen_xml(text: str) -> list[dict[str, Any]]:
@@ -179,6 +183,123 @@ def build_ids(system: str, context: list[tuple[str, str | None]], think: bool):
     return TOKENIZER.encode(frm, add_bos=add_bos, encode_special_tokens=True)
 
 
+def _raise_exception(message: str) -> None:
+    """Jinja global the Qwen templates call (HF injects the same one)."""
+    from jinja2.exceptions import TemplateError
+
+    raise TemplateError(message)
+
+
+def _tojson(x: Any, ensure_ascii: bool = False, indent: Any = None,
+            separators: Any = None, sort_keys: bool = False) -> str:
+    """HF's ``tojson`` override, copied verbatim.
+
+    Jinja2's built-in filter sorts keys and escapes HTML, which would render the tool
+    schemas differently from what the model saw in training; transformers replaces it with
+    this plain ``json.dumps`` (insertion order preserved).
+    """
+    return json.dumps(x, ensure_ascii=ensure_ascii, indent=indent,
+                      separators=separators, sort_keys=sort_keys)
+
+
+def normalize_tool_arguments(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Turn OpenAI ``tool_calls[].function.arguments`` JSON strings into mappings.
+
+    The Qwen template iterates ``tool_call.arguments|items``, so it needs a dict; an
+    OpenAI client sends the arguments as a JSON *string*. vLLM parses them before
+    templating, which is why the stock template works there and raises
+    ``Can only get item pairs from a mapping`` here. Non-JSON arguments fall back to {}.
+    """
+    out: list[dict[str, Any]] = []
+    for msg in messages:
+        calls = msg.get("tool_calls") if isinstance(msg, dict) else None
+        if not calls:
+            out.append(msg)
+            continue
+        msg = dict(msg)
+        new_calls = []
+        for call in calls:
+            fn = call.get("function") if isinstance(call, dict) else None
+            args = fn.get("arguments") if isinstance(fn, dict) else None
+            if isinstance(args, str):
+                try:
+                    args = json.loads(args)
+                except json.JSONDecodeError:
+                    args = {}
+                call = {**call, "function": {**fn, "arguments": args}}
+            new_calls.append(call)
+        msg["tool_calls"] = new_calls
+        out.append(msg)
+    return out
+
+
+def resolve_chat_template(spec: str, model_dir: str) -> str | None:
+    """Map ``--chat-template`` to template text.
+
+    ``legacy`` (default) -> ``None``, i.e. keep the hand-rolled PromptFormat_qwen35 path.
+    ``stock``            -> the checkpoint's own ``chat_template.jinja``.
+    anything else        -> path to a Jinja template file (e.g. a fixed/community template).
+    """
+    if not spec or spec == "legacy":
+        return None
+    if spec == "stock":
+        p = Path(model_dir) / "chat_template.jinja"
+        if not p.is_file():
+            raise SystemExit(f"--chat-template stock: {p} not found")
+        return p.read_text()
+    p = Path(spec).expanduser()
+    if not p.is_file():
+        raise SystemExit(f"--chat-template {spec}: not a readable file")
+    return p.read_text()
+
+
+def render_prompt_jinja(
+    messages: list[dict[str, Any]],
+    tools: list[dict[str, Any]],
+    think: bool,
+    add_generation_prompt: bool = True,
+) -> str:
+    """Render an OpenAI message list with the checkpoint's Jinja chat template.
+
+    Deliberately dependency-free: the native engine venv has no ``transformers`` (only
+    ``jinja2``), so this replicates what HF's ``apply_chat_template`` does for this
+    template — an ``ImmutableSandboxedEnvironment`` with ``trim_blocks``/``lstrip_blocks``
+    (whitespace control matters for byte-exact prompts) plus the ``raise_exception`` and
+    ``strftime_now`` globals the templates call. ``tojson``/``namespace``/``loopcontrols``
+    are stock jinja2.
+    """
+    from jinja2 import ext
+    from jinja2.sandbox import ImmutableSandboxedEnvironment
+
+    env = ImmutableSandboxedEnvironment(
+        trim_blocks=True, lstrip_blocks=True, extensions=[ext.loopcontrols]
+    )
+    env.globals["raise_exception"] = _raise_exception
+    env.globals["strftime_now"] = lambda fmt="%Y-%m-%d": time.strftime(fmt)
+    env.filters["tojson"] = _tojson
+    template = env.from_string(CHAT_TEMPLATE_TEXT or "")
+    return template.render(
+        messages=normalize_tool_arguments(messages),
+        tools=tools or None,
+        add_generation_prompt=add_generation_prompt,
+        enable_thinking=think,
+    )
+
+
+def render_ids_jinja(messages: list[dict[str, Any]], tools: list[dict[str, Any]], think: bool):
+    """Encode the trained-format prompt built by :func:`render_prompt_jinja`.
+
+    The checkpoint's template renders one system block, a real ``<tools>`` block, assistant
+    ``tool_calls`` and ``tool`` results in the shape the model saw during training. The
+    legacy path flattened tool results into a synthetic user turn and described the tools
+    in a prose sentence, which is what produced scaffolding-as-answer output. Stop
+    conditions and the XML tool-call parser are unchanged.
+    """
+    assert TOKENIZER is not None
+    rendered = render_prompt_jinja(messages, tools, think)
+    return TOKENIZER.encode(rendered, add_bos=False, encode_special_tokens=True)
+
+
 class Handler(BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.1"
 
@@ -239,20 +360,25 @@ class Handler(BaseHTTPRequestHandler):
         tools = body.get("tools") or []
         think_kw = (body.get("chat_template_kwargs") or {}).get("enable_thinking")
         think = bool(think_kw) if think_kw is not None else False
-        system, context = messages_to_context(messages)
-        if tools:
-            names = []
-            for t in tools:
-                fn = (t.get("function") or {}) if isinstance(t, dict) else {}
-                names.append(fn.get("name") or "tool")
-            system = (
-                (system + "\n") if system else ""
-            ) + (
-                "You may call tools using Qwen XML only, no prose: "
-                "<function=NAME><parameter=KEY>VALUE</parameter></function>. "
-                f"Available: {', '.join(names)}."
-            )
-        ids = build_ids(system or PROMPT_FORMAT.default_system_prompt(think), context, think)
+        if CHAT_TEMPLATE_TEXT is not None:
+            # Trained format: hand the client's messages (roles, tool_calls, tool results)
+            # to the checkpoint's own template, tools included.
+            ids = render_ids_jinja(messages, tools, think)
+        else:
+            system, context = messages_to_context(messages)
+            if tools:
+                names = []
+                for t in tools:
+                    fn = (t.get("function") or {}) if isinstance(t, dict) else {}
+                    names.append(fn.get("name") or "tool")
+                system = (
+                    (system + "\n") if system else ""
+                ) + (
+                    "You may call tools using Qwen XML only, no prose: "
+                    "<function=NAME><parameter=KEY>VALUE</parameter></function>. "
+                    f"Available: {', '.join(names)}."
+                )
+            ids = build_ids(system or PROMPT_FORMAT.default_system_prompt(think), context, think)
         max_new = int(body.get("max_tokens") or body.get("max_completion_tokens") or 2048)
         max_new = max(1, min(max_new, 65536))
         sampler = sampler_from_body(body)
@@ -382,8 +508,25 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def load_engine(ns: argparse.Namespace) -> None:
-    global GEN, TOKENIZER, CONFIG, PROMPT_FORMAT, STOP_IDS
+    global GEN, TOKENIZER, CONFIG, PROMPT_FORMAT, STOP_IDS, CHAT_TEMPLATE_TEXT, CHAT_TEMPLATE_NAME
     PROMPT_FORMAT = prompt_formats["qwen35"]("User", "Assistant")
+    CHAT_TEMPLATE_NAME = getattr(ns, "chat_template", "legacy") or "legacy"
+    CHAT_TEMPLATE_TEXT = resolve_chat_template(CHAT_TEMPLATE_NAME, ns.model_dir)
+    print(
+        "prompt path: " + (
+            f"jinja ({CHAT_TEMPLATE_NAME}, {len(CHAT_TEMPLATE_TEXT)} chars)"
+            if CHAT_TEMPLATE_TEXT is not None else "legacy qwen35 formatter"
+        ),
+        flush=True,
+    )
+    if CHAT_TEMPLATE_TEXT is not None:
+        # Boot-time proof that the template renders here (jinja2 only, no transformers).
+        probe = render_prompt_jinja(
+            [{"role": "system", "content": "probe"}, {"role": "user", "content": "ping"}],
+            [],
+            False,
+        )
+        print(f"template smoke render: {probe[:200]!r}", flush=True)
     print("loading native exllamav3", ns.model_dir, flush=True)
     model, config, cache, tokenizer, draft_model, draft_config, draft_cache = model_init.init(ns)
     CONFIG = config
@@ -435,6 +578,13 @@ def main() -> None:
     )
     parser.add_argument("--host", default=HOST)
     parser.add_argument("--port", type=int, default=PORT)
+    parser.add_argument(
+        "--chat-template",
+        default=os.environ.get("CHAT_TEMPLATE", "legacy"),
+        help="prompt path: 'legacy' (hand-rolled qwen35 ChatML, default), 'stock' (the "
+             "checkpoint's own chat_template.jinja) or a path to a Jinja template file. "
+             "The Jinja paths render the trained format, tools included.",
+    )
     args = parser.parse_args()
     load_engine(args)
     httpd = ThreadingHTTPServer((args.host, args.port), Handler)
