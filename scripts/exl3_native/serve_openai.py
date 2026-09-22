@@ -253,7 +253,12 @@ class Handler(BaseHTTPRequestHandler):
                 f"Available: {', '.join(names)}."
             )
         ids = build_ids(system or PROMPT_FORMAT.default_system_prompt(think), context, think)
-        max_new = int(body.get("max_tokens") or body.get("max_completion_tokens") or 2048)
+        # Default when the client omits max_tokens. Small values silently truncate long
+        # summarization-style calls that deliberately send no cap: Hermes context compression
+        # asks the model for ~10k summary tokens (+4k lean session log) and never sends
+        # max_tokens, so a 2048 (and still at 8192) default returned finish_reason=length and
+        # the compaction never committed. Clients that want fewer tokens set max_tokens.
+        max_new = int(body.get("max_tokens") or body.get("max_completion_tokens") or 32768)
         max_new = max(1, min(max_new, 65536))
         sampler = sampler_from_body(body)
         stops = list(STOP_IDS)
