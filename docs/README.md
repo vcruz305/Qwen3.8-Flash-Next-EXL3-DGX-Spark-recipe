@@ -43,7 +43,7 @@ The vLLM path uses `vllm-exl3` to provide EXL3 with the OpenAI-compatible API, r
 ```sh
 python -m pip install playwright
 python -m playwright install chromium
-python scripts/render_benchmark.py
+python docs/render_benchmark.py
 ```
 
 This renders all seven completed scenes to `benchmark-renders/` and reports JavaScript errors or unexpected network requests. No model, CUDA installation, or DGX Spark is required to render the presentation.
