@@ -452,10 +452,13 @@ class Handler(BaseHTTPRequestHandler):
         # the Jinja template wraps a call in <tool_call>; the legacy formatter emits a bare <function>.
         # buffer whichever opens, and close it on its own tag
         tool_pairs = (("<tool_call>", "</tool_call>"), ("<function=", "</function>"))
-        in_thinking = False
         tool_close: str | None = None
         pending = ""
         tool_buf: list[str] = []
+        # the template emits the opening <think> itself when thinking is on, so the model's
+        # first tokens are already inside the block and the scanner must start there
+        in_thinking = CHAT_TEMPLATE_TEXT is not None and bool(
+            (body.get("chat_template_kwargs") or {}).get("enable_thinking"))
 
         def emit_visible(text: str) -> None:
             if text:
