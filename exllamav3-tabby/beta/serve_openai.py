@@ -180,6 +180,109 @@ def build_ids(system: str, context: list[tuple[str, str | None]], think: bool):
     return TOKENIZER.encode(frm, add_bos=add_bos, encode_special_tokens=True)
 
 
+# -- the optional Jinja chat template (ported from PR #9) ---------------------------------------------
+# None keeps the hand-rolled qwen35 formatter. A string is the checkpoint's own template,
+# rendered through Jinja so tools and tool results use the format the model was trained on.
+CHAT_TEMPLATE_TEXT: str | None = None
+CHAT_TEMPLATE_NAME = "legacy"
+
+
+def _raise_exception(message: str) -> None:
+    """Jinja global the Qwen templates call (HF injects the same one)."""
+    from jinja2.exceptions import TemplateError
+
+    raise TemplateError(message)
+
+
+def _tojson(x: Any, ensure_ascii: bool = False, indent: Any = None,
+            separators: Any = None, sort_keys: bool = False) -> str:
+    """HF's ``tojson`` override: plain json.dumps, insertion order kept.
+
+    Jinja2's built-in filter sorts keys and escapes HTML, which would render the tool
+    schemas differently from what the model saw in training.
+    """
+    return json.dumps(x, ensure_ascii=ensure_ascii, indent=indent,
+                      separators=separators, sort_keys=sort_keys)
+
+
+def normalize_tool_arguments(messages: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Turn OpenAI ``tool_calls[].function.arguments`` JSON strings into mappings.
+
+    The Qwen template iterates ``tool_call.arguments|items``, so it needs a dict; an
+    OpenAI client sends the arguments as a JSON string. Non-JSON arguments fall back to {}.
+    """
+    out: list[dict[str, Any]] = []
+    for msg in messages:
+        calls = msg.get("tool_calls") if isinstance(msg, dict) else None
+        if not calls:
+            out.append(msg)
+            continue
+        msg = dict(msg)
+        new_calls = []
+        for call in calls:
+            fn = call.get("function") if isinstance(call, dict) else None
+            args = fn.get("arguments") if isinstance(fn, dict) else None
+            if isinstance(args, str):
+                try:
+                    args = json.loads(args)
+                except json.JSONDecodeError:
+                    args = {}
+                call = {**call, "function": {**fn, "arguments": args}}
+            new_calls.append(call)
+        msg["tool_calls"] = new_calls
+        out.append(msg)
+    return out
+
+
+def resolve_chat_template(spec: str, model_dir: str) -> str | None:
+    """Map ``--chat-template`` to template text.
+
+    ``legacy`` (default) keeps the hand-rolled formatter. ``stock`` reads the checkpoint's
+    own ``chat_template.jinja``. Anything else is a path to a Jinja template file.
+    """
+    if not spec or spec == "legacy":
+        return None
+    if spec == "stock":
+        p = Path(model_dir) / "chat_template.jinja"
+        if not p.is_file():
+            raise SystemExit(f"--chat-template stock: {p} not found")
+        return p.read_text()
+    p = Path(spec).expanduser()
+    if not p.is_file():
+        raise SystemExit(f"--chat-template {spec}: not a readable file")
+    return p.read_text()
+
+
+def render_prompt_jinja(messages: list[dict[str, Any]], tools: list[dict[str, Any]], think: bool) -> str:
+    """Render an OpenAI message list with the checkpoint's Jinja chat template.
+
+    The native engine venv has jinja2 but not transformers, so this replicates what HF's
+    ``apply_chat_template`` does: an ``ImmutableSandboxedEnvironment`` with ``trim_blocks``
+    and ``lstrip_blocks`` (whitespace control matters for byte-exact prompts) plus the
+    ``raise_exception`` and ``strftime_now`` globals the templates call.
+    """
+    from jinja2 import ext
+    from jinja2.sandbox import ImmutableSandboxedEnvironment
+
+    env = ImmutableSandboxedEnvironment(trim_blocks=True, lstrip_blocks=True, extensions=[ext.loopcontrols])
+    env.globals["raise_exception"] = _raise_exception
+    env.globals["strftime_now"] = lambda fmt="%Y-%m-%d": time.strftime(fmt)
+    env.filters["tojson"] = _tojson
+    template = env.from_string(CHAT_TEMPLATE_TEXT or "")
+    return template.render(
+        messages=normalize_tool_arguments(messages),
+        tools=tools or None,
+        add_generation_prompt=True,
+        enable_thinking=think,
+    )
+
+
+def render_ids_jinja(messages: list[dict[str, Any]], tools: list[dict[str, Any]], think: bool):
+    """Encode the prompt built by :func:`render_prompt_jinja`."""
+    assert TOKENIZER is not None
+    return TOKENIZER.encode(render_prompt_jinja(messages, tools, think), add_bos=False, encode_special_tokens=True)
+
+
 class Handler(BaseHTTPRequestHandler):
     protocol_version = "HTTP/1.1"
 
@@ -240,20 +343,24 @@ class Handler(BaseHTTPRequestHandler):
         tools = body.get("tools") or []
         think_kw = (body.get("chat_template_kwargs") or {}).get("enable_thinking")
         think = bool(think_kw) if think_kw is not None else False
-        system, context = messages_to_context(messages)
-        if tools:
-            names = []
-            for t in tools:
-                fn = (t.get("function") or {}) if isinstance(t, dict) else {}
-                names.append(fn.get("name") or "tool")
-            system = (
-                (system + "\n") if system else ""
-            ) + (
-                "You may call tools using Qwen XML only, no prose: "
-                "<function=NAME><parameter=KEY>VALUE</parameter></function>. "
-                f"Available: {', '.join(names)}."
-            )
-        ids = build_ids(system or PROMPT_FORMAT.default_system_prompt(think), context, think)
+        if CHAT_TEMPLATE_TEXT is not None:
+            # the checkpoint's own template renders tools and tool results in the trained format
+            ids = render_ids_jinja(messages, tools, think)
+        else:
+            system, context = messages_to_context(messages)
+            if tools:
+                names = []
+                for t in tools:
+                    fn = (t.get("function") or {}) if isinstance(t, dict) else {}
+                    names.append(fn.get("name") or "tool")
+                system = (
+                    (system + "\n") if system else ""
+                ) + (
+                    "You may call tools using Qwen XML only, no prose: "
+                    "<function=NAME><parameter=KEY>VALUE</parameter></function>. "
+                    f"Available: {', '.join(names)}."
+                )
+            ids = build_ids(system or PROMPT_FORMAT.default_system_prompt(think), context, think)
         # Default when the client omits max_tokens (legal in the OpenAI API). 2048 silently
         # truncated clients that deliberately send no cap, e.g. Hermes context compression
         # (~10k summary + ~4k log) -> finish_reason=length. From PR #10 (sirolf99).
@@ -342,9 +449,11 @@ class Handler(BaseHTTPRequestHandler):
             write_chunk(f"data: {json.dumps(obj)}\n\n".encode())
 
         think_open, think_close = "<think>", "</think>"
-        tool_open, tool_close = "<function=", "</function>"
+        # the Jinja template wraps a call in <tool_call>; the legacy formatter emits a bare <function>.
+        # buffer whichever opens, and close it on its own tag
+        tool_pairs = (("<tool_call>", "</tool_call>"), ("<function=", "</function>"))
         in_thinking = False
-        in_tool = False
+        tool_close: str | None = None
         pending = ""
         tool_buf: list[str] = []
 
@@ -353,10 +462,10 @@ class Handler(BaseHTTPRequestHandler):
                 send({"content": text})
 
         def on_chunk(chunk: str) -> None:
-            nonlocal in_thinking, in_tool, pending
+            nonlocal in_thinking, tool_close, pending
             pending += chunk
             while pending:
-                if in_tool:
+                if tool_close is not None:
                     end = pending.find(tool_close)
                     if end == -1:
                         tool_buf.append(pending)
@@ -364,7 +473,7 @@ class Handler(BaseHTTPRequestHandler):
                         return
                     tool_buf.append(pending[:end + len(tool_close)])
                     pending = pending[end + len(tool_close):]
-                    in_tool = False
+                    tool_close = None
                     continue
                 if in_thinking:
                     end = pending.find(think_close)
@@ -380,12 +489,13 @@ class Handler(BaseHTTPRequestHandler):
                     if emit_now:
                         send({"reasoning_content": emit_now, "reasoning": emit_now})
                     return
-                # not inside a tag: look for the next one, holding back a partial prefix
-                markers = [(pending.find(think_open), think_open, "think"), (pending.find(tool_open), tool_open, "tool")]
-                found = [(pos, tag, kind) for pos, tag, kind in markers if pos != -1]
+                # not inside a tag: the next one is the earliest opener, holding back a partial prefix
+                markers = [(pending.find(think_open), think_open, None)]
+                markers += [(pending.find(op), op, cl) for op, cl in tool_pairs]
+                found = [(pos, tag, close) for pos, tag, close in markers if pos != -1]
                 if not found:
                     hold = 0
-                    for tag in (think_open, tool_open):
+                    for tag in (think_open, *(op for op, _ in tool_pairs)):
                         for i in range(1, len(tag)):
                             if pending.endswith(tag[:i]):
                                 hold = max(hold, i)
@@ -396,13 +506,13 @@ class Handler(BaseHTTPRequestHandler):
                         emit_visible(pending)
                         pending = ""
                     return
-                pos, tag, kind = min(found)
+                pos, tag, close = min(found)
                 emit_visible(pending[:pos])
                 pending = pending[pos + len(tag):]
-                if kind == "think":
+                if close is None:
                     in_thinking = True
                 else:
-                    in_tool = True
+                    tool_close = close
                     tool_buf.append(tag)
 
         rec = run_generate(
@@ -415,7 +525,7 @@ class Handler(BaseHTTPRequestHandler):
         if pending:
             if in_thinking:
                 send({"reasoning_content": pending, "reasoning": pending})
-            elif in_tool:
+            elif tool_close is not None:
                 tool_buf.append(pending)
             else:
                 emit_visible(pending)
@@ -435,9 +545,13 @@ class Handler(BaseHTTPRequestHandler):
 
 
 def load_engine(ns: argparse.Namespace) -> None:
-    global GEN, TOKENIZER, CONFIG, PROMPT_FORMAT, STOP_IDS
+    global GEN, TOKENIZER, CONFIG, PROMPT_FORMAT, STOP_IDS, CHAT_TEMPLATE_TEXT, CHAT_TEMPLATE_NAME
     PROMPT_FORMAT = prompt_formats["qwen35"]("User", "Assistant")
-    print("loading native exllamav3", ns.model_dir, flush=True)
+    CHAT_TEMPLATE_NAME = getattr(ns, "chat_template", "legacy") or "legacy"
+    CHAT_TEMPLATE_TEXT = resolve_chat_template(CHAT_TEMPLATE_NAME, ns.model_dir)
+    which = (f"jinja ({CHAT_TEMPLATE_NAME}, {len(CHAT_TEMPLATE_TEXT)} chars)"
+             if CHAT_TEMPLATE_TEXT is not None else "legacy qwen35 formatter")
+    print("loading native exllamav3", ns.model_dir, f"[{which}]", flush=True)
     model, config, cache, tokenizer, draft_model, draft_config, draft_cache = model_init.init(ns)
     CONFIG = config
     TOKENIZER = tokenizer
@@ -488,6 +602,12 @@ def main() -> None:
     )
     parser.add_argument("--host", default=HOST)
     parser.add_argument("--port", type=int, default=PORT)
+    parser.add_argument(
+        "--chat-template",
+        default=os.environ.get("CHAT_TEMPLATE", "legacy"),
+        help="prompt path: 'legacy' (hand-rolled qwen35 formatter, the default), 'stock' "
+             "(the checkpoint's own chat_template.jinja) or a path to a Jinja template file",
+    )
     args = parser.parse_args()
     load_engine(args)
     httpd = ThreadingHTTPServer((args.host, args.port), Handler)
