@@ -103,12 +103,28 @@ def sampler_from_body(body: dict[str, Any]):
     temp = float(body.get("temperature") if body.get("temperature") is not None else 0.0)
     top_p = float(body.get("top_p") if body.get("top_p") is not None else 1.0)
     top_k = int(body.get("top_k") if body.get("top_k") is not None else (1 if temp <= 0 else 0))
+    # Anti-repetition knobs. OpenAI has no field for these, so accept the vendor spellings and
+    # keep the historical values when absent: rep_p=1.0 / dry off means the sampler stack is
+    # unchanged for every client that does not ask for them (checked step-for-step by
+    # verify_sampler_patch.py). Needed because a long structured generation can otherwise run to
+    # the output cap without ever emitting EOS, and no client can request a penalty today.
+    rep_p = float(body.get("repetition_penalty") or body.get("rep_p") or 1.0)
+    pres_p = float(body.get("presence_penalty") or body.get("pres_p") or 0.0)
+    freq_p = float(body.get("frequency_penalty") or body.get("freq_p") or 0.0)
+    dry_multiplier = float(body.get("dry_multiplier") or 0.0)
+    dry_base = float(body.get("dry_base") or 1.75)
+    dry_allowed_length = int(body.get("dry_allowed_length") or 2)
+    dry_range = int(body.get("dry_range") or 0)
     return ComboSampler(
-        rep_p=1.0,
-        pres_p=0.0,
-        freq_p=0.0,
+        rep_p=rep_p,
+        pres_p=pres_p,
+        freq_p=freq_p,
         rep_sustain_range=1024,
         rep_decay_range=1024,
+        dry_multiplier=dry_multiplier,
+        dry_base=dry_base,
+        dry_allowed_length=dry_allowed_length,
+        dry_range=dry_range,
         temperature=max(temp, 0.0),
         min_p=0.0 if temp <= 0 else 0.08,
         top_k=top_k,
