@@ -308,27 +308,102 @@ class Handler(BaseHTTPRequestHandler):
         )
 
     def _stream_sse(self, ids, max_new, sampler, stops, tools: bool, t0: float, body: dict[str, Any]) -> None:
+        import socket
+
+        try:
+            self.connection.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+        except Exception:
+            pass
         self.send_response(200)
-        self.send_header("Content-Type", "text/event-stream")
-        self.send_header("Cache-Control", "no-cache")
+        self.send_header("Content-Type", "text/event-stream; charset=utf-8")
+        self.send_header("Transfer-Encoding", "chunked")
+        self.send_header("Cache-Control", "no-cache, no-transform")
         self.send_header("Connection", "keep-alive")
+        self.send_header("X-Accel-Buffering", "no")
         self.end_headers()
         cid = f"chatcmpl-{uuid.uuid4().hex[:12]}"
-        held: list[str] = []
 
-        def on_chunk(chunk: str) -> None:
-            if tools:
-                held.append(chunk)
+        # HTTP/1.1 chunked framing. The terminating 0 chunk is what tells a client the body
+        # ended; without it Node clients wait until their body timeout and report a hang.
+        def write_chunk(payload: bytes) -> None:
+            if not payload:
                 return
+            self.wfile.write(f"{len(payload):X}\r\n".encode("ascii") + payload + b"\r\n")
+            self.wfile.flush()
+
+        def send(delta: dict[str, Any], finish_reason: str | None = None) -> None:
             obj = {
                 "id": cid,
                 "object": "chat.completion.chunk",
                 "created": int(t0),
                 "model": SERVED,
-                "choices": [{"index": 0, "delta": {"content": chunk}, "finish_reason": None}],
+                "choices": [{"index": 0, "delta": delta, "finish_reason": finish_reason}],
             }
-            self.wfile.write(f"data: {json.dumps(obj)}\n\n".encode())
-            self.wfile.flush()
+            write_chunk(f"data: {json.dumps(obj)}\n\n".encode())
+
+        think_open, think_close = "<think>", "</think>"
+        tool_open, tool_close = "<function=", "</function>"
+        in_thinking = False
+        in_tool = False
+        pending = ""
+        tool_buf: list[str] = []
+
+        def emit_visible(text: str) -> None:
+            if text:
+                send({"content": text})
+
+        def on_chunk(chunk: str) -> None:
+            nonlocal in_thinking, in_tool, pending
+            pending += chunk
+            while pending:
+                if in_tool:
+                    end = pending.find(tool_close)
+                    if end == -1:
+                        tool_buf.append(pending)
+                        pending = ""
+                        return
+                    tool_buf.append(pending[:end + len(tool_close)])
+                    pending = pending[end + len(tool_close):]
+                    in_tool = False
+                    continue
+                if in_thinking:
+                    end = pending.find(think_close)
+                    if end != -1:
+                        thought = pending[:end]
+                        if thought:
+                            send({"reasoning_content": thought, "reasoning": thought})
+                        pending = pending[end + len(think_close):]
+                        in_thinking = False
+                        continue
+                    hold = max((i for i in range(1, len(think_close)) if pending.endswith(think_close[:i])), default=0)
+                    emit_now, pending = (pending[:-hold], pending[-hold:]) if hold else (pending, "")
+                    if emit_now:
+                        send({"reasoning_content": emit_now, "reasoning": emit_now})
+                    return
+                # not inside a tag: look for the next one, holding back a partial prefix
+                markers = [(pending.find(think_open), think_open, "think"), (pending.find(tool_open), tool_open, "tool")]
+                found = [(pos, tag, kind) for pos, tag, kind in markers if pos != -1]
+                if not found:
+                    hold = 0
+                    for tag in (think_open, tool_open):
+                        for i in range(1, len(tag)):
+                            if pending.endswith(tag[:i]):
+                                hold = max(hold, i)
+                    if hold:
+                        emit_visible(pending[:-hold])
+                        pending = pending[-hold:]
+                    else:
+                        emit_visible(pending)
+                        pending = ""
+                    return
+                pos, tag, kind = min(found)
+                emit_visible(pending[:pos])
+                pending = pending[pos + len(tag):]
+                if kind == "think":
+                    in_thinking = True
+                else:
+                    in_tool = True
+                    tool_buf.append(tag)
 
         rec = run_generate(
             input_ids=ids,
@@ -337,47 +412,21 @@ class Handler(BaseHTTPRequestHandler):
             stop_conditions=stops,
             on_chunk=on_chunk,
         )
-        acc = rec["text"]
-        calls = parse_qwen_xml(acc) if tools else []
+        if pending:
+            if in_thinking:
+                send({"reasoning_content": pending, "reasoning": pending})
+            elif in_tool:
+                tool_buf.append(pending)
+            else:
+                emit_visible(pending)
+        calls = parse_qwen_xml("".join(tool_buf)) if tools else []
         finish = "tool_calls" if calls else ("length" if rec["eos_reason"] == "max_new_tokens" else "stop")
-        usage = {
-            "prompt_tokens": rec["prompt_tokens"],
-            "completion_tokens": rec["new_tokens"],
-            "total_tokens": rec["prompt_tokens"] + rec["new_tokens"],
-            "decode_tok_s": round(rec["decode_tok_s"], 2),
-            "draft_accept": rec["draft_accept"],
-        }
         if calls:
-            obj = {
-                "id": cid,
-                "object": "chat.completion.chunk",
-                "created": int(t0),
-                "model": SERVED,
-                "choices": [{"index": 0, "delta": {"tool_calls": calls, "content": None}, "finish_reason": finish}],
-                "usage": usage,
-            }
-            self.wfile.write(f"data: {json.dumps(obj)}\n\n".encode())
+            send({"tool_calls": calls, "content": None}, finish)
         else:
-            if tools and acc:
-                obj = {
-                    "id": cid,
-                    "object": "chat.completion.chunk",
-                    "created": int(t0),
-                    "model": SERVED,
-                    "choices": [{"index": 0, "delta": {"content": acc}, "finish_reason": None}],
-                }
-                self.wfile.write(f"data: {json.dumps(obj)}\n\n".encode())
-            obj = {
-                "id": cid,
-                "object": "chat.completion.chunk",
-                "created": int(t0),
-                "model": SERVED,
-                "choices": [{"index": 0, "delta": {}, "finish_reason": finish}],
-                "usage": usage,
-            }
-            self.wfile.write(f"data: {json.dumps(obj)}\n\n".encode())
-        self.wfile.write(b"data: [DONE]\n\n")
-        self.wfile.flush()
+            send({}, finish)
+        write_chunk(b"data: [DONE]\n\n")
+        write_chunk(b"")
         print(
             f"stream decode={rec['decode_tok_s']:.1f} tok/s draft_accept={rec['draft_accept']} "
             f"new={rec['new_tokens']}",
