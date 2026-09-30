@@ -59,3 +59,24 @@ draft_model:
 
 memory:
   sysmem_recurrent_cache: 4096
+
+# Sampler fallbacks for requests that leave a value out. force: false, so any value a client
+# sends still wins. These are the model's own recommended settings (generation_config.json:
+# temperature 1.0, top_k 20, top_p 0.95). TabbyAPI does not read them from generation_config,
+# and with no sampling section it falls back to top_k 0 and top_p 1.0, i.e. no truncation:
+# every token is drawn from the full ~250k vocabulary. Clients that send no sampler values
+# (agent frameworks such as Hermes) then drift into garbage once a long reply draws a tail
+# token. Draft acceptance collapsing on one request is the tell.
+sampling:
+  temperature:
+    override: 1.0
+    force: false
+  top_k:
+    override: 20
+    force: false
+  top_p:
+    override: 0.95
+    force: false
+  min_p:
+    override: 0.0
+    force: false
