@@ -80,6 +80,9 @@ else
 fi
 say "TabbyAPI at $(git -C "$TABBY_DIR" log -1 --format='%h %cs %s' | cut -c1-90)"
 (cd "$TABBY_DIR" && "$PY" -m pip install -q .)
+# TabbyAPI's main.py imports uvloop on every Linux, but its pyproject only lists it for x86_64,
+# so on aarch64 the server dies at start with "No module named 'uvloop'". uvloop ships aarch64 wheels.
+"$PY" -c 'import uvloop' 2>/dev/null || { say "installing uvloop (TabbyAPI imports it; its pyproject skips aarch64)"; "$PY" -m pip install -q uvloop; }
 # TabbyAPI's own pyproject can drag a stock exllamav3 back in on some platforms; make sure not.
 if "$PY" -m pip show exllamav3 2>/dev/null | grep -q "^Location:.*site-packages$" \
    && ! "$PY" -m pip show exllamav3 2>/dev/null | grep -q "Editable project location"; then

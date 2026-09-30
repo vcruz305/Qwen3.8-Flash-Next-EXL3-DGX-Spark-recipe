@@ -71,7 +71,9 @@ reads, which `serve.sh` exports: the kernel knobs (`EXL3_INT8_GEMV=0
 EXL3_MOE_COOP_WIDE=1 EXL3_GR_INT8=1 EXL3_MTP_HEAD_N=65536`) and the
 dynamic-draft target (`EXL3_DRAFT_CONFIDENCE=0.6`, fork
 [#11](https://github.com/vcruz305/exllamav3/pull/11)). Everything else, including MTP
-depth 5, dynamic drafting, 8-bit KV, `ngram_ram`, and the `qwen3_5` tool format, is a
+depth 5, dynamic drafting, 8-bit KV, `ngram_ram`, the `qwen3_5` tool format, and the
+sampler fallbacks (the model's recommended temperature 1.0, top_k 20, top_p 0.95, applied
+only when a request leaves a value out), is a
 stock TabbyAPI key in [`tabby-config.yml`](exllamav3-tabby/tabby-config.yml). That
 file is checked against TabbyAPI's own pydantic schema on `main` with no unknown keys.
 
@@ -703,6 +705,8 @@ K=5 packed), and a vision tower. `max_position_embeddings` is 262,144.
 | load refuses for memory while `MemAvailable` is high | GB10 page cache (`cudaMemGetInfo` reports MemFree); `serve.sh` drops the pack's pages first. Stop other servers, or run `exllamav3-tabby/drop-model-cache.sh` |
 | `memory estimate ... needed ... available` warning | lower `CACHE_SIZE`, set `NGRAM_RAM=false`, or use `PROFILE=single` |
 | replies cut at a few thousand tokens | the client sets `max_tokens`; TabbyAPI honours it |
+| replies turn to gibberish partway through, mostly from agent clients that send no sampler values | TabbyAPI's fallback is top_k 0 / top_p 1.0 (no truncation). `tabby-config.yml` now sets the model's own fallbacks (top_k 20, top_p 0.95); pull and restart `serve.sh`. Check with `log_generation_params: true` |
+| TabbyAPI exits at start with `No module named 'uvloop'` (aarch64) | TabbyAPI imports uvloop but only installs it on x86_64; re-run `setup.sh`, or `~/qwen38-exl3/venv/bin/pip install uvloop` |
 | clients on another host get 401 | `HOST=0.0.0.0` enables auth; use the key from `~/qwen38-exl3/tabbyAPI/api_tokens.yml` |
 | build fails | `~/qwen38-exl3/state/exllamav3-build.log`; needs CUDA 13.x `nvcc` (`CUDA_HOME`) |
 
