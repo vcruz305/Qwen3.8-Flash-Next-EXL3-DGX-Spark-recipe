@@ -1,0 +1,11 @@
+# Additional completed KSPLIT1 numerical controls
+
+This separate read-only snapshot was collected at 2026-10-08 10:53:04 UTC. It adds the completed 3.05, 4.05 and Cyber batch1 K8/V8 controls that were still in flight when the earlier 10:41 snapshot was selected. That earlier snapshot and its failed/intermediate assessments remain unchanged.
+
+All three added assessments compare original 94ba01d with candidate 16ca20d2 under the recorded compatibility controls plus `EXL3_MOE_COOP_KSPLIT=1`. Each passes the original declared core gates with zero KL investigation triggers. For every reported paged q1/q6 and unique-prefill case, the maximum paired absolute logit difference, paired NLL change and additional high-confidence disagreement count are zero. See `assessment-index.json` and its linked original reports; this is a statement about the recorded corpus, not a broad capability result.
+
+The inputs remain the same three technical/code, tool and multilingual cases at prefixes 255, 1023 and 4095, batch 1, with 48 continuation positions. Each pack has 18 paged comparisons and 9 distinct complete-prefill comparisons. The target-only probe does not load MTP. The frozen configured-vocabulary and cache-method qualifications from the base bundle still apply. SAGE and the separate 3.05 batch 4 recovery are not new measurements in this addition.
+
+`collection.json` contains the transferred small-file SHA256 hashes, exact source paths, explicit job inputs and controller status. Every assessment's baseline/candidate/gate JSON hash was verified against this addition or the base bundle, whose manifest SHA256 is `ddfdfb835228c7910be82739b6a303d0c63d33f49e44fd733abb23cef32fb5bc`. The predeclared gates remain SHA256 `84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097`.
+
+**No large tensor file was read or hashed during this collection.** Performance measurements were active. The three new tensor entries therefore retain paths/sizes/mtimes with `sha256=null` and an explicit deferred-hashing status; no hash is invented or inferred from matching logits. Their bytes remain on Spark. A later separate hash record can be added after the measured batch releases the host. This addition itself ran no GPU/API/model work and makes no permanent deployment claim.
