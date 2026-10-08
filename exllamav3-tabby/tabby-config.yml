@@ -25,9 +25,10 @@ model:
   # Context. max_seq_len is the per-request ceiling: 262,144 is the trained window, and needle
   # retrieval fails past it (README, "Context: the ceiling"). cache_size is ONE shared KV pool
   # for all concurrent requests, so it must be sized for concurrency, not per request:
-  # at 8-bit KV this geometry costs ~12-13 KB/token (12 of 48 layers are full attention plus the
-  # MTP layer, 2 KV heads at 256), so 1,048,576 tokens is ~13 GiB and holds four full-length
-  # sessions at once. serve.sh PROFILE=concurrent|single picks these values.
+  # For this model, the 12 target attention layers plus MTP use 17.875 GiB at 1,048,576
+  # tokens, including K8/V8 data, FP16 quantization scales, and QSA key planes. The pool
+  # can hold four full-length sessions; recurrent state and workspaces need additional RAM.
+  # serve.sh PROFILE=concurrent|single picks the pool and per-request limits.
   max_seq_len: ${MAX_SEQ_LEN}
   cache_size: ${CACHE_SIZE}
   cache_mode: "8,8"
