@@ -1,8 +1,14 @@
 # API performance and tool calling validation
 
-These clients exercise the deployed TabbyAPI endpoint. They use the Python
-standard library and require no access to a GPU themselves. The CPU regression
-tests also use PyYAML, already installed by the runtime.
+These clients exercise the deployed TabbyAPI endpoint. The performance clients
+and `tool_smoke.py` use the Python standard library and require no access to a GPU
+themselves. The CPU regression tests also use PyYAML, already installed by the
+runtime. The optional `sdk_smoke.py` uses the official OpenAI Python SDK in a
+separate client environment.
+
+See [Tool calling on the Spark recipe](../docs/tool-calling.md) for supported
+request modes, argument and streaming contracts, error handling, and commands
+for the five-case SDK round-trip check.
 
 The report format is version 2 for performance and version 1 for tool smoke
 tests. Old `decode_tok_s_median`, `window` and `steady` fields are intentionally
