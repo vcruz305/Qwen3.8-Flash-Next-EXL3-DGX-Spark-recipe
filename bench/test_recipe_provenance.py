@@ -79,6 +79,31 @@ class ForkMigrationTests(unittest.TestCase):
 
 
 class FingerprintTests(unittest.TestCase):
+    def test_equivalent_runtime_symlink_does_not_change_abi_fingerprint(self):
+        torch = SimpleNamespace(__version__="2.13.0+cu130",
+                                version=SimpleNamespace(cuda="13.0"),
+                                _C=SimpleNamespace(_GLIBCXX_USE_CXX11_ABI=True))
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            runtime = root / "runtime-dated"
+            python = runtime / "venv" / "bin" / "python"
+            python.parent.mkdir(parents=True)
+            python.symlink_to(Path(sys.executable).resolve())
+            (runtime / "engine").mkdir()
+            alias = root / "qwen38-exl3"
+            alias.symlink_to(runtime, target_is_directory=True)
+            def command(args):
+                return "Cuda compilation tools, release 13.0, V13.0.0" if args[0].endswith("nvcc") else "g++ fixture 14.2"
+            with patch.dict(sys.modules, {"torch": torch}), patch.object(state, "git", return_value="a" * 40), \
+                 patch.object(state, "command", side_effect=command):
+                with patch.object(sys, "executable", str(python)):
+                    direct = state.build_fingerprint(runtime / "engine", "/usr/local/cuda", "12.1")
+                with patch.object(sys, "executable", str(alias / "venv/bin/python")):
+                    through_alias = state.build_fingerprint(alias / "engine", "/usr/local/cuda", "12.1")
+            self.assertEqual(direct, through_alias)
+            self.assertEqual(direct["python_executable"], str(python.resolve()))
+            self.assertEqual(direct["engine_path"], str((runtime / "engine").resolve()))
+
     def test_torch_and_compile_flags_change_fingerprint_and_check_fails(self):
         torch = SimpleNamespace(__version__="2.13.0+cu130",
                                 version=SimpleNamespace(cuda="13.0"),

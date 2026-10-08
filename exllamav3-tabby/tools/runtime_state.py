@@ -37,7 +37,7 @@ def build_fingerprint(engine, cuda_home, arch):
         "engine_path": str(Path(engine).resolve()),
         "python": sys.version,
         "python_cache_tag": sys.implementation.cache_tag,
-        "python_executable": sys.executable,
+        "python_executable": str(Path(sys.executable).resolve()),
         "machine": platform.machine(),
         "torch": torch.__version__,
         "torch_cuda": torch.version.cuda,
@@ -129,7 +129,9 @@ def snapshot(args):
         "engine": source_state(args.engine), "server": source_state(args.server),
         "packages": versions, "environment": redact(environment),
         "host": {"machine": platform.machine(), "kernel": platform.release(),
-                 "python": platform.python_version()},
+                 "python": platform.python_version(), "python_executable_invoked": sys.executable,
+                 "python_executable_resolved": str(Path(sys.executable).resolve()),
+                 "python_prefix": sys.prefix, "python_prefix_resolved": str(Path(sys.prefix).resolve())},
     }
     if args.config:
         import yaml
