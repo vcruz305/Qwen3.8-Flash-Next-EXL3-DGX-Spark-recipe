@@ -8,6 +8,7 @@ import io
 import json
 from pathlib import Path
 import struct
+import shutil
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -20,14 +21,15 @@ spec.loader.exec_module(vendor)
 
 class VendorWheelRepairTests(unittest.TestCase):
     def fixture(self, *, name=vendor.PACKAGE, version=vendor.VERSION, machine=183,
-                tag=vendor.BAD_TAG):
-        temp = tempfile.TemporaryDirectory()
-        self.addCleanup(temp.cleanup)
-        root = Path(temp.name) / "site-packages"
+                tag=vendor.BAD_TAG, root=None):
+        if root is None:
+            temp = tempfile.TemporaryDirectory()
+            self.addCleanup(temp.cleanup)
+            root = Path(temp.name) / "site-packages"
         info = root / f"nvidia_cusparselt_cu13-{version}.dist-info"
         info.mkdir(parents=True)
         library = root / vendor.LIBRARY
-        library.parent.mkdir(parents=True)
+        library.parent.mkdir(parents=True, exist_ok=True)
         header = bytearray(64)
         header[:6] = b"\x7fELF\x02\x01"
         struct.pack_into("<HH", header, 16, 3, machine)
@@ -50,7 +52,7 @@ class VendorWheelRepairTests(unittest.TestCase):
             "root": root, "info": info, "wheel": wheel, "record": record,
             "library": library, "metadata": metadata,
             "dist": importlib.metadata.PathDistribution(info),
-            "audit": Path(temp.name) / "repair.json",
+            "audit": root.parent / "repair.json",
         }
 
     def run_repair(self, f, **kwargs):
@@ -129,6 +131,31 @@ class VendorWheelRepairTests(unittest.TestCase):
         self.assertEqual(self.run_repair(f)["status"], "already_correct")
         self.assertFalse(f["audit"].exists())
         self.assertEqual(before, (f["wheel"].read_bytes(), f["record"].read_bytes()))
+
+    def test_completed_audit_does_not_block_a_valid_package_upgrade(self):
+        for version in ("0.9.1", "0.10.0"):
+            with self.subTest(version=version):
+                f = self.fixture()
+                self.run_repair(f)
+                audit = f["audit"].read_bytes()
+                shutil.rmtree(f["info"])
+                upgraded = self.fixture(version=version, tag=vendor.GOOD_TAG, root=f["root"])
+                before = {key: upgraded[key].read_bytes() for key in ("wheel", "record", "library", "metadata")}
+                result = self.run_repair(upgraded)
+                self.assertEqual(result["status"], "not_affected")
+                self.assertEqual(result["version"], version)
+                self.assertEqual(upgraded["audit"].read_bytes(), audit)
+                self.assertEqual(before, {key: upgraded[key].read_bytes() for key in before})
+
+    def test_prepared_journal_cannot_replay_onto_an_upgraded_package(self):
+        f = self.fixture()
+        self.interrupt_after_wheel(f)
+        audit = f["audit"].read_bytes()
+        shutil.rmtree(f["info"])
+        upgraded = self.fixture(version="0.9.1", tag=vendor.GOOD_TAG, root=f["root"])
+        self.assertEqual(self.run_repair(upgraded)["status"], "not_affected")
+        self.assertEqual(upgraded["audit"].read_bytes(), audit)
+        self.assertIn(b"Version: 0.9.1", upgraded["metadata"].read_bytes())
 
     def interrupt_after_wheel(self, f):
         original = vendor.atomic_write

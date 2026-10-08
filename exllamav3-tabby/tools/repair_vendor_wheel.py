@@ -113,10 +113,15 @@ def repair(dist, audit_path, *, system=None, machine=None, site_roots=None):
     text = before_wheel.decode("utf-8")
     tags = [line.partition(":")[2].strip() for line in text.splitlines()
             if line.partition(":")[0] == "Tag"]
-    if BAD_TAG not in tags and not audit_path.is_file() and not (
-        tags == [GOOD_TAG] and dist.version == VERSION
-    ):
-        return {"status": "not_affected", "package": PACKAGE, "version": dist.version, "tags": tags}
+    if BAD_TAG not in tags and not (tags == [GOOD_TAG] and dist.version == VERSION):
+        # A completed repair is historical provenance, not a pin on a later
+        # valid package. Never replay a 0.8.1 journal onto an upgraded package.
+        if dist.version == VERSION and audit_path.is_file():
+            historical = json.loads(audit_path.read_text())
+            require(historical.get("status") != "prepared",
+                    "Prepared 0.8.1 repair journal has unexpected installed WHEEL tags")
+        return {"status": "not_affected", "package": PACKAGE, "version": dist.version,
+                "tags": tags, "historical_audit": str(audit_path) if audit_path.is_file() else None}
 
     require((system or platform.system()) == "Linux", "Known wheel repair requires Linux")
     require((machine or platform.machine()) == "aarch64", "Known wheel repair requires aarch64")
