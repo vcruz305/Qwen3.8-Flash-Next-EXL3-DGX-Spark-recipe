@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "diagnostic_only": true,
+  "run_label": "final-405-single-strings-diagnostic",
+  "scope": "Exact retained fields of the original record_strings synthetic request only; raw native full_completion, backend full_response, and exact rendered prompt. No token/KV reads, response changes, or added generation awaits.",
+  "max_records": 2,
+  "source": {
+    "tabby": {
+      "path": "/home/cruzspark/qwen38-exl3-20261008/tabbyAPI",
+      "commit": "5a4f3efa1c1f60b6966ba0d0d5610f6b953541fb",
+      "tracked_changes": ""
+    },
+    "engine": {
+      "path": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+      "commit": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+      "tracked_changes": ""
+    },
+    "observer_sha256": "f61770f8973c02168ee3bc4085b5c3c3e8952fda2b2490b4c2c044e269fba64b",
+    "sitecustomize_sha256": "3d7a620c8cfc39fec68a84f221170b9105fa19260dcdee430d317b869bd1474f",
+    "config_sha256": "14ae233c623744a02b88cc2f8c45e4e5578bda6417c918462f5ba585949fe7cf"
+  },
+  "request_schema_note": "Tabby does not retain the wire seed field. Greedy request temperature/top_k and all scope-defining message/schema fields are matched.",
+  "expected_request": {
+    "messages": [
+      {
+        "role": "user",
+        "content": "Call record_strings once with these exact string values: {\"number_text\": \"123\", \"bool_text\": \"true\", \"json_text\": \"{\\\"nested\\\": [1, false]}\", \"tag_text\": \"<think>literal</think>\"}"
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "record_strings",
+          "description": "Record each value exactly as a string; do not interpret its contents.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "number_text": {
+                "type": "string"
+              },
+              "bool_text": {
+                "type": "string"
+              },
+              "json_text": {
+                "type": "string"
+              },
+              "tag_text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "number_text",
+              "bool_text",
+              "json_text",
+              "tag_text"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    ],
+    "tool_choice": "auto",
+    "template_vars": {
+      "enable_thinking": false
+    }
+  }
+}

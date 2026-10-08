@@ -1,0 +1,317 @@
+{
+  "active": null,
+  "clients": [
+    {
+      "cleanup": {
+        "exit_code": 0,
+        "owned_group_empty": true,
+        "signals": [],
+        "wall_seconds": 0.019159067996952217
+      },
+      "client_pid": 424232,
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-spark-recipe/bench/tool_smoke.py",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--mode",
+        "both",
+        "--case",
+        "strings",
+        "--repeat",
+        "1",
+        "--max-tokens",
+        "1024",
+        "--timeout",
+        "180",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/strings-final-405-24f0-5a/tools.json"
+      ],
+      "completed_report": true,
+      "counts": {
+        "pass": 2
+      },
+      "exit_code": 0,
+      "expected_checks": 2,
+      "finished_at_utc": "2026-10-08T13:07:53.354468+00:00",
+      "metadata": "/home/cruzspark/qwen-overnight-20261008/results/strings-final-405-24f0-5a/deployment.json",
+      "metadata_sha256": "c097b734a7733bbbc5dd6efcf92575c793a4a2adc494e6d5538900978763a9f5",
+      "name": "tools",
+      "observed_checks": 2,
+      "passed": true,
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/strings-final-405-24f0-5a/tools.json",
+      "report_sha256": "2c93e439992ead409466cf3751819033d06cc04f9f98080d5d328795c8bb7c84",
+      "started_at_utc": "2026-10-08T13:07:46.299531+00:00",
+      "summary_consistent": true,
+      "unique_expected_cases": true
+    }
+  ],
+  "controller_sha256": "78e990269f0cccb51172e524f87193a5607a0027165d20add1b6b6716b42b589",
+  "current_model": {
+    "created": 1791464866,
+    "id": "flashnext-exl3-4.05bpw",
+    "logging": null,
+    "meta": {
+      "n_ctx": 262144,
+      "n_ctx_train": 262144,
+      "n_embd": 2560,
+      "n_vocab": 248320,
+      "size": 107310796332
+    },
+    "object": "model",
+    "owned_by": "tabbyAPI",
+    "parameters": {
+      "cache_mode": "8,8",
+      "cache_size": 262144,
+      "chunk_size": 2048,
+      "draft": null,
+      "max_batch_size": 1,
+      "max_seq_len": 262144,
+      "prompt_template": "chat_template",
+      "prompt_template_content": "{%- set image_count = namespace(value=0) %}\n{%- set video_count = namespace(value=0) %}\n{%- macro render_content(content, do_vision_count, is_system_content=false) %}\n    {%- if content is string %}\n        {{- content }}\n    {%- elif content is iterable and content is not mapping %}\n        {%- for item in content %}\n            {%- if 'image' in item or 'image_url' in item or item.type == 'image' %}\n                {%- if is_system_content %}\n                    {{- raise_exception('System message cannot contain images.') }}\n                {%- endif %}\n                {%- if do_vision_count %}\n                    {%- set image_count.value = image_count.value + 1 %}\n                {%- endif %}\n                {%- if add_vision_id %}\n                    {{- 'Picture ' ~ image_count.value ~ ': ' }}\n                {%- endif %}\n                {{- '<|vision_start|><|image_pad|><|vision_end|>' }}\n            {%- elif 'video' in item or item.type == 'video' %}\n                {%- if is_system_content %}\n                    {{- raise_exception('System message cannot contain videos.') }}\n                {%- endif %}\n                {%- if do_vision_count %}\n                    {%- set video_count.value = video_count.value + 1 %}\n                {%- endif %}\n                {%- if add_vision_id %}\n                    {{- 'Video ' ~ video_count.value ~ ': ' }}\n                {%- endif %}\n                {{- '<|vision_start|><|video_pad|><|vision_end|>' }}\n            {%- elif 'text' in item %}\n                {{- item.text }}\n            {%- else %}\n                {{- raise_exception('Unexpected item type in content.') }}\n            {%- endif %}\n        {%- endfor %}\n    {%- elif content is none or content is undefined %}\n        {{- '' }}\n    {%- else %}\n        {{- raise_exception('Unexpected content type.') }}\n    {%- endif %}\n{%- endmacro %}\n{%- if not messages %}\n    {{- raise_exception('No messages provided.') }}\n{%- endif %}\n{%- set reasoning_instructions = '' %}\n{%- if enable_thinking is undefined or enable_thinking is true %}\n    {%- set resolved_reasoning_effort = reasoning_effort|default('xhigh') %}\n    {%- if resolved_reasoning_effort not in ('xhigh', 'medium', 'low') %}\n        {{- raise_exception('Unexpected reasoning effort ' ~ reasoning_effort ~ '. Supported types are xhigh (default), medium, and low.') }}\n    {%- endif %}\n    {%- if resolved_reasoning_effort == 'xhigh' %}\n        {%- set reasoning_instructions = 'Reasoning effort is set to xhigh. Please think carefully through the task, validate key assumptions, consider plausible alternatives, and prioritize correctness, consistency, and clarity in the final answer.' %}\n    {%- elif resolved_reasoning_effort == 'low' %}\n        {%- set reasoning_instructions = 'Reasoning effort is set to low. Keep your thinking brief and focused, moving directly to the conclusion without unnecessary elaboration.' %}\n    {%- endif %}\n{%- endif %}\n{%- if tools and tools is iterable and tools is not mapping %}\n    {{- '<|im_start|>system\\n' }}\n    {%- if reasoning_instructions %}\n        {{- reasoning_instructions + '\\n\\n' }}\n    {%- endif %}\n    {{- \"# Tools\\n\\nYou have access to the following functions:\\n\\n<tools>\" }}\n    {%- for tool in tools %}\n        {{- \"\\n\" }}\n        {{- tool | tojson }}\n    {%- endfor %}\n    {{- \"\\n</tools>\" }}\n    {{- '\\n\\nIf you choose to call a function ONLY reply in the following format with NO suffix:\\n\\n<tool_call>\\n<function=example_function_name>\\n<parameter=example_parameter_1>\\nvalue_1\\n</parameter>\\n<parameter=example_parameter_2>\\nThis is the value for the second parameter\\nthat can span\\nmultiple lines\\n</parameter>\\n</function>\\n</tool_call>\\n\\n<IMPORTANT>\\nReminder:\\n- Function calls MUST follow the specified format: an inner <function=...></function> block must be nested within <tool_call></tool_call> XML tags\\n- Required parameters MUST be specified\\n- You may provide optional reasoning for your function call in natural language BEFORE the function call, but NOT after\\n- If there is no function call available, answer the question like normal with your current knowledge and do not tell the user about function calls\\n</IMPORTANT>' }}\n    {%- if messages[0].role == 'system' %}\n        {%- set content = render_content(messages[0].content, false, true)|trim %}\n        {%- if content %}\n            {{- '\\n\\n' + content }}\n        {%- endif %}\n    {%- endif %}\n    {{- '<|im_end|>\\n' }}\n{%- else %}\n    {%- if messages[0].role == 'system' %}\n        {%- set content = render_content(messages[0].content, false, true)|trim %}\n        {%- if content %}\n            {{- '<|im_start|>system\\n' + (reasoning_instructions + '\\n\\n' if reasoning_instructions else '')  + content + '<|im_end|>\\n' }}\n        {%- elif reasoning_instructions %}\n            {{- '<|im_start|>system\\n' + reasoning_instructions + '<|im_end|>\\n' }}\n        {%- endif %}\n    {%- elif reasoning_instructions %}\n        {{- '<|im_start|>system\\n' + reasoning_instructions + '<|im_end|>\\n' }}\n    {%- endif %}\n{%- endif %}\n{%- set ns = namespace(multi_step_tool=true, last_query_index=messages|length - 1) %}\n{%- for message in messages[::-1] %}\n    {%- set index = (messages|length - 1) - loop.index0 %}\n    {%- if ns.multi_step_tool and message.role == \"user\" %}\n        {%- set content = render_content(message.content, false)|trim %}\n        {%- if not(content.startswith('<tool_response>') and content.endswith('</tool_response>')) %}\n            {%- set ns.multi_step_tool = false %}\n            {%- set ns.last_query_index = index %}\n        {%- endif %}\n    {%- endif %}\n{%- endfor %}\n{%- if ns.multi_step_tool %}\n    {{- raise_exception('No user query found in messages.') }}\n{%- endif %}\n{%- for message in messages %}\n    {%- set content = render_content(message.content, true)|trim %}\n    {%- if message.role == \"system\" %}\n        {%- if not loop.first %}\n            {{- raise_exception('System message must be at the beginning.') }}\n        {%- endif %}\n    {%- elif message.role == \"user\" %}\n        {{- '<|im_start|>' + message.role + '\\n' + content + '<|im_end|>' + '\\n' }}\n    {%- elif message.role == \"assistant\" %}\n        {%- set reasoning_content = '' %}\n        {%- if message.reasoning_content is string %}\n            {%- set reasoning_content = message.reasoning_content %}\n        {%- endif %}\n        {%- set reasoning_content = reasoning_content|trim %}\n        {%- if preserve_thinking is undefined or preserve_thinking is true or loop.index0 > ns.last_query_index %}\n            {{- '<|im_start|>' + message.role + '\\n<think>\\n' + reasoning_content + '\\n</think>\\n\\n' + content }}\n        {%- else %}\n            {{- '<|im_start|>' + message.role + '\\n' + content }}\n        {%- endif %}\n        {%- if message.tool_calls and message.tool_calls is iterable and message.tool_calls is not mapping %}\n            {%- for tool_call in message.tool_calls %}\n                {%- if tool_call.function is defined %}\n                    {%- set tool_call = tool_call.function %}\n                {%- endif %}\n                {%- if loop.first %}\n                    {%- if content|trim %}\n                        {{- '\\n\\n<tool_call>\\n<function=' + tool_call.name + '>\\n' }}\n                    {%- else %}\n                        {{- '<tool_call>\\n<function=' + tool_call.name + '>\\n' }}\n                    {%- endif %}\n                {%- else %}\n                    {{- '\\n<tool_call>\\n<function=' + tool_call.name + '>\\n' }}\n                {%- endif %}\n                {%- if tool_call.arguments is defined and tool_call.arguments != '' %}\n                    {%- for args_name, args_value in tool_call.arguments|items %}\n                        {{- '<parameter=' + args_name + '>\\n' }}\n                        {%- set args_value = args_value | string if args_value is string else args_value | tojson | safe %}\n                        {{- args_value }}\n                        {{- '\\n</parameter>\\n' }}\n                    {%- endfor %}\n                {%- endif %}\n                {{- '</function>\\n</tool_call>' }}\n            {%- endfor %}\n        {%- endif %}\n        {{- '<|im_end|>\\n' }}\n    {%- elif message.role == \"tool\" %}\n        {%- if loop.previtem and loop.previtem.role != \"tool\" %}\n            {{- '<|im_start|>user' }}\n        {%- endif %}\n        {{- '\\n<tool_response>\\n' }}\n        {{- content }}\n        {{- '\\n</tool_response>' }}\n        {%- if not loop.last and loop.nextitem.role != \"tool\" %}\n            {{- '<|im_end|>\\n' }}\n        {%- elif loop.last %}\n            {{- '<|im_end|>\\n' }}\n        {%- endif %}\n    {%- else %}\n        {{- raise_exception('Unexpected message role.') }}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- '<|im_start|>assistant\\n' }}\n    {%- if enable_thinking is defined and enable_thinking is false %}\n        {{- '<think>\\n\\n</think>\\n\\n' }}\n    {%- else %}\n        {{- '<think>\\n' }}\n    {%- endif %}\n{%- endif %}",
+      "rope_alpha": 1.0,
+      "rope_scale": 1.0,
+      "use_vision": false
+    }
+  },
+  "deployment_sha256": "c097b734a7733bbbc5dd6efcf92575c793a4a2adc494e6d5538900978763a9f5",
+  "diagnostic_only": true,
+  "expected_checks": {
+    "tools": 2
+  },
+  "expected_engine": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+  "expected_server": "5a4f3efa1c1f60b6966ba0d0d5610f6b953541fb",
+  "extra_files_sha256": {
+    "/home/cruzspark/qwen-overnight-20261008/final-strings-jobs/final-405-single-strings-diagnostic.json": "6be380ffa26af6d937f6fd066f21263187aceff318269f742c1ed2e611e55329",
+    "/home/cruzspark/qwen-overnight-20261008/final_api_controller.py": "ae9e0965a1abcb1342049039fe59fe21c4e0dc162b03b1f4ddc6923484ae344d",
+    "/home/cruzspark/qwen-overnight-20261008/results/strings-final-405-24f0-5a.observer-inputs/derivation.json": "906f5c777a4869d77b1f4b42361945f70e0d729755a81a83e3defd790cf524c3",
+    "/home/cruzspark/qwen-overnight-20261008/results/strings-final-405-24f0-5a.observer-inputs/observer-config.json": "14ae233c623744a02b88cc2f8c45e4e5578bda6417c918462f5ba585949fe7cf",
+    "/home/cruzspark/qwen-overnight-20261008/results/strings-final-405-24f0-5a.observer-inputs/sitecustomize.py": "3d7a620c8cfc39fec68a84f221170b9105fa19260dcdee430d317b869bd1474f",
+    "/home/cruzspark/qwen-overnight-20261008/results/strings-final-405-24f0-5a.observer-inputs/strings_observer.original.py": "77d606e2f2e894f7503a6f41c99a5a94696339b5c15c7b8415b68f8416b945d3",
+    "/home/cruzspark/qwen-overnight-20261008/results/strings-final-405-24f0-5a.observer-inputs/strings_observer.py": "f61770f8973c02168ee3bc4085b5c3c3e8952fda2b2490b4c2c044e269fba64b",
+    "/home/cruzspark/qwen-overnight-20261008/strings_only_controller.py": "cfc3619894c4ee8f07d46c2ee7ed0fd085f3fdc044c81c8d9a01d009304c4116",
+    "bench/api_resilience.py": "193ec973e9dd2d77317912a312b8865933f791aa4b943673539c6283671dbd90",
+    "bench/auto_compatibility.py": "e1d95bed85546323c915ecacadea6153ba154d79a930d8f607a94fa94c569c1d",
+    "bench/requirements-sdk.txt": "2ace98b10903de4c60b9006582c42262f92f219b054fd38d01a98ccdb71004df",
+    "bench/sdk_smoke.py": "f483990624c285f331b5752ab7691d89796e3b4d27d9479750a727631def2b6a",
+    "exllamav3-tabby/drop-model-cache.sh": "7be160f718ec9710e70d228621ec81f09e7eee6d51fb343196974d457ffd65b8"
+  },
+  "finished_at_utc": "2026-10-08T13:07:55.938868+00:00",
+  "helper_sha256": "48281d5b51b1b64509385548c6f41f34909c328070274fcb4a06945ddcc44586",
+  "load_wall_seconds": 52.09264230400004,
+  "model_identity": {
+    "config_sha256": {
+      "config.json": "2ff43c0d52242195071dbb6b190f358eaf74d54ba64abdd780d4776c102ed719",
+      "generation_config.json": "e70c136c1b78ddc1fb0905bac8e733a4dc448d4f852a5dd75143fffc70be550e",
+      "tokenizer.json": "0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3",
+      "tokenizer_config.json": "b11349aafa7cdc6a320767cf7ceb29ed82f7eda5d65e8e0819e76f0ce947bf27"
+    },
+    "full_weight_hashes_computed": false,
+    "loader_glob_order": [
+      "model-00008-of-00009.safetensors",
+      "model-00009-of-00009.safetensors",
+      "ngram_embedding.safetensors",
+      "model-00004-of-00009.safetensors",
+      "model-00006-of-00009.safetensors",
+      "model-00002-of-00009.safetensors",
+      "model-00005-of-00009.safetensors",
+      "model-00003-of-00009.safetensors",
+      "model-00007-of-00009.safetensors",
+      "vision_k6.safetensors",
+      "model-00001-of-00009.safetensors"
+    ],
+    "weights": [
+      {
+        "bytes": 8059362762,
+        "mtime_ns": 1790623464428615773,
+        "name": "model-00001-of-00009.safetensors",
+        "path": "/home/cruzspark/models/flashnext-exl3-4.05bpw/model-00001-of-00009.safetensors"
+      },
+      {
+        "bytes": 8067865392,
+        "mtime_ns": 1790623830606903155,
+        "name": "model-00002-of-00009.safetensors",
+        "path": "/home/cruzspark/models/flashnext-exl3-4.05bpw/model-00002-of-00009.safetensors"
+      },
+      {
+        "bytes": 8062251066,
+        "mtime_ns": 1790623710758878594,
+        "name": "model-00003-of-00009.safetensors",
+        "path": "/home/cruzspark/models/flashnext-exl3-4.05bpw/model-00003-of-00009.safetensors"
+      },
+      {
+        "bytes": 8067896318,
+        "mtime_ns": 1790623974711731420,
+        "name": "model-00004-of-00009.safetensors",
+        "path": "/home/cruzspark/models/flashnext-exl3-4.05bpw/model-00004-of-00009.safetensors"
+      },
+      {
+        "bytes": 8062251066,
+        "mtime_ns": 1790623840405749033,
+        "name": "model-00005-of-00009.safetensors",
+        "path": "/home/cruzspark/models/flashnext-exl3-4.05bpw/model-00005-of-00009.safetensors"
+      },
+      {
+        "bytes": 8067896318,
+        "mtime_ns": 1790623829605918957,
+        "name": "model-00006-of-00009.safetensors",
+        "path": "/home/cruzspark/models/flashnext-exl3-4.05bpw/model-00006-of-00009.safetensors"
+      },
+      {
+        "bytes": 8062251066,
+        "mtime_ns": 1790623625953392746,
+        "name": "model-00007-of-00009.safetensors",
+        "path": "/home/cruzspark/models/flashnext-exl3-4.05bpw/model-00007-of-00009.safetensors"
+      },
+      {
+        "bytes": 8067896318,
+        "mtime_ns": 1790623973312751606,
+        "name": "model-00008-of-00009.safetensors",
+        "path": "/home/cruzspark/models/flashnext-exl3-4.05bpw/model-00008-of-00009.safetensors"
+      },
+      {
+        "bytes": 3191543125,
+        "mtime_ns": 1790623987389549214,
+        "name": "model-00009-of-00009.safetensors",
+        "path": "/home/cruzspark/models/flashnext-exl3-4.05bpw/model-00009-of-00009.safetensors"
+      },
+      {
+        "bytes": 39040193720,
+        "mtime_ns": 1790624463295409932,
+        "name": "ngram_embedding.safetensors",
+        "path": "/home/cruzspark/models/flashnext-exl3-4.05bpw/ngram_embedding.safetensors"
+      },
+      {
+        "bytes": 561389181,
+        "mtime_ns": 1790624263473850713,
+        "name": "vision_k6.safetensors",
+        "path": "/home/cruzspark/models/flashnext-exl3-4.05bpw/vision_k6.safetensors"
+      }
+    ]
+  },
+  "models": {
+    "data": [
+      {
+        "created": 1791464866,
+        "id": "Qwen3.8-Flash-Next-EXL3",
+        "logging": null,
+        "meta": {
+          "n_ctx": null,
+          "n_ctx_train": 262144,
+          "n_embd": 2560,
+          "n_vocab": 248320,
+          "size": 0
+        },
+        "object": "model",
+        "owned_by": "tabbyAPI",
+        "parameters": null
+      }
+    ],
+    "object": "list"
+  },
+  "optional_benchmark": false,
+  "ownership_token": "1759d6afc5ef453abf81817c53814bc2",
+  "passed": true,
+  "resolved_tuning": {
+    "BIGCORES": "5-9,15-19",
+    "CACHE_SIZE": "262144",
+    "CHUNK_SIZE": "2048",
+    "CUDA_HOME": "/usr/local/cuda",
+    "DRAFT_MODE": "mtp",
+    "DRAFT_NUM_TOKENS": "5",
+    "DYNAMIC_DRAFT": "true",
+    "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+    "EXL3_COOPMK_PLAN": "3",
+    "EXL3_DRAFT_CONFIDENCE": "0.6",
+    "EXL3_DRAFT_ROW_BUDGET": "0",
+    "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+    "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+    "EXL3_GDN_PROJ_FP32": "1",
+    "EXL3_GEMM_LEGACY_TILES": "1",
+    "EXL3_GR_INT8": "1",
+    "EXL3_INT8_GEMV": "0",
+    "EXL3_MIN_VERSION": "1.6.0.post1",
+    "EXL3_MOE_COOP_KSPLIT": "1",
+    "EXL3_MOE_COOP_MIXEDK": "0",
+    "EXL3_MOE_COOP_WIDE": "1",
+    "EXL3_MOE_MIXEDK_NOSYNC": "1",
+    "EXL3_MTP_HEAD_N": "65536",
+    "EXL3_REF": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+    "EXL3_REPO": "https://github.com/vcruz305/exllamav3.git",
+    "EXL3_SRC": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+    "MAX_BATCH_SIZE": "1",
+    "MAX_SEQ_LEN": "262144",
+    "NGRAM_RAM": "false",
+    "PROFILE": "single",
+    "REASONING": "true",
+    "SERVED_NAME": "Qwen3.8-Flash-Next-EXL3",
+    "SYSMEM_RECURRENT_CACHE": "4096",
+    "TOOL_FORMAT": "qwen3_5",
+    "TORCH_CUDA_ARCH_LIST": "12.1",
+    "VISION": "false"
+  },
+  "schema_version": 1,
+  "sdk_client": {
+    "packages": {
+      "httpx": "0.28.1",
+      "openai": "3.26.0",
+      "pydantic": "2.13.5"
+    },
+    "python": "3.12.3"
+  },
+  "server_cleanup": {
+    "exit_before_cleanup": null,
+    "exit_code": 0,
+    "owned_group_empty": true,
+    "signals": [
+      "SIGTERM"
+    ],
+    "unexpected_exit": false,
+    "wall_seconds": 2.4861859240008926
+  },
+  "server_command": [
+    "bash",
+    "/home/cruzspark/qwen-spark-recipe/exllamav3-tabby/serve.sh"
+  ],
+  "server_pid": 424023,
+  "setup_status_sha256": "cad9d73bc1334d14116f8512486a0d4902cb3d914ef36421f8ba5eb971846d1d",
+  "sources": {
+    "controller_sha256": "48281d5b51b1b64509385548c6f41f34909c328070274fcb4a06945ddcc44586",
+    "engine": {
+      "commit": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+      "path": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+      "tracked_changes": "",
+      "tracked_diff_sha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+    },
+    "files_sha256": {
+      "bench/api_client.py": "a834cd1ac95e1519a5a14856819c762a581d22ee1e61df5f4d57ca5f4c054adc",
+      "bench/bench_v1.py": "c60542c8d9c972a2f1d2ba66edf67a716e3b65e989952d94ed174008876f1191",
+      "bench/concurrency.py": "619efc805c3d4b3705947c0f67ac72c130086506f574ff04fb60b4323508a993",
+      "bench/tool_smoke.py": "666d7e4540637ad6dcaa13012b0bd3c57733f469a47587a17f0debedbc52d312",
+      "exllamav3-tabby/env.sh": "d0151eabb8244fd30ba77a98bc28100da8ff67049ca4fea8291a05cb6b4a463e",
+      "exllamav3-tabby/serve.sh": "84778406cc224dc8be68dcc2a9e8c71bff6330914ecc6d6fb1a79944d08176d9",
+      "exllamav3-tabby/tabby-config.yml": "b99ca974843b85340bc1d5caaa636c33ce65c672e03f84d964a9291036b12bb9",
+      "exllamav3-tabby/tools/model_memory.py": "f740d7212b2d38d73434922e2fc6f4577a1576c5bf5b70cc720f512c4800acac",
+      "exllamav3-tabby/tools/runtime_state.py": "5d29871fe7c8cfd831a479ea12ecb879d96078c44fccf65663dd8f20728aaff2"
+    },
+    "packages_sha256": "4f71ec141cedfa82781135669cb3492ad1547ace7dca61d370fc2acc9fa0210a",
+    "recipe": {
+      "commit": "3337bc8d64e4befafa2a1aff342e07abbea242ac",
+      "path": "/home/cruzspark/qwen-spark-recipe",
+      "tracked_changes": "",
+      "tracked_diff_sha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+    },
+    "runtime": "/home/cruzspark/qwen38-exl3-20261008",
+    "server": {
+      "commit": "5a4f3efa1c1f60b6966ba0d0d5610f6b953541fb",
+      "path": "/home/cruzspark/qwen38-exl3-20261008/tabbyAPI",
+      "tracked_changes": "",
+      "tracked_diff_sha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+    }
+  },
+  "started_at_utc": "2026-10-08T13:06:53.760210+00:00",
+  "state": "completed",
+  "state_dir": "/home/cruzspark/qwen-overnight-20261008/results/strings-final-405-24f0-5a/state"
+}
