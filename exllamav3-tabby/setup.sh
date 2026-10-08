@@ -53,7 +53,14 @@ if [[ ! -x "$VENV/bin/python" ]]; then
   "$PYTHON_BIN" -m venv "$VENV"
 fi
 PY="$VENV/bin/python"
+# BuildExtension discovers Ninja through PATH, not through Python imports.
+# A Ninja wheel installed only in the venv otherwise permits a silent fallback
+# to sequential distutils builds even when MAX_JOBS is set.
+export PATH="$VENV/bin:$CUDA_HOME/bin:$PATH"
+hash -r
 "$PY" -m pip install -q --upgrade pip setuptools wheel ninja packaging
+command -v ninja >/dev/null || die "ninja is not on PATH after installing the build dependencies"
+ninja --version >/dev/null || die "ninja is present but cannot run"
 
 # Preserve an already working CUDA-enabled Torch. Explicit TORCH_SPEC is applied
 # when FORCE_TORCH_INSTALL=1, or automatically if the environment lacks CUDA Torch.
@@ -65,6 +72,9 @@ if [[ "${FORCE_TORCH_INSTALL:-0}" == "1" ]] \
   "$PY" -m pip install -q "$TORCH_SPEC" --index-url "$TORCH_INDEX_URL"
 fi
 "$PY" -c 'import torch; assert torch.cuda.is_available(), "torch has no CUDA"; print("torch", torch.__version__, "cuda", torch.version.cuda, torch.cuda.get_device_name(0))'
+# Use Torch's own detection as the final gate; never silently choose distutils.
+"$PY" -c 'from torch.utils.cpp_extension import verify_ninja_availability; verify_ninja_availability()'
+say "Ninja $(ninja --version) at $(command -v ninja), build workers: ${MAX_JOBS:-$(nproc)}"
 
 # Base TabbyAPI only. GPU extras install incompatible stock runtime wheels on
 # some platforms. Settle all server dependencies before recording the build ABI.

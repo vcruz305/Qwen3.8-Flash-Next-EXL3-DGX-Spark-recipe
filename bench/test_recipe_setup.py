@@ -160,6 +160,46 @@ class SetupPreflightTests(unittest.TestCase):
             self.assertEqual(subprocess.check_output(["git", "-C", str(engine), "rev-parse", "HEAD"], text=True),
                              engine_head)
 
+    def test_setup_exposes_venv_ninja_before_invoking_build_python(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            engine, server = root / "engine", root / "server"
+            self.repo(engine)
+            self.repo(server)
+            engine_sha = subprocess.check_output(["git", "-C", str(engine), "rev-parse", "HEAD"], text=True).strip()
+            server_sha = subprocess.check_output(["git", "-C", str(server), "rev-parse", "HEAD"], text=True).strip()
+            bindir = root / "venv" / "bin"
+            bindir.mkdir(parents=True)
+            ninja = bindir / "ninja"
+            ninja.write_text("#!/bin/sh\necho fixture-ninja\n")
+            ninja.chmod(0o755)
+            python = bindir / "python"
+            # Stop before installing anything. This exercises the actual setup
+            # path through git/venv preparation to its first Python/pip call.
+            python.write_text("#!/bin/sh\n"
+                              'if [ "$(command -v ninja)" = "$EXPECTED_NINJA" ]; then\n'
+                              '  echo VENV_NINJA_VISIBLE >&2; exit 77\n'
+                              "fi\n"
+                              "echo VENV_NINJA_MISSING >&2; exit 66\n")
+            python.chmod(0o755)
+            cuda = root / "cuda" / "bin"
+            cuda.mkdir(parents=True)
+            nvcc = cuda / "nvcc"
+            nvcc.write_text("#!/bin/sh\necho 'Cuda compilation tools, release 13.0, V13.0.0'\n")
+            nvcc.chmod(0o755)
+            env = {**os.environ, "EXL3_SRC": str(engine), "TABBY_DIR": str(server),
+                   "EXL3_REPO": str(engine), "TABBY_REPO": str(server),
+                   "EXL3_REF": engine_sha, "TABBY_REF": server_sha,
+                   "VENV": str(root / "venv"), "RECIPE_HOME": str(root / "runtime"),
+                   "STATE_DIR": str(root / "state"), "PYTHON_BIN": sys.executable,
+                   "CUDA_HOME": str(root / "cuda"), "PATH": "/usr/bin:/bin",
+                   "EXPECTED_NINJA": str(ninja)}
+            result = subprocess.run(["bash", str(RECIPE / "setup.sh")], env=env,
+                                    text=True, capture_output=True, timeout=20)
+            self.assertEqual(result.returncode, 77, result.stderr)
+            self.assertIn("VENV_NINJA_VISIBLE", result.stderr)
+            self.assertNotIn("VENV_NINJA_MISSING", result.stderr)
+
     def test_untracked_work_is_not_overwritten(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
