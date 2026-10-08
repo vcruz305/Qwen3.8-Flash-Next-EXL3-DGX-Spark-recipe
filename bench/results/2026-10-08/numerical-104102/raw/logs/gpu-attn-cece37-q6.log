@@ -1,0 +1,54 @@
+q6 p1023 b1 g12 d256: old={'programs': 12, 'cap': 8, 'splits': 8, 'span': 192, 'rows': 16, 'sms': 48}, packed={'programs': 6, 'cap': 16, 'splits': 16, 'span': 96, 'rows': 32, 'sms': 48}, compat_changed=2/36864, max_abs=3.0517578125e-05, default_changed=11589
+F
+=================================== FAILURES ===================================
+_________________ test_actual_old_aot_numerics[spark_q6_p1023] _________________
+
+sources = {'legacy': <module 'spark_attn_compare_legacy' from '/home/cruzspark/qwen38-exl3/exllamav3/exllamav3/modules/attention.../qwen-overnight-20261008/attention-diagnostics-cece37/exllamav3-agent/exllamav3/modules/attention_fn/triton_paged.py'>}
+batch = 1, q_len = 6, prefix = 1023, group = 12, hd = 256
+
+    @pytest.mark.parametrize("batch,q_len,prefix,group,hd", [
+        (1, 6, 1023, 12, 256),
+        (1, 1, 1023, 12, 256),
+        (1, 6, 255, 12, 256),
+        (1, 4, 1023, 12, 256),
+        (1, 8, 1023, 12, 256),
+        (1, 5, 255, 6, 128),
+        (2, 6, 1023, 12, 256),
+        (1, 16, 4095, 12, 256),
+    ], ids=["spark_q6_p1023", "spark_q1_p1023", "spark_q6_p255", "power2_q4",
+            "power2_q8", "gqa6_q5", "batch2_q6", "long_q16"])
+    def test_actual_old_aot_numerics(sources, batch, q_len, prefix, group, hd):
+        generator = torch.Generator().manual_seed(941603 + q_len + prefix + group)
+        # Match the quality probe's five-page allocation for its short-prefix cases.
+        kv_heads, pages = 2, (max(prefix + q_len, 1072) + 255) // 256
+        q = torch.randn(batch, q_len, kv_heads * group, hd, generator=generator).half().cuda()
+        kc = torch.randn(batch * pages, 256, kv_heads, hd, generator=generator).half().cuda()
+        vc = torch.randn(batch * pages, 256, kv_heads, hd, generator=generator).half().cuda()
+        block = torch.randperm(batch * pages, generator=generator).reshape(batch, pages).int().cuda()
+        seqlens = torch.full((batch,), prefix, dtype=torch.int32, device="cuda")
+        old, old_plan = run(sources["legacy"], "legacy", False, q, kc, vc, block, seqlens)
+        baseline, baseline_plan = run(sources["baseline"], "baseline", False, q, kc, vc, block, seqlens)
+        off, off_plan = run(sources["candidate"], "candidate", False, q, kc, vc, block, seqlens)
+        compatible, compatible_plan = run(sources["candidate"], "candidate", True, q, kc, vc, block, seqlens)
+        assert torch.equal(off, baseline), "Disabled option changed frozen4b output"
+        assert off_plan == baseline_plan
+        assert compatible_plan["cap"] == old_plan["cap"]
+        assert compatible_plan["splits"] == old_plan["splits"]
+        assert compatible_plan["span"] == old_plan["span"]
+        assert compatible_plan["programs"] == baseline_plan["programs"]
+        changed = int((compatible != old).sum())
+        max_abs = float((compatible.float() - old.float()).abs().max())
+        print(f"q{q_len} p{prefix} b{batch} g{group} d{hd}: old={old_plan}, packed={baseline_plan}, "
+              f"compat_changed={changed}/{old.numel()}, max_abs={max_abs}, "
+              f"default_changed={int((baseline != old).sum())}")
+>       assert torch.equal(compatible, old), (
+            f"Historical split plan did not preserve original AOT output: {changed} changed, maxabs={max_abs}")
+E       AssertionError: Historical split plan did not preserve original AOT output: 2 changed, maxabs=3.0517578125e-05
+E       assert False
+E        +  where False = <built-in method equal of type object at 0xeeeeead1d638>(tensor([[[[ 0.0568, -0.0323, -0.0676,  ..., -0.0176, -0.0878, -0.0075],\n          [ 0.0899, -0.0493,  0.0273,  ..., -0...          [-0.0441, -0.0318, -0.0254,  ...,  0.0180, -0.0678, -0.0533]]]],\n       device='cuda:0', dtype=torch.float16), tensor([[[[ 0.0568, -0.0323, -0.0676,  ..., -0.0176, -0.0878, -0.0075],\n          [ 0.0899, -0.0493,  0.0273,  ..., -0...          [-0.0441, -0.0318, -0.0254,  ...,  0.0180, -0.0678, -0.0533]]]],\n       device='cuda:0', dtype=torch.float16))
+E        +    where <built-in method equal of type object at 0xeeeeead1d638> = torch.equal
+
+exllamav3-agent/tests/test_attn_legacy_splits_gpu.py:193: AssertionError
+=========================== short test summary info ============================
+FAILED exllamav3-agent/tests/test_attn_legacy_splits_gpu.py::test_actual_old_aot_numerics[spark_q6_p1023]
+1 failed, 7 deselected in 2.63s
