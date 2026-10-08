@@ -143,6 +143,61 @@ implementation. An unmatched closing wrapper such as `</tool_call>` outside a
 call remains ordinary content or reasoning text; a closing tag alone does not
 start a call.
 
+### Representing nullable text unambiguously
+
+The raw Qwen format renders both a literal string `"null"` and actual JSON null
+as the same parameter text, `null`. This is a wire-format ambiguity. A parser
+cannot recover the intended branch, and coercing an empty body to null would
+corrupt valid empty strings. A serialization hint may help the model write an
+intended null correctly, but cannot distinguish two identical wire values.
+
+If you control the tool schema, put the nullable value inside an object
+parameter. Qwen already renders object arguments as JSON, which distinguishes
+strings from null and preserves escaped newlines and quotes:
+
+```json
+{
+  "type": "function",
+  "function": {
+    "name": "record_value",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "payload": {
+          "type": "object",
+          "properties": {
+            "value": {"type": ["string", "null"]}
+          },
+          "required": ["value"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["payload"],
+      "additionalProperties": false
+    }
+  }
+}
+```
+
+The model then writes `{"value": "null"}`, `{"value": null}`, or
+`{"value": ""}` inside `<parameter=payload>...` for the three distinct cases.
+The API returns an ordinary OpenAI `function.arguments` JSON string containing
+that object under `payload`. This changes the application's tool schema; it does
+not require a new server codec.
+
+Validate the resulting object against the application's schema before executing
+the tool. A syntactically valid call can still contain the wrong semantic value.
+When the application already knows that only one branch is valid, use a
+string-only or null-only schema; enum or const constraints can describe a fixed
+expected value. The current XML grammar does not enforce those property
+constraints, so client validation is still necessary. Adding `const: "null"`
+while retaining `type: ["string", "null"]` does not change the current parser's
+raw union disambiguation.
+
+The object wrapper retains the wire format's literal `</parameter>` limitation.
+For arbitrary content containing that delimiter, use an explicit encoding that
+the application decodes after validation.
+
 ## Streaming, history and errors
 
 Each streamed choice starts with `delta.role: "assistant"`. A tool's first
@@ -235,6 +290,22 @@ Its CPU fixtures use the real SDK and an in-memory HTTP transport:
 ```bash
 .venv-sdk/bin/python -m unittest discover -s bench -p 'test_sdk_smoke.py' -v
 ```
+
+The optional real-template CPU integration check verifies the object-wrapper
+representation using your pack's actual chat template and the selected Tabby
+parser. It loads no weights and makes no model or network requests. Use the
+Tabby environment, which supplies the renderer/parser dependencies:
+
+```bash
+QWEN_TEST_TABBY_SOURCE=/path/to/tabbyAPI \
+QWEN_TEST_TOKENIZER_CONFIG=/path/to/model/tokenizer_config.json \
+  /path/to/runtime/venv/bin/python -m unittest discover \
+  -s bench -p 'test_qwen_template_roundtrip.py' -v
+```
+
+It covers actual null, empty and literal `null` strings, JSON-looking strings,
+quotes, indentation, LF/CRLF, Unicode and literal XML. This verifies serialization
+and parsing; it does not establish that the model selects the intended value.
 
 Repeat the live tests after switching each pack into service. Preserve failed
 baseline runs as well as candidate runs. Changing a test prompt or expectation
