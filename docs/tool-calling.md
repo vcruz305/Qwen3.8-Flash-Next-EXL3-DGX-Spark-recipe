@@ -15,11 +15,11 @@ weather results and execute no external tools.
 
 | Request setting | Behavior |
 |---|---|
-| Omitted `tool_choice`, or `"auto"` | The model can answer with text or call tools. |
+| Omitted `tool_choice`, or `"auto"` | The model can answer with text or call tools. For unconstrained Qwen requests, a content grammar constrains call syntax once a call opener is emitted. |
 | `tool_choice: "none"` | Tool declarations are removed from the generation prompt, and generated text is not converted into tool calls. Existing tool history can still be supplied. |
 | `tool_choice: "required"` | Qwen XML constrained sampling requires at least one complete call to a declared function. |
 | Named `tool_choice` | The grammar permits the selected function, and the template receives its declaration. |
-| `parallel_tool_calls: false` with `auto` | The API returns at most the first parsed call. |
+| `parallel_tool_calls: false` with `auto` | The automatic content grammar permits at most one call. Where that grammar is inactive, the API returns at most the first parsed call. |
 | `parallel_tool_calls: false` with a forced choice | The grammar restricts generation to one call. |
 
 Tools without parameters are supported. For example,
@@ -61,22 +61,37 @@ A named request uses the ordinary OpenAI shape:
 
 ### What the grammar enforces
 
-Required and named modes use llguidance to constrain call structure, function
-names and call count. The grammar uses the actual tokenizer's added token IDs
+Required, named and automatic Qwen modes use llguidance to constrain call
+structure, function names and call count. Automatic mode permits ordinary text
+and zero calls; after a complete `<tool_call>` or bare `<function=` opener, it
+requires a complete call before a normal end of generation. Text before and
+after calls remains allowed. A token budget can still interrupt a call.
+
+The grammar uses the actual tokenizer's added token IDs
 for native markers such as `<tool_call>`. Hugging Face added tokens marked
 `special=false` also need this handling; a grammar containing only their text
 can mask the model's normal marker tokens.
 
-When the template starts in a reasoning phase, the tool grammar applies after
-that phase closes. Tool examples inside reasoning remain reasoning text.
-Following reasoning, the grammar permits calls and bounded layout whitespace.
+When the template starts in a reasoning phase, the grammar applies after that
+phase closes. In forced modes, tool examples inside reasoning remain reasoning
+text; following reasoning, only calls and bounded layout whitespace are allowed.
+Automatic mode preserves the configured `tool_calls_in_reasoning` behavior,
+reasoning effort and reasoning budget. Its grammar governs the content phase.
+
+Automatic grammar installation is skipped for another explicit output constraint
+(`grammar_string`, `regex_pattern`, `json_schema` or non-text `response_format`),
+`response_prefix`, or `continue_final_message`. Those requested settings retain
+their existing behavior. It is also skipped for `none`, requests without tools,
+and non-Qwen formats. A text `response_format` can be combined with automatic
+tool syntax constraints.
 
 Argument parsing is schema-aware, but the XML grammar does **not** implement
 full strict JSON Schema enforcement. A declaration containing `strict: true`
 does not add full schema validation. Applications should validate required
 properties, allowed values, bounds and types before executing their tools.
 
-A forced request returns HTTP 400 for undeclared or duplicate function names,
+Qwen grammar construction rejects empty, duplicate or malformed function names
+with HTTP 400. A forced request also rejects an undeclared selected function,
 unsupported tool formats, and competing output constraints such as
 `grammar_string`, `regex_pattern`, `json_schema` or non-text
 `response_format`. A forced choice also rejects `response_prefix` and
@@ -102,12 +117,15 @@ a string from a JSON number, boolean, object, array or null.
 | `{"type":"boolean"}` | `true` | `true` |
 | `{"type":["string","null"]}` | `123` | `"123"` |
 | `{"type":["string","null"]}` | `null` | `null` |
+| `{"type":["string","null"]}` | An empty parameter body | `""` |
 | `{"type":["string","integer"]}` | `123` | `123` |
 
 For unions containing a string branch, a non-string JSON value is decoded only
 when its type is allowed. Otherwise the raw string is preserved. Raw `null`
 in a nullable string union deterministically means JSON null. To preserve the
-literal text `null` unambiguously, use a string-only parameter schema.
+literal text `null` unambiguously, use a string-only parameter schema. An empty
+parameter body remains an empty string; it is not coerced to null just because
+the schema also permits null.
 
 String values retain quotes, indentation, carriage returns and final blank
 lines. Only one surrounding LF inserted by the Qwen template is removed at
@@ -121,7 +139,9 @@ tools that write code or files containing markup. The first literal
 `</parameter>` still closes that parameter: this delimiter is ambiguous in
 the model's wire format. Tools that must transfer arbitrary content containing
 it can use an explicitly encoded argument and decode it in the tool
-implementation.
+implementation. An unmatched closing wrapper such as `</tool_call>` outside a
+call remains ordinary content or reasoning text; a closing tag alone does not
+start a call.
 
 ## Streaming, history and errors
 
@@ -224,6 +244,6 @@ requires a new comparison; do not relabel old failures as passing results.
 
 - [TabbyAPI tool calling documentation](https://github.com/vcruz305/tabbyAPI/blob/main/docs/10.-Tool-Calling.md)
 - [Qwen argument parser](https://github.com/vcruz305/tabbyAPI/blob/main/endpoints/OAI/utils/toolcall_formats/qwen3_coder.py)
-- [Forced tool-choice grammar](https://github.com/vcruz305/tabbyAPI/blob/main/endpoints/OAI/utils/tool_choice.py)
+- [Automatic and forced tool-choice grammars](https://github.com/vcruz305/tabbyAPI/blob/main/endpoints/OAI/utils/tool_choice.py)
 - [OpenAI Python SDK](https://github.com/openai/openai-python)
 - [Metric definitions and benchmark commands](../bench/README.md)
