@@ -1,0 +1,102 @@
+{
+  "artifacts": {
+    "bench_tool_stream.py": {
+      "bytes": 2783,
+      "sha256": "6cba4304708c88b6ebc5198404ec6bb3e0cabaa542e16a29bcb44e8eb8296bcd"
+    },
+    "historical-auto-tokenizer-check.json": {
+      "bytes": 5863,
+      "sha256": "79c9051c855668124283846c8032ca88f9951e2b4514ce3f7b1e5f32412c35e8"
+    },
+    "historical-parser-comparison.json": {
+      "bytes": 2402,
+      "sha256": "2857d9318e09cfc77a3b6392983626cd73bdecd2c2ea65218c4d66c08d61d740"
+    },
+    "historical-parser-optimized.json": {
+      "bytes": 1058,
+      "sha256": "3364381bdcac119ad58a350789babd090ac9ef9af2861df5b20d12f022cfa600"
+    },
+    "pytest-3a.log": {
+      "bytes": 750,
+      "sha256": "b9b9d73fcc47a1d34aea64b10efbbfca1a089509711c1c8cd674c2f6f178316a"
+    },
+    "tokenizer-3a.json": {
+      "bytes": 5859,
+      "sha256": "4ba439206594fdaea675c625cf0b4c47a19d4c09ecc38c80ffa61b7037e64505"
+    },
+    "tokenizer-3a.stderr.log": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "client_packages": {
+    "llguidance": "1.9.1",
+    "machine": "x86_64",
+    "pydantic": "2.13.5",
+    "pytest": "9.1.1",
+    "python": "3.10.12",
+    "tokenizers": "0.23.2"
+  },
+  "commands": [
+    {
+      "argv": [
+        "/home/vcruz/src/qwen-overnight-20261008/tabbyapi-agent/.venv-tools/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "-ra",
+        "tests"
+      ],
+      "cwd": "/home/vcruz/src/qwen-overnight-20261008/tabbyapi-agent",
+      "exit_code": 0,
+      "name": "pytest"
+    },
+    {
+      "argv": [
+        "/home/vcruz/src/qwen-overnight-20261008/tabbyapi-agent/.venv-tools/bin/python",
+        "-m",
+        "tests.check_qwen_tool_tokenizer",
+        "/home/vcruz/src/qwen-overnight-20261008/tabbyapi-agent/.tokenizer-cpu/tokenizer.json"
+      ],
+      "cwd": "/home/vcruz/src/qwen-overnight-20261008/tabbyapi-agent",
+      "exit_code": 0,
+      "name": "tokenizer"
+    }
+  ],
+  "cpu_only": true,
+  "historical_parser_scope": {
+    "baseline_revision_recorded": "dd0b81b06f21748c232a6b0e52df773a7113b7f9",
+    "note": "Original comparison records baseline revision but not optimized revision. Preserve this limit; this is not a newly measured exact-3a benchmark. It is a CPU parser microbenchmark on WSL x86_64, not Spark model/API throughput.",
+    "optimized_revision_recorded": null
+  },
+  "parser_source_catalog": {
+    "3a4d2d5732f0a4de23ffbf2c493d21e9534417aa": {
+      "endpoints/OAI/utils/toolcall_stream.py": "221d7fd9e24db43192d8bdc6bde071ce152ffce3e4721731b79e264fe9c63644",
+      "tests/bench_tool_stream.py": "6cba4304708c88b6ebc5198404ec6bb3e0cabaa542e16a29bcb44e8eb8296bcd"
+    },
+    "dd0b81b06f21748c232a6b0e52df773a7113b7f9": {
+      "endpoints/OAI/utils/toolcall_stream.py": "4bfb9cf32d35fed4b64cd07e23167629fef55cf330398c2cc8d996e537051c4c",
+      "tests/bench_tool_stream.py": null
+    },
+    "e555c920c22d0bc452435d74628ca929b841f33f": {
+      "endpoints/OAI/utils/toolcall_stream.py": "1f9f744a03acd213eeec600037253305f999056ee7c1e51be4aaa32096a7caad",
+      "tests/bench_tool_stream.py": "6cba4304708c88b6ebc5198404ec6bb3e0cabaa542e16a29bcb44e8eb8296bcd"
+    }
+  },
+  "pytest_summary": "320 passed, 2 skipped, 4829 subtests passed in 8.83s",
+  "recorded_finish_utc": "2026-10-08T09:27:17.524718+00:00",
+  "recorded_start_utc": "2026-10-08T09:27:03.706416+00:00",
+  "source_files": {
+    "endpoints/OAI/utils/tool_choice.py": "d52002ace44309a42c23bea4c9e235c200ff6cd272377a3497c9ad150a7b164e",
+    "endpoints/OAI/utils/toolcall_formats/qwen3_coder.py": "fda73ae720caa3e9d58beae609283a78559431c5f4fd832b6ad964b372db7ae2",
+    "endpoints/OAI/utils/toolcall_stream.py": "221d7fd9e24db43192d8bdc6bde071ce152ffce3e4721731b79e264fe9c63644",
+    "tests/bench_tool_stream.py": "6cba4304708c88b6ebc5198404ec6bb3e0cabaa542e16a29bcb44e8eb8296bcd",
+    "tests/check_qwen_tool_tokenizer.py": "0392deb89a968e130b5164096b74728b3fcbaaccb17499f65b0c9b44eb7cd295"
+  },
+  "tabby_revision": "3a4d2d5732f0a4de23ffbf2c493d21e9534417aa",
+  "tokenizer_checks": {
+    "cases": 27,
+    "prefix_masks": 3,
+    "tokenizer_sha256": "0997f410c57a1f4e53b09e4be8f4a172d90edd9564368fb0847030937229b9f3"
+  }
+}
