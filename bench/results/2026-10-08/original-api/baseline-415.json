@@ -1,0 +1,908 @@
+{
+  "schema_version": 2,
+  "started_at_utc": "2026-10-08T06:56:50.051788+00:00",
+  "label": "baseline-415-single-disk",
+  "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+  "run_id": "overnight-v1",
+  "base_url": "http://127.0.0.1:8899/v1",
+  "client": {
+    "python": "3.12.3",
+    "platform": "Linux-7.0.0-1019-nvidia-aarch64-with-glibc2.39"
+  },
+  "provenance": {
+    "recorded_utc": "2026-10-08T06:46:38.059593+00:00",
+    "uname": "Linux spark-724a 7.0.0-1019-nvidia #19~24.04.2-Ubuntu SMP PREEMPT_DYNAMIC Sun Sep  6 18:35:11 UTC 2 aarch64 aarch64 aarch64 GNU/Linux",
+    "cpu": "Architecture:                            aarch64\nCPU op-mode(s):                          64-bit\nByte Order:                              Little Endian\nCPU(s):                                  20\nOn-line CPU(s) list:                     0-19\nVendor ID:                               ARM\nModel name:                              Cortex-X925\nModel:                                   1\nThread(s) per core:                      1\nCore(s) per socket:                      10\nSocket(s):                               1\nStepping:                                r0p1\nFrequency boost:                         disabled\nCPU(s) scaling MHz:                      100%\nCPU max MHz:                             3900.0000\nCPU min MHz:                             1378.0000\nBogoMIPS:                                2000.00\nFlags:                                   fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm dit uscat ilrcpc flagm sb paca pacg dcpodp sve2 sveaes svepmull svebitperm svesha3 svesm4 flagm2 frint svei8mm svebf16 i8mm bf16 dgh bti ecv afp wfxt\nModel name:                              Cortex-A725\nModel:                                   1\nThread(s) per core:                      1\nCore(s) per socket:                      10\nSocket(s):                               1\nStepping:                                r0p1\nCPU(s) scaling MHz:                      100%\nCPU max MHz:                             2808.0000\nCPU min MHz:                             338.0000\nBogoMIPS:                                2000.00\nFlags:                                   fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm dit uscat ilrcpc flagm sb paca pacg dcpodp sve2 sveaes svepmull svebitperm svesha3 svesm4 flagm2 frint svei8mm svebf16 i8mm bf16 dgh bti ecv afp wfxt\nL1d cache:                               1.3 MiB (20 instances)\nL1i cache:                               1.3 MiB (20 instances)\nL2 cache:                                25 MiB (20 instances)\nL3 cache:                                24 MiB (2 instances)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-19\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; CSV2, BHB\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected\n",
+    "gpu": "NVIDIA GB10, 580.178.04, 38, 9.98 W",
+    "baseline_engine": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+    "baseline_tabby": "816c32195887aaecea1c64528f2921566766259b",
+    "model": "flashnext-exl3-sage-4.15bpw",
+    "ngram_ram": false,
+    "profile": "single",
+    "max_seq_len": 262144,
+    "cache_size": 262144,
+    "max_batch_size": 1,
+    "pid": 89786,
+    "ready_at_utc": "2026-10-08T06:56:50.011468+00:00",
+    "model_config_sha256": "d632a03fe38666033750d62df05d36a9e460f761a2938b8c7ad442a1c0ee4f9d",
+    "launch_config": "# TabbyAPI config for Qwen3.8-Flash-Next EXL3 on one DGX Spark.\n# serve.sh renders this into <recipe home>/state/config.yml, filling the dollar-brace fields from\n# serve.sh variables and the environment. Every key below exists in theroyallab/tabbyAPI main; see its config_sample.yml\n# for the full list.\n\nnetwork:\n  host: 127.0.0.1\n  port: 8899\n  # true only when bound to loopback (serve.sh decides). Otherwise TabbyAPI writes\n  # api_tokens.yml into its own directory and clients need the key.\n  disable_auth: true\n  api_servers: [\"OAI\"]\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n\nmodel:\n  model_dir: /home/cruzspark/qwen-overnight-20261008/state-baseline-415/models\n  model_name: Qwen3.8-Flash-Next-EXL3\n  backend: exllamav3\n  inline_model_loading: false\n\n  # Context. max_seq_len is the per-request ceiling: 262,144 is the trained window, and needle\n  # retrieval fails past it (README, \"Context: the ceiling\"). cache_size is ONE shared KV pool\n  # for all concurrent requests, so it must be sized for concurrency, not per request:\n  # at 8-bit KV this geometry costs ~12-13 KB/token (12 of 48 layers are full attention plus the\n  # MTP layer, 2 KV heads at 256), so 1,048,576 tokens is ~13 GiB and holds four full-length\n  # sessions at once. serve.sh PROFILE=concurrent|single picks these values.\n  max_seq_len: 262144\n  cache_size: 262144\n  cache_mode: \"8,8\"\n  chunk_size: 2048\n\n  # Concurrent generation jobs. Each one also reserves a recurrent-state slot for the 36\n  # linear-attention layers. TabbyAPI's own default for recurrent models is 4.\n  max_batch_size: 1\n\n  # n-gram (PLE) table: true loads it into RAM (how the README's single-stream numbers were\n  # measured); false streams rows from disk per forward (~30 GB less resident, which is the room\n  # the concurrent profile spends on KV and batch; also needed for the 4.05 bpw pack).\n  ngram_ram: false\n\n  vision: false\n  warmup: true\n\n  # Qwen3.x XML tool calls (<function=...><parameter=...>) and <think> reasoning.\n  tool_format: qwen3_5\n  reasoning: true\n\ndraft_model:\n  # The model's own MTP head. Up to 5 drafts, cut early by confidence (the 0.6 target is read by\n  # the fork from EXL3_DRAFT_CONFIDENCE, which serve.sh exports).\n  draft_mode: mtp\n  draft_cache_mode: \"8,8\"\n  draft_num_tokens: 5\n  dynamic_draft: true\n\nmemory:\n  sysmem_recurrent_cache: 4096\n\n# Sampler fallbacks for requests that leave a value out. force: false, so any value a client\n# sends still wins. These are the model's own recommended settings (generation_config.json:\n# temperature 1.0, top_k 20, top_p 0.95). TabbyAPI does not read them from generation_config,\n# and with no sampling section it falls back to top_k 0 and top_p 1.0, i.e. no truncation:\n# every token is drawn from the full ~250k vocabulary. Clients that send no sampler values\n# (agent frameworks such as Hermes) then drift into garbage once a long reply draws a tail\n# token. Draft acceptance collapsing on one request is the tell.\nsampling:\n  temperature:\n    override: 1.0\n    force: false\n  top_k:\n    override: 20\n    force: false\n  top_p:\n    override: 0.95\n    force: false\n  min_p:\n    override: 0.0\n    force: false\n",
+    "model_safetensors_bytes": 108900928382
+  },
+  "settings": {
+    "max_tokens": 400,
+    "repeat": 3,
+    "warmup": 1,
+    "context_tokens_approx": 0,
+    "cache_mode": "cold",
+    "thinking": false,
+    "temperature": 0,
+    "top_k": 1,
+    "seed": 0
+  },
+  "metric_notes": [
+    "server_decode_tok_s and server_prefill_tok_s are server-reported timings.",
+    "client_end_to_end_tok_s includes prefill, queueing and HTTP overhead.",
+    "TTFT is time to first visible content/reasoning/tool delta, not a role or ping event.",
+    "SSE events may contain multiple speculative tokens; client_decode_tok_s_estimate is approximate.",
+    "A unique cold prefix avoids reusable user prompt blocks; inspect actual cached_prompt_tokens.",
+    "context_tokens_approx is only a prompt construction target; usage.prompt_tokens is authoritative.",
+    "Early EOS is allowed and reported; no request is counted as max_tokens unless usage says so."
+  ],
+  "cases": {
+    "code": {
+      "prompt_sha256": "04941277fec997f5df5ac7c02613e737121b2aef753be6f6aba264c5bb161fed",
+      "warmup": [
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 87,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 87,
+          "completion_tokens": 400,
+          "ttft_s": 0.8879607010003383,
+          "wall_s": 9.071917338998901,
+          "server_decode_tok_s": 46.87,
+          "server_prefill_tok_s": 167.31,
+          "client_end_to_end_tok_s": 44.092112510820186,
+          "client_decode_tok_s_estimate": 48.75438876606092,
+          "draft_acceptance": 0.7823834196891192,
+          "usage": {
+            "prompt_tokens": 87,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.52,
+            "prompt_tokens_per_sec": 167.31,
+            "completion_tokens": 400,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 302,
+              "rejected_prediction_tokens": 84
+            },
+            "completion_time": 8.53,
+            "completion_tokens_per_sec": 46.87,
+            "total_tokens": 487,
+            "total_time": 9.06
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 87,
+            "prompt_ms": 520.0,
+            "prompt_per_token_ms": 5.977011494252873,
+            "prompt_per_second": 167.30769230769232,
+            "predicted_n": 400,
+            "predicted_ms": 8530.0,
+            "predicted_per_token_ms": 21.325,
+            "predicted_per_second": 46.893317702227435,
+            "draft_n": 386,
+            "draft_n_accepted": 302
+          },
+          "sse_events": 99,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "01b42b16f44d340c7dbb42de64ef629fbbd2c0b2d97ad74179f9f71745113a31",
+          "response_sha256": "62235d306f54c41635b2085687e41c2ef4e2b57c8ba1bc818f4f824a450e2db5",
+          "phase": "warmup",
+          "repeat_index": 0
+        }
+      ],
+      "runs": [
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 87,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 87,
+          "completion_tokens": 400,
+          "ttft_s": 0.5424812879991805,
+          "wall_s": 8.824880825999571,
+          "server_decode_tok_s": 47.1,
+          "server_prefill_tok_s": 263.64,
+          "client_end_to_end_tok_s": 45.326391130578585,
+          "client_decode_tok_s_estimate": 48.17474826177991,
+          "draft_acceptance": 0.7274939172749392,
+          "usage": {
+            "prompt_tokens": 87,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.33,
+            "prompt_tokens_per_sec": 263.64,
+            "completion_tokens": 400,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 299,
+              "rejected_prediction_tokens": 112
+            },
+            "completion_time": 8.49,
+            "completion_tokens_per_sec": 47.1,
+            "total_tokens": 487,
+            "total_time": 8.82
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 87,
+            "prompt_ms": 330.0,
+            "prompt_per_token_ms": 3.793103448275862,
+            "prompt_per_second": 263.6363636363636,
+            "predicted_n": 400,
+            "predicted_ms": 8490.0,
+            "predicted_per_token_ms": 21.225,
+            "predicted_per_second": 47.11425206124853,
+            "draft_n": 411,
+            "draft_n_accepted": 299
+          },
+          "sse_events": 102,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "1e4d83713ecf867c7c7a74ada9ce4c8178ba438c321722fa5b901289a2f63b91",
+          "response_sha256": "62235d306f54c41635b2085687e41c2ef4e2b57c8ba1bc818f4f824a450e2db5",
+          "phase": "measured",
+          "repeat_index": 0
+        },
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 87,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 87,
+          "completion_tokens": 400,
+          "ttft_s": 0.5416438629999902,
+          "wall_s": 8.530753459001062,
+          "server_decode_tok_s": 48.78,
+          "server_prefill_tok_s": 271.88,
+          "client_end_to_end_tok_s": 46.88917595877157,
+          "client_decode_tok_s_estimate": 49.94338509865404,
+          "draft_acceptance": 0.7568922305764411,
+          "usage": {
+            "prompt_tokens": 87,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.32,
+            "prompt_tokens_per_sec": 271.88,
+            "completion_tokens": 400,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 302,
+              "rejected_prediction_tokens": 97
+            },
+            "completion_time": 8.2,
+            "completion_tokens_per_sec": 48.78,
+            "total_tokens": 487,
+            "total_time": 8.52
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 87,
+            "prompt_ms": 320.0,
+            "prompt_per_token_ms": 3.67816091954023,
+            "prompt_per_second": 271.875,
+            "predicted_n": 400,
+            "predicted_ms": 8200.0,
+            "predicted_per_token_ms": 20.5,
+            "predicted_per_second": 48.78048780487805,
+            "draft_n": 399,
+            "draft_n_accepted": 302
+          },
+          "sse_events": 99,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "cf95affd6cbaf60177a5a75f736002c286d977b74ae3d3795cdd935b58883d22",
+          "response_sha256": "62235d306f54c41635b2085687e41c2ef4e2b57c8ba1bc818f4f824a450e2db5",
+          "phase": "measured",
+          "repeat_index": 1
+        },
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 87,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 87,
+          "completion_tokens": 400,
+          "ttft_s": 0.5362727230003657,
+          "wall_s": 8.27885196599891,
+          "server_decode_tok_s": 50.33,
+          "server_prefill_tok_s": 263.64,
+          "client_end_to_end_tok_s": 48.31587781044914,
+          "client_decode_tok_s_estimate": 51.53357751036818,
+          "draft_acceptance": 0.8169761273209549,
+          "usage": {
+            "prompt_tokens": 87,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.33,
+            "prompt_tokens_per_sec": 263.64,
+            "completion_tokens": 400,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 308,
+              "rejected_prediction_tokens": 69
+            },
+            "completion_time": 7.95,
+            "completion_tokens_per_sec": 50.33,
+            "total_tokens": 487,
+            "total_time": 8.28
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 87,
+            "prompt_ms": 330.0,
+            "prompt_per_token_ms": 3.793103448275862,
+            "prompt_per_second": 263.6363636363636,
+            "predicted_n": 400,
+            "predicted_ms": 7950.0,
+            "predicted_per_token_ms": 19.875,
+            "predicted_per_second": 50.314465408805034,
+            "draft_n": 377,
+            "draft_n_accepted": 308
+          },
+          "sse_events": 93,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "cf0cba09d0d43d8be3406e84c44ddc457d81a898f45ae4e52d9e3163410ebb97",
+          "response_sha256": "e6d74ec49903f36f9d8d8b404aebafc7185f07b96a041c37eb4b887174448403",
+          "phase": "measured",
+          "repeat_index": 2
+        }
+      ],
+      "summary": {
+        "requests": 3,
+        "server_decode_tok_s": {
+          "p50": 48.78,
+          "p95": 50.175,
+          "samples": 3
+        },
+        "server_prefill_tok_s": {
+          "p50": 263.64,
+          "p95": 271.056,
+          "samples": 3
+        },
+        "ttft_s": {
+          "p50": 0.5416438629999902,
+          "p95": 0.5423975454992614,
+          "samples": 3
+        },
+        "wall_s": {
+          "p50": 8.530753459001062,
+          "p95": 8.795468089299721,
+          "samples": 3
+        },
+        "client_end_to_end_tok_s": {
+          "p50": 46.88917595877157,
+          "p95": 48.17320762528138,
+          "samples": 3
+        },
+        "client_decode_tok_s_estimate": {
+          "p50": 49.94338509865404,
+          "p95": 51.37455826919677,
+          "samples": 3
+        },
+        "draft_acceptance": {
+          "p50": 0.7568922305764411,
+          "p95": 0.8109677376465035,
+          "samples": 3
+        },
+        "completion_tokens": [
+          400,
+          400,
+          400
+        ],
+        "prompt_tokens": [
+          87,
+          87,
+          87
+        ],
+        "cached_prompt_tokens": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "devops": {
+      "prompt_sha256": "e19e97b4653edee8cbc9dc7be30c8bc24d934e90956e5fe320802b6330e55ecb",
+      "warmup": [
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 63,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 63,
+          "completion_tokens": 400,
+          "ttft_s": 0.5174502829995618,
+          "wall_s": 9.22433277500022,
+          "server_decode_tok_s": 44.79,
+          "server_prefill_tok_s": 217.24,
+          "client_end_to_end_tok_s": 43.3635700008655,
+          "client_decode_tok_s_estimate": 45.82618070303916,
+          "draft_acceptance": 0.7730870712401056,
+          "usage": {
+            "prompt_tokens": 63,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.29,
+            "prompt_tokens_per_sec": 217.24,
+            "completion_tokens": 400,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 293,
+              "rejected_prediction_tokens": 86
+            },
+            "completion_time": 8.93,
+            "completion_tokens_per_sec": 44.79,
+            "total_tokens": 463,
+            "total_time": 9.22
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 63,
+            "prompt_ms": 290.0,
+            "prompt_per_token_ms": 4.603174603174603,
+            "prompt_per_second": 217.24137931034483,
+            "predicted_n": 400,
+            "predicted_ms": 8930.0,
+            "predicted_per_token_ms": 22.325,
+            "predicted_per_second": 44.79283314669653,
+            "draft_n": 379,
+            "draft_n_accepted": 293
+          },
+          "sse_events": 108,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "f62479e9c49c8bda3ccb7093162a2890293def2871d9e034a9b34e9e22620ef5",
+          "response_sha256": "60059b30be2aa80bd7982864829ab7498b06129649ce112fee02f0aba33b0f16",
+          "phase": "warmup",
+          "repeat_index": 0
+        }
+      ],
+      "runs": [
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 63,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 63,
+          "completion_tokens": 400,
+          "ttft_s": 0.5211499619999813,
+          "wall_s": 8.737725527000293,
+          "server_decode_tok_s": 47.27,
+          "server_prefill_tok_s": 233.33,
+          "client_end_to_end_tok_s": 45.77850365795618,
+          "client_decode_tok_s_estimate": 48.56083627492144,
+          "draft_acceptance": 0.772609819121447,
+          "usage": {
+            "prompt_tokens": 63,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.27,
+            "prompt_tokens_per_sec": 233.33,
+            "completion_tokens": 400,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 299,
+              "rejected_prediction_tokens": 88
+            },
+            "completion_time": 8.46,
+            "completion_tokens_per_sec": 47.27,
+            "total_tokens": 463,
+            "total_time": 8.73
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 63,
+            "prompt_ms": 270.0,
+            "prompt_per_token_ms": 4.285714285714286,
+            "prompt_per_second": 233.33333333333334,
+            "predicted_n": 400,
+            "predicted_ms": 8460.0,
+            "predicted_per_token_ms": 21.15,
+            "predicted_per_second": 47.28132387706856,
+            "draft_n": 387,
+            "draft_n_accepted": 299
+          },
+          "sse_events": 102,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "b3e9364d0270173103811c896070b3c98af6fbfd2eb07e30d070008144a71201",
+          "response_sha256": "7317e06526b6373b563a64d670fa2726500a78c7b8e656a7d1d0381f6c80a5bf",
+          "phase": "measured",
+          "repeat_index": 0
+        },
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 63,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 63,
+          "completion_tokens": 400,
+          "ttft_s": 0.510133848998521,
+          "wall_s": 9.106902439998521,
+          "server_decode_tok_s": 45.29,
+          "server_prefill_tok_s": 233.33,
+          "client_end_to_end_tok_s": 43.92272813236209,
+          "client_decode_tok_s_estimate": 46.41316735406367,
+          "draft_acceptance": 0.7404580152671756,
+          "usage": {
+            "prompt_tokens": 63,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.27,
+            "prompt_tokens_per_sec": 233.33,
+            "completion_tokens": 400,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 291,
+              "rejected_prediction_tokens": 102
+            },
+            "completion_time": 8.83,
+            "completion_tokens_per_sec": 45.29,
+            "total_tokens": 463,
+            "total_time": 9.1
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 63,
+            "prompt_ms": 270.0,
+            "prompt_per_token_ms": 4.285714285714286,
+            "prompt_per_second": 233.33333333333334,
+            "predicted_n": 400,
+            "predicted_ms": 8830.0,
+            "predicted_per_token_ms": 22.075,
+            "predicted_per_second": 45.300113250283125,
+            "draft_n": 393,
+            "draft_n_accepted": 291
+          },
+          "sse_events": 110,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "bf0dfccf3ddf3dd576763c360f8d9dba2580e504cb6301dd4a735f2d3105840e",
+          "response_sha256": "60059b30be2aa80bd7982864829ab7498b06129649ce112fee02f0aba33b0f16",
+          "phase": "measured",
+          "repeat_index": 1
+        },
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 63,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 63,
+          "completion_tokens": 400,
+          "ttft_s": 0.5172092970005906,
+          "wall_s": 8.881873516000269,
+          "server_decode_tok_s": 46.48,
+          "server_prefill_tok_s": 233.33,
+          "client_end_to_end_tok_s": 45.03554337712862,
+          "client_decode_tok_s_estimate": 47.701050866200966,
+          "draft_acceptance": 0.7710526315789473,
+          "usage": {
+            "prompt_tokens": 63,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.27,
+            "prompt_tokens_per_sec": 233.33,
+            "completion_tokens": 400,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 293,
+              "rejected_prediction_tokens": 87
+            },
+            "completion_time": 8.6,
+            "completion_tokens_per_sec": 46.48,
+            "total_tokens": 463,
+            "total_time": 8.88
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 63,
+            "prompt_ms": 270.0,
+            "prompt_per_token_ms": 4.285714285714286,
+            "prompt_per_second": 233.33333333333334,
+            "predicted_n": 400,
+            "predicted_ms": 8600.0,
+            "predicted_per_token_ms": 21.5,
+            "predicted_per_second": 46.51162790697674,
+            "draft_n": 380,
+            "draft_n_accepted": 293
+          },
+          "sse_events": 108,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "4f88310f9abffeb79fa62a69a2601ee7a7bdc05480ac8c2f49b4cc86e040247f",
+          "response_sha256": "72d3e5184bb43bebf7269c50d28b9689a95af2b73749ce1d26e5324b2e819d63",
+          "phase": "measured",
+          "repeat_index": 2
+        }
+      ],
+      "summary": {
+        "requests": 3,
+        "server_decode_tok_s": {
+          "p50": 46.48,
+          "p95": 47.191,
+          "samples": 3
+        },
+        "server_prefill_tok_s": {
+          "p50": 233.33,
+          "p95": 233.33,
+          "samples": 3
+        },
+        "ttft_s": {
+          "p50": 0.5172092970005906,
+          "p95": 0.5207558955000422,
+          "samples": 3
+        },
+        "wall_s": {
+          "p50": 8.881873516000269,
+          "p95": 9.084399547598697,
+          "samples": 3
+        },
+        "client_end_to_end_tok_s": {
+          "p50": 45.03554337712862,
+          "p95": 45.70420762987342,
+          "samples": 3
+        },
+        "client_decode_tok_s_estimate": {
+          "p50": 47.701050866200966,
+          "p95": 48.474857734049394,
+          "samples": 3
+        },
+        "draft_acceptance": {
+          "p50": 0.7710526315789473,
+          "p95": 0.772454100367197,
+          "samples": 3
+        },
+        "completion_tokens": [
+          400,
+          400,
+          400
+        ],
+        "prompt_tokens": [
+          63,
+          63,
+          63
+        ],
+        "cached_prompt_tokens": [
+          0,
+          0,
+          0
+        ]
+      }
+    },
+    "prose": {
+      "prompt_sha256": "e57537d91b6ad207a6273bf7249e1ccbe053bc6bbea6f1f0eb9916a6cd51992c",
+      "warmup": [
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 72,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 72,
+          "completion_tokens": 400,
+          "ttft_s": 0.5510502140004974,
+          "wall_s": 13.221437653000976,
+          "server_decode_tok_s": 31.04,
+          "server_prefill_tok_s": 218.18,
+          "client_end_to_end_tok_s": 30.253896020846778,
+          "client_decode_tok_s_estimate": 31.49097279359533,
+          "draft_acceptance": 0.5555555555555556,
+          "usage": {
+            "prompt_tokens": 72,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.33,
+            "prompt_tokens_per_sec": 218.18,
+            "completion_tokens": 400,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 215,
+              "rejected_prediction_tokens": 172
+            },
+            "completion_time": 12.89,
+            "completion_tokens_per_sec": 31.04,
+            "total_tokens": 472,
+            "total_time": 13.22
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 72,
+            "prompt_ms": 330.0,
+            "prompt_per_token_ms": 4.583333333333333,
+            "prompt_per_second": 218.1818181818182,
+            "predicted_n": 400,
+            "predicted_ms": 12890.0,
+            "predicted_per_token_ms": 32.225,
+            "predicted_per_second": 31.03180760279286,
+            "draft_n": 387,
+            "draft_n_accepted": 215
+          },
+          "sse_events": 186,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "ae4b2c4d8d0c66bf47d351b6c70c9a0c12c7a7cdb05bd548672232b324ba0904",
+          "response_sha256": "a97a017ba2c0cc4b4a27bcc5bc65637e21e73b0267f4e28643b3a9c85c62b622",
+          "phase": "warmup",
+          "repeat_index": 0
+        }
+      ],
+      "runs": [
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 72,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 72,
+          "completion_tokens": 400,
+          "ttft_s": 0.531335546000264,
+          "wall_s": 13.397489262000818,
+          "server_decode_tok_s": 30.61,
+          "server_prefill_tok_s": 225.0,
+          "client_end_to_end_tok_s": 29.856340406595177,
+          "client_decode_tok_s_estimate": 31.011832225320553,
+          "draft_acceptance": 0.5466321243523317,
+          "usage": {
+            "prompt_tokens": 72,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.32,
+            "prompt_tokens_per_sec": 225.0,
+            "completion_tokens": 400,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 211,
+              "rejected_prediction_tokens": 175
+            },
+            "completion_time": 13.07,
+            "completion_tokens_per_sec": 30.61,
+            "total_tokens": 472,
+            "total_time": 13.39
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 72,
+            "prompt_ms": 320.0,
+            "prompt_per_token_ms": 4.444444444444445,
+            "prompt_per_second": 225.0,
+            "predicted_n": 400,
+            "predicted_ms": 13070.0,
+            "predicted_per_token_ms": 32.675,
+            "predicted_per_second": 30.604437643458297,
+            "draft_n": 386,
+            "draft_n_accepted": 211
+          },
+          "sse_events": 190,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "5c10a8c622b74c361e7b6a5bda736bd4d1ca79207f9dd2e5c8b3c5c1429a22d1",
+          "response_sha256": "28371dabad099419106281f53372dc077985cc97c91fa3790449b84eaa964ff8",
+          "phase": "measured",
+          "repeat_index": 0
+        },
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 72,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 72,
+          "completion_tokens": 400,
+          "ttft_s": 0.5347982269995555,
+          "wall_s": 13.287671461999707,
+          "server_decode_tok_s": 30.86,
+          "server_prefill_tok_s": 225.0,
+          "client_end_to_end_tok_s": 30.103092264429197,
+          "client_decode_tok_s_estimate": 31.28733130465933,
+          "draft_acceptance": 0.5769230769230769,
+          "usage": {
+            "prompt_tokens": 72,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.32,
+            "prompt_tokens_per_sec": 225.0,
+            "completion_tokens": 400,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 210,
+              "rejected_prediction_tokens": 154
+            },
+            "completion_time": 12.96,
+            "completion_tokens_per_sec": 30.86,
+            "total_tokens": 472,
+            "total_time": 13.28
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 72,
+            "prompt_ms": 320.0,
+            "prompt_per_token_ms": 4.444444444444445,
+            "prompt_per_second": 225.0,
+            "predicted_n": 400,
+            "predicted_ms": 12960.0,
+            "predicted_per_token_ms": 32.4,
+            "predicted_per_second": 30.864197530864196,
+            "draft_n": 364,
+            "draft_n_accepted": 210
+          },
+          "sse_events": 191,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "88a4e5bab01c74a52549bbd54fcab252d7e0fc1ad7785c841eec6d0653e066e0",
+          "response_sha256": "2ec41bb33ea92d22436eef0acf78afcd10584d223ead9443b6183de2428cdd1a",
+          "phase": "measured",
+          "repeat_index": 1
+        },
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 72,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 72,
+          "completion_tokens": 400,
+          "ttft_s": 0.5219200699993962,
+          "wall_s": 13.339201184999183,
+          "server_decode_tok_s": 30.75,
+          "server_prefill_tok_s": 225.0,
+          "client_end_to_end_tok_s": 29.986803141542428,
+          "client_decode_tok_s_estimate": 31.13001412951456,
+          "draft_acceptance": 0.5807365439093485,
+          "usage": {
+            "prompt_tokens": 72,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.32,
+            "prompt_tokens_per_sec": 225.0,
+            "completion_tokens": 400,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 205,
+              "rejected_prediction_tokens": 148
+            },
+            "completion_time": 13.01,
+            "completion_tokens_per_sec": 30.75,
+            "total_tokens": 472,
+            "total_time": 13.33
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 72,
+            "prompt_ms": 320.0,
+            "prompt_per_token_ms": 4.444444444444445,
+            "prompt_per_second": 225.0,
+            "predicted_n": 400,
+            "predicted_ms": 13010.0,
+            "predicted_per_token_ms": 32.525,
+            "predicted_per_second": 30.74558032282859,
+            "draft_n": 353,
+            "draft_n_accepted": 205
+          },
+          "sse_events": 196,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "b9ae30ad685c7ee77f7eaf6895defc8f641afe9085374d73b3982662537fc060",
+          "response_sha256": "5a09a10340c7a2ed8baaf0f8706ec6f2597ce23f428ccf5c95fe2f1dcf51251d",
+          "phase": "measured",
+          "repeat_index": 2
+        }
+      ],
+      "summary": {
+        "requests": 3,
+        "server_decode_tok_s": {
+          "p50": 30.75,
+          "p95": 30.849,
+          "samples": 3
+        },
+        "server_prefill_tok_s": {
+          "p50": 225.0,
+          "p95": 225.0,
+          "samples": 3
+        },
+        "ttft_s": {
+          "p50": 0.531335546000264,
+          "p95": 0.5344519588996264,
+          "samples": 3
+        },
+        "wall_s": {
+          "p50": 13.339201184999183,
+          "p95": 13.391660454300654,
+          "samples": 3
+        },
+        "client_end_to_end_tok_s": {
+          "p50": 29.986803141542428,
+          "p95": 30.09146335214052,
+          "samples": 3
+        },
+        "client_decode_tok_s_estimate": {
+          "p50": 31.13001412951456,
+          "p95": 31.271599587144852,
+          "samples": 3
+        },
+        "draft_acceptance": {
+          "p50": 0.5769230769230769,
+          "p95": 0.5803551972107213,
+          "samples": 3
+        },
+        "completion_tokens": [
+          400,
+          400,
+          400
+        ],
+        "prompt_tokens": [
+          72,
+          72,
+          72
+        ],
+        "cached_prompt_tokens": [
+          0,
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "errors": [],
+  "model": "Qwen3.8-Flash-Next-EXL3",
+  "completed_at_utc": "2026-10-08T06:58:53.980421+00:00"
+}
