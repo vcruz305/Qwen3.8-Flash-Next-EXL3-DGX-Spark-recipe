@@ -275,3 +275,46 @@ They cover valid pairing, threshold boundaries, separate pooled/per-case and
 prefill decisions, investigation-only results, inconsistent evidence, and CLI
 failure status. They verify the assessment contract; they do not substitute for
 the actual GPU probe or its engine correctness tests.
+
+
+## Matched K8/V8 cache runs
+
+`spark_quality_q8_probe.py` adapts the frozen probe to the K8/V8 storage used
+by the server. Keep it beside the exact base probe and use the same arguments
+on both runtimes. It verifies the base hash, changes only cache construction
+and cache metadata, and audits the actual allocated packed K/V tensors,
+FP16 quantization scales and QSA key planes. Full-prefill references remain
+cache-free, and MTP remains disabled. The original numerical arithmetic,
+input construction, page permutation and recurrent-history commits are reused.
+
+For example, from this directory, collect a fresh original Q8 run and then a
+candidate with the same pack, PLE placement, contexts, query lengths, batch
+size, continuation length and chunk size:
+
+```bash
+OLD_PYTHON=/path/to/original/venv/bin/python
+NEW_PYTHON=/path/to/candidate/venv/bin/python
+MODEL=/path/to/the/same/model
+"$OLD_PYTHON" spark_quality_q8_probe.py --model "$MODEL" \
+  --contexts 255,1023,4095 --q-lens 1,6 --batch-sizes 1 \
+  --steps 48 --prefill-chunk 1024 \
+  --output original-q8.json --save-logits original-q8.safetensors
+"$NEW_PYTHON" spark_quality_q8_probe.py --model "$MODEL" \
+  --contexts 255,1023,4095 --q-lens 1,6 --batch-sizes 1 \
+  --steps 48 --prefill-chunk 1024 \
+  --output candidate-q8.json --save-logits candidate-q8.safetensors \
+  --compare-logits original-q8.safetensors
+python3 assess_paired_quality_q8.py --gates quality-gates.json \
+  --baseline original-q8.json --candidate candidate-q8.json \
+  --output assessment-q8.json
+```
+
+Supply each runtime's recorded environment separately, as described above;
+add `--ngram-ram` to **both** probe commands when that is the tested placement.
+Do not compare a Q8 candidate against an FP16 baseline, or relabel an FP16
+artifact. The Q8 assessor requires observed cache contracts to match and
+reuses the same fixed gate values and scoring arithmetic. Exit zero can still
+include investigation alerts: inspect `core_passed` and `investigation_count`.
+These checks retain the configured-vocabulary and limited-correlated-corpus
+qualifications of the original method. Their diagnostic timings are not API
+throughput measurements.
