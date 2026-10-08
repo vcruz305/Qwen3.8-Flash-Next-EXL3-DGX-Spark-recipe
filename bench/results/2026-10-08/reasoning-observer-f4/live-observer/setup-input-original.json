@@ -1,0 +1,56 @@
+{
+  "engine": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+  "tabby": "f4fb6b73a4adbf5f4faa4a3d9b90b3455c8c7fd6",
+  "runtime": "/home/cruzspark/qwen38-exl3-20261008",
+  "commands": [
+    {
+      "name": "build",
+      "command": [
+        "bash",
+        "exllamav3-tabby/setup.sh"
+      ],
+      "started_utc": "2026-10-08T10:10:11.164687+00:00",
+      "exit_code": 0,
+      "log": "/home/cruzspark/qwen-overnight-20261008/logs/setup-gemm-f4-build.log"
+    },
+    {
+      "name": "check",
+      "command": [
+        "bash",
+        "exllamav3-tabby/setup.sh",
+        "--check"
+      ],
+      "started_utc": "2026-10-08T10:13:19.847123+00:00",
+      "exit_code": 0,
+      "log": "/home/cruzspark/qwen-overnight-20261008/logs/setup-gemm-f4-check.log"
+    },
+    {
+      "name": "gpu-merge",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_spark_merge_gpu.py"
+      ],
+      "started_utc": "2026-10-08T10:13:21.843075+00:00",
+      "exit_code": 0,
+      "log": "/home/cruzspark/qwen-overnight-20261008/logs/setup-gemm-f4-gpu-merge.log"
+    },
+    {
+      "name": "tokenizer",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "tests/check_qwen_tool_tokenizer.py",
+        "/home/cruzspark/models/flashnext-exl3-3.05bpw/tokenizer.json"
+      ],
+      "started_utc": "2026-10-08T10:13:24.441880+00:00",
+      "exit_code": 0,
+      "log": "/home/cruzspark/qwen-overnight-20261008/logs/setup-gemm-f4-tokenizer.log"
+    }
+  ],
+  "recipe_commit": "218bd438225243e795383f10ef7a886b06d5d839",
+  "state": "completed",
+  "recorded_at_utc": "2026-10-08T10:13:26.376407+00:00",
+  "active": null
+}

@@ -4,7 +4,7 @@
 # The runtime: vcruz305/exllamav3 (upstream + aarch64 guards + GB10 decode kernels + mixed-K MoE
 # + EXL3_DRAFT_CONFIDENCE). Stock turboderp exllamav3 runs this model but misses the GB10 work.
 EXL3_REPO="${EXL3_REPO:-https://github.com/vcruz305/exllamav3.git}"
-EXL3_REF="${EXL3_REF:-9c0bbaaa31043f84a62e618d8c3b2e19c45b22c2}"
+EXL3_REF="${EXL3_REF:-b5785675d3ecc4c09754477880d112b44952d83d}"
 EXL3_MIN_VERSION="${EXL3_MIN_VERSION:-1.6.0.post1}"
 
 # The API server: latest vcruz305/tabbyAPI main, including the validated Qwen tool fixes.
@@ -25,28 +25,12 @@ CUDA_HOME="${CUDA_HOME:-/usr/local/cuda}"
 TORCH_CUDA_ARCH_LIST="${TORCH_CUDA_ARCH_LIST:-12.1}"
 PYTHON_BIN="${PYTHON_BIN:-python3}"
 
-# GB10 serving controls. October measurements and their exact scope are recorded
-# in VALIDATION_2026-10-08.md; each setting remains overridable for a fresh A/B run.
-export EXL3_INT8_GEMV="${EXL3_INT8_GEMV:-0}"
-export EXL3_MOE_COOP_WIDE="${EXL3_MOE_COOP_WIDE:-1}"
-export EXL3_GR_INT8="${EXL3_GR_INT8:-1}"
-export EXL3_MTP_HEAD_N="${EXL3_MTP_HEAD_N:-65536}"
-export EXL3_DRAFT_CONFIDENCE="${EXL3_DRAFT_CONFIDENCE:-0.6}"
-
-# Preserve the original Qwen pack arithmetic across the upstream 1.6.0 update.
-# These controls cover BF16 GDN weights, attention reduction, native GEMM plans,
-# and the shared-expert split-K change found by the four-request quality gate.
-export EXL3_GDN_PROJ_FP32="${EXL3_GDN_PROJ_FP32:-1}"
-export EXL3_GDN_CONV_TOKEN_MAJOR="${EXL3_GDN_CONV_TOKEN_MAJOR:-0}"
-export EXL3_GDN_CONV_BF16_PRODUCT="${EXL3_GDN_CONV_BF16_PRODUCT:-1}"
-export EXL3_ATTN_DECODE_LEGACY_SPLITS="${EXL3_ATTN_DECODE_LEGACY_SPLITS:-1}"
-export EXL3_GEMM_LEGACY_TILES="${EXL3_GEMM_LEGACY_TILES:-1}"
-export EXL3_MOE_COOP_KSPLIT="${EXL3_MOE_COOP_KSPLIT:-1}"
-
-# Use the validated mixed-K path; its asynchronous metadata update preserves
-# arithmetic and avoids an unnecessary host synchronization during decoding.
-export EXL3_MOE_COOP_MIXEDK="${EXL3_MOE_COOP_MIXEDK:-0}"
-export EXL3_MOE_MIXEDK_NOSYNC="${EXL3_MOE_MIXEDK_NOSYNC:-1}"
+# GB10 kernel knobs, measured in the README ("The native engine, tuned for GB10").
+export EXL3_INT8_GEMV="${EXL3_INT8_GEMV:-0}"          # fp16 GEMV beats the int8-activation one on GB10 (+3)
+export EXL3_MOE_COOP_WIDE="${EXL3_MOE_COOP_WIDE:-1}"  # wide 128-col MoE coop tile on 48 SMs (+5)
+export EXL3_GR_INT8="${EXL3_GR_INT8:-1}"              # int8 hyperconnection mixers (+5 code, +7 DevOps)
+export EXL3_MTP_HEAD_N="${EXL3_MTP_HEAD_N:-65536}"    # pruned draft lm_head slice
+export EXL3_DRAFT_CONFIDENCE="${EXL3_DRAFT_CONFIDENCE:-0.6}"  # dynamic-draft target (+8 prose vs 0.4)
 export TORCH_CUDA_ARCH_LIST CUDA_HOME
 
 # GB10 has 10 Cortex-X925 (big) + 10 A725 (little); pin to the big ones (+2). Empty disables.
