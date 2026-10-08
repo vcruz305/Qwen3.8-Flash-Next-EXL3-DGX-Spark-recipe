@@ -1,0 +1,807 @@
+{
+  "schema_version": 1,
+  "kind": "reasoning_literal_tool_compatibility",
+  "label": "final-305-concurrent-literal-named-stream",
+  "started_utc": "2026-10-08T13:45:32.937375+00:00",
+  "base_url": "http://127.0.0.1:8899/v1",
+  "requested_model": "Qwen3.8-Flash-Next-EXL3",
+  "provenance": {
+    "build": {
+      "build_environment": {
+        "CC": null,
+        "CFLAGS": null,
+        "CUDAHOSTCXX": null,
+        "CXX": null,
+        "CXXFLAGS": null,
+        "LDFLAGS": null,
+        "NVCC_APPEND_FLAGS": null,
+        "NVCC_PREPEND_FLAGS": null
+      },
+      "cuda_arch_list": "12.1",
+      "cuda_home": "/usr/local/cuda-13.0",
+      "engine_commit": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+      "engine_path": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+      "fingerprint_sha256": "243f414eb2fc9ac6748f7d3014bef0264ea31e52fa2224d2cf1df314d1fd83bb",
+      "host_compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "host_compiler_path": "/usr/bin/c++",
+      "machine": "aarch64",
+      "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:57:39_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0",
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "python_cache_tag": "cpython-312",
+      "python_executable": "/usr/bin/python3.12",
+      "schema_version": 1,
+      "torch": "2.13.0+cu130",
+      "torch_cuda": "13.0",
+      "torch_cxx11_abi": true
+    },
+    "captured_at_utc": "2026-10-08T13:44:08.401887+00:00",
+    "compatibility_repairs": [
+      {
+        "after": {
+          "record": "nvidia/cusparselt/LICENSE.txt,sha256=6NFYiFpoG5Xsem_AbdjUpSmJ83TLE4DIpMj7J_09XV4,17948\r\nnvidia/cusparselt/include/cusparseLt.h,sha256=DfhLWAaIdx14vmK87rxAiGehYcZB_gvKilB1ugQ7Y7M,18157\r\nnvidia/cusparselt/lib/libcusparseLt.so.0,sha256=-7A7v40iOGcPJCVsVFIoHCpmAWKJm4OLtNDMBtrQJ98,274143825\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/METADATA,sha256=NTZpuvuAy_IvEyQSGsBQSdNqaw-0Sx_tP6sAtRMjEXE,12677\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/RECORD,,\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/WHEEL,sha256=ABAV42k93WKqnYKLN0BIVQbWApIm1M5UwJVvVB4zSLM,109\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/top_level.txt,sha256=ofIC-dbK0s22jN55sgfVpbhHWT63ZdJLWeSb6K_1-BI,18\r\n",
+          "record_sha256": "sha256=rifiEf2Xhut6uEh0wmFjPmPSxDg8AoKYJwkDJV6gB4M",
+          "wheel": "Wheel-Version: 1.0\nGenerator: setuptools (80.9.0)\nRoot-Is-Purelib: true\nTag: py3-none-manylinux2014_aarch64\n\n",
+          "wheel_sha256": "sha256=ABAV42k93WKqnYKLN0BIVQbWApIm1M5UwJVvVB4zSLM"
+        },
+        "before": {
+          "record": "nvidia/cusparselt/LICENSE.txt,sha256=6NFYiFpoG5Xsem_AbdjUpSmJ83TLE4DIpMj7J_09XV4,17948\r\nnvidia/cusparselt/include/cusparseLt.h,sha256=DfhLWAaIdx14vmK87rxAiGehYcZB_gvKilB1ugQ7Y7M,18157\r\nnvidia/cusparselt/lib/libcusparseLt.so.0,sha256=-7A7v40iOGcPJCVsVFIoHCpmAWKJm4OLtNDMBtrQJ98,274143825\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/METADATA,sha256=NTZpuvuAy_IvEyQSGsBQSdNqaw-0Sx_tP6sAtRMjEXE,12677\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/RECORD,,\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/WHEEL,sha256=9EEww1DEpSYdq-rReTwY88G51UoHWvABWuRF6Sy_8Bs,106\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/top_level.txt,sha256=ofIC-dbK0s22jN55sgfVpbhHWT63ZdJLWeSb6K_1-BI,18\r\n",
+          "record_sha256": "sha256=9aTJW8klA2i_lTk8MBXzd_0hmYGRGcm3FFYOG4crCus",
+          "wheel": "Wheel-Version: 1.0\nGenerator: setuptools (80.9.0)\nRoot-Is-Purelib: true\nTag: py3-none-manylinux2014_sbsa\n\n",
+          "wheel_sha256": "sha256=9EEww1DEpSYdq-rReTwY88G51UoHWvABWuRF6Sy_8Bs"
+        },
+        "completed_at_utc": "2026-10-08T07:42:50.931661+00:00",
+        "host": {
+          "machine": "aarch64",
+          "system": "Linux"
+        },
+        "known_official_artifact": {
+          "filename": "nvidia_cusparselt_cu13-0.8.1-py3-none-manylinux2014_aarch64.whl",
+          "sha256": "4dca476c50bf4780d46cd0bfbd82e2bc10a08e4fef7950917ce8d7578d22a23f",
+          "source": "https://pypi.org/project/nvidia-cusparselt-cu13/0.8.1/"
+        },
+        "library": {
+          "bytes": 274143825,
+          "elf_class": 64,
+          "elf_machine": 183,
+          "path": "/home/cruzspark/qwen38-exl3-20261008/venv/lib/python3.12/site-packages/nvidia/cusparselt/lib/libcusparseLt.so.0",
+          "verified_record_sha256": "sha256=-7A7v40iOGcPJCVsVFIoHCpmAWKJm4OLtNDMBtrQJ98"
+        },
+        "new_tag": "py3-none-manylinux2014_aarch64",
+        "old_tag": "py3-none-manylinux2014_sbsa",
+        "package": "nvidia-cusparselt-cu13",
+        "prepared_at_utc": "2026-10-08T07:42:50.919539+00:00",
+        "record_path": "/home/cruzspark/qwen38-exl3-20261008/venv/lib/python3.12/site-packages/nvidia_cusparselt_cu13-0.8.1.dist-info/RECORD",
+        "schema_version": 1,
+        "status": "repaired",
+        "version": "0.8.1",
+        "wheel_path": "/home/cruzspark/qwen38-exl3-20261008/venv/lib/python3.12/site-packages/nvidia_cusparselt_cu13-0.8.1.dist-info/WHEEL"
+      }
+    ],
+    "config": {
+      "path": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/state/config.yml",
+      "sha256": "7f3d215bd3fe6b54313cce7cb8ab026962679d8fc2d66a749419457a34a35f5b",
+      "values": {
+        "draft_model": {
+          "draft_cache_mode": "8,8",
+          "draft_mode": "mtp",
+          "draft_num_tokens": 5,
+          "dynamic_draft": true
+        },
+        "logging": {
+          "log_generation_params": false,
+          "log_prompt": false,
+          "log_requests": false
+        },
+        "memory": {
+          "sysmem_recurrent_cache": 4096
+        },
+        "model": {
+          "backend": "exllamav3",
+          "cache_mode": "8,8",
+          "cache_size": 1048576,
+          "chunk_size": 2048,
+          "inline_model_loading": false,
+          "max_batch_size": 4,
+          "max_seq_len": 262144,
+          "model_dir": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/state/models",
+          "model_name": "Qwen3.8-Flash-Next-EXL3",
+          "ngram_ram": false,
+          "prompt_template": null,
+          "reasoning": true,
+          "tool_format": "qwen3_5",
+          "vision": false,
+          "warmup": true
+        },
+        "network": {
+          "api_servers": [
+            "OAI"
+          ],
+          "disable_auth": true,
+          "host": "127.0.0.1",
+          "port": 8899
+        },
+        "sampling": {
+          "min_p": {
+            "force": false,
+            "override": 0.0
+          },
+          "temperature": {
+            "force": false,
+            "override": 1.0
+          },
+          "top_k": {
+            "force": false,
+            "override": 20
+          },
+          "top_p": {
+            "force": false,
+            "override": 0.95
+          }
+        }
+      }
+    },
+    "engine": {
+      "commit": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+      "describe": "24f0dece3 2026-10-08 ci: exercise producer token budgets in the CPU source gate",
+      "path": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+      "remotes": {
+        "origin": "https://github.com/vcruz305/exllamav3.git"
+      },
+      "tracked_changes": ""
+    },
+    "environment": {
+      "BIGCORES": "5-9,15-19",
+      "CACHE_SIZE": "1048576",
+      "CHUNK_SIZE": "2048",
+      "CUDA_HOME": "/usr/local/cuda",
+      "DRAFT_MODE": "mtp",
+      "DRAFT_NUM_TOKENS": "5",
+      "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+      "EXL3_COOPMK_PLAN": "3",
+      "EXL3_DRAFT_CONFIDENCE": "0.6",
+      "EXL3_DRAFT_ROW_BUDGET": "8",
+      "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+      "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+      "EXL3_GDN_PROJ_FP32": "1",
+      "EXL3_GEMM_LEGACY_TILES": "1",
+      "EXL3_GR_INT8": "1",
+      "EXL3_INT8_GEMV": "0",
+      "EXL3_MIN_VERSION": "1.6.0.post1",
+      "EXL3_MOE_COOP_KSPLIT": "1",
+      "EXL3_MOE_COOP_MIXEDK": "0",
+      "EXL3_MOE_COOP_WIDE": "1",
+      "EXL3_MOE_MIXEDK_NOSYNC": "1",
+      "EXL3_MTP_HEAD_N": "65536",
+      "EXL3_REF": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+      "EXL3_REPO": "https://github.com/vcruz305/exllamav3.git",
+      "EXL3_SRC": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+      "MAX_BATCH_SIZE": "4",
+      "MAX_SEQ_LEN": "262144",
+      "NGRAM_RAM": "false",
+      "PROFILE": "concurrent",
+      "PROMPT_TEMPLATE": "",
+      "TORCH_CUDA_ARCH_LIST": "12.1"
+    },
+    "host": {
+      "kernel": "7.0.0-1019-nvidia",
+      "machine": "aarch64",
+      "python": "3.12.3",
+      "python_executable_invoked": "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+      "python_executable_resolved": "/usr/bin/python3.12",
+      "python_prefix": "/home/cruzspark/qwen38-exl3-20261008/venv",
+      "python_prefix_resolved": "/home/cruzspark/qwen38-exl3-20261008/venv"
+    },
+    "model": {
+      "configuration_files": {
+        "config.json": {
+          "bytes": 5081,
+          "sha256": "92ce0839c71b5a39988299fe38206a32fea50586be54378d424fc0eb035a44c0"
+        },
+        "generation_config.json": {
+          "bytes": 202,
+          "sha256": "e70c136c1b78ddc1fb0905bac8e733a4dc448d4f852a5dd75143fffc70be550e"
+        },
+        "tokenizer_config.json": {
+          "bytes": 17928,
+          "sha256": "b11349aafa7cdc6a320767cf7ceb29ed82f7eda5d65e8e0819e76f0ce947bf27"
+        }
+      },
+      "path": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "weight_bytes": 84986510810,
+      "weight_hashes_computed": false,
+      "weights": [
+        {
+          "bytes": 8494539639,
+          "mtime_ns": 1790501586091448410,
+          "name": "model-00001-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00001-of-00007.safetensors"
+        },
+        {
+          "bytes": 8175800810,
+          "mtime_ns": 1790501352415215607,
+          "name": "model-00002-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00002-of-00007.safetensors"
+        },
+        {
+          "bytes": 8175819368,
+          "mtime_ns": 1790501403641993252,
+          "name": "model-00003-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00003-of-00007.safetensors"
+        },
+        {
+          "bytes": 8175819368,
+          "mtime_ns": 1790501554820058116,
+          "name": "model-00004-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00004-of-00007.safetensors"
+        },
+        {
+          "bytes": 8175819368,
+          "mtime_ns": 1790501490693220535,
+          "name": "model-00005-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00005-of-00007.safetensors"
+        },
+        {
+          "bytes": 8175819368,
+          "mtime_ns": 1790501438412496898,
+          "name": "model-00006-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00006-of-00007.safetensors"
+        },
+        {
+          "bytes": 2959581433,
+          "mtime_ns": 1790501044243365511,
+          "name": "model-00007-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00007-of-00007.safetensors"
+        },
+        {
+          "bytes": 13128048,
+          "mtime_ns": 1790500693868749610,
+          "name": "mtp_hyper_connection_mixer_patch.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/mtp_hyper_connection_mixer_patch.safetensors"
+        },
+        {
+          "bytes": 32640183408,
+          "mtime_ns": 1790502183364898937,
+          "name": "ngram_embedding.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/ngram_embedding.safetensors"
+        }
+      ]
+    },
+    "packages": {
+      "exllamav3": "1.6.0.post1",
+      "fastapi-slim": "0.129.1",
+      "llguidance": "1.9.1",
+      "numpy": "2.5.3",
+      "nvidia-cusparselt-cu13": "0.8.1",
+      "pydantic": "2.13.5",
+      "tabbyAPI": "0.0.1",
+      "tokenizers": "0.23.2",
+      "torch": "2.13.0+cu130",
+      "triton": "3.7.1",
+      "uvloop": "0.22.1"
+    },
+    "recipe": {
+      "commit": "3337bc8d64e4befafa2a1aff342e07abbea242ac",
+      "describe": "3337bc8 2026-10-08 test(ci): retain combined final budget regression coverage",
+      "path": "/home/cruzspark/qwen-spark-recipe",
+      "remotes": {
+        "origin": "https://github.com/vcruz305/Qwen3.8-Flash-Next-EXL3-DGX-Spark-recipe.git"
+      },
+      "tracked_changes": ""
+    },
+    "schema_version": 1,
+    "server": {
+      "commit": "5a4f3efa1c1f60b6966ba0d0d5610f6b953541fb",
+      "describe": "5a4f3efa 2026-10-08 Guard natural reasoning endings without imposing a token limit",
+      "path": "/home/cruzspark/qwen38-exl3-20261008/tabbyAPI",
+      "remotes": {
+        "origin": "https://github.com/vcruz305/tabbyAPI.git"
+      },
+      "tracked_changes": ""
+    }
+  },
+  "metadata_source": {
+    "path": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+    "sha256": "7cee96cf523ff7157b2c2e15cbc4f41ae93e0568000a3b7a9ad5e5c5155a38e6"
+  },
+  "client": {
+    "python": "3.12.3"
+  },
+  "scope": "Strict synthetic reasoning/tool checks for literal native closing tags.\n\nDoes not execute the returned tool. These are additional fixtures: the existing\n28 tool and9 auto compatibility checks are unchanged. Timing is diagnostic only.\n",
+  "unbudgeted": false,
+  "source_sha256": "8f964990d448a75d632c34e4820a426e7de4c3c80d4f4006c2dae3eb379fb054",
+  "cases": [
+    {
+      "name": "literal_reasoning_named_stream",
+      "status": "fail",
+      "error": "CheckError: Literal closing tag was not preserved: {'text': 'thinkaliteralthink'}",
+      "request_indices": [
+        0
+      ]
+    }
+  ],
+  "requests": [
+    {
+      "index": 0,
+      "path": "/chat/completions",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "reasoning_budget_tokens": 24,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "status": 200,
+      "stream": true,
+      "frames": [
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467136,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "role": "assistant"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467138,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": "The user"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467138,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": " wants"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467139,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": " me to"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467139,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": " record the"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467139,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": " exact string"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467139,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": " \"think"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467139,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": "al"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467139,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": "iteral"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467139,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": "think\""
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467139,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": " as"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467139,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": " literal"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467139,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": " string"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467139,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": " data."
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467139,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": " I need"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467139,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "reasoning_content": " to call"
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467140,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "tool_calls": [
+                  {
+                    "index": 0,
+                    "id": "call_d0fef514c8b143e8bab48996",
+                    "type": "function",
+                    "function": {
+                      "name": "record_text",
+                      "arguments": "{"
+                    }
+                  }
+                ]
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467140,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "tool_calls": [
+                  {
+                    "index": 0,
+                    "function": {
+                      "arguments": "\"text\": \"think"
+                    }
+                  }
+                ]
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467140,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "tool_calls": [
+                  {
+                    "index": 0,
+                    "function": {
+                      "arguments": "aliteral"
+                    }
+                  }
+                ]
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467140,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "tool_calls": [
+                  {
+                    "index": 0,
+                    "function": {
+                      "arguments": "think"
+                    }
+                  }
+                ]
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467140,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "tool_calls": [
+                  {
+                    "index": 0,
+                    "function": {
+                      "arguments": "\""
+                    }
+                  }
+                ]
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467140,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {
+                "tool_calls": [
+                  {
+                    "index": 0,
+                    "function": {
+                      "arguments": "}"
+                    }
+                  }
+                ]
+              },
+              "finish_reason": null
+            }
+          ],
+          "model": "Qwen3.8-Flash-Next-EXL3"
+        },
+        {
+          "id": "chatcmpl-0900a8a60f3248f4819290924ec23682",
+          "object": "chat.completion.chunk",
+          "created": 1791467141,
+          "choices": [
+            {
+              "index": 0,
+              "delta": {},
+              "finish_reason": "tool_calls"
+            }
+          ],
+          "usage": {
+            "prompt_tokens": 348,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 3.24,
+            "prompt_tokens_per_sec": 107.41,
+            "completion_tokens": 55,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 22,
+              "rejected_prediction_tokens": 11
+            },
+            "completion_time": 2.66,
+            "completion_tokens_per_sec": 20.68,
+            "total_tokens": 403,
+            "total_time": 8.07
+          },
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 348,
+            "prompt_ms": 3240.0,
+            "prompt_per_token_ms": 9.310344827586206,
+            "prompt_per_second": 107.4074074074074,
+            "predicted_n": 55,
+            "predicted_ms": 2660.0,
+            "predicted_per_token_ms": 48.36363636363637,
+            "predicted_per_second": 20.676691729323306,
+            "draft_n": 33,
+            "draft_n_accepted": 22
+          }
+        }
+      ],
+      "done": true,
+      "client_aborted": false,
+      "content_type": "text/event-stream; charset=utf-8",
+      "wall_seconds": 8.208746494994557
+    }
+  ],
+  "expected_checks": 1,
+  "summary": {
+    "fail": 1
+  },
+  "finished_utc": "2026-10-08T13:45:41.156305+00:00",
+  "passed": false
+}

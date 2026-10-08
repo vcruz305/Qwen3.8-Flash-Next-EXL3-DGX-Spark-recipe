@@ -1,0 +1,36 @@
+commit 24f0dece34f09c8d1e2359d6b3b3f7befef7331b
+Author:     Codex <noreply@openai.com>
+AuthorDate: Thu Oct 8 05:23:54 2026 -0700
+Commit:     Codex <noreply@openai.com>
+CommitDate: Thu Oct 8 05:23:54 2026 -0700
+
+    ci: exercise producer token budgets in the CPU source gate
+
+diff --git a/.github/workflows/ci.yml b/.github/workflows/ci.yml
+index 308ba76e..c70e9e46 100644
+--- a/.github/workflows/ci.yml
++++ b/.github/workflows/ci.yml
+@@ -105,14 +105,15 @@ jobs:
+             tests/test_draft_confidence_env_.py \
+             tests/test_attn_fullgate_cpu.py
+ 
+-      - name: Run the CPU source tests for the unified-memory budget, draft-block reserve and batch-verification gate
+-        # Separate step on purpose: these three read sources and execute them against stub
+-        # devices and a fake procfs, so they need no GPU, no torch and no built extension,
+-        # and running them in their own process keeps their stub modules out of the step
+-        # above. tests/cpu_dflash_source_harness.py and tests/cpu_requirements_harness.py
+-        # are the source readers they import.
++      - name: Run the CPU source tests for memory, draft reserve, batch verification and token budgets
++        # Separate step on purpose: these read sources and execute against stub devices,
++        # fake procfs and CPU tensors. No GPU or built extension is needed; --noconftest
++        # excludes the shared CUDA fixture, and a separate process keeps source-harness
++        # stubs out of the wheel/import checks above. The token-budget cases cover
++        # producer-owned finite and natural-only phase transitions.
+         run: |
+-          python -m pytest -q \
++          python -m pytest --noconftest -q \
+             tests/test_uma_budget_cpu.py \
+             tests/test_dflash_page_reserve_cpu.py \
+-            tests/test_sampler_batch_verify_cpu.py
++            tests/test_sampler_batch_verify_cpu.py \
++            tests/test_token_budget_cpu.py

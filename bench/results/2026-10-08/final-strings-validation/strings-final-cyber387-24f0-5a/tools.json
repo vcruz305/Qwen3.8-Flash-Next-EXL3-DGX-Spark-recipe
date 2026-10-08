@@ -1,0 +1,278 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-10-08T13:10:45.865517+00:00",
+  "base_url": "http://127.0.0.1:8899/v1",
+  "expected_response_model": null,
+  "results": [
+    {
+      "case": "strings",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 443,
+        "cached_prompt_tokens": 0,
+        "uncached_prompt_tokens": 443,
+        "completion_tokens": 76,
+        "ttft_s": null,
+        "wall_s": 5.015629195000656,
+        "server_decode_tok_s": 46.92,
+        "server_prefill_tok_s": 196.89,
+        "client_end_to_end_tok_s": 15.152635301619434,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.75,
+        "usage": {
+          "prompt_tokens": 443,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 2.25,
+          "prompt_tokens_per_sec": 196.89,
+          "completion_tokens": 76,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 60,
+            "rejected_prediction_tokens": 20
+          },
+          "completion_time": 1.62,
+          "completion_tokens_per_sec": 46.92,
+          "total_tokens": 519,
+          "total_time": 3.87
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 443,
+          "prompt_ms": 2250.0,
+          "prompt_per_token_ms": 5.07900677200903,
+          "prompt_per_second": 196.88888888888889,
+          "predicted_n": 76,
+          "predicted_ms": 1620.0,
+          "predicted_per_token_ms": 21.31578947368421,
+          "predicted_per_second": 46.913580246913575,
+          "draft_n": 80,
+          "draft_n_accepted": 60
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "d066a2fbf1c84730b428f265a277503774ebda0881edd7575bdbbc30bfd1c71b",
+        "response_sha256": "979c88e068a0605750ec304a14d43691ef977b1f6082e7d5ec724880cfc5501c",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": null,
+          "tool_calls": [
+            {
+              "id": "call_5d763386011e4e2d8fb69956",
+              "function": {
+                "name": "record_strings",
+                "arguments": "{\"number_text\": \"123\", \"bool_text\": \"true\", \"json_text\": \"{\\\"nested\\\": [1, false]}\", \"tag_text\": \"<think>literal</think>\"}"
+              },
+              "type": "function",
+              "index": null
+            }
+          ],
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_strings once with these exact string values: {\"number_text\": \"123\", \"bool_text\": \"true\", \"json_text\": \"{\\\"nested\\\": [1, false]}\", \"tag_text\": \"<think>literal</think>\"}"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_strings",
+              "description": "Record each value exactly as a string; do not interpret its contents.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "number_text": {
+                    "type": "string"
+                  },
+                  "bool_text": {
+                    "type": "string"
+                  },
+                  "json_text": {
+                    "type": "string"
+                  },
+                  "tag_text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "number_text",
+                  "bool_text",
+                  "json_text",
+                  "tag_text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "strings",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 443,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 187,
+        "completion_tokens": 76,
+        "ttft_s": 1.1238007779975305,
+        "wall_s": 2.2325221419996524,
+        "server_decode_tok_s": 47.78,
+        "server_prefill_tok_s": 306.56,
+        "client_end_to_end_tok_s": 34.04221555980959,
+        "client_decode_tok_s_estimate": 67.65253012507289,
+        "draft_acceptance": 0.75,
+        "usage": {
+          "prompt_tokens": 443,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.61,
+          "prompt_tokens_per_sec": 306.56,
+          "completion_tokens": 76,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 60,
+            "rejected_prediction_tokens": 20
+          },
+          "completion_time": 1.59,
+          "completion_tokens_per_sec": 47.78,
+          "total_tokens": 519,
+          "total_time": 2.21
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 187,
+          "prompt_ms": 610.0,
+          "prompt_per_token_ms": 3.2620320855614975,
+          "prompt_per_second": 306.55737704918033,
+          "predicted_n": 76,
+          "predicted_ms": 1590.0,
+          "predicted_per_token_ms": 20.92105263157895,
+          "predicted_per_second": 47.79874213836478,
+          "draft_n": 80,
+          "draft_n_accepted": 60
+        },
+        "sse_events": 14,
+        "warnings": [
+          "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+        ],
+        "request_sha256": "bbb61861aed2f72173acb969e8a101e2e4bc39d788775f68950f231c4101b595",
+        "response_sha256": "0741c29e19c320d51cd9271c34e6665b8d4c35ebabf3f92a369cd07541e682e2",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": "",
+          "tool_calls": [
+            {
+              "id": "call_956e1d2555e94fb29d012d91",
+              "type": "function",
+              "function": {
+                "name": "record_strings",
+                "arguments": "{\"number_text\": \"123\", \"bool_text\": \"true\", \"json_text\": \"{\\\"nested\\\": [1, false]}\", \"tag_text\": \"<think>literal</think>\"}"
+              }
+            }
+          ]
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_strings once with these exact string values: {\"number_text\": \"123\", \"bool_text\": \"true\", \"json_text\": \"{\\\"nested\\\": [1, false]}\", \"tag_text\": \"<think>literal</think>\"}"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_strings",
+              "description": "Record each value exactly as a string; do not interpret its contents.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "number_text": {
+                    "type": "string"
+                  },
+                  "bool_text": {
+                    "type": "string"
+                  },
+                  "json_text": {
+                    "type": "string"
+                  },
+                  "tag_text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "number_text",
+                  "bool_text",
+                  "json_text",
+                  "tag_text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    }
+  ],
+  "errors": [],
+  "note": "Synthetic fixtures only. Functional failures may come from model generation or server parsing.",
+  "model": "Qwen3.8-Flash-Next-EXL3",
+  "summary": {
+    "passed": 2,
+    "failed": 0,
+    "total": 2
+  },
+  "completed_at_utc": "2026-10-08T13:10:53.129225+00:00"
+}

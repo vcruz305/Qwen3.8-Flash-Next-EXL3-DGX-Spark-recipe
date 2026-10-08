@@ -1,0 +1,38 @@
+{
+  "script_sha256": "31b1081c1947d378c40da5f44224ed22b2e280ce868913577d78bcd24bc2e747",
+  "scope": "Synthetic sanitizer-only source execution; no SSH, API, systemd or GPU calls.",
+  "checks": {
+    "unlabelled_wrapped_key_line_omitted": true,
+    "known_auth_labels_omitted": true,
+    "safe_lifecycle_preserved": true,
+    "structured_nested_auth_redacted": true,
+    "quoted_embedded_credential_redacted": true,
+    "ownership_and_unit_identity_preserved": true,
+    "environment_secret_redacted": true
+  },
+  "log_proof": {
+    "kind": "lifecycle-only-excerpt",
+    "source_lines": 6,
+    "retained_lines": 3,
+    "omitted_lines": 3,
+    "credential_label_lines_omitted": 2,
+    "raw_log_transferred": false
+  },
+  "structured_proof": {
+    "kind": "credential-field-scrub",
+    "redaction_paths": [
+      "$/api_key",
+      "$/headers/Authorization",
+      "$/config",
+      "$/quoted_config"
+    ],
+    "redactions": 4
+  },
+  "text_proof": {
+    "kind": "credential-line-scrub",
+    "redacted_lines": [
+      1
+    ],
+    "redactions": 1
+  }
+}

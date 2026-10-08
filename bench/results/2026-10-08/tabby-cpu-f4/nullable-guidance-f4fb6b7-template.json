@@ -1,0 +1,237 @@
+{
+  "scope": "CPU prompt/template/parser contract check; no inference or semantic-obedience claim",
+  "source_commit": "f4fb6b73a4adbf5f4faa4a3d9b90b3455c8c7fd6",
+  "tracked_changes": "",
+  "source_sha256": {
+    "endpoints/OAI/utils/qwen_tool_guidance.py": "7bc9de77589bbd0d942fc9d766aa53b12e6a0e387cbb410e9c97799d633966d6",
+    "endpoints/OAI/utils/chat_completion.py": "e0daf4fbe57bbece36f89db519c7e21b1dfa8e1330fd12c68f87a8b61a982fbb",
+    "endpoints/OAI/utils/toolcall_formats/qwen3_coder.py": "fda73ae720caa3e9d58beae609283a78559431c5f4fd832b6ad964b372db7ae2",
+    "tests/check_qwen_nullable_guidance.py": "f35503b5a8dfab7dde61a4b88c4a9155edcd51213bd6c0e6527c2526f440d1ee",
+    "tests/test_qwen_nullable_guidance.py": "fbf6e958985dbb4c3fb7e01e14d3b341561a1a6e5ad0b103c7bdcb0fe181abbc"
+  },
+  "template_config_sha256": "b11349aafa7cdc6a320767cf7ceb29ed82f7eda5d65e8e0819e76f0ce947bf27",
+  "cases": [
+    {
+      "case": "empty",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "original": "",
+      "parsed": "",
+      "roundtrip_exact": true,
+      "hint_present": true,
+      "wire": "<function=save_value>\n<parameter=value>\n\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "null",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "original": null,
+      "parsed": null,
+      "roundtrip_exact": true,
+      "hint_present": true,
+      "wire": "<function=save_value>\n<parameter=value>\nnull\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "numeric_text",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "original": "123",
+      "parsed": "123",
+      "roundtrip_exact": true,
+      "hint_present": true,
+      "wire": "<function=save_value>\n<parameter=value>\n123\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "boolean_text",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "original": "true",
+      "parsed": "true",
+      "roundtrip_exact": true,
+      "hint_present": true,
+      "wire": "<function=save_value>\n<parameter=value>\ntrue\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "json_text",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "original": "{\"a\":[1,false]}",
+      "parsed": "{\"a\":[1,false]}",
+      "roundtrip_exact": true,
+      "hint_present": true,
+      "wire": "<function=save_value>\n<parameter=value>\n{\"a\":[1,false]}\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "quoted",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "original": "\"quoted\"",
+      "parsed": "\"quoted\"",
+      "roundtrip_exact": true,
+      "hint_present": true,
+      "wire": "<function=save_value>\n<parameter=value>\n\"quoted\"\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "code_lf",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "original": "  x = 1\n",
+      "parsed": "  x = 1\n",
+      "roundtrip_exact": true,
+      "hint_present": true,
+      "wire": "<function=save_value>\n<parameter=value>\n  x = 1\n\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "code_two_lf",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "original": "  x = 1\n\n",
+      "parsed": "  x = 1\n\n",
+      "roundtrip_exact": true,
+      "hint_present": true,
+      "wire": "<function=save_value>\n<parameter=value>\n  x = 1\n\n\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "leading_lf",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "original": "\n  x",
+      "parsed": "\n  x",
+      "roundtrip_exact": true,
+      "hint_present": true,
+      "wire": "<function=save_value>\n<parameter=value>\n\n  x\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "ending_cr",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "original": "line\r",
+      "parsed": "line\r",
+      "roundtrip_exact": true,
+      "hint_present": true,
+      "wire": "<function=save_value>\n<parameter=value>\nline\r\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "crlf",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "original": "line\r\n",
+      "parsed": "line\r\n",
+      "roundtrip_exact": true,
+      "hint_present": true,
+      "wire": "<function=save_value>\n<parameter=value>\nline\r\n\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "markup",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "original": "<think>x</think> </function> <tool_call> </tool_call>",
+      "parsed": "<think>x</think> </function> <tool_call> </tool_call>",
+      "roundtrip_exact": true,
+      "hint_present": true,
+      "wire": "<function=save_value>\n<parameter=value>\n<think>x</think> </function> <tool_call> </tool_call>\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "null_text_string_only",
+      "schema": {
+        "type": "string"
+      },
+      "original": "null",
+      "parsed": "null",
+      "roundtrip_exact": true,
+      "hint_present": false,
+      "wire": "<function=save_value>\n<parameter=value>\nnull\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "null_text_union_ambiguous",
+      "schema": {
+        "type": [
+          "string",
+          "null"
+        ]
+      },
+      "original": "null",
+      "parsed": null,
+      "roundtrip_exact": false,
+      "hint_present": true,
+      "wire": "<function=save_value>\n<parameter=value>\nnull\n</parameter>\n</function>\n</tool_call>"
+    },
+    {
+      "case": "object",
+      "schema": {
+        "type": [
+          "string",
+          "object"
+        ]
+      },
+      "original": {
+        "a": [
+          1,
+          false
+        ]
+      },
+      "parsed": {
+        "a": [
+          1,
+          false
+        ]
+      },
+      "roundtrip_exact": true,
+      "hint_present": false,
+      "wire": "<function=save_value>\n<parameter=value>\n{\"a\": [1, false]}\n</parameter>\n</function>\n</tool_call>"
+    }
+  ],
+  "contract_checks": 15,
+  "exact_roundtrips": 14,
+  "known_ambiguities": [
+    "null_text_union_ambiguous"
+  ]
+}

@@ -1,0 +1,83 @@
+# TabbyAPI config for Qwen3.8-Flash-Next EXL3 on one DGX Spark.
+# serve.sh renders this into <recipe home>/state/config.yml, filling the dollar-brace fields from
+# serve.sh variables and the environment. Every key below exists in vcruz305/tabbyAPI main; see its config_sample.yml
+# for the full list.
+
+network:
+  host: "127.0.0.1"
+  port: 8899
+  # true only when bound to loopback (serve.sh decides). Otherwise TabbyAPI writes
+  # api_tokens.yml into its own directory and clients need the key.
+  disable_auth: true
+  api_servers: ["OAI"]
+
+logging:
+  log_prompt: false
+  log_generation_params: false
+  log_requests: false
+
+model:
+  model_dir: "/home/cruzspark/qwen-overnight-20261008/results/performance-primary-16ca-ksplit1/04-tune-305-chunk1024/attempt-c0588309a5f2/state/models"
+  model_name: "Qwen3.8-Flash-Next-EXL3"
+  backend: exllamav3
+  inline_model_loading: false
+
+  # Context. max_seq_len is the per-request ceiling: 262,144 is the trained window, and needle
+  # retrieval fails past it (README, "Context: the ceiling"). cache_size is ONE shared KV pool
+  # for all concurrent requests, so it must be sized for concurrency, not per request:
+  # For this model, the 12 target attention layers plus MTP use 17.875 GiB at 1,048,576
+  # tokens, including K8/V8 data, FP16 quantization scales, and QSA key planes. The pool
+  # can hold four full-length sessions; recurrent state and workspaces need additional RAM.
+  # serve.sh PROFILE=concurrent|single picks the pool and per-request limits.
+  max_seq_len: 262144
+  cache_size: 262144
+  cache_mode: "8,8"
+  chunk_size: 1024
+
+  # Concurrent generation jobs. Each one also reserves a recurrent-state slot for the 36
+  # linear-attention layers. TabbyAPI's own default for recurrent models is 4.
+  max_batch_size: 1
+
+  # n-gram (PLE) table: true loads it into RAM (how the README's single-stream numbers were
+  # measured); false streams rows from disk per forward (~30 GB less resident, which is the room
+  # the concurrent profile spends on KV and batch; often useful for larger packs; validate each pack).
+  ngram_ram: true
+
+  vision: false
+  warmup: true
+
+  # Qwen3.x XML tool calls (<function=...><parameter=...>) and <think> reasoning.
+  tool_format: "qwen3_5"
+  reasoning: true
+
+draft_model:
+  # The model's own MTP head. Up to 5 drafts, cut early by confidence (the 0.6 target is read by
+  # the fork from EXL3_DRAFT_CONFIDENCE, which serve.sh exports).
+  draft_mode: "mtp"
+  draft_cache_mode: "8,8"
+  draft_num_tokens: 5
+  dynamic_draft: true
+
+memory:
+  sysmem_recurrent_cache: 4096
+
+# Sampler fallbacks for requests that leave a value out. force: false, so any value a client
+# sends still wins. These are the model's own recommended settings (generation_config.json:
+# temperature 1.0, top_k 20, top_p 0.95). TabbyAPI does not read them from generation_config,
+# and with no sampling section it falls back to top_k 0 and top_p 1.0, i.e. no truncation:
+# every token is drawn from the full ~250k vocabulary. Clients that send no sampler values
+# (agent frameworks such as Hermes) then drift into garbage once a long reply draws a tail
+# token. Draft acceptance collapsing on one request is the tell.
+sampling:
+  temperature:
+    override: 1.0
+    force: false
+  top_k:
+    override: 20
+    force: false
+  top_p:
+    override: 0.95
+    force: false
+  min_p:
+    override: 0.0
+    force: false

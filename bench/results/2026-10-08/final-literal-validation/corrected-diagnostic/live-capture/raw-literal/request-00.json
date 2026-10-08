@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "index": 0,
+  "run_label": "literal-final-305-24f0-5a-p095",
+  "request_id": "16128293a3d743efb61d3ca83d8f348a",
+  "streaming_mode": false,
+  "start_in_reasoning_mode": true,
+  "rendered_prompt": "<|im_start|>system\nReasoning effort is set to xhigh. Please think carefully through the task, validate key assumptions, consider plausible alternatives, and prioritize correctness, consistency, and clarity in the final answer.\n\n# Tools\n\nYou have access to the following functions:\n\n<tools>\n{\"function\": {\"name\": \"record_text\", \"description\": \"Record the exact supplied string, preserving every character. Synthetic; never executed.\", \"parameters\": {\"type\": \"object\", \"properties\": {\"text\": {\"type\": \"string\"}}, \"required\": [\"text\"], \"additionalProperties\": false}}, \"type\": \"function\"}\n</tools>\n\nIf you choose to call a function ONLY reply in the following format with NO suffix:\n\n<tool_call>\n<function=example_function_name>\n<parameter=example_parameter_1>\nvalue_1\n</parameter>\n<parameter=example_parameter_2>\nThis is the value for the second parameter\nthat can span\nmultiple lines\n</parameter>\n</function>\n</tool_call>\n\n<IMPORTANT>\nReminder:\n- Function calls MUST follow the specified format: an inner <function=...></function> block must be nested within <tool_call></tool_call> XML tags\n- Required parameters MUST be specified\n- You may provide optional reasoning for your function call in natural language BEFORE the function call, but NOT after\n- If there is no function call available, answer the question like normal with your current knowledge and do not tell the user about function calls\n</IMPORTANT><|im_end|>\n<|im_start|>user\nThink briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data.<|im_end|>\n<|im_start|>assistant\n<think>\n",
+  "rendered_prompt_sha256": "32655bc461bfa9685942882754b89e75f6640a5605004d4a3d609ebfc6076f58",
+  "variant": {
+    "unbudgeted": false,
+    "choice": "required",
+    "stream": false
+  },
+  "matched_request": {
+    "messages": [
+      {
+        "role": "user",
+        "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+      }
+    ],
+    "tools": [
+      {
+        "function": {
+          "name": "record_text",
+          "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "type": "function"
+      }
+    ],
+    "model": "Qwen3.8-Flash-Next-EXL3",
+    "tool_choice": "required",
+    "reasoning_budget_tokens": 24,
+    "parallel_tool_calls": false,
+    "max_tokens": 256,
+    "temperature": 0.0,
+    "top_k": 1,
+    "top_p": null,
+    "n": 1,
+    "stream": false,
+    "template_vars": {
+      "enable_thinking": true,
+      "add_generation_prompt": true,
+      "tools": [
+        {
+          "function": {
+            "name": "record_text",
+            "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "text"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "type": "function"
+        }
+      ],
+      "functions": null,
+      "tool_choice": "required",
+      "parallel_tool_calls": false,
+      "messages": [
+        {
+          "role": "user",
+          "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+        }
+      ],
+      "bos_token": "<|endoftext|>",
+      "eos_token": "<|endoftext|>",
+      "pad_token": "",
+      "unk_token": null
+    }
+  },
+  "started_monotonic_ns": 34467171477451,
+  "raw_finish": {
+    "native_full_completion": "The user wants me to record the exact string \"thinkaliteralthink\" as literal string data. I need to call</think>\n<tool_call>\n<function=record_text>\n<parameter=text>\nthinkaliteralthink\n</parameter>\n</function>\n</tool_call>",
+    "native_full_completion_present": true,
+    "backend_full_response": "The user wants me to record the exact string \"thinkaliteralthink\" as literal string data. I need to call</think>\n<tool_call>\n<function=record_text>\n<parameter=text>\nthinkaliteralthink\n</parameter>\n</function>\n</tool_call>",
+    "native_metrics": {
+      "stage": "streaming",
+      "eos": true,
+      "eos_reason": "stop_token",
+      "prompt_tokens": 348,
+      "cached_tokens": 0,
+      "new_tokens": 55,
+      "accepted_draft_tokens": 36,
+      "rejected_draft_tokens": 59,
+      "eos_triggering_token_str": "<|im_end|>",
+      "eos_triggering_string": null
+    },
+    "backend_finish_monotonic_ns": 34472008818010,
+    "returned_metrics": {
+      "gen_tokens": 55,
+      "finish_reason": "stop",
+      "eos_reason": "stop_token",
+      "stop_str": "<|im_end|>",
+      "cached_tokens": 0,
+      "draft_accept": 36,
+      "draft_reject": 59
+    }
+  },
+  "collector_returned_error": false,
+  "finished_monotonic_ns": 34472009398472,
+  "raised_exception_type": null,
+  "skipped_matching_requests_so_far": 0
+}

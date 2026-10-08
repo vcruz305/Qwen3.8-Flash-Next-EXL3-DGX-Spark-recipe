@@ -1,0 +1,22 @@
+[Unit]
+Description=Qwen3.8 Flash Next via the EXL3 Spark recipe
+Documentation=https://github.com/vcruz305/Qwen3.8-Flash-Next-EXL3-DGX-Spark-recipe/blob/main/docs/service.md
+StartLimitIntervalSec=300
+StartLimitBurst=5
+
+[Service]
+Type=simple
+WorkingDirectory=%h
+EnvironmentFile=%h/.config/qwen38-exl3/service.env
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/bash ${QWEN_RECIPE_DIR}/exllamav3-tabby/serve.sh
+Restart=on-failure
+RestartSec=10s
+TimeoutStopSec=90s
+KillMode=control-group
+UMask=0077
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,9 @@
+# Existing CI source-fixture correction — 455cc4a3
+
+Exact clean source: [455cc4a30a97e66468f974e92af52a874bfa1b89](https://github.com/vcruz305/exllamav3/commit/455cc4a30a97e66468f974e92af52a874bfa1b89). The maintained CI source-test selection passes **243 tests and186 subtests** in the retained local log and XML. The local command uses `--noconftest` to avoid the repository-wide CUDA fixture; the ordinary GitHub job builds/imports the wheel before running the same three test modules.
+
+The earlier [9c CI run](https://github.com/vcruz305/exllamav3/actions/runs/37768480980) successfully built, installed and imported the CUDA12.8/sm120 wheel, then177 source-reservation cases failed because their lightweight `CPUJob.__init__` stub did not initialize the newly added optional phase state. The five-line fixture correction restores those disabled constructor fields. It does not change the reservation assertions or production behavior. Two workflow path-filter entries now include `tests/**`, so the same existing CI job also runs for a test-only correction; jobs, permissions and matrix are unchanged.
+
+The entire `exllamav3` production tree is identical to [f0](https://github.com/vcruz305/exllamav3/commit/f0beceb350d52bfdd62cbce6e6b462b35dd04759), with Git tree `b00adae150cef6db7cafaec143c8945e22231042`. The [f0 CPU evidence](../engine-cpu-f0/README.md) retains77 phase-budget tests and the119-test affected selection (plus22 subtests). These source-execution checks, the earlier16ca native/full-model quality evidence, and the final installed HTTP tests have separate scopes. A fresh GitHub run at455 still needs its own reported outcome.
+
+Exact command and working directory, source-file hashes, clean-state checks, runtime-tree proof, logs and XML are recorded in `evidence.json`. Only the fixture and workflow path filter differ fromf0. No Spark runtime or GPU operation was performed by this validation.

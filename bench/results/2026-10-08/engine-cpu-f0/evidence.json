@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "source_commit": "f0beceb350d52bfdd62cbce6e6b462b35dd04759",
+  "source_clean_tracked": true,
+  "source_path": "/home/vcruz/src/qwen-overnight-20261008/exllamav3-agent",
+  "baseline_gpu_commit": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+  "scope": "WSL CPU source-execution checks of finite accepted-token budgets and natural-only guarded phase handoff. Native GPU and full-model quality evidence remains separately identified at16ca. Final ordinary Spark setup is required for the new exact-source fingerprint.",
+  "created_at_utc": "2026-10-08T11:54:06.096714+00:00",
+  "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+  "source_files_sha256": {
+    "exllamav3/generator/async_generator.py": "bccfd0147fa5bfb19f47faffeec55f05d78ec1ae7e5cd9aecfcea3b76ceac740",
+    "exllamav3/generator/generator.py": "bc3f14a205eea6fcbad7775132bc40d6c904ad8cd734c01337bfd536f657cae3",
+    "exllamav3/generator/job.py": "dece0b9dc78d556bfc871bd1d81e210b09bdfeb851c3d6093f2b9f822c9f16f7",
+    "tests/test_token_budget_cpu.py": "e6e53874059da47526f33dfd918c43aab97d6892a663d7e9e14fcb36b6b9b32a",
+    "tests/test_mtp_row_budget_cpu.py": "c7865aa21ad7eefb4717337b8e9503eda76cdbe7fe3a95fc0646edd558998353",
+    "tests/test_sampler_batch_verify_cpu.py": "705de9dee7a7557aba0d30dd03e94dcead2f614842c5c7b5950f540f1b141a7e"
+  },
+  "native_source_proof": "native-source-proof.json",
+  "native_source_proof_sha256": "ff49adcfd170e0421210cad2418070a5b68a2e1cd4ddbab817a1525c4c6f7bf6",
+  "commands": [
+    {
+      "label": "token-budget",
+      "argv": [
+        "/usr/bin/python3",
+        "-m",
+        "pytest",
+        "--noconftest",
+        "-q",
+        "tests/test_token_budget_cpu.py",
+        "--junitxml=/home/vcruz/src/qwen-overnight-20261008/recipe/bench/results/2026-10-08/engine-cpu-f0/token-budget.xml"
+      ],
+      "cwd": "/home/vcruz/src/qwen-overnight-20261008/exllamav3-agent",
+      "started_at_utc": "2026-10-08T11:54:06.098947+00:00",
+      "finished_at_utc": "2026-10-08T11:54:10.875952+00:00",
+      "exit_code": 0,
+      "log": "token-budget.log",
+      "log_sha256": "911ad10a66cf85a2b66e8d4ce90f92ce426a9619f41b3ca1a6536dd27095a41c",
+      "junit": "token-budget.xml",
+      "junit_sha256": "296a85274af345d66c0eedd46b769a0736732bd9b176cd810f82404bb70a1ffe"
+    },
+    {
+      "label": "affected-generator",
+      "argv": [
+        "/usr/bin/python3",
+        "-m",
+        "pytest",
+        "--noconftest",
+        "-q",
+        "tests/test_token_budget_cpu.py",
+        "tests/test_mtp_row_budget_cpu.py",
+        "tests/test_sampler_batch_verify_cpu.py",
+        "--junitxml=/home/vcruz/src/qwen-overnight-20261008/recipe/bench/results/2026-10-08/engine-cpu-f0/affected-generator.xml"
+      ],
+      "cwd": "/home/vcruz/src/qwen-overnight-20261008/exllamav3-agent",
+      "started_at_utc": "2026-10-08T11:54:10.876321+00:00",
+      "finished_at_utc": "2026-10-08T11:54:20.010907+00:00",
+      "exit_code": 0,
+      "log": "affected-generator.log",
+      "log_sha256": "1b25a2474db720ee4b494b4952e6320c4862225acd54a0dfa959c99a6c9a1582",
+      "junit": "affected-generator.xml",
+      "junit_sha256": "64ea2fa892a6dc721cf586fa2a8d7015ff916b32d53dfd3f0452b3cc9877352e"
+    }
+  ],
+  "passed": true,
+  "source_clean_tracked_after": true,
+  "packages": {
+    "torch": "2.13.0+cpu",
+    "pytest": "9.0.3"
+  }
+}

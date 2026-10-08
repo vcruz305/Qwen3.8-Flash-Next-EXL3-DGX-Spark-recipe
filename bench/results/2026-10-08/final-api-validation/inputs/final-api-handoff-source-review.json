@@ -1,0 +1,30 @@
+{
+  "recorded_at_utc": "2026-10-08T13:21:26.903931+00:00",
+  "source": "/home/vcruz/src/qwen-overnight-20261008/final_api_after_quality.py",
+  "reviewed_source_sha256": "bfc553681d87798a4dac8cb411993f39da0e7b9cec3f81af92513c4fac6b580b",
+  "final_source_sha256_reported_by_root": "29a88c1576aa42f6383411f6df29fa55e97a6b1842ac2c6fba7b94fe33f79b2a",
+  "review_type": "Read-only source, numerical-controller result-schema, frozen job JSON and final-batch CLI review; no imports, tests, API, GPU, source mutation or service actions by reviewer.",
+  "contracts_checked": [
+    "Numerical status uses state=completed, jobs_sha256 and ordered jobs records named baseline-305-chunk2048-final-pair and candidate-305-chunk2048-final-pair.",
+    "Per-job completed/probe_exit and candidate assessment_exit/core_passed/investigation_count keys match the actual Q8 matrix controller.",
+    "The frozen selected list contains exactly five intended engine24f0/Tabby5a jobs; the chunk2048 pair references its own newly generated baseline artifacts.",
+    "Frozen final_api_batch.py accepts --jobs, --setup, --output and --job-timeout; 3600 seconds meets its concurrent-job minimum and is within its allowed maximum.",
+    "Setup status engine/Tabby fields match the actual completed setup schema; the downstream final wrapper retains its stronger setup/source gates."
+  ],
+  "input_identities": {
+    "paired_jobs_sha256": "eefa1312ea922c63fd083553d8ed1d6cae210fd1f02d82bcc4a47a7c10d2829a",
+    "selected_api_jobs_sha256": "50def7795a0a7401cbf17d585d5f0955e23ed99968de58bda3d92c836335b915",
+    "final_api_batch_sha256": "4820f2515b98b9f4698065bc03c393f82cc1c6f5aa9542d6d8599761478a1117"
+  },
+  "finding": "An os.execv failure after recording passed=true would enter the exception handler and leave passed=true alongside state=failed.",
+  "resolution_reported_by_root": "The exception save now explicitly passes passed=False; root reported AST/readback validation of the final source hash.",
+  "status": "resolved",
+  "no_additional_review_execution_after_fix": true,
+  "reported_launch": {
+    "pid": 430098,
+    "started_utc": "2026-10-08T13:20:48+00:00",
+    "waits_for_quality_pid": 426966,
+    "execution_owner": "root"
+  },
+  "scope": "The review approves result-schema and launch-contract consistency only. Handoff success is not final API validation or numerical approval without the required saved gate outcomes."
+}

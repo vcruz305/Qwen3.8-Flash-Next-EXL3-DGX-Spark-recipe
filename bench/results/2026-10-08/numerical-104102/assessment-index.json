@@ -1,0 +1,4955 @@
+{
+  "generated_at_utc": "2026-10-08T10:43:49.588979+00:00",
+  "declared_gates_sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+  "assessments": [
+    {
+      "assessment": "raw/results/quality-16ca-recovery/candidate-qsa-305/assessment.json",
+      "sha256": "3c80622fe4cdcbd48c69d7ef472f4a9b9a908022a1edb5c3b74f861e61b07494",
+      "assessed_at_utc": "2026-10-08T10:19:31.723374+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "investigate",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": true,
+      "investigation_count": 4,
+      "paged": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 4,
+        "investigation_triggers": [
+          "code.b1.p4095.q1: mean_paired_kl",
+          "code.b1.p4095.q1: p95_paired_kl",
+          "multilingual.b1.p4095.q1: mean_paired_kl",
+          "multilingual.b1.p4095.q1: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": -0.0009497692323445032,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p4095.q1",
+          "code.b1.p4095.q6",
+          "multilingual.b1.p4095.q1",
+          "multilingual.b1.p4095.q6",
+          "tools.b1.p4095.q1",
+          "tools.b1.p4095.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.021406074985861778,
+        "max_per_case_mean_paired_kl": 0.04791881516575813,
+        "max_paired_absolute_logit_difference": 10.037109375,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 3,
+            "positions": 144,
+            "max_paired_absolute_logit_difference": 10.037109375,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 3,
+            "positions": 144,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 3,
+        "positions": 144,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p4095.prefill",
+          "multilingual.b1.p4095.prefill",
+          "tools.b1.p4095.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "prefill": {
+            "cases": 3,
+            "positions": 144,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-b532-fullmatrix/baseline-qsa-305/probe.json",
+          "sha256": "9984bae7fcadb9a74cf3186a00a4ec603e78ca3342c4af49bff7ebd3fbcb2833",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-16ca-recovery/candidate-qsa-305/probe.json",
+          "sha256": "ad334c86a31b34accd09523b01535a8ebe6e5003e626dd0d3e1ca8b804c82150",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-16ca-recovery/candidate-qsa-305/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_GEMM_LEGACY_TILES": "1"
+      },
+      "job_compiled_marker": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+      "job_geometry": {
+        "contexts": "4095",
+        "q_lens": null,
+        "batch_sizes": null,
+        "steps": null,
+        "prefill_chunk": null,
+        "cases": null,
+        "ngram_ram": true
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-16ca-recovery/candidate-short-405/assessment.json",
+      "sha256": "62cf540d26f8910364ac2120c5f513a384be29be7c1fd1ee027720f95f5f8f21",
+      "assessed_at_utc": "2026-10-08T10:17:41.080484+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-4.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "investigate",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": true,
+      "investigation_count": 2,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 2,
+        "investigation_triggers": [
+          "tools.b1.p1023.q1: mean_paired_kl",
+          "tools.b1.p1023.q1: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": -0.0016075535656151867,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.012627090327441692,
+        "max_per_case_mean_paired_kl": 0.051738888025283813,
+        "max_paired_absolute_logit_difference": 15.3529052734375,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 15.3529052734375,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-405.json",
+          "sha256": "406b2ac845c8b05cf03218082b5eca87068145095a67030982fd0a317e8c332e",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-16ca-recovery/candidate-short-405/probe.json",
+          "sha256": "9c482460eda60c509b92c8f280c61eef83f5a91171e9c0e9f7bfafbd3c0debf1",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-16ca-recovery/candidate-short-405/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_GEMM_LEGACY_TILES": "1"
+      },
+      "job_compiled_marker": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+      "job_geometry": {
+        "contexts": null,
+        "q_lens": null,
+        "batch_sizes": null,
+        "steps": null,
+        "prefill_chunk": null,
+        "cases": null,
+        "ngram_ram": false
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-assessment-attn-compat-415-coopoff-b5322c98.json",
+      "sha256": "e778f7be9296b797a1bcc8fa7c81b277d5fc3ad8460c08b349e1fadaf5f6fbaa",
+      "assessed_at_utc": "2026-10-08T09:01:24.248734+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "b5322c98c5760105de04f7cf7c28bece17fbc78e",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "pass",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": false,
+      "investigation_count": 0,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 6.402844920927464e-10,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 1.2041225261327781e-07,
+        "max_per_case_mean_paired_kl": 1.750652778298445e-08,
+        "max_paired_absolute_logit_difference": 0.015625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.015625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-415.json",
+          "sha256": "0e545d02a3fb9b182056a0f36ad81852e3cdd4bce56b66063fa4085a132dce75",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-attn-compat-415-coopoff-b5322c98.json",
+          "sha256": "b7abb98fb7e0511e4c41526ccf47b2f41c97713f318a5971997da19c51b5fb7a",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-assessment-attn-splits-415-coopoff-cece37b6.json",
+      "sha256": "87c2f914e29accc2eedbba6e8e53c3a09d98138c3e12ac694c94fdeaa21609bb",
+      "assessed_at_utc": "2026-10-08T08:53:59.728958+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "cece37b6c7c3d58907a16892454a6b0adf4931ec",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 4,
+      "investigation_required": true,
+      "investigation_count": 5,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": false,
+        "core_failure_count": 4,
+        "core_failures": [
+          "multilingual.b1.p1023.q6: paired_nll_per_case",
+          "tools.b1.p1023.q6: paired_nll_per_case",
+          "tools.b1.p1023.q6: additional_high_confidence_disagreements_per_case",
+          "pooled_additional_high_confidence_disagreements"
+        ],
+        "investigation_count": 5,
+        "investigation_triggers": [
+          "code.b1.p1023.q1: mean_paired_kl",
+          "multilingual.b1.p1023.q6: mean_paired_kl",
+          "multilingual.b1.p1023.q6: p95_paired_kl",
+          "tools.b1.p1023.q6: mean_paired_kl",
+          "tools.b1.p1023.q6: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.018415574146880925,
+        "additional_high_confidence_disagreements": 3,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.14500238001346588,
+        "max_per_case_mean_paired_kl": 0.1469171941280365,
+        "max_paired_absolute_logit_difference": 11.51953125,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 7.318359375,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.51953125,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 6.402844920927464e-10,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 1.2041225261327781e-07,
+        "max_per_case_mean_paired_kl": 1.750652778298445e-08,
+        "max_paired_absolute_logit_difference": 0.015625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.015625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-415.json",
+          "sha256": "0e545d02a3fb9b182056a0f36ad81852e3cdd4bce56b66063fa4085a132dce75",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-attn-splits-415-coopoff-cece37b6.json",
+          "sha256": "90ecaf0e504e4da3d2da59b52ae891a73562ce18e56d41d257705938e53ef651",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-assessment-attn-splits-415-coopon-cece37b6.json",
+      "sha256": "c71ce895bec77171b061abb353e55d5a20a547c4745e4356d17015814d160906",
+      "assessed_at_utc": "2026-10-08T08:52:46.382542+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "cece37b6c7c3d58907a16892454a6b0adf4931ec",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 1,
+      "investigation_required": true,
+      "investigation_count": 9,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": false,
+        "core_failure_count": 1,
+        "core_failures": [
+          "multilingual.b1.p1023.q6: paired_nll_per_case"
+        ],
+        "investigation_count": 9,
+        "investigation_triggers": [
+          "code.b1.p1023.q1: mean_paired_kl",
+          "multilingual.b1.p1023.q1: mean_paired_kl",
+          "multilingual.b1.p1023.q1: p95_paired_kl",
+          "multilingual.b1.p1023.q6: mean_paired_kl",
+          "multilingual.b1.p1023.q6: p95_paired_kl",
+          "tools.b1.p1023.q1: mean_paired_kl",
+          "tools.b1.p1023.q1: p95_paired_kl",
+          "tools.b1.p1023.q6: mean_paired_kl",
+          "tools.b1.p1023.q6: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.000900344787320743,
+        "additional_high_confidence_disagreements": 2,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.11176402121782303,
+        "max_per_case_mean_paired_kl": 0.18015217781066895,
+        "max_paired_absolute_logit_difference": 11.546875,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 9.445556640625,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.546875,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 6.402844920927464e-10,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 1.2041225261327781e-07,
+        "max_per_case_mean_paired_kl": 1.750652778298445e-08,
+        "max_paired_absolute_logit_difference": 0.015625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.015625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-415.json",
+          "sha256": "0e545d02a3fb9b182056a0f36ad81852e3cdd4bce56b66063fa4085a132dce75",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-attn-splits-415-coopon-cece37b6.json",
+          "sha256": "9290627b5697fc3749d05f34afa0c5b4a73a8080e9c00e2b70597074306db04f",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-assessment-final-305-b5785675.json",
+      "sha256": "701559db34ca520a78cc94c825ff9b5dd4ad73133f40648706100c4bd8265d25",
+      "assessed_at_utc": "2026-10-08T07:56:01.891684+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "b5785675d3ecc4c09754477880d112b44952d83d",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 1,
+      "investigation_required": true,
+      "investigation_count": 3,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": false,
+        "core_failure_count": 1,
+        "core_failures": [
+          "multilingual.b1.p1023.q6: paired_nll_per_case"
+        ],
+        "investigation_count": 3,
+        "investigation_triggers": [
+          "multilingual.b1.p1023.q1: mean_paired_kl",
+          "multilingual.b1.p1023.q6: mean_paired_kl",
+          "multilingual.b1.p1023.q6: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.0083794202109857,
+        "additional_high_confidence_disagreements": 2,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.05910530686378479,
+        "max_per_case_mean_paired_kl": 0.05843305587768555,
+        "max_paired_absolute_logit_difference": 14.6953125,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 14.6953125,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 10.609375,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.003025849551098266,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.01381321158260107,
+        "max_per_case_mean_paired_kl": 0.006172655150294304,
+        "max_paired_absolute_logit_difference": 11.580078125,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.580078125,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "results/quality-baseline-305.json",
+          "sha256": "4ef3a5fcfc6f12f92c61efd3f7a0527642ae4b7eec31a05d1641cec94d4a34a7",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "results/quality-final-305-b5785675.json",
+          "sha256": "e9d7dbb86d4bd0a0b0f76f4606ec6d4296b178aa95ac1271a5d52f7c742a4eec",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": null,
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-assessment-final-415-b5785675.json",
+      "sha256": "18a101a68db1b4c98c365e02c05a655e08f0caad25280be78c71af45d1bba083",
+      "assessed_at_utc": "2026-10-08T07:56:01.912366+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "b5785675d3ecc4c09754477880d112b44952d83d",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 7,
+      "investigation_required": true,
+      "investigation_count": 20,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": false,
+        "core_failure_count": 4,
+        "core_failures": [
+          "multilingual.b1.p1023.q1: paired_nll_per_case",
+          "multilingual.b1.p1023.q6: paired_nll_per_case",
+          "tools.b1.p255.q1: paired_nll_per_case",
+          "tools.b1.p255.q6: paired_nll_per_case"
+        ],
+        "investigation_count": 14,
+        "investigation_triggers": [
+          "code.b1.p1023.q1: mean_paired_kl",
+          "code.b1.p1023.q1: p95_paired_kl",
+          "code.b1.p1023.q6: mean_paired_kl",
+          "code.b1.p1023.q6: p95_paired_kl",
+          "multilingual.b1.p1023.q1: mean_paired_kl",
+          "multilingual.b1.p1023.q1: p95_paired_kl",
+          "multilingual.b1.p1023.q6: mean_paired_kl",
+          "multilingual.b1.p1023.q6: p95_paired_kl",
+          "tools.b1.p255.q1: mean_paired_kl",
+          "tools.b1.p255.q6: mean_paired_kl",
+          "tools.b1.p1023.q1: mean_paired_kl",
+          "tools.b1.p1023.q1: p95_paired_kl",
+          "tools.b1.p1023.q6: mean_paired_kl",
+          "tools.b1.p1023.q6: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.012800128082744777,
+        "additional_high_confidence_disagreements": -1,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.1111554503440857,
+        "max_per_case_mean_paired_kl": 0.4860002100467682,
+        "max_paired_absolute_logit_difference": 12.3828125,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 12.3828125,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 10.515625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": false,
+        "core_failure_count": 3,
+        "core_failures": [
+          "tools.b1.p1023.prefill: paired_nll_per_case",
+          "pooled_paired_nll",
+          "pooled_additional_high_confidence_disagreements"
+        ],
+        "investigation_count": 6,
+        "investigation_triggers": [
+          "code.b1.p1023.prefill: mean_paired_kl",
+          "code.b1.p1023.prefill: p95_paired_kl",
+          "multilingual.b1.p1023.prefill: mean_paired_kl",
+          "multilingual.b1.p1023.prefill: p95_paired_kl",
+          "tools.b1.p1023.prefill: mean_paired_kl",
+          "tools.b1.p1023.prefill: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.03337633489475896,
+        "additional_high_confidence_disagreements": 3,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.24041931331157684,
+        "max_per_case_mean_paired_kl": 0.26806190609931946,
+        "max_paired_absolute_logit_difference": 11.84375,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.84375,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "results/quality-baseline-415.json",
+          "sha256": "0e545d02a3fb9b182056a0f36ad81852e3cdd4bce56b66063fa4085a132dce75",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "results/quality-final-415-b5785675.json",
+          "sha256": "d069bf78bfe2a867d4a262dc542810cffc0d6cbe37f6d6a8fc044055e69debea",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": null,
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-assessment-gdn-compat-305-b5785675.json",
+      "sha256": "cff729b7bb992360832528a424d90ed6868ddf090f32b627ae038f73b53840a3",
+      "assessed_at_utc": "2026-10-08T08:16:18.841424+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "b5785675d3ecc4c09754477880d112b44952d83d",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 1,
+      "investigation_required": true,
+      "investigation_count": 3,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": false,
+        "core_failure_count": 1,
+        "core_failures": [
+          "multilingual.b1.p1023.q1: paired_nll_per_case"
+        ],
+        "investigation_count": 3,
+        "investigation_triggers": [
+          "multilingual.b1.p1023.q1: mean_paired_kl",
+          "multilingual.b1.p1023.q6: mean_paired_kl",
+          "tools.b1.p255.q1: mean_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.015288369289919501,
+        "additional_high_confidence_disagreements": 2,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.09431719034910202,
+        "max_per_case_mean_paired_kl": 0.09504488855600357,
+        "max_paired_absolute_logit_difference": 15.3828125,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 15.3828125,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.82177734375,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.004493921063840389,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.019747186452150345,
+        "max_per_case_mean_paired_kl": 0.01097134593874216,
+        "max_paired_absolute_logit_difference": 10.958984375,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 10.958984375,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-305.json",
+          "sha256": "4ef3a5fcfc6f12f92c61efd3f7a0527642ae4b7eec31a05d1641cec94d4a34a7",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gdn-compat-305-b5785675.json",
+          "sha256": "932ffee564f6f5e9b07d1fe1cf4b2c2b0c8da45d298cf0b933b36f37c9f00081",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": null,
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-assessment-gdn-compat-415-b5785675.json",
+      "sha256": "c6fc156aad1c7cf7aa0520ad6b743d134e97e2d69fdedbd006bec17501c7613d",
+      "assessed_at_utc": "2026-10-08T08:17:24.944295+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "b5785675d3ecc4c09754477880d112b44952d83d",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 3,
+      "investigation_required": true,
+      "investigation_count": 23,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 15,
+        "investigation_triggers": [
+          "code.b1.p1023.q1: mean_paired_kl",
+          "code.b1.p1023.q1: p95_paired_kl",
+          "code.b1.p1023.q6: mean_paired_kl",
+          "code.b1.p1023.q6: p95_paired_kl",
+          "multilingual.b1.p1023.q1: mean_paired_kl",
+          "multilingual.b1.p1023.q1: p95_paired_kl",
+          "multilingual.b1.p1023.q6: mean_paired_kl",
+          "multilingual.b1.p1023.q6: p95_paired_kl",
+          "tools.b1.p255.q1: mean_paired_kl",
+          "tools.b1.p255.q1: p95_paired_kl",
+          "tools.b1.p255.q6: mean_paired_kl",
+          "tools.b1.p1023.q1: mean_paired_kl",
+          "tools.b1.p1023.q1: p95_paired_kl",
+          "tools.b1.p1023.q6: mean_paired_kl",
+          "tools.b1.p1023.q6: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": -0.0455082967140091,
+        "additional_high_confidence_disagreements": -1,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.027508122846484184,
+        "max_per_case_mean_paired_kl": 0.5135368704795837,
+        "max_paired_absolute_logit_difference": 11.3828125,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 10.090087890625,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.3828125,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": false,
+        "core_failure_count": 3,
+        "core_failures": [
+          "multilingual.b1.p1023.prefill: paired_nll_per_case",
+          "tools.b1.p1023.prefill: paired_nll_per_case",
+          "pooled_paired_nll"
+        ],
+        "investigation_count": 8,
+        "investigation_triggers": [
+          "code.b1.p255.prefill: mean_paired_kl",
+          "code.b1.p1023.prefill: mean_paired_kl",
+          "code.b1.p1023.prefill: p95_paired_kl",
+          "multilingual.b1.p255.prefill: p95_paired_kl",
+          "multilingual.b1.p1023.prefill: mean_paired_kl",
+          "multilingual.b1.p1023.prefill: p95_paired_kl",
+          "tools.b1.p1023.prefill: mean_paired_kl",
+          "tools.b1.p1023.prefill: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.057365029429395996,
+        "additional_high_confidence_disagreements": 2,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.20774032175540924,
+        "max_per_case_mean_paired_kl": 0.1829266995191574,
+        "max_paired_absolute_logit_difference": 9.876220703125,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 9.876220703125,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-415.json",
+          "sha256": "0e545d02a3fb9b182056a0f36ad81852e3cdd4bce56b66063fa4085a132dce75",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gdn-compat-415-b5785675.json",
+          "sha256": "f8fed57cfc8f3165cb2cf781e9200174a1b40c4429b320a098a8225208544f0f",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": null,
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-assessment-gdn-product-305-4b08348f.json",
+      "sha256": "e18457420bae868afa0d24c28e320426c8dda7b62e5e4394606b1b45362cebd9",
+      "assessed_at_utc": "2026-10-08T08:22:07.364325+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "4b08348f7f9ad7a680ff711ddb529ae5c67cbbf0",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "pass",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": false,
+      "investigation_count": 0,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0006765958466227554,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.004718179814517498,
+        "max_per_case_mean_paired_kl": 0.0037207857239991426,
+        "max_paired_absolute_logit_difference": 16.115234375,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.53515625,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 16.115234375,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": -3.937921100316544e-09,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 1.6127637536555994e-07,
+        "max_per_case_mean_paired_kl": 8.20696666181675e-09,
+        "max_paired_absolute_logit_difference": 0.015625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.015625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-305.json",
+          "sha256": "4ef3a5fcfc6f12f92c61efd3f7a0527642ae4b7eec31a05d1641cec94d4a34a7",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gdn-product-305-4b08348f.json",
+          "sha256": "06fbc18498c3ae0d4697ae9a3314d71568473e8833904e531d82783a95dc7873",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": null,
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-assessment-gdn-product-415-4b08348f.json",
+      "sha256": "c025246088921445de48144f263e4c60d0b433e4462b06959fd23bfd9132979f",
+      "assessed_at_utc": "2026-10-08T08:23:14.095791+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "4b08348f7f9ad7a680ff711ddb529ae5c67cbbf0",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 4,
+      "investigation_required": true,
+      "investigation_count": 10,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": false,
+        "core_failure_count": 4,
+        "core_failures": [
+          "multilingual.b1.p1023.q6: paired_nll_per_case",
+          "tools.b1.p1023.q6: paired_nll_per_case",
+          "tools.b1.p1023.q6: additional_high_confidence_disagreements_per_case",
+          "pooled_additional_high_confidence_disagreements"
+        ],
+        "investigation_count": 10,
+        "investigation_triggers": [
+          "code.b1.p1023.q1: mean_paired_kl",
+          "code.b1.p1023.q6: mean_paired_kl",
+          "multilingual.b1.p1023.q1: mean_paired_kl",
+          "multilingual.b1.p1023.q1: p95_paired_kl",
+          "multilingual.b1.p1023.q6: mean_paired_kl",
+          "multilingual.b1.p1023.q6: p95_paired_kl",
+          "tools.b1.p1023.q1: mean_paired_kl",
+          "tools.b1.p1023.q1: p95_paired_kl",
+          "tools.b1.p1023.q6: mean_paired_kl",
+          "tools.b1.p1023.q6: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.010903394761650512,
+        "additional_high_confidence_disagreements": 3,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.12278065830469131,
+        "max_per_case_mean_paired_kl": 0.1605585366487503,
+        "max_paired_absolute_logit_difference": 11.41015625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 9.445556640625,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.41015625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 6.402844920927464e-10,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 1.2041225261327781e-07,
+        "max_per_case_mean_paired_kl": 1.750652778298445e-08,
+        "max_paired_absolute_logit_difference": 0.015625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.015625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-415.json",
+          "sha256": "0e545d02a3fb9b182056a0f36ad81852e3cdd4bce56b66063fa4085a132dce75",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gdn-product-415-4b08348f.json",
+          "sha256": "59aea0bf1535d5cdf4761a29f5062b794b788e284c71e296d99d9c6424e3d0ee",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": null,
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-assessment-gdn-product-coopoff-415-4b08348f.json",
+      "sha256": "dc01f989e6287b0f29a1d633cf63c204f568f701e20e27aa3ad33d20a79c5e63",
+      "assessed_at_utc": "2026-10-08T08:25:09.571430+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "4b08348f7f9ad7a680ff711ddb529ae5c67cbbf0",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 4,
+      "investigation_required": true,
+      "investigation_count": 7,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": false,
+        "core_failure_count": 4,
+        "core_failures": [
+          "code.b1.p1023.q6: additional_high_confidence_disagreements_per_case",
+          "tools.b1.p1023.q6: paired_nll_per_case",
+          "tools.b1.p1023.q6: additional_high_confidence_disagreements_per_case",
+          "pooled_additional_high_confidence_disagreements"
+        ],
+        "investigation_count": 7,
+        "investigation_triggers": [
+          "code.b1.p1023.q1: mean_paired_kl",
+          "code.b1.p1023.q6: mean_paired_kl",
+          "code.b1.p1023.q6: p95_paired_kl",
+          "multilingual.b1.p1023.q6: mean_paired_kl",
+          "multilingual.b1.p1023.q6: p95_paired_kl",
+          "tools.b1.p1023.q6: mean_paired_kl",
+          "tools.b1.p1023.q6: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.010781681470689364,
+        "additional_high_confidence_disagreements": 6,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.08040671050548553,
+        "max_per_case_mean_paired_kl": 0.06625501066446304,
+        "max_paired_absolute_logit_difference": 9.685546875,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 7.318359375,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 9.685546875,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 6.402844920927464e-10,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 1.2041225261327781e-07,
+        "max_per_case_mean_paired_kl": 1.750652778298445e-08,
+        "max_paired_absolute_logit_difference": 0.015625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.015625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-415.json",
+          "sha256": "0e545d02a3fb9b182056a0f36ad81852e3cdd4bce56b66063fa4085a132dce75",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gdn-product-coopoff-415-4b08348f.json",
+          "sha256": "01c81ecb3909b1755c3964499ea3770675ce864321b5c361da55a1a02915b7fe",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-b532-fullmatrix/candidate-qsa-305/assessment.json",
+      "sha256": "e761c3a4b193bc3965849ca8be312253ae1be0922e4b4de1deea7d7bcda19459",
+      "assessed_at_utc": "2026-10-08T09:16:29.614857+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "b5322c98c5760105de04f7cf7c28bece17fbc78e",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "investigate",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": true,
+      "investigation_count": 4,
+      "paged": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 4,
+        "investigation_triggers": [
+          "code.b1.p4095.q1: mean_paired_kl",
+          "code.b1.p4095.q1: p95_paired_kl",
+          "multilingual.b1.p4095.q1: mean_paired_kl",
+          "multilingual.b1.p4095.q1: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": -0.0009497692323445032,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p4095.q1",
+          "code.b1.p4095.q6",
+          "multilingual.b1.p4095.q1",
+          "multilingual.b1.p4095.q6",
+          "tools.b1.p4095.q1",
+          "tools.b1.p4095.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.021406074985861778,
+        "max_per_case_mean_paired_kl": 0.04791881516575813,
+        "max_paired_absolute_logit_difference": 10.037109375,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 3,
+            "positions": 144,
+            "max_paired_absolute_logit_difference": 10.037109375,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 3,
+            "positions": 144,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 3,
+        "positions": 144,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": -6.391734549045699e-10,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p4095.prefill",
+          "multilingual.b1.p4095.prefill",
+          "tools.b1.p4095.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 3.222460875917932e-08,
+        "max_per_case_mean_paired_kl": 4.571648837270459e-09,
+        "max_paired_absolute_logit_difference": 0.015625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 3,
+            "positions": 144,
+            "max_paired_absolute_logit_difference": 0.015625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-b532-fullmatrix/baseline-qsa-305/probe.json",
+          "sha256": "9984bae7fcadb9a74cf3186a00a4ec603e78ca3342c4af49bff7ebd3fbcb2833",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-b532-fullmatrix/candidate-qsa-305/probe.json",
+          "sha256": "bc568e7d0dbdc0e686f1a1b1b62dbfcf20ca0197da39de9dd72762fc3b346136",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-b532-fullmatrix/candidate-qsa-305/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1"
+      },
+      "job_compiled_marker": "b5785675d3ecc4c09754477880d112b44952d83d",
+      "job_geometry": {
+        "contexts": "4095",
+        "q_lens": null,
+        "batch_sizes": null,
+        "steps": null,
+        "prefill_chunk": null,
+        "cases": null,
+        "ngram_ram": true
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-b532-fullmatrix/candidate-qsa-415/assessment.json",
+      "sha256": "e0cb5f4ffc5deeb8910e71c5bffd7d8fb9df0dff6ef6d50a9679b05b5e954d83",
+      "assessed_at_utc": "2026-10-08T09:17:50.021477+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "b5322c98c5760105de04f7cf7c28bece17fbc78e",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "pass",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": false,
+      "investigation_count": 0,
+      "paged": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p4095.q1",
+          "code.b1.p4095.q6",
+          "multilingual.b1.p4095.q1",
+          "multilingual.b1.p4095.q6",
+          "tools.b1.p4095.q1",
+          "tools.b1.p4095.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "q1": {
+            "cases": 3,
+            "positions": 144,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          },
+          "q6": {
+            "cases": 3,
+            "positions": 144,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 3,
+        "positions": 144,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 1.5397947739081985e-07,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p4095.prefill",
+          "multilingual.b1.p4095.prefill",
+          "tools.b1.p4095.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 4.520018990206154e-07,
+        "max_per_case_mean_paired_kl": 1.6448748141328906e-08,
+        "max_paired_absolute_logit_difference": 0.015625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 3,
+            "positions": 144,
+            "max_paired_absolute_logit_difference": 0.015625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-b532-fullmatrix/baseline-qsa-415/probe.json",
+          "sha256": "bee15271fa80c87c4b3aaf545d2216cc2b0cfd6eb7821d62bb451c58ec4a831e",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-b532-fullmatrix/candidate-qsa-415/probe.json",
+          "sha256": "87f7c7ec92b77a43fa1661ec1c261bf258848b7160d99b5b6a2c06ab1fdd1a57",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-b532-fullmatrix/candidate-qsa-415/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1"
+      },
+      "job_compiled_marker": "b5785675d3ecc4c09754477880d112b44952d83d",
+      "job_geometry": {
+        "contexts": "4095",
+        "q_lens": null,
+        "batch_sizes": null,
+        "steps": null,
+        "prefill_chunk": null,
+        "cases": null,
+        "ngram_ram": false
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-b532-fullmatrix/candidate-short-305/assessment.json",
+      "sha256": "3a4a03845cf8d11aca3804ccc483c25f12ccffce2eb5d51f9d16d4546ed1b3de",
+      "assessed_at_utc": "2026-10-08T09:12:00.838316+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "b5322c98c5760105de04f7cf7c28bece17fbc78e",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "pass",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": false,
+      "investigation_count": 0,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.000554410898378895,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.005974399391561747,
+        "max_per_case_mean_paired_kl": 0.00477139838039875,
+        "max_paired_absolute_logit_difference": 10.408203125,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 10.408203125,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": -3.937921100316544e-09,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 1.6127637536555994e-07,
+        "max_per_case_mean_paired_kl": 8.20696666181675e-09,
+        "max_paired_absolute_logit_difference": 0.015625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.015625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-305.json",
+          "sha256": "4ef3a5fcfc6f12f92c61efd3f7a0527642ae4b7eec31a05d1641cec94d4a34a7",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-b532-fullmatrix/candidate-short-305/probe.json",
+          "sha256": "16f509d82b299c63871b219c9037fe4f6ecaf0ff7bf89d58e28e698c0670deba",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-b532-fullmatrix/candidate-short-305/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1"
+      },
+      "job_compiled_marker": "b5785675d3ecc4c09754477880d112b44952d83d",
+      "job_geometry": {
+        "contexts": null,
+        "q_lens": null,
+        "batch_sizes": null,
+        "steps": null,
+        "prefill_chunk": null,
+        "cases": null,
+        "ngram_ram": true
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-b532-fullmatrix/candidate-short-405/assessment.json",
+      "sha256": "5561785b951cbcb5891b4d8099f40e70bba38d9ee8e1a36c56f9dfca0cdd74b6",
+      "assessed_at_utc": "2026-10-08T09:13:20.391865+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-4.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "b5322c98c5760105de04f7cf7c28bece17fbc78e",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 2,
+      "investigation_required": true,
+      "investigation_count": 11,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 7,
+        "investigation_triggers": [
+          "code.b1.p1023.q1: mean_paired_kl",
+          "code.b1.p1023.q6: mean_paired_kl",
+          "tools.b1.p255.q6: mean_paired_kl",
+          "tools.b1.p1023.q1: mean_paired_kl",
+          "tools.b1.p1023.q1: p95_paired_kl",
+          "tools.b1.p1023.q6: mean_paired_kl",
+          "tools.b1.p1023.q6: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.0038393079906503167,
+        "additional_high_confidence_disagreements": -2,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.04300226643681526,
+        "max_per_case_mean_paired_kl": 0.14358927309513092,
+        "max_paired_absolute_logit_difference": 14.0872802734375,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 14.0872802734375,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 10.9765625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": false,
+        "core_failure_count": 2,
+        "core_failures": [
+          "tools.b1.p1023.prefill: paired_nll_per_case",
+          "tools.b1.p1023.prefill: additional_high_confidence_disagreements_per_case"
+        ],
+        "investigation_count": 4,
+        "investigation_triggers": [
+          "tools.b1.p255.prefill: mean_paired_kl",
+          "tools.b1.p255.prefill: p95_paired_kl",
+          "tools.b1.p1023.prefill: mean_paired_kl",
+          "tools.b1.p1023.prefill: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.016936283248166244,
+        "additional_high_confidence_disagreements": 2,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.1313972920179367,
+        "max_per_case_mean_paired_kl": 0.13609382510185242,
+        "max_paired_absolute_logit_difference": 12.044921875,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 12.044921875,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-405.json",
+          "sha256": "406b2ac845c8b05cf03218082b5eca87068145095a67030982fd0a317e8c332e",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-b532-fullmatrix/candidate-short-405/probe.json",
+          "sha256": "200d659bd7e4239686d4c663d501e9bf17fd4d45b1fdf14e3c91785bcc148ba2",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-b532-fullmatrix/candidate-short-405/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1"
+      },
+      "job_compiled_marker": "b5785675d3ecc4c09754477880d112b44952d83d",
+      "job_geometry": {
+        "contexts": null,
+        "q_lens": null,
+        "batch_sizes": null,
+        "steps": null,
+        "prefill_chunk": null,
+        "cases": null,
+        "ngram_ram": false
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-b532-fullmatrix/candidate-short-cyber387/assessment.json",
+      "sha256": "a12deec9cb4dbedc0bde4c7d158b5fc43b67cdb300271cf09c4b62839426aa0b",
+      "assessed_at_utc": "2026-10-08T09:14:33.997248+00:00",
+      "model": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "b5322c98c5760105de04f7cf7c28bece17fbc78e",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "pass",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": false,
+      "investigation_count": 0,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 9.485020536933082e-05,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.0014839962823316455,
+        "max_per_case_mean_paired_kl": 6.530108657898381e-05,
+        "max_paired_absolute_logit_difference": 1.390625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 1.390625,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 1.265625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 7.521200101715901e-05,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.0007553254254162312,
+        "max_per_case_mean_paired_kl": 1.4098342944635078e-05,
+        "max_paired_absolute_logit_difference": 1.060546875,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 1.060546875,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-cyber387.json",
+          "sha256": "32d263d4a32b7976b2b118e2bfba4c4b61aa03681785497cf6a52052e32ba554",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-b532-fullmatrix/candidate-short-cyber387/probe.json",
+          "sha256": "4e6813635ea8a43018725fd74b57947d438b63b2d6a4200700dce6edf105d1df",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-b532-fullmatrix/candidate-short-cyber387/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1"
+      },
+      "job_compiled_marker": "b5785675d3ecc4c09754477880d112b44952d83d",
+      "job_geometry": {
+        "contexts": null,
+        "q_lens": null,
+        "batch_sizes": null,
+        "steps": null,
+        "prefill_chunk": null,
+        "cases": null,
+        "ngram_ram": false
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-b532-optimizations/sage-coopon/assessment.json",
+      "sha256": "ee64a1359896a9bd5f9509cf2879b23d3aa773e986fd279ea25e1aac326ad20d",
+      "assessed_at_utc": "2026-10-08T09:03:56.567931+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "b5322c98c5760105de04f7cf7c28bece17fbc78e",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 3,
+      "investigation_required": true,
+      "investigation_count": 12,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": false,
+        "core_failure_count": 3,
+        "core_failures": [
+          "multilingual.b1.p1023.q6: paired_nll_per_case",
+          "tools.b1.p1023.q1: paired_nll_per_case",
+          "pooled_paired_nll"
+        ],
+        "investigation_count": 12,
+        "investigation_triggers": [
+          "code.b1.p1023.q1: mean_paired_kl",
+          "code.b1.p1023.q1: p95_paired_kl",
+          "code.b1.p1023.q6: mean_paired_kl",
+          "code.b1.p1023.q6: p95_paired_kl",
+          "multilingual.b1.p1023.q1: mean_paired_kl",
+          "multilingual.b1.p1023.q1: p95_paired_kl",
+          "multilingual.b1.p1023.q6: mean_paired_kl",
+          "multilingual.b1.p1023.q6: p95_paired_kl",
+          "tools.b1.p1023.q1: mean_paired_kl",
+          "tools.b1.p1023.q1: p95_paired_kl",
+          "tools.b1.p1023.q6: mean_paired_kl",
+          "tools.b1.p1023.q6: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.0207728650275385,
+        "additional_high_confidence_disagreements": 2,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.27082160115242004,
+        "max_per_case_mean_paired_kl": 0.32071754336357117,
+        "max_paired_absolute_logit_difference": 11.257568359375,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 9.445556640625,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.257568359375,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 6.402844920927464e-10,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 1.2041225261327781e-07,
+        "max_per_case_mean_paired_kl": 1.750652778298445e-08,
+        "max_paired_absolute_logit_difference": 0.015625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.015625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-415.json",
+          "sha256": "0e545d02a3fb9b182056a0f36ad81852e3cdd4bce56b66063fa4085a132dce75",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-b532-optimizations/sage-coopon/probe.json",
+          "sha256": "88a90d49aefb04034674a90c47ae2a425128169da4f2767f1fb75ae34a68f437",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-b532-optimizations/sage-coopon/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "1",
+        "EXL3_MOE_MIXEDK_NOSYNC": "0"
+      },
+      "job_compiled_marker": "b5785675d3ecc4c09754477880d112b44952d83d",
+      "job_geometry": {
+        "contexts": null,
+        "q_lens": null,
+        "batch_sizes": null,
+        "steps": null,
+        "prefill_chunk": null,
+        "cases": null,
+        "ngram_ram": false
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "0",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-b532-optimizations/sage-nosync/assessment.json",
+      "sha256": "d308ec4ef4a5a10e68339c72532e6cca2541e92fb40cdca68967ade3b695bda4",
+      "assessed_at_utc": "2026-10-08T09:04:51.632667+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "b5322c98c5760105de04f7cf7c28bece17fbc78e",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "pass",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": false,
+      "investigation_count": 0,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 6.402844920927464e-10,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 1.2041225261327781e-07,
+        "max_per_case_mean_paired_kl": 1.750652778298445e-08,
+        "max_paired_absolute_logit_difference": 0.015625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 0.015625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-baseline-415.json",
+          "sha256": "0e545d02a3fb9b182056a0f36ad81852e3cdd4bce56b66063fa4085a132dce75",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-b532-optimizations/sage-nosync/probe.json",
+          "sha256": "de4f246b2059e1d9b380771397d0fdc3104a717529a5afd5a433314a65be4aa0",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-b532-optimizations/sage-nosync/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1"
+      },
+      "job_compiled_marker": "b5785675d3ecc4c09754477880d112b44952d83d",
+      "job_geometry": {
+        "contexts": null,
+        "q_lens": null,
+        "batch_sizes": null,
+        "steps": null,
+        "prefill_chunk": null,
+        "cases": null,
+        "ngram_ram": false
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-q8-16ca-batch4-candidate/candidate-batch4-305/assessment.json",
+      "sha256": "aa4db29b47b2cf24e8a5d35ddf9fa940ef03d078abc5878f794d7985f7df5820",
+      "assessed_at_utc": "2026-10-08T10:30:32.017966+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "q8",
+      "complete_prefill_cache_type": "none",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 1,
+      "investigation_required": true,
+      "investigation_count": 1,
+      "paged": {
+        "cases": 12,
+        "positions": 2304,
+        "core_passed": false,
+        "core_failure_count": 1,
+        "core_failures": [
+          "pooled_additional_high_confidence_disagreements"
+        ],
+        "investigation_count": 1,
+        "investigation_triggers": [
+          "multilingual.b4.p1023.q1: mean_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.002385589311719135,
+        "additional_high_confidence_disagreements": 3,
+        "case_keys": [
+          "code.b4.p255.q1",
+          "code.b4.p255.q6",
+          "code.b4.p1023.q1",
+          "code.b4.p1023.q6",
+          "multilingual.b4.p255.q1",
+          "multilingual.b4.p255.q6",
+          "multilingual.b4.p1023.q1",
+          "multilingual.b4.p1023.q6",
+          "tools.b4.p255.q1",
+          "tools.b4.p255.q6",
+          "tools.b4.p1023.q1",
+          "tools.b4.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.03112698532640934,
+        "max_per_case_mean_paired_kl": 0.03723693639039993,
+        "max_paired_absolute_logit_difference": 12.20947265625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 1152,
+            "max_paired_absolute_logit_difference": 12.20947265625,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 1152,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 1152,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b4.p255.prefill",
+          "code.b4.p1023.prefill",
+          "multilingual.b4.p255.prefill",
+          "multilingual.b4.p1023.prefill",
+          "tools.b4.p255.prefill",
+          "tools.b4.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 1152,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-batch4-baseline/baseline-batch4-305/probe.json",
+          "sha256": "a382ae798dfb01de1a0cdaffbb7874192db3b97224902c62bd346db26800bedd",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-16ca-batch4-candidate/candidate-batch4-305/probe.json",
+          "sha256": "b02928ce7fc2077e231cba518ec3deff68c46710443a9b3fed928d28fb93b56f",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-q8-16ca-batch4-candidate/candidate-batch4-305/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_GEMM_LEGACY_TILES": "1"
+      },
+      "job_compiled_marker": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+      "job_geometry": {
+        "contexts": "255,1023",
+        "q_lens": "1,6",
+        "batch_sizes": "4",
+        "steps": 48,
+        "prefill_chunk": 1024,
+        "cases": "code,tools,multilingual",
+        "ngram_ram": true
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-q8-16ca-batch4-candidate/candidate-batch4-415/assessment.json",
+      "sha256": "040a7043b4e66a6544e26b8cf865f2508d19ad0b67b4ffe14f3fcd4a51d82473",
+      "assessed_at_utc": "2026-10-08T10:32:13.626318+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "q8",
+      "complete_prefill_cache_type": "none",
+      "status": "pass",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": false,
+      "investigation_count": 0,
+      "paged": {
+        "cases": 12,
+        "positions": 2304,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b4.p255.q1",
+          "code.b4.p255.q6",
+          "code.b4.p1023.q1",
+          "code.b4.p1023.q6",
+          "multilingual.b4.p255.q1",
+          "multilingual.b4.p255.q6",
+          "multilingual.b4.p1023.q1",
+          "multilingual.b4.p1023.q6",
+          "tools.b4.p255.q1",
+          "tools.b4.p255.q6",
+          "tools.b4.p1023.q1",
+          "tools.b4.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 1152,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 1152,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 1152,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b4.p255.prefill",
+          "code.b4.p1023.prefill",
+          "multilingual.b4.p255.prefill",
+          "multilingual.b4.p1023.prefill",
+          "tools.b4.p255.prefill",
+          "tools.b4.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 1152,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-batch4-baseline/baseline-batch4-415/probe.json",
+          "sha256": "c01ba0d6e060f583dfb116cf0df84ae751eefd0f9dc7e0a0ba843d06ebf46f20",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-16ca-batch4-candidate/candidate-batch4-415/probe.json",
+          "sha256": "70f02faf46fa90b6315afa3bc2f0541e90f452a97e3eda5b95bdf55f0cf36172",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-q8-16ca-batch4-candidate/candidate-batch4-415/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_GEMM_LEGACY_TILES": "1"
+      },
+      "job_compiled_marker": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+      "job_geometry": {
+        "contexts": "255,1023",
+        "q_lens": "1,6",
+        "batch_sizes": "4",
+        "steps": 48,
+        "prefill_chunk": 1024,
+        "cases": "code,tools,multilingual",
+        "ngram_ram": false
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-q8-16ca-batch4-ksplit1/candidate-batch4-305-ksplit1/assessment.json",
+      "sha256": "e28aa2be6496b172e4c8668e4e82ad31a78bbeb9cb266e7a4d6ff8a4a0d2cdbe",
+      "assessed_at_utc": "2026-10-08T10:37:02.346775+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "q8",
+      "complete_prefill_cache_type": "none",
+      "status": "pass",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": false,
+      "investigation_count": 0,
+      "paged": {
+        "cases": 12,
+        "positions": 2304,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b4.p255.q1",
+          "code.b4.p255.q6",
+          "code.b4.p1023.q1",
+          "code.b4.p1023.q6",
+          "multilingual.b4.p255.q1",
+          "multilingual.b4.p255.q6",
+          "multilingual.b4.p1023.q1",
+          "multilingual.b4.p1023.q6",
+          "tools.b4.p255.q1",
+          "tools.b4.p255.q6",
+          "tools.b4.p1023.q1",
+          "tools.b4.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 1152,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 1152,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 1152,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b4.p255.prefill",
+          "code.b4.p1023.prefill",
+          "multilingual.b4.p255.prefill",
+          "multilingual.b4.p1023.prefill",
+          "tools.b4.p255.prefill",
+          "tools.b4.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 1152,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-batch4-baseline/baseline-batch4-305/probe.json",
+          "sha256": "a382ae798dfb01de1a0cdaffbb7874192db3b97224902c62bd346db26800bedd",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-16ca-batch4-ksplit1/candidate-batch4-305-ksplit1/probe.json",
+          "sha256": "8026ccd45b7a3696df487b00a6afc7964018e7c1aa4121c3d9e9e3e1d641dbe1",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-q8-16ca-batch4-ksplit1/candidate-batch4-305-ksplit1/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_GEMM_LEGACY_TILES": "1",
+        "EXL3_MOE_COOP_KSPLIT": "1"
+      },
+      "job_compiled_marker": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+      "job_geometry": {
+        "contexts": "255,1023",
+        "q_lens": "1,6",
+        "batch_sizes": "4",
+        "steps": 48,
+        "prefill_chunk": 1024,
+        "cases": "code,tools,multilingual",
+        "ngram_ram": true
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-q8-16ca-candidate/candidate-305/assessment.json",
+      "sha256": "c5123e46290de16eb529b77ae76fb25d522819af155afcb9c7d086bb2b222ce4",
+      "assessed_at_utc": "2026-10-08T10:22:01.525407+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "q8",
+      "complete_prefill_cache_type": "none",
+      "status": "investigate",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": true,
+      "investigation_count": 1,
+      "paged": {
+        "cases": 18,
+        "positions": 864,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 1,
+        "investigation_triggers": [
+          "multilingual.b1.p4095.q1: mean_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.0007545650005340576,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "code.b1.p4095.q1",
+          "code.b1.p4095.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "multilingual.b1.p4095.q1",
+          "multilingual.b1.p4095.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6",
+          "tools.b1.p4095.q1",
+          "tools.b1.p4095.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.017833808436989784,
+        "max_per_case_mean_paired_kl": 0.032116327434778214,
+        "max_paired_absolute_logit_difference": 10.4541015625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 9,
+            "positions": 432,
+            "max_paired_absolute_logit_difference": 10.4541015625,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 9,
+            "positions": 432,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 9,
+        "positions": 432,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "code.b1.p4095.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "multilingual.b1.p4095.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill",
+          "tools.b1.p4095.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "prefill": {
+            "cases": 9,
+            "positions": 432,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-baseline/baseline-305/probe.json",
+          "sha256": "647f7d57d4008f74403dfc9d6a9d8c382be76754ef3fa464353af1c8f11d6a61",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-16ca-candidate/candidate-305/probe.json",
+          "sha256": "2ab90c966d92bf4dde064ef0ce5c0c461ce1c9c766c36569e0b2228aaa4cc544",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-q8-16ca-candidate/candidate-305/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_GEMM_LEGACY_TILES": "1"
+      },
+      "job_compiled_marker": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+      "job_geometry": {
+        "contexts": "255,1023,4095",
+        "q_lens": "1,6",
+        "batch_sizes": "1",
+        "steps": 48,
+        "prefill_chunk": 1024,
+        "cases": "code,tools,multilingual",
+        "ngram_ram": true
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-q8-16ca-candidate/candidate-405/assessment.json",
+      "sha256": "d52292bfc9202d5835a19e01451eff91715c9fbee64555c1cf7c5432d4a985c2",
+      "assessed_at_utc": "2026-10-08T10:24:26.984581+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-4.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "q8",
+      "complete_prefill_cache_type": "none",
+      "status": "investigate",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": true,
+      "investigation_count": 2,
+      "paged": {
+        "cases": 18,
+        "positions": 864,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 2,
+        "investigation_triggers": [
+          "tools.b1.p1023.q1: mean_paired_kl",
+          "tools.b1.p4095.q1: mean_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": -0.003013956571521703,
+        "additional_high_confidence_disagreements": -1,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "code.b1.p4095.q1",
+          "code.b1.p4095.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "multilingual.b1.p4095.q1",
+          "multilingual.b1.p4095.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6",
+          "tools.b1.p4095.q1",
+          "tools.b1.p4095.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.0011500213295221329,
+        "max_per_case_mean_paired_kl": 0.034830931574106216,
+        "max_paired_absolute_logit_difference": 12.88671875,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 9,
+            "positions": 432,
+            "max_paired_absolute_logit_difference": 12.88671875,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 9,
+            "positions": 432,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 9,
+        "positions": 432,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "code.b1.p4095.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "multilingual.b1.p4095.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill",
+          "tools.b1.p4095.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "prefill": {
+            "cases": 9,
+            "positions": 432,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-baseline/baseline-405/probe.json",
+          "sha256": "5a1f32e991a01d3f6a8f006a0cc2ff500599da826fb8690b58667c14ed77278b",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-16ca-candidate/candidate-405/probe.json",
+          "sha256": "6ae4d4fc910bc91510c54624689ca9b02a10bb9400825f3a4ee0c801ee652283",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-q8-16ca-candidate/candidate-405/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_GEMM_LEGACY_TILES": "1"
+      },
+      "job_compiled_marker": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+      "job_geometry": {
+        "contexts": "255,1023,4095",
+        "q_lens": "1,6",
+        "batch_sizes": "1",
+        "steps": 48,
+        "prefill_chunk": 1024,
+        "cases": "code,tools,multilingual",
+        "ngram_ram": false
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-q8-16ca-candidate/candidate-415/assessment.json",
+      "sha256": "adcf390b5031d7e0f105201a3fb6937410fa94e5279ed166dac724aeaa98fcf6",
+      "assessed_at_utc": "2026-10-08T10:26:22.341159+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "q8",
+      "complete_prefill_cache_type": "none",
+      "status": "pass",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": false,
+      "investigation_count": 0,
+      "paged": {
+        "cases": 18,
+        "positions": 864,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "code.b1.p4095.q1",
+          "code.b1.p4095.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "multilingual.b1.p4095.q1",
+          "multilingual.b1.p4095.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6",
+          "tools.b1.p4095.q1",
+          "tools.b1.p4095.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "q1": {
+            "cases": 9,
+            "positions": 432,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          },
+          "q6": {
+            "cases": 9,
+            "positions": 432,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 9,
+        "positions": 432,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "code.b1.p4095.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "multilingual.b1.p4095.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill",
+          "tools.b1.p4095.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "prefill": {
+            "cases": 9,
+            "positions": 432,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-baseline/baseline-415/probe.json",
+          "sha256": "fc4ad8da8046d3336b9ed6e852b975006d45cb8034972d77b048dfa68e683492",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-16ca-candidate/candidate-415/probe.json",
+          "sha256": "3bdc572f4ca214a2a69be3f0c25445c0d93c111de96a70f10effce7a60af2828",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-q8-16ca-candidate/candidate-415/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_GEMM_LEGACY_TILES": "1"
+      },
+      "job_compiled_marker": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+      "job_geometry": {
+        "contexts": "255,1023,4095",
+        "q_lens": "1,6",
+        "batch_sizes": "1",
+        "steps": 48,
+        "prefill_chunk": 1024,
+        "cases": "code,tools,multilingual",
+        "ngram_ram": false
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/results/quality-q8-16ca-candidate/candidate-cyber387/assessment.json",
+      "sha256": "e4eb1e8d710fb5096917e44cccb9f4ac1e802e1932b67b7e45f9fb02dcb0b2e2",
+      "assessed_at_utc": "2026-10-08T10:28:20.996912+00:00",
+      "model": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "q8",
+      "complete_prefill_cache_type": "none",
+      "status": "pass",
+      "core_passed": true,
+      "core_failure_count": 0,
+      "investigation_required": false,
+      "investigation_count": 0,
+      "paged": {
+        "cases": 18,
+        "positions": 864,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": -1.8067255695086715e-05,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "code.b1.p4095.q1",
+          "code.b1.p4095.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "multilingual.b1.p4095.q1",
+          "multilingual.b1.p4095.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6",
+          "tools.b1.p4095.q1",
+          "tools.b1.p4095.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.00013035410665906966,
+        "max_per_case_mean_paired_kl": 7.706600626988802e-06,
+        "max_paired_absolute_logit_difference": 1.97265625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 9,
+            "positions": 432,
+            "max_paired_absolute_logit_difference": 1.97265625,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 9,
+            "positions": 432,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 9,
+        "positions": 432,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.0,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "code.b1.p4095.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "multilingual.b1.p4095.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill",
+          "tools.b1.p4095.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.0,
+        "max_per_case_mean_paired_kl": 0.0,
+        "max_paired_absolute_logit_difference": 0.0,
+        "all_reported_logit_differences_zero": true,
+        "by_q_length": {
+          "prefill": {
+            "cases": 9,
+            "positions": 432,
+            "max_paired_absolute_logit_difference": 0.0,
+            "all_reported_logit_differences_zero": true
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-baseline/baseline-cyber387/probe.json",
+          "sha256": "6419ef8685413d2656cb32c4a7a15afcf84c7cd95917a42f5f2869effb3a4b3a",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-q8-16ca-candidate/candidate-cyber387/probe.json",
+          "sha256": "ce9ade4bb7119c3888d7606c9b77539b85cfb87bedc98a8d0ec3515e37b706c1",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "/home/cruzspark/qwen-overnight-20261008/results/quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": "raw/results/quality-q8-16ca-candidate/candidate-cyber387/input.json",
+      "actual_job_environment": {
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_GR_INT8": "1",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MTP_HEAD_N": "65536",
+        "EXL3_DRAFT_CONFIDENCE": "0.6",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_GEMM_LEGACY_TILES": "1"
+      },
+      "job_compiled_marker": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+      "job_geometry": {
+        "contexts": "255,1023,4095",
+        "q_lens": "1,6",
+        "batch_sizes": "1",
+        "steps": 48,
+        "prefill_chunk": 1024,
+        "cases": "code,tools,multilingual",
+        "ngram_ram": false
+      },
+      "probe_candidate_environment": {
+        "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+        "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+        "EXL3_GDN_PROJ_FP32": "1",
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": "0",
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": "1",
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/wsl/quality-assessment-3b-305-gr-fp16.json",
+      "sha256": "6aa3e030a943a0eac0e86b59eacbbc356ce442b4e67727140245bbd988528aa0",
+      "assessed_at_utc": "2026-10-08T07:52:35.449240+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "3b9631292aedd202dfb8777c5c668cb023123c04",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 6,
+      "investigation_required": true,
+      "investigation_count": 2,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": false,
+        "core_failure_count": 6,
+        "core_failures": [
+          "multilingual.b1.p1023.q1: paired_nll_per_case",
+          "multilingual.b1.p1023.q1: additional_high_confidence_disagreements_per_case",
+          "multilingual.b1.p1023.q6: paired_nll_per_case",
+          "multilingual.b1.p1023.q6: additional_high_confidence_disagreements_per_case",
+          "pooled_paired_nll",
+          "pooled_additional_high_confidence_disagreements"
+        ],
+        "investigation_count": 2,
+        "investigation_triggers": [
+          "multilingual.b1.p1023.q1: mean_paired_kl",
+          "multilingual.b1.p1023.q6: mean_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.027149891283139976,
+        "additional_high_confidence_disagreements": 4,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.1969619244337082,
+        "max_per_case_mean_paired_kl": 0.19312898814678192,
+        "max_paired_absolute_logit_difference": 16.31640625,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 16.31640625,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.328125,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.003025849551098266,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.01381321158260107,
+        "max_per_case_mean_paired_kl": 0.006172655150294304,
+        "max_paired_absolute_logit_difference": 11.580078125,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.580078125,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "quality-baseline-305.json",
+          "sha256": "4ef3a5fcfc6f12f92c61efd3f7a0527642ae4b7eec31a05d1641cec94d4a34a7",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "quality-candidate-305-gr-fp16.json",
+          "sha256": "d78a18ac8e3cdac1e3d4bc37be5ac49be0f1acddbe96602c479ba4d8f637dd5d",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "0",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": null,
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/wsl/quality-assessment-3b-305.json",
+      "sha256": "32af26d4f3e1ce0b4a0b3bd82c844d3f4e8fad48866409876519b5afe0584147",
+      "assessed_at_utc": "2026-10-08T07:50:48.514323+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "3b9631292aedd202dfb8777c5c668cb023123c04",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 1,
+      "investigation_required": true,
+      "investigation_count": 2,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": false,
+        "core_failure_count": 1,
+        "core_failures": [
+          "multilingual.b1.p1023.q6: paired_nll_per_case"
+        ],
+        "investigation_count": 2,
+        "investigation_triggers": [
+          "multilingual.b1.p1023.q1: mean_paired_kl",
+          "multilingual.b1.p1023.q6: mean_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.006521644812892191,
+        "additional_high_confidence_disagreements": 1,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.05657917261123657,
+        "max_per_case_mean_paired_kl": 0.056214675307273865,
+        "max_paired_absolute_logit_difference": 16.162109375,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 16.162109375,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 10.640625,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": true,
+        "core_failure_count": 0,
+        "core_failures": [],
+        "investigation_count": 0,
+        "investigation_triggers": [],
+        "pooled_paired_nll_increase_nats": 0.003025849551098266,
+        "additional_high_confidence_disagreements": 0,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.01381321158260107,
+        "max_per_case_mean_paired_kl": 0.006172655150294304,
+        "max_paired_absolute_logit_difference": 11.580078125,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.580078125,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "quality-baseline-305.json",
+          "sha256": "4ef3a5fcfc6f12f92c61efd3f7a0527642ae4b7eec31a05d1641cec94d4a34a7",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "quality-candidate-305.json",
+          "sha256": "67934e7011c2c80fe9d11dd6c299c4dc03326bbab0093aace1a79dc71d1a7af3",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": null,
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/wsl/quality-assessment-3b-415-gr-fp16.json",
+      "sha256": "ecbb14c5c8349f8e2a7fb875e7f179f73da46a51a031e99b1da930c8597e192f",
+      "assessed_at_utc": "2026-10-08T07:52:35.500183+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "3b9631292aedd202dfb8777c5c668cb023123c04",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 6,
+      "investigation_required": true,
+      "investigation_count": 21,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": false,
+        "core_failure_count": 3,
+        "core_failures": [
+          "multilingual.b1.p1023.q6: paired_nll_per_case",
+          "tools.b1.p255.q1: paired_nll_per_case",
+          "tools.b1.p255.q6: paired_nll_per_case"
+        ],
+        "investigation_count": 15,
+        "investigation_triggers": [
+          "code.b1.p1023.q1: mean_paired_kl",
+          "code.b1.p1023.q1: p95_paired_kl",
+          "code.b1.p1023.q6: mean_paired_kl",
+          "code.b1.p1023.q6: p95_paired_kl",
+          "multilingual.b1.p1023.q1: mean_paired_kl",
+          "multilingual.b1.p1023.q1: p95_paired_kl",
+          "multilingual.b1.p1023.q6: mean_paired_kl",
+          "multilingual.b1.p1023.q6: p95_paired_kl",
+          "tools.b1.p255.q1: mean_paired_kl",
+          "tools.b1.p255.q6: mean_paired_kl",
+          "tools.b1.p255.q6: p95_paired_kl",
+          "tools.b1.p1023.q1: mean_paired_kl",
+          "tools.b1.p1023.q1: p95_paired_kl",
+          "tools.b1.p1023.q6: mean_paired_kl",
+          "tools.b1.p1023.q6: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.0189286635722965,
+        "additional_high_confidence_disagreements": -5,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.16973833739757538,
+        "max_per_case_mean_paired_kl": 0.5284419655799866,
+        "max_paired_absolute_logit_difference": 15.1953125,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.375,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 15.1953125,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": false,
+        "core_failure_count": 3,
+        "core_failures": [
+          "tools.b1.p1023.prefill: paired_nll_per_case",
+          "pooled_paired_nll",
+          "pooled_additional_high_confidence_disagreements"
+        ],
+        "investigation_count": 6,
+        "investigation_triggers": [
+          "code.b1.p1023.prefill: mean_paired_kl",
+          "code.b1.p1023.prefill: p95_paired_kl",
+          "multilingual.b1.p1023.prefill: mean_paired_kl",
+          "multilingual.b1.p1023.prefill: p95_paired_kl",
+          "tools.b1.p1023.prefill: mean_paired_kl",
+          "tools.b1.p1023.prefill: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.03337633489475896,
+        "additional_high_confidence_disagreements": 3,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.24041931331157684,
+        "max_per_case_mean_paired_kl": 0.26806190609931946,
+        "max_paired_absolute_logit_difference": 11.84375,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.84375,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "quality-baseline-415.json",
+          "sha256": "0e545d02a3fb9b182056a0f36ad81852e3cdd4bce56b66063fa4085a132dce75",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "quality-candidate-415-gr-fp16.json",
+          "sha256": "6311b4bfd20307231deba9d30b76029887c641a1909b791ef2c9879e8145450b",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "0",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": null,
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    },
+    {
+      "assessment": "raw/wsl/quality-assessment-3b-415.json",
+      "sha256": "aaa32fda8ac123e2f4fae5cb06d2cd870c139673812db98042a668895a0bc191",
+      "assessed_at_utc": "2026-10-08T07:52:35.397016+00:00",
+      "model": "/home/cruzspark/models/flashnext-exl3-sage-4.15bpw",
+      "baseline_runtime": {
+        "git_commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+        "package": "/home/cruzspark/qwen38-exl3/exllamav3",
+        "version": null
+      },
+      "candidate_runtime": {
+        "git_commit": "3b9631292aedd202dfb8777c5c668cb023123c04",
+        "package": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+        "version": null
+      },
+      "cache_type": "fp16 (frozen base probe)",
+      "complete_prefill_cache_type": "none (base full-prefill path)",
+      "status": "fail",
+      "core_passed": false,
+      "core_failure_count": 5,
+      "investigation_required": true,
+      "investigation_count": 21,
+      "paged": {
+        "cases": 12,
+        "positions": 576,
+        "core_passed": false,
+        "core_failure_count": 2,
+        "core_failures": [
+          "multilingual.b1.p1023.q6: paired_nll_per_case",
+          "tools.b1.p255.q1: paired_nll_per_case"
+        ],
+        "investigation_count": 15,
+        "investigation_triggers": [
+          "code.b1.p1023.q1: mean_paired_kl",
+          "code.b1.p1023.q1: p95_paired_kl",
+          "code.b1.p1023.q6: mean_paired_kl",
+          "code.b1.p1023.q6: p95_paired_kl",
+          "multilingual.b1.p1023.q1: mean_paired_kl",
+          "multilingual.b1.p1023.q1: p95_paired_kl",
+          "multilingual.b1.p1023.q6: mean_paired_kl",
+          "multilingual.b1.p1023.q6: p95_paired_kl",
+          "tools.b1.p255.q1: mean_paired_kl",
+          "tools.b1.p255.q1: p95_paired_kl",
+          "tools.b1.p255.q6: mean_paired_kl",
+          "tools.b1.p1023.q1: mean_paired_kl",
+          "tools.b1.p1023.q1: p95_paired_kl",
+          "tools.b1.p1023.q6: mean_paired_kl",
+          "tools.b1.p1023.q6: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.0038681532763196933,
+        "additional_high_confidence_disagreements": -1,
+        "case_keys": [
+          "code.b1.p255.q1",
+          "code.b1.p255.q6",
+          "code.b1.p1023.q1",
+          "code.b1.p1023.q6",
+          "multilingual.b1.p255.q1",
+          "multilingual.b1.p255.q6",
+          "multilingual.b1.p1023.q1",
+          "multilingual.b1.p1023.q6",
+          "tools.b1.p255.q1",
+          "tools.b1.p255.q6",
+          "tools.b1.p1023.q1",
+          "tools.b1.p1023.q6"
+        ],
+        "max_per_case_nll_increase_nats": 0.16188140213489532,
+        "max_per_case_mean_paired_kl": 0.47385838627815247,
+        "max_paired_absolute_logit_difference": 10.80078125,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "q1": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 10.80078125,
+            "all_reported_logit_differences_zero": false
+          },
+          "q6": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 10.5703125,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "unique_prefill": {
+        "cases": 6,
+        "positions": 288,
+        "core_passed": false,
+        "core_failure_count": 3,
+        "core_failures": [
+          "tools.b1.p1023.prefill: paired_nll_per_case",
+          "pooled_paired_nll",
+          "pooled_additional_high_confidence_disagreements"
+        ],
+        "investigation_count": 6,
+        "investigation_triggers": [
+          "code.b1.p1023.prefill: mean_paired_kl",
+          "code.b1.p1023.prefill: p95_paired_kl",
+          "multilingual.b1.p1023.prefill: mean_paired_kl",
+          "multilingual.b1.p1023.prefill: p95_paired_kl",
+          "tools.b1.p1023.prefill: mean_paired_kl",
+          "tools.b1.p1023.prefill: p95_paired_kl"
+        ],
+        "pooled_paired_nll_increase_nats": 0.03337633489475896,
+        "additional_high_confidence_disagreements": 3,
+        "case_keys": [
+          "code.b1.p255.prefill",
+          "code.b1.p1023.prefill",
+          "multilingual.b1.p255.prefill",
+          "multilingual.b1.p1023.prefill",
+          "tools.b1.p255.prefill",
+          "tools.b1.p1023.prefill"
+        ],
+        "max_per_case_nll_increase_nats": 0.24041931331157684,
+        "max_per_case_mean_paired_kl": 0.26806190609931946,
+        "max_paired_absolute_logit_difference": 11.84375,
+        "all_reported_logit_differences_zero": false,
+        "by_q_length": {
+          "prefill": {
+            "cases": 6,
+            "positions": 288,
+            "max_paired_absolute_logit_difference": 11.84375,
+            "all_reported_logit_differences_zero": false
+          }
+        },
+        "note": "Copied scalar summaries from frozen assessments; no rescoring or per-case selection."
+      },
+      "artifact_references": [
+        {
+          "role": "baseline",
+          "path": "quality-baseline-415.json",
+          "sha256": "0e545d02a3fb9b182056a0f36ad81852e3cdd4bce56b66063fa4085a132dce75",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "candidate",
+          "path": "quality-candidate-415.json",
+          "sha256": "df8d0802752e7cbfc53e14f6c539ed1569abf315bc160e5fa7f1f56addf868e4",
+          "matching_byte_hash_in_bundle": true
+        },
+        {
+          "role": "gates",
+          "path": "quality-gates.json",
+          "sha256": "84194429b6a0145ab2d08a2cfa09720c965709e3d0633aea6e646827a889a097",
+          "matching_byte_hash_in_bundle": true
+        }
+      ],
+      "job_input": null,
+      "actual_job_environment": null,
+      "job_compiled_marker": null,
+      "job_geometry": null,
+      "probe_candidate_environment": {
+        "EXL3_BC_ATTN": null,
+        "EXL3_BC_GDN": null,
+        "EXL3_COOPMK_PLAN": null,
+        "EXL3_GDN_SUB_CHUNK": null,
+        "EXL3_GRAPHS": null,
+        "EXL3_GR_INT8": "1",
+        "EXL3_GR_MIX_TILED": null,
+        "EXL3_GR_RB": null,
+        "EXL3_INT8_GEMV": "0",
+        "EXL3_MIXEDK_LEGACY": null,
+        "EXL3_MOE_COOP_MIXEDK": null,
+        "EXL3_MOE_COOP_WIDE": "1",
+        "EXL3_MOE_FUSED_ROWS": null,
+        "EXL3_MOE_MIXEDK_NOSYNC": null,
+        "EXL3_QC_STAGING": null,
+        "PYTORCH_CUDA_ALLOC_CONF": null
+      },
+      "final_deployment_qualification_claimed": false
+    }
+  ],
+  "status_counts": {
+    "investigate": 5,
+    "pass": 10,
+    "fail": 15
+  },
+  "purpose": "Index of all collected assessments, including failures; no claim that every attempt was intended for deployment."
+}

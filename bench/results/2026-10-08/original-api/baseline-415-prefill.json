@@ -1,0 +1,281 @@
+{
+  "schema_version": 2,
+  "started_at_utc": "2026-10-08T06:58:54.061444+00:00",
+  "label": "baseline-415-16k",
+  "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+  "run_id": "overnight-prefill",
+  "base_url": "http://127.0.0.1:8899/v1",
+  "client": {
+    "python": "3.12.3",
+    "platform": "Linux-7.0.0-1019-nvidia-aarch64-with-glibc2.39"
+  },
+  "provenance": {
+    "recorded_utc": "2026-10-08T06:46:38.059593+00:00",
+    "uname": "Linux spark-724a 7.0.0-1019-nvidia #19~24.04.2-Ubuntu SMP PREEMPT_DYNAMIC Sun Sep  6 18:35:11 UTC 2 aarch64 aarch64 aarch64 GNU/Linux",
+    "cpu": "Architecture:                            aarch64\nCPU op-mode(s):                          64-bit\nByte Order:                              Little Endian\nCPU(s):                                  20\nOn-line CPU(s) list:                     0-19\nVendor ID:                               ARM\nModel name:                              Cortex-X925\nModel:                                   1\nThread(s) per core:                      1\nCore(s) per socket:                      10\nSocket(s):                               1\nStepping:                                r0p1\nFrequency boost:                         disabled\nCPU(s) scaling MHz:                      100%\nCPU max MHz:                             3900.0000\nCPU min MHz:                             1378.0000\nBogoMIPS:                                2000.00\nFlags:                                   fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm dit uscat ilrcpc flagm sb paca pacg dcpodp sve2 sveaes svepmull svebitperm svesha3 svesm4 flagm2 frint svei8mm svebf16 i8mm bf16 dgh bti ecv afp wfxt\nModel name:                              Cortex-A725\nModel:                                   1\nThread(s) per core:                      1\nCore(s) per socket:                      10\nSocket(s):                               1\nStepping:                                r0p1\nCPU(s) scaling MHz:                      100%\nCPU max MHz:                             2808.0000\nCPU min MHz:                             338.0000\nBogoMIPS:                                2000.00\nFlags:                                   fp asimd evtstrm aes pmull sha1 sha2 crc32 atomics fphp asimdhp cpuid asimdrdm jscvt fcma lrcpc dcpop sha3 sm3 sm4 asimddp sha512 sve asimdfhm dit uscat ilrcpc flagm sb paca pacg dcpodp sve2 sveaes svepmull svebitperm svesha3 svesm4 flagm2 frint svei8mm svebf16 i8mm bf16 dgh bti ecv afp wfxt\nL1d cache:                               1.3 MiB (20 instances)\nL1i cache:                               1.3 MiB (20 instances)\nL2 cache:                                25 MiB (20 instances)\nL3 cache:                                24 MiB (2 instances)\nNUMA node(s):                            1\nNUMA node0 CPU(s):                       0-19\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; CSV2, BHB\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Not affected\n",
+    "gpu": "NVIDIA GB10, 580.178.04, 38, 9.98 W",
+    "baseline_engine": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+    "baseline_tabby": "816c32195887aaecea1c64528f2921566766259b",
+    "model": "flashnext-exl3-sage-4.15bpw",
+    "ngram_ram": false,
+    "profile": "single",
+    "max_seq_len": 262144,
+    "cache_size": 262144,
+    "max_batch_size": 1,
+    "pid": 89786,
+    "ready_at_utc": "2026-10-08T06:56:50.011468+00:00",
+    "model_config_sha256": "d632a03fe38666033750d62df05d36a9e460f761a2938b8c7ad442a1c0ee4f9d",
+    "launch_config": "# TabbyAPI config for Qwen3.8-Flash-Next EXL3 on one DGX Spark.\n# serve.sh renders this into <recipe home>/state/config.yml, filling the dollar-brace fields from\n# serve.sh variables and the environment. Every key below exists in theroyallab/tabbyAPI main; see its config_sample.yml\n# for the full list.\n\nnetwork:\n  host: 127.0.0.1\n  port: 8899\n  # true only when bound to loopback (serve.sh decides). Otherwise TabbyAPI writes\n  # api_tokens.yml into its own directory and clients need the key.\n  disable_auth: true\n  api_servers: [\"OAI\"]\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n\nmodel:\n  model_dir: /home/cruzspark/qwen-overnight-20261008/state-baseline-415/models\n  model_name: Qwen3.8-Flash-Next-EXL3\n  backend: exllamav3\n  inline_model_loading: false\n\n  # Context. max_seq_len is the per-request ceiling: 262,144 is the trained window, and needle\n  # retrieval fails past it (README, \"Context: the ceiling\"). cache_size is ONE shared KV pool\n  # for all concurrent requests, so it must be sized for concurrency, not per request:\n  # at 8-bit KV this geometry costs ~12-13 KB/token (12 of 48 layers are full attention plus the\n  # MTP layer, 2 KV heads at 256), so 1,048,576 tokens is ~13 GiB and holds four full-length\n  # sessions at once. serve.sh PROFILE=concurrent|single picks these values.\n  max_seq_len: 262144\n  cache_size: 262144\n  cache_mode: \"8,8\"\n  chunk_size: 2048\n\n  # Concurrent generation jobs. Each one also reserves a recurrent-state slot for the 36\n  # linear-attention layers. TabbyAPI's own default for recurrent models is 4.\n  max_batch_size: 1\n\n  # n-gram (PLE) table: true loads it into RAM (how the README's single-stream numbers were\n  # measured); false streams rows from disk per forward (~30 GB less resident, which is the room\n  # the concurrent profile spends on KV and batch; also needed for the 4.05 bpw pack).\n  ngram_ram: false\n\n  vision: false\n  warmup: true\n\n  # Qwen3.x XML tool calls (<function=...><parameter=...>) and <think> reasoning.\n  tool_format: qwen3_5\n  reasoning: true\n\ndraft_model:\n  # The model's own MTP head. Up to 5 drafts, cut early by confidence (the 0.6 target is read by\n  # the fork from EXL3_DRAFT_CONFIDENCE, which serve.sh exports).\n  draft_mode: mtp\n  draft_cache_mode: \"8,8\"\n  draft_num_tokens: 5\n  dynamic_draft: true\n\nmemory:\n  sysmem_recurrent_cache: 4096\n\n# Sampler fallbacks for requests that leave a value out. force: false, so any value a client\n# sends still wins. These are the model's own recommended settings (generation_config.json:\n# temperature 1.0, top_k 20, top_p 0.95). TabbyAPI does not read them from generation_config,\n# and with no sampling section it falls back to top_k 0 and top_p 1.0, i.e. no truncation:\n# every token is drawn from the full ~250k vocabulary. Clients that send no sampler values\n# (agent frameworks such as Hermes) then drift into garbage once a long reply draws a tail\n# token. Draft acceptance collapsing on one request is the tell.\nsampling:\n  temperature:\n    override: 1.0\n    force: false\n  top_k:\n    override: 20\n    force: false\n  top_p:\n    override: 0.95\n    force: false\n  min_p:\n    override: 0.0\n    force: false\n",
+    "model_safetensors_bytes": 108900928382
+  },
+  "settings": {
+    "max_tokens": 256,
+    "repeat": 2,
+    "warmup": 1,
+    "context_tokens_approx": 16384,
+    "cache_mode": "cold",
+    "thinking": false,
+    "temperature": 0,
+    "top_k": 1,
+    "seed": 0
+  },
+  "metric_notes": [
+    "server_decode_tok_s and server_prefill_tok_s are server-reported timings.",
+    "client_end_to_end_tok_s includes prefill, queueing and HTTP overhead.",
+    "TTFT is time to first visible content/reasoning/tool delta, not a role or ping event.",
+    "SSE events may contain multiple speculative tokens; client_decode_tok_s_estimate is approximate.",
+    "A unique cold prefix avoids reusable user prompt blocks; inspect actual cached_prompt_tokens.",
+    "context_tokens_approx is only a prompt construction target; usage.prompt_tokens is authoritative.",
+    "Early EOS is allowed and reported; no request is counted as max_tokens unless usage says so."
+  ],
+  "cases": {
+    "code": {
+      "prompt_sha256": "04941277fec997f5df5ac7c02613e737121b2aef753be6f6aba264c5bb161fed",
+      "warmup": [
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 12157,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 12157,
+          "completion_tokens": 256,
+          "ttft_s": 13.972345017999032,
+          "wall_s": 20.209480776999044,
+          "server_decode_tok_s": 39.5,
+          "server_prefill_tok_s": 888.02,
+          "client_end_to_end_tok_s": 12.66732197748299,
+          "client_decode_tok_s_estimate": 40.884697393276305,
+          "draft_acceptance": 0.8427947598253275,
+          "usage": {
+            "prompt_tokens": 12157,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 13.69,
+            "prompt_tokens_per_sec": 888.02,
+            "completion_tokens": 256,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 193,
+              "rejected_prediction_tokens": 36
+            },
+            "completion_time": 6.48,
+            "completion_tokens_per_sec": 39.5,
+            "total_tokens": 12413,
+            "total_time": 20.17
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 12157,
+            "prompt_ms": 13690.0,
+            "prompt_per_token_ms": 1.1261001891914124,
+            "prompt_per_second": 888.0204528853177,
+            "predicted_n": 256,
+            "predicted_ms": 6480.0,
+            "predicted_per_token_ms": 25.3125,
+            "predicted_per_second": 39.50617283950617,
+            "draft_n": 229,
+            "draft_n_accepted": 193
+          },
+          "sse_events": 64,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "e5051f69e396b285543b55303b54e280a1e07c76d48981e4161cedb46c4a7631",
+          "response_sha256": "9e9acd6b471b1c6362b1a970b1553eb2234754536317fb16312841991fca9859",
+          "phase": "warmup",
+          "repeat_index": 0
+        }
+      ],
+      "runs": [
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 12157,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 12157,
+          "completion_tokens": 256,
+          "ttft_s": 13.986889304000215,
+          "wall_s": 20.006728350999765,
+          "server_decode_tok_s": 41.14,
+          "server_prefill_tok_s": 884.15,
+          "client_end_to_end_tok_s": 12.795695303535588,
+          "client_decode_tok_s_estimate": 42.3605007217919,
+          "draft_acceptance": 0.8125,
+          "usage": {
+            "prompt_tokens": 12157,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 13.75,
+            "prompt_tokens_per_sec": 884.15,
+            "completion_tokens": 256,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 195,
+              "rejected_prediction_tokens": 45
+            },
+            "completion_time": 6.22,
+            "completion_tokens_per_sec": 41.14,
+            "total_tokens": 12413,
+            "total_time": 19.97
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 12157,
+            "prompt_ms": 13750.0,
+            "prompt_per_token_ms": 1.1310356173398042,
+            "prompt_per_second": 884.1454545454545,
+            "predicted_n": 256,
+            "predicted_ms": 6220.0,
+            "predicted_per_token_ms": 24.296875,
+            "predicted_per_second": 41.157556270096464,
+            "draft_n": 240,
+            "draft_n_accepted": 195
+          },
+          "sse_events": 62,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "62adb1b1774283d8760a3eb2485adaf95003b50428b81fae9319d3c5992da22f",
+          "response_sha256": "b6d720744dc0fba1833c531d0d5a86d49c2424581fd63ac5794b657e9d87148a",
+          "phase": "measured",
+          "repeat_index": 0
+        },
+        {
+          "model": "flashnext-exl3-sage-4.15bpw",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "flashnext-exl3-sage-4.15bpw",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 12157,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 12157,
+          "completion_tokens": 256,
+          "ttft_s": 13.262416057999872,
+          "wall_s": 19.29539606599974,
+          "server_decode_tok_s": 40.98,
+          "server_prefill_tok_s": 934.44,
+          "client_end_to_end_tok_s": 13.267413590493513,
+          "client_decode_tok_s_estimate": 42.26814922620192,
+          "draft_acceptance": 0.7958333333333333,
+          "usage": {
+            "prompt_tokens": 12157,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 13.01,
+            "prompt_tokens_per_sec": 934.44,
+            "completion_tokens": 256,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 191,
+              "rejected_prediction_tokens": 49
+            },
+            "completion_time": 6.25,
+            "completion_tokens_per_sec": 40.98,
+            "total_tokens": 12413,
+            "total_time": 19.26
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 12157,
+            "prompt_ms": 13010.0,
+            "prompt_per_token_ms": 1.070165336842971,
+            "prompt_per_second": 934.435049961568,
+            "predicted_n": 256,
+            "predicted_ms": 6250.0,
+            "predicted_per_token_ms": 24.4140625,
+            "predicted_per_second": 40.96,
+            "draft_n": 240,
+            "draft_n_accepted": 191
+          },
+          "sse_events": 66,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "ac0a55dcdb776b8b572f071949411eccae3880efa4db29363c7be731fa27833e",
+          "response_sha256": "848bc4f573f8f339eb1b13a4d375aac56eea76dcfad3686d466484ac6b2d6187",
+          "phase": "measured",
+          "repeat_index": 1
+        }
+      ],
+      "summary": {
+        "requests": 2,
+        "server_decode_tok_s": {
+          "p50": 41.06,
+          "p95": 41.132,
+          "samples": 2
+        },
+        "server_prefill_tok_s": {
+          "p50": 909.2950000000001,
+          "p95": 931.9255,
+          "samples": 2
+        },
+        "ttft_s": {
+          "p50": 13.624652681000043,
+          "p95": 13.950665641700198,
+          "samples": 2
+        },
+        "wall_s": {
+          "p50": 19.651062208499752,
+          "p95": 19.971161736749764,
+          "samples": 2
+        },
+        "client_end_to_end_tok_s": {
+          "p50": 13.03155444701455,
+          "p95": 13.243827676145617,
+          "samples": 2
+        },
+        "client_decode_tok_s_estimate": {
+          "p50": 42.31432497399691,
+          "p95": 42.3558831470124,
+          "samples": 2
+        },
+        "draft_acceptance": {
+          "p50": 0.8041666666666667,
+          "p95": 0.8116666666666666,
+          "samples": 2
+        },
+        "completion_tokens": [
+          256,
+          256
+        ],
+        "prompt_tokens": [
+          12157,
+          12157
+        ],
+        "cached_prompt_tokens": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "errors": [],
+  "model": "Qwen3.8-Flash-Next-EXL3",
+  "completed_at_utc": "2026-10-08T06:59:53.591235+00:00"
+}

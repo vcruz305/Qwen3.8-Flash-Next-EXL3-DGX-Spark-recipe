@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "source_commit": "9c0bbaaa31043f84a62e618d8c3b2e19c45b22c2",
+  "source_clean_tracked": true,
+  "source_path": "/home/vcruz/src/qwen-overnight-20261008/exllamav3-agent",
+  "baseline_gpu_commit": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+  "scope": "WSL CPU source-execution tests only. Final Spark setup reruns the budget gate separately; this record does not replace native GPU or full-model numerical evidence.",
+  "created_at_utc": "2026-10-08T11:30:19.308986+00:00",
+  "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+  "source_files_sha256": {
+    "exllamav3/generator/job.py": "7b9fb2eff2000dc19ed28d2e0fea67ce6665b2163edbac14a28db77bf041a6c1",
+    "exllamav3/generator/generator.py": "bc3f14a205eea6fcbad7775132bc40d6c904ad8cd734c01337bfd536f657cae3",
+    "exllamav3/generator/async_generator.py": "6ef7b01c53643e107c9ce82905fcd83c49480d301d99fc0939826e819edac42f",
+    "tests/test_token_budget_cpu.py": "d518fdf3cd3eadeccb3767f75bf2a6f5117ac68a95b0bca9cc85b2f2dfd4f5e1",
+    "tests/test_mtp_row_budget_cpu.py": "c7865aa21ad7eefb4717337b8e9503eda76cdbe7fe3a95fc0646edd558998353",
+    "tests/test_sampler_batch_verify_cpu.py": "705de9dee7a7557aba0d30dd03e94dcead2f614842c5c7b5950f540f1b141a7e"
+  },
+  "commands": [
+    {
+      "label": "token-budget",
+      "argv": [
+        "/usr/bin/python3",
+        "-m",
+        "pytest",
+        "--noconftest",
+        "-q",
+        "tests/test_token_budget_cpu.py",
+        "--junitxml=/home/vcruz/src/qwen-overnight-20261008/recipe/bench/results/2026-10-08/engine-cpu-9c/token-budget.xml"
+      ],
+      "cwd": "/home/vcruz/src/qwen-overnight-20261008/exllamav3-agent",
+      "started_at_utc": "2026-10-08T11:30:19.311073+00:00",
+      "finished_at_utc": "2026-10-08T11:30:23.736946+00:00",
+      "exit_code": 0,
+      "log": "token-budget.log",
+      "log_sha256": "816b7980a9d6f1ea0de2b5090d1fcfc5b0da3835d578038e50e9982b59c44921",
+      "junit": "token-budget.xml",
+      "junit_sha256": "072e186cd85e303c631abb323a597ac63b7f008495f9aed6ab69b51ec00e159b"
+    },
+    {
+      "label": "affected-generator",
+      "argv": [
+        "/usr/bin/python3",
+        "-m",
+        "pytest",
+        "--noconftest",
+        "-q",
+        "tests/test_token_budget_cpu.py",
+        "tests/test_mtp_row_budget_cpu.py",
+        "tests/test_sampler_batch_verify_cpu.py",
+        "--junitxml=/home/vcruz/src/qwen-overnight-20261008/recipe/bench/results/2026-10-08/engine-cpu-9c/affected-generator.xml"
+      ],
+      "cwd": "/home/vcruz/src/qwen-overnight-20261008/exllamav3-agent",
+      "started_at_utc": "2026-10-08T11:30:23.737164+00:00",
+      "finished_at_utc": "2026-10-08T11:30:33.163701+00:00",
+      "exit_code": 0,
+      "log": "affected-generator.log",
+      "log_sha256": "560dc641c6e1433a8d51020cbfacfbad83ad71ec8699010fcc7be8a2e0e0c92c",
+      "junit": "affected-generator.xml",
+      "junit_sha256": "a57b3b97a0f9709a0e0a2803f53dae914656053c881e97538228a412801d8cb9"
+    }
+  ],
+  "passed": true,
+  "source_clean_tracked_after": true,
+  "packages": {
+    "torch": "2.13.0+cpu",
+    "pytest": "9.0.3"
+  }
+}

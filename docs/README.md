@@ -1,4 +1,6 @@
-# Interactive Qwen benchmark
+# Historical interactive Qwen benchmark — September 13–14, 2026
+
+> This viewer preserves the September measurements. For the October TabbyAPI update, use the [current recipe](../README.md) and [October validation report](../VALIDATION_2026-10-08.md).
 
 Animated **16:9 before-and-after presentation** of the measured Qwen3.8-Flash-Next EXL3 serving improvements on one NVIDIA DGX Spark. It is a saved-results viewer, not a live inference demo.
 
@@ -54,7 +56,7 @@ This renders all seven completed scenes to `benchmark-renders/` and reports Java
 - Decode excludes TTFT.
 - Concurrency uses steady aggregate throughput over the interval when all streams are decoding.
 - The 4.05 bpw NVMe mode is a deliberate memory/speed trade.
-- Historical results remain in the main README for provenance; this page emphasizes the current Sep 13–14 serving envelope and the before/after progression.
+- Historical results remain in [HISTORICAL_BENCHMARKS.md](../HISTORICAL_BENCHMARKS.md) for provenance. This page describes the Sep 13–14 serving envelope; its concurrency interval differs from the October whole-batch API metric.
 
 ## Credits
 

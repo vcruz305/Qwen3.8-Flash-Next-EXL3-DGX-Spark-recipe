@@ -1,0 +1,72 @@
+{
+  "scope": "Independent literal inspection of the saved final405 native output, separate from actual Tabby parser replay. Each unique parameter body was compared directly to one LF + original requested string + one LF. No parser/coercion method was used for this comparison; raw strings were not rewritten.",
+  "engine": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+  "tabby": "5a4f3efa1c1f60b6966ba0d0d5610f6b953541fb",
+  "historical_cause_inferred": false,
+  "live_cases_passed": 2,
+  "live_cases_total": 2,
+  "api_report_sha256": "2c93e439992ead409466cf3751819033d06cc04f9f98080d5d328795c8bb7c84",
+  "capture_sha256": "588513768ea5a8ab345456aca63a623d2736aea7d317228f460bed883078dc5e",
+  "parser_replay_sha256": "6408f2eb4981654e2f03e5eb30e9f77300674773f780d0a49a47a7bf903a9128",
+  "cases": [
+    {
+      "mode": "nonstream",
+      "trace_sha256": "0b1229ddf38f47a32a166acc96bc4afa399dd1c22fa1b0913260c40716be0fc8",
+      "request_id": "8eae58dba5af494c99882c71db5eb744",
+      "native_equals_backend": true,
+      "raw_parameter_review": {
+        "number_text": {
+          "verbatim_body": "\n123\n",
+          "expected_value": "123",
+          "canonical_framing_only": true
+        },
+        "bool_text": {
+          "verbatim_body": "\ntrue\n",
+          "expected_value": "true",
+          "canonical_framing_only": true
+        },
+        "json_text": {
+          "verbatim_body": "\n{\"nested\": [1, false]}\n",
+          "expected_value": "{\"nested\": [1, false]}",
+          "canonical_framing_only": true
+        },
+        "tag_text": {
+          "verbatim_body": "\n<think>literal</think>\n",
+          "expected_value": "<think>literal</think>",
+          "canonical_framing_only": true
+        }
+      },
+      "original_case_passed": true
+    },
+    {
+      "mode": "stream",
+      "trace_sha256": "d35288dfd6c6ce423669833c028a367e5e3f73a260a60541a553bc0a1dd6b913",
+      "request_id": "d3e466c3f2b14a96bb9740baf062bb69",
+      "native_equals_backend": true,
+      "raw_parameter_review": {
+        "number_text": {
+          "verbatim_body": "\n123\n",
+          "expected_value": "123",
+          "canonical_framing_only": true
+        },
+        "bool_text": {
+          "verbatim_body": "\ntrue\n",
+          "expected_value": "true",
+          "canonical_framing_only": true
+        },
+        "json_text": {
+          "verbatim_body": "\n{\"nested\": [1, false]}\n",
+          "expected_value": "{\"nested\": [1, false]}",
+          "canonical_framing_only": true
+        },
+        "tag_text": {
+          "verbatim_body": "\n<think>literal</think>\n",
+          "expected_value": "<think>literal</think>",
+          "canonical_framing_only": true
+        }
+      },
+      "original_case_passed": true
+    }
+  ],
+  "conclusion": "Both final raw model completions contain the requested literal tags and all four exact string values. The parser replay also matches the API in all32 partitions/modes. This verifies the two final strings requests, without attributing historical failures or making an all-prompts guarantee."
+}

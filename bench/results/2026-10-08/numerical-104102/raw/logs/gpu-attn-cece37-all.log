@@ -1,0 +1,257 @@
+q6 p1023 b1 g12 d256: old={'programs': 12, 'cap': 8, 'splits': 8, 'span': 192, 'rows': 16, 'sms': 48}, packed={'programs': 6, 'cap': 16, 'splits': 16, 'span': 96, 'rows': 32, 'sms': 48}, compat_changed=2/36864, max_abs=3.0517578125e-05, default_changed=11589
+Fq1 p1023 b1 g12 d256: old={'programs': 2, 'cap': 48, 'splits': 41, 'span': 32, 'rows': 16, 'sms': 48}, packed={'programs': 2, 'cap': 48, 'splits': 41, 'span': 32, 'rows': 16, 'sms': 48}, compat_changed=0/6144, max_abs=0.0, default_changed=0
+.q6 p255 b1 g12 d256: old={'programs': 12, 'cap': 8, 'splits': 8, 'span': 192, 'rows': 16, 'sms': 48}, packed={'programs': 6, 'cap': 16, 'splits': 16, 'span': 96, 'rows': 32, 'sms': 48}, compat_changed=0/36864, max_abs=0.0, default_changed=8164
+.q4 p1023 b1 g12 d256: old={'programs': 6, 'cap': 16, 'splits': 16, 'span': 96, 'rows': 16, 'sms': 48}, packed={'programs': 4, 'cap': 24, 'splits': 24, 'span': 64, 'rows': 32, 'sms': 48}, compat_changed=2/24576, max_abs=4.76837158203125e-07, default_changed=7317
+Fq8 p1023 b1 g12 d256: old={'programs': 12, 'cap': 8, 'splits': 8, 'span': 192, 'rows': 16, 'sms': 48}, packed={'programs': 6, 'cap': 16, 'splits': 16, 'span': 96, 'rows': 32, 'sms': 48}, compat_changed=4/49152, max_abs=1.52587890625e-05, default_changed=15268
+Fq5 p255 b1 g6 d128: old={'programs': 6, 'cap': 16, 'splits': 16, 'span': 128, 'rows': 16, 'sms': 48}, packed={'programs': 2, 'cap': 48, 'splits': 21, 'span': 64, 'rows': 32, 'sms': 48}, compat_changed=0/7680, max_abs=0.0, default_changed=1863
+.q6 p1023 b2 g12 d256: old={'programs': 24, 'cap': 4, 'splits': 4, 'span': 352, 'rows': 16, 'sms': 48}, packed={'programs': 12, 'cap': 8, 'splits': 8, 'span': 192, 'rows': 32, 'sms': 48}, compat_changed=3/73728, max_abs=9.5367431640625e-07, default_changed=26824
+Fq16 p4095 b1 g12 d256: old={'programs': 24, 'cap': 4, 'splits': 4, 'span': 1120, 'rows': 16, 'sms': 48}, packed={'programs': 12, 'cap': 8, 'splits': 8, 'span': 576, 'rows': 32, 'sms': 48}, compat_changed=5/98304, max_abs=7.62939453125e-06, default_changed=35764
+F
+=================================== FAILURES ===================================
+_________________ test_actual_old_aot_numerics[spark_q6_p1023] _________________
+
+sources = {'legacy': <module 'spark_attn_compare_legacy' from '/home/cruzspark/qwen38-exl3/exllamav3/exllamav3/modules/attention.../qwen-overnight-20261008/attention-diagnostics-cece37/exllamav3-agent/exllamav3/modules/attention_fn/triton_paged.py'>}
+batch = 1, q_len = 6, prefix = 1023, group = 12, hd = 256
+
+    @pytest.mark.parametrize("batch,q_len,prefix,group,hd", [
+        (1, 6, 1023, 12, 256),
+        (1, 1, 1023, 12, 256),
+        (1, 6, 255, 12, 256),
+        (1, 4, 1023, 12, 256),
+        (1, 8, 1023, 12, 256),
+        (1, 5, 255, 6, 128),
+        (2, 6, 1023, 12, 256),
+        (1, 16, 4095, 12, 256),
+    ], ids=["spark_q6_p1023", "spark_q1_p1023", "spark_q6_p255", "power2_q4",
+            "power2_q8", "gqa6_q5", "batch2_q6", "long_q16"])
+    def test_actual_old_aot_numerics(sources, batch, q_len, prefix, group, hd):
+        generator = torch.Generator().manual_seed(941603 + q_len + prefix + group)
+        # Match the quality probe's five-page allocation for its short-prefix cases.
+        kv_heads, pages = 2, (max(prefix + q_len, 1072) + 255) // 256
+        q = torch.randn(batch, q_len, kv_heads * group, hd, generator=generator).half().cuda()
+        kc = torch.randn(batch * pages, 256, kv_heads, hd, generator=generator).half().cuda()
+        vc = torch.randn(batch * pages, 256, kv_heads, hd, generator=generator).half().cuda()
+        block = torch.randperm(batch * pages, generator=generator).reshape(batch, pages).int().cuda()
+        seqlens = torch.full((batch,), prefix, dtype=torch.int32, device="cuda")
+        old, old_plan = run(sources["legacy"], "legacy", False, q, kc, vc, block, seqlens)
+        baseline, baseline_plan = run(sources["baseline"], "baseline", False, q, kc, vc, block, seqlens)
+        off, off_plan = run(sources["candidate"], "candidate", False, q, kc, vc, block, seqlens)
+        compatible, compatible_plan = run(sources["candidate"], "candidate", True, q, kc, vc, block, seqlens)
+        assert torch.equal(off, baseline), "Disabled option changed frozen4b output"
+        assert off_plan == baseline_plan
+        assert compatible_plan["cap"] == old_plan["cap"]
+        assert compatible_plan["splits"] == old_plan["splits"]
+        assert compatible_plan["span"] == old_plan["span"]
+        assert compatible_plan["programs"] == baseline_plan["programs"]
+        changed = int((compatible != old).sum())
+        max_abs = float((compatible.float() - old.float()).abs().max())
+        print(f"q{q_len} p{prefix} b{batch} g{group} d{hd}: old={old_plan}, packed={baseline_plan}, "
+              f"compat_changed={changed}/{old.numel()}, max_abs={max_abs}, "
+              f"default_changed={int((baseline != old).sum())}")
+>       assert torch.equal(compatible, old), (
+            f"Historical split plan did not preserve original AOT output: {changed} changed, maxabs={max_abs}")
+E       AssertionError: Historical split plan did not preserve original AOT output: 2 changed, maxabs=3.0517578125e-05
+E       assert False
+E        +  where False = <built-in method equal of type object at 0xfcdabed1d638>(tensor([[[[ 0.0568, -0.0323, -0.0676,  ..., -0.0176, -0.0878, -0.0075],\n          [ 0.0899, -0.0493,  0.0273,  ..., -0...          [-0.0441, -0.0318, -0.0254,  ...,  0.0180, -0.0678, -0.0533]]]],\n       device='cuda:0', dtype=torch.float16), tensor([[[[ 0.0568, -0.0323, -0.0676,  ..., -0.0176, -0.0878, -0.0075],\n          [ 0.0899, -0.0493,  0.0273,  ..., -0...          [-0.0441, -0.0318, -0.0254,  ...,  0.0180, -0.0678, -0.0533]]]],\n       device='cuda:0', dtype=torch.float16))
+E        +    where <built-in method equal of type object at 0xfcdabed1d638> = torch.equal
+
+exllamav3-agent/tests/test_attn_legacy_splits_gpu.py:193: AssertionError
+___________________ test_actual_old_aot_numerics[power2_q4] ____________________
+
+sources = {'legacy': <module 'spark_attn_compare_legacy' from '/home/cruzspark/qwen38-exl3/exllamav3/exllamav3/modules/attention.../qwen-overnight-20261008/attention-diagnostics-cece37/exllamav3-agent/exllamav3/modules/attention_fn/triton_paged.py'>}
+batch = 1, q_len = 4, prefix = 1023, group = 12, hd = 256
+
+    @pytest.mark.parametrize("batch,q_len,prefix,group,hd", [
+        (1, 6, 1023, 12, 256),
+        (1, 1, 1023, 12, 256),
+        (1, 6, 255, 12, 256),
+        (1, 4, 1023, 12, 256),
+        (1, 8, 1023, 12, 256),
+        (1, 5, 255, 6, 128),
+        (2, 6, 1023, 12, 256),
+        (1, 16, 4095, 12, 256),
+    ], ids=["spark_q6_p1023", "spark_q1_p1023", "spark_q6_p255", "power2_q4",
+            "power2_q8", "gqa6_q5", "batch2_q6", "long_q16"])
+    def test_actual_old_aot_numerics(sources, batch, q_len, prefix, group, hd):
+        generator = torch.Generator().manual_seed(941603 + q_len + prefix + group)
+        # Match the quality probe's five-page allocation for its short-prefix cases.
+        kv_heads, pages = 2, (max(prefix + q_len, 1072) + 255) // 256
+        q = torch.randn(batch, q_len, kv_heads * group, hd, generator=generator).half().cuda()
+        kc = torch.randn(batch * pages, 256, kv_heads, hd, generator=generator).half().cuda()
+        vc = torch.randn(batch * pages, 256, kv_heads, hd, generator=generator).half().cuda()
+        block = torch.randperm(batch * pages, generator=generator).reshape(batch, pages).int().cuda()
+        seqlens = torch.full((batch,), prefix, dtype=torch.int32, device="cuda")
+        old, old_plan = run(sources["legacy"], "legacy", False, q, kc, vc, block, seqlens)
+        baseline, baseline_plan = run(sources["baseline"], "baseline", False, q, kc, vc, block, seqlens)
+        off, off_plan = run(sources["candidate"], "candidate", False, q, kc, vc, block, seqlens)
+        compatible, compatible_plan = run(sources["candidate"], "candidate", True, q, kc, vc, block, seqlens)
+        assert torch.equal(off, baseline), "Disabled option changed frozen4b output"
+        assert off_plan == baseline_plan
+        assert compatible_plan["cap"] == old_plan["cap"]
+        assert compatible_plan["splits"] == old_plan["splits"]
+        assert compatible_plan["span"] == old_plan["span"]
+        assert compatible_plan["programs"] == baseline_plan["programs"]
+        changed = int((compatible != old).sum())
+        max_abs = float((compatible.float() - old.float()).abs().max())
+        print(f"q{q_len} p{prefix} b{batch} g{group} d{hd}: old={old_plan}, packed={baseline_plan}, "
+              f"compat_changed={changed}/{old.numel()}, max_abs={max_abs}, "
+              f"default_changed={int((baseline != old).sum())}")
+>       assert torch.equal(compatible, old), (
+            f"Historical split plan did not preserve original AOT output: {changed} changed, maxabs={max_abs}")
+E       AssertionError: Historical split plan did not preserve original AOT output: 2 changed, maxabs=4.76837158203125e-07
+E       assert False
+E        +  where False = <built-in method equal of type object at 0xfcdabed1d638>(tensor([[[[-1.9379e-02,  3.4332e-02, -1.0583e-01,  ...,  1.2215e-02,\n            7.9529e-02, -6.5063e-02],\n          [...746e-02, -6.0211e-02,  ..., -3.8025e-02,\n           -8.6853e-02, -3.7384e-02]]]], device='cuda:0', dtype=torch.float16), tensor([[[[-1.9379e-02,  3.4332e-02, -1.0583e-01,  ...,  1.2215e-02,\n            7.9529e-02, -6.5063e-02],\n          [...746e-02, -6.0211e-02,  ..., -3.8025e-02,\n           -8.6853e-02, -3.7384e-02]]]], device='cuda:0', dtype=torch.float16))
+E        +    where <built-in method equal of type object at 0xfcdabed1d638> = torch.equal
+
+exllamav3-agent/tests/test_attn_legacy_splits_gpu.py:193: AssertionError
+___________________ test_actual_old_aot_numerics[power2_q8] ____________________
+
+sources = {'legacy': <module 'spark_attn_compare_legacy' from '/home/cruzspark/qwen38-exl3/exllamav3/exllamav3/modules/attention.../qwen-overnight-20261008/attention-diagnostics-cece37/exllamav3-agent/exllamav3/modules/attention_fn/triton_paged.py'>}
+batch = 1, q_len = 8, prefix = 1023, group = 12, hd = 256
+
+    @pytest.mark.parametrize("batch,q_len,prefix,group,hd", [
+        (1, 6, 1023, 12, 256),
+        (1, 1, 1023, 12, 256),
+        (1, 6, 255, 12, 256),
+        (1, 4, 1023, 12, 256),
+        (1, 8, 1023, 12, 256),
+        (1, 5, 255, 6, 128),
+        (2, 6, 1023, 12, 256),
+        (1, 16, 4095, 12, 256),
+    ], ids=["spark_q6_p1023", "spark_q1_p1023", "spark_q6_p255", "power2_q4",
+            "power2_q8", "gqa6_q5", "batch2_q6", "long_q16"])
+    def test_actual_old_aot_numerics(sources, batch, q_len, prefix, group, hd):
+        generator = torch.Generator().manual_seed(941603 + q_len + prefix + group)
+        # Match the quality probe's five-page allocation for its short-prefix cases.
+        kv_heads, pages = 2, (max(prefix + q_len, 1072) + 255) // 256
+        q = torch.randn(batch, q_len, kv_heads * group, hd, generator=generator).half().cuda()
+        kc = torch.randn(batch * pages, 256, kv_heads, hd, generator=generator).half().cuda()
+        vc = torch.randn(batch * pages, 256, kv_heads, hd, generator=generator).half().cuda()
+        block = torch.randperm(batch * pages, generator=generator).reshape(batch, pages).int().cuda()
+        seqlens = torch.full((batch,), prefix, dtype=torch.int32, device="cuda")
+        old, old_plan = run(sources["legacy"], "legacy", False, q, kc, vc, block, seqlens)
+        baseline, baseline_plan = run(sources["baseline"], "baseline", False, q, kc, vc, block, seqlens)
+        off, off_plan = run(sources["candidate"], "candidate", False, q, kc, vc, block, seqlens)
+        compatible, compatible_plan = run(sources["candidate"], "candidate", True, q, kc, vc, block, seqlens)
+        assert torch.equal(off, baseline), "Disabled option changed frozen4b output"
+        assert off_plan == baseline_plan
+        assert compatible_plan["cap"] == old_plan["cap"]
+        assert compatible_plan["splits"] == old_plan["splits"]
+        assert compatible_plan["span"] == old_plan["span"]
+        assert compatible_plan["programs"] == baseline_plan["programs"]
+        changed = int((compatible != old).sum())
+        max_abs = float((compatible.float() - old.float()).abs().max())
+        print(f"q{q_len} p{prefix} b{batch} g{group} d{hd}: old={old_plan}, packed={baseline_plan}, "
+              f"compat_changed={changed}/{old.numel()}, max_abs={max_abs}, "
+              f"default_changed={int((baseline != old).sum())}")
+>       assert torch.equal(compatible, old), (
+            f"Historical split plan did not preserve original AOT output: {changed} changed, maxabs={max_abs}")
+E       AssertionError: Historical split plan did not preserve original AOT output: 4 changed, maxabs=1.52587890625e-05
+E       assert False
+E        +  where False = <built-in method equal of type object at 0xfcdabed1d638>(tensor([[[[-6.9199e-03, -6.1859e-02, -3.0701e-02,  ..., -8.0627e-02,\n            8.4656e-02,  7.4402e-02],\n          [...768e-02,  1.1452e-02,  ..., -5.5725e-02,\n            9.9258e-03,  4.9744e-02]]]], device='cuda:0', dtype=torch.float16), tensor([[[[-6.9199e-03, -6.1859e-02, -3.0701e-02,  ..., -8.0627e-02,\n            8.4656e-02,  7.4402e-02],\n          [...768e-02,  1.1452e-02,  ..., -5.5725e-02,\n            9.9258e-03,  4.9744e-02]]]], device='cuda:0', dtype=torch.float16))
+E        +    where <built-in method equal of type object at 0xfcdabed1d638> = torch.equal
+
+exllamav3-agent/tests/test_attn_legacy_splits_gpu.py:193: AssertionError
+___________________ test_actual_old_aot_numerics[batch2_q6] ____________________
+
+sources = {'legacy': <module 'spark_attn_compare_legacy' from '/home/cruzspark/qwen38-exl3/exllamav3/exllamav3/modules/attention.../qwen-overnight-20261008/attention-diagnostics-cece37/exllamav3-agent/exllamav3/modules/attention_fn/triton_paged.py'>}
+batch = 2, q_len = 6, prefix = 1023, group = 12, hd = 256
+
+    @pytest.mark.parametrize("batch,q_len,prefix,group,hd", [
+        (1, 6, 1023, 12, 256),
+        (1, 1, 1023, 12, 256),
+        (1, 6, 255, 12, 256),
+        (1, 4, 1023, 12, 256),
+        (1, 8, 1023, 12, 256),
+        (1, 5, 255, 6, 128),
+        (2, 6, 1023, 12, 256),
+        (1, 16, 4095, 12, 256),
+    ], ids=["spark_q6_p1023", "spark_q1_p1023", "spark_q6_p255", "power2_q4",
+            "power2_q8", "gqa6_q5", "batch2_q6", "long_q16"])
+    def test_actual_old_aot_numerics(sources, batch, q_len, prefix, group, hd):
+        generator = torch.Generator().manual_seed(941603 + q_len + prefix + group)
+        # Match the quality probe's five-page allocation for its short-prefix cases.
+        kv_heads, pages = 2, (max(prefix + q_len, 1072) + 255) // 256
+        q = torch.randn(batch, q_len, kv_heads * group, hd, generator=generator).half().cuda()
+        kc = torch.randn(batch * pages, 256, kv_heads, hd, generator=generator).half().cuda()
+        vc = torch.randn(batch * pages, 256, kv_heads, hd, generator=generator).half().cuda()
+        block = torch.randperm(batch * pages, generator=generator).reshape(batch, pages).int().cuda()
+        seqlens = torch.full((batch,), prefix, dtype=torch.int32, device="cuda")
+        old, old_plan = run(sources["legacy"], "legacy", False, q, kc, vc, block, seqlens)
+        baseline, baseline_plan = run(sources["baseline"], "baseline", False, q, kc, vc, block, seqlens)
+        off, off_plan = run(sources["candidate"], "candidate", False, q, kc, vc, block, seqlens)
+        compatible, compatible_plan = run(sources["candidate"], "candidate", True, q, kc, vc, block, seqlens)
+        assert torch.equal(off, baseline), "Disabled option changed frozen4b output"
+        assert off_plan == baseline_plan
+        assert compatible_plan["cap"] == old_plan["cap"]
+        assert compatible_plan["splits"] == old_plan["splits"]
+        assert compatible_plan["span"] == old_plan["span"]
+        assert compatible_plan["programs"] == baseline_plan["programs"]
+        changed = int((compatible != old).sum())
+        max_abs = float((compatible.float() - old.float()).abs().max())
+        print(f"q{q_len} p{prefix} b{batch} g{group} d{hd}: old={old_plan}, packed={baseline_plan}, "
+              f"compat_changed={changed}/{old.numel()}, max_abs={max_abs}, "
+              f"default_changed={int((baseline != old).sum())}")
+>       assert torch.equal(compatible, old), (
+            f"Historical split plan did not preserve original AOT output: {changed} changed, maxabs={max_abs}")
+E       AssertionError: Historical split plan did not preserve original AOT output: 3 changed, maxabs=9.5367431640625e-07
+E       assert False
+E        +  where False = <built-in method equal of type object at 0xfcdabed1d638>(tensor([[[[-6.1920e-02, -1.9608e-02, -2.4414e-02,  ...,  3.1769e-02,\n            5.0323e-02, -3.4088e-02],\n          [...772e-02,  9.5520e-03,  ..., -3.3531e-03,\n           -1.1102e-01,  4.0283e-02]]]], device='cuda:0', dtype=torch.float16), tensor([[[[-6.1920e-02, -1.9608e-02, -2.4414e-02,  ...,  3.1769e-02,\n            5.0323e-02, -3.4088e-02],\n          [...772e-02,  9.5520e-03,  ..., -3.3531e-03,\n           -1.1102e-01,  4.0283e-02]]]], device='cuda:0', dtype=torch.float16))
+E        +    where <built-in method equal of type object at 0xfcdabed1d638> = torch.equal
+
+exllamav3-agent/tests/test_attn_legacy_splits_gpu.py:193: AssertionError
+____________________ test_actual_old_aot_numerics[long_q16] ____________________
+
+sources = {'legacy': <module 'spark_attn_compare_legacy' from '/home/cruzspark/qwen38-exl3/exllamav3/exllamav3/modules/attention.../qwen-overnight-20261008/attention-diagnostics-cece37/exllamav3-agent/exllamav3/modules/attention_fn/triton_paged.py'>}
+batch = 1, q_len = 16, prefix = 4095, group = 12, hd = 256
+
+    @pytest.mark.parametrize("batch,q_len,prefix,group,hd", [
+        (1, 6, 1023, 12, 256),
+        (1, 1, 1023, 12, 256),
+        (1, 6, 255, 12, 256),
+        (1, 4, 1023, 12, 256),
+        (1, 8, 1023, 12, 256),
+        (1, 5, 255, 6, 128),
+        (2, 6, 1023, 12, 256),
+        (1, 16, 4095, 12, 256),
+    ], ids=["spark_q6_p1023", "spark_q1_p1023", "spark_q6_p255", "power2_q4",
+            "power2_q8", "gqa6_q5", "batch2_q6", "long_q16"])
+    def test_actual_old_aot_numerics(sources, batch, q_len, prefix, group, hd):
+        generator = torch.Generator().manual_seed(941603 + q_len + prefix + group)
+        # Match the quality probe's five-page allocation for its short-prefix cases.
+        kv_heads, pages = 2, (max(prefix + q_len, 1072) + 255) // 256
+        q = torch.randn(batch, q_len, kv_heads * group, hd, generator=generator).half().cuda()
+        kc = torch.randn(batch * pages, 256, kv_heads, hd, generator=generator).half().cuda()
+        vc = torch.randn(batch * pages, 256, kv_heads, hd, generator=generator).half().cuda()
+        block = torch.randperm(batch * pages, generator=generator).reshape(batch, pages).int().cuda()
+        seqlens = torch.full((batch,), prefix, dtype=torch.int32, device="cuda")
+        old, old_plan = run(sources["legacy"], "legacy", False, q, kc, vc, block, seqlens)
+        baseline, baseline_plan = run(sources["baseline"], "baseline", False, q, kc, vc, block, seqlens)
+        off, off_plan = run(sources["candidate"], "candidate", False, q, kc, vc, block, seqlens)
+        compatible, compatible_plan = run(sources["candidate"], "candidate", True, q, kc, vc, block, seqlens)
+        assert torch.equal(off, baseline), "Disabled option changed frozen4b output"
+        assert off_plan == baseline_plan
+        assert compatible_plan["cap"] == old_plan["cap"]
+        assert compatible_plan["splits"] == old_plan["splits"]
+        assert compatible_plan["span"] == old_plan["span"]
+        assert compatible_plan["programs"] == baseline_plan["programs"]
+        changed = int((compatible != old).sum())
+        max_abs = float((compatible.float() - old.float()).abs().max())
+        print(f"q{q_len} p{prefix} b{batch} g{group} d{hd}: old={old_plan}, packed={baseline_plan}, "
+              f"compat_changed={changed}/{old.numel()}, max_abs={max_abs}, "
+              f"default_changed={int((baseline != old).sum())}")
+>       assert torch.equal(compatible, old), (
+            f"Historical split plan did not preserve original AOT output: {changed} changed, maxabs={max_abs}")
+E       AssertionError: Historical split plan did not preserve original AOT output: 5 changed, maxabs=7.62939453125e-06
+E       assert False
+E        +  where False = <built-in method equal of type object at 0xfcdabed1d638>(tensor([[[[ 8.7509e-03, -2.9938e-02,  1.8555e-02,  ...,  1.8982e-02,\n            2.2644e-02,  5.0751e-02],\n          [...363e-02,  8.7204e-03,  ...,  2.1988e-02,\n            1.7456e-02,  1.4901e-04]]]], device='cuda:0', dtype=torch.float16), tensor([[[[ 8.7509e-03, -2.9938e-02,  1.8555e-02,  ...,  1.8982e-02,\n            2.2644e-02,  5.0751e-02],\n          [...363e-02,  8.7204e-03,  ...,  2.1988e-02,\n            1.7456e-02,  1.4901e-04]]]], device='cuda:0', dtype=torch.float16))
+E        +    where <built-in method equal of type object at 0xfcdabed1d638> = torch.equal
+
+exllamav3-agent/tests/test_attn_legacy_splits_gpu.py:193: AssertionError
+=========================== short test summary info ============================
+FAILED exllamav3-agent/tests/test_attn_legacy_splits_gpu.py::test_actual_old_aot_numerics[spark_q6_p1023]
+FAILED exllamav3-agent/tests/test_attn_legacy_splits_gpu.py::test_actual_old_aot_numerics[power2_q4]
+FAILED exllamav3-agent/tests/test_attn_legacy_splits_gpu.py::test_actual_old_aot_numerics[power2_q8]
+FAILED exllamav3-agent/tests/test_attn_legacy_splits_gpu.py::test_actual_old_aot_numerics[batch2_q6]
+FAILED exllamav3-agent/tests/test_attn_legacy_splits_gpu.py::test_actual_old_aot_numerics[long_q16]
+5 failed, 3 passed in 4.57s

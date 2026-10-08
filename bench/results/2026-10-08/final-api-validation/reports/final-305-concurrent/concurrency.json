@@ -1,0 +1,2149 @@
+{
+  "schema_version": 1,
+  "kind": "reasoning_concurrent_compatibility",
+  "label": "final-305-concurrent",
+  "started_utc": "2026-10-08T13:44:55.948707+00:00",
+  "scope": "Bounded concurrent compatibility clients for an already-owned batch4 server.\n\nThree serial phases each launch four clients concurrently: unchanged auto9\n(36 checks), four original forced-choice cases in both modes(8 checks), and\nadditional required/named literal-tag reasoning cases(4 checks). This tests\ncross-request isolation; process overlap is not proof of a particular GPU batch\nshape or a throughput benchmark. Never starts, changes or stops the server.\n",
+  "base_url": "http://127.0.0.1:8899/v1",
+  "requested_model": "Qwen3.8-Flash-Next-EXL3",
+  "provenance": {
+    "build": {
+      "build_environment": {
+        "CC": null,
+        "CFLAGS": null,
+        "CUDAHOSTCXX": null,
+        "CXX": null,
+        "CXXFLAGS": null,
+        "LDFLAGS": null,
+        "NVCC_APPEND_FLAGS": null,
+        "NVCC_PREPEND_FLAGS": null
+      },
+      "cuda_arch_list": "12.1",
+      "cuda_home": "/usr/local/cuda-13.0",
+      "engine_commit": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+      "engine_path": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+      "fingerprint_sha256": "243f414eb2fc9ac6748f7d3014bef0264ea31e52fa2224d2cf1df314d1fd83bb",
+      "host_compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "host_compiler_path": "/usr/bin/c++",
+      "machine": "aarch64",
+      "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:57:39_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0",
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "python_cache_tag": "cpython-312",
+      "python_executable": "/usr/bin/python3.12",
+      "schema_version": 1,
+      "torch": "2.13.0+cu130",
+      "torch_cuda": "13.0",
+      "torch_cxx11_abi": true
+    },
+    "captured_at_utc": "2026-10-08T13:44:08.401887+00:00",
+    "compatibility_repairs": [
+      {
+        "after": {
+          "record": "nvidia/cusparselt/LICENSE.txt,sha256=6NFYiFpoG5Xsem_AbdjUpSmJ83TLE4DIpMj7J_09XV4,17948\r\nnvidia/cusparselt/include/cusparseLt.h,sha256=DfhLWAaIdx14vmK87rxAiGehYcZB_gvKilB1ugQ7Y7M,18157\r\nnvidia/cusparselt/lib/libcusparseLt.so.0,sha256=-7A7v40iOGcPJCVsVFIoHCpmAWKJm4OLtNDMBtrQJ98,274143825\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/METADATA,sha256=NTZpuvuAy_IvEyQSGsBQSdNqaw-0Sx_tP6sAtRMjEXE,12677\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/RECORD,,\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/WHEEL,sha256=ABAV42k93WKqnYKLN0BIVQbWApIm1M5UwJVvVB4zSLM,109\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/top_level.txt,sha256=ofIC-dbK0s22jN55sgfVpbhHWT63ZdJLWeSb6K_1-BI,18\r\n",
+          "record_sha256": "sha256=rifiEf2Xhut6uEh0wmFjPmPSxDg8AoKYJwkDJV6gB4M",
+          "wheel": "Wheel-Version: 1.0\nGenerator: setuptools (80.9.0)\nRoot-Is-Purelib: true\nTag: py3-none-manylinux2014_aarch64\n\n",
+          "wheel_sha256": "sha256=ABAV42k93WKqnYKLN0BIVQbWApIm1M5UwJVvVB4zSLM"
+        },
+        "before": {
+          "record": "nvidia/cusparselt/LICENSE.txt,sha256=6NFYiFpoG5Xsem_AbdjUpSmJ83TLE4DIpMj7J_09XV4,17948\r\nnvidia/cusparselt/include/cusparseLt.h,sha256=DfhLWAaIdx14vmK87rxAiGehYcZB_gvKilB1ugQ7Y7M,18157\r\nnvidia/cusparselt/lib/libcusparseLt.so.0,sha256=-7A7v40iOGcPJCVsVFIoHCpmAWKJm4OLtNDMBtrQJ98,274143825\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/METADATA,sha256=NTZpuvuAy_IvEyQSGsBQSdNqaw-0Sx_tP6sAtRMjEXE,12677\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/RECORD,,\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/WHEEL,sha256=9EEww1DEpSYdq-rReTwY88G51UoHWvABWuRF6Sy_8Bs,106\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/top_level.txt,sha256=ofIC-dbK0s22jN55sgfVpbhHWT63ZdJLWeSb6K_1-BI,18\r\n",
+          "record_sha256": "sha256=9aTJW8klA2i_lTk8MBXzd_0hmYGRGcm3FFYOG4crCus",
+          "wheel": "Wheel-Version: 1.0\nGenerator: setuptools (80.9.0)\nRoot-Is-Purelib: true\nTag: py3-none-manylinux2014_sbsa\n\n",
+          "wheel_sha256": "sha256=9EEww1DEpSYdq-rReTwY88G51UoHWvABWuRF6Sy_8Bs"
+        },
+        "completed_at_utc": "2026-10-08T07:42:50.931661+00:00",
+        "host": {
+          "machine": "aarch64",
+          "system": "Linux"
+        },
+        "known_official_artifact": {
+          "filename": "nvidia_cusparselt_cu13-0.8.1-py3-none-manylinux2014_aarch64.whl",
+          "sha256": "4dca476c50bf4780d46cd0bfbd82e2bc10a08e4fef7950917ce8d7578d22a23f",
+          "source": "https://pypi.org/project/nvidia-cusparselt-cu13/0.8.1/"
+        },
+        "library": {
+          "bytes": 274143825,
+          "elf_class": 64,
+          "elf_machine": 183,
+          "path": "/home/cruzspark/qwen38-exl3-20261008/venv/lib/python3.12/site-packages/nvidia/cusparselt/lib/libcusparseLt.so.0",
+          "verified_record_sha256": "sha256=-7A7v40iOGcPJCVsVFIoHCpmAWKJm4OLtNDMBtrQJ98"
+        },
+        "new_tag": "py3-none-manylinux2014_aarch64",
+        "old_tag": "py3-none-manylinux2014_sbsa",
+        "package": "nvidia-cusparselt-cu13",
+        "prepared_at_utc": "2026-10-08T07:42:50.919539+00:00",
+        "record_path": "/home/cruzspark/qwen38-exl3-20261008/venv/lib/python3.12/site-packages/nvidia_cusparselt_cu13-0.8.1.dist-info/RECORD",
+        "schema_version": 1,
+        "status": "repaired",
+        "version": "0.8.1",
+        "wheel_path": "/home/cruzspark/qwen38-exl3-20261008/venv/lib/python3.12/site-packages/nvidia_cusparselt_cu13-0.8.1.dist-info/WHEEL"
+      }
+    ],
+    "config": {
+      "path": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/state/config.yml",
+      "sha256": "7f3d215bd3fe6b54313cce7cb8ab026962679d8fc2d66a749419457a34a35f5b",
+      "values": {
+        "draft_model": {
+          "draft_cache_mode": "8,8",
+          "draft_mode": "mtp",
+          "draft_num_tokens": 5,
+          "dynamic_draft": true
+        },
+        "logging": {
+          "log_generation_params": false,
+          "log_prompt": false,
+          "log_requests": false
+        },
+        "memory": {
+          "sysmem_recurrent_cache": 4096
+        },
+        "model": {
+          "backend": "exllamav3",
+          "cache_mode": "8,8",
+          "cache_size": 1048576,
+          "chunk_size": 2048,
+          "inline_model_loading": false,
+          "max_batch_size": 4,
+          "max_seq_len": 262144,
+          "model_dir": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/state/models",
+          "model_name": "Qwen3.8-Flash-Next-EXL3",
+          "ngram_ram": false,
+          "prompt_template": null,
+          "reasoning": true,
+          "tool_format": "qwen3_5",
+          "vision": false,
+          "warmup": true
+        },
+        "network": {
+          "api_servers": [
+            "OAI"
+          ],
+          "disable_auth": true,
+          "host": "127.0.0.1",
+          "port": 8899
+        },
+        "sampling": {
+          "min_p": {
+            "force": false,
+            "override": 0.0
+          },
+          "temperature": {
+            "force": false,
+            "override": 1.0
+          },
+          "top_k": {
+            "force": false,
+            "override": 20
+          },
+          "top_p": {
+            "force": false,
+            "override": 0.95
+          }
+        }
+      }
+    },
+    "engine": {
+      "commit": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+      "describe": "24f0dece3 2026-10-08 ci: exercise producer token budgets in the CPU source gate",
+      "path": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+      "remotes": {
+        "origin": "https://github.com/vcruz305/exllamav3.git"
+      },
+      "tracked_changes": ""
+    },
+    "environment": {
+      "BIGCORES": "5-9,15-19",
+      "CACHE_SIZE": "1048576",
+      "CHUNK_SIZE": "2048",
+      "CUDA_HOME": "/usr/local/cuda",
+      "DRAFT_MODE": "mtp",
+      "DRAFT_NUM_TOKENS": "5",
+      "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+      "EXL3_COOPMK_PLAN": "3",
+      "EXL3_DRAFT_CONFIDENCE": "0.6",
+      "EXL3_DRAFT_ROW_BUDGET": "8",
+      "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+      "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+      "EXL3_GDN_PROJ_FP32": "1",
+      "EXL3_GEMM_LEGACY_TILES": "1",
+      "EXL3_GR_INT8": "1",
+      "EXL3_INT8_GEMV": "0",
+      "EXL3_MIN_VERSION": "1.6.0.post1",
+      "EXL3_MOE_COOP_KSPLIT": "1",
+      "EXL3_MOE_COOP_MIXEDK": "0",
+      "EXL3_MOE_COOP_WIDE": "1",
+      "EXL3_MOE_MIXEDK_NOSYNC": "1",
+      "EXL3_MTP_HEAD_N": "65536",
+      "EXL3_REF": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+      "EXL3_REPO": "https://github.com/vcruz305/exllamav3.git",
+      "EXL3_SRC": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+      "MAX_BATCH_SIZE": "4",
+      "MAX_SEQ_LEN": "262144",
+      "NGRAM_RAM": "false",
+      "PROFILE": "concurrent",
+      "PROMPT_TEMPLATE": "",
+      "TORCH_CUDA_ARCH_LIST": "12.1"
+    },
+    "host": {
+      "kernel": "7.0.0-1019-nvidia",
+      "machine": "aarch64",
+      "python": "3.12.3",
+      "python_executable_invoked": "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+      "python_executable_resolved": "/usr/bin/python3.12",
+      "python_prefix": "/home/cruzspark/qwen38-exl3-20261008/venv",
+      "python_prefix_resolved": "/home/cruzspark/qwen38-exl3-20261008/venv"
+    },
+    "model": {
+      "configuration_files": {
+        "config.json": {
+          "bytes": 5081,
+          "sha256": "92ce0839c71b5a39988299fe38206a32fea50586be54378d424fc0eb035a44c0"
+        },
+        "generation_config.json": {
+          "bytes": 202,
+          "sha256": "e70c136c1b78ddc1fb0905bac8e733a4dc448d4f852a5dd75143fffc70be550e"
+        },
+        "tokenizer_config.json": {
+          "bytes": 17928,
+          "sha256": "b11349aafa7cdc6a320767cf7ceb29ed82f7eda5d65e8e0819e76f0ce947bf27"
+        }
+      },
+      "path": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+      "weight_bytes": 84986510810,
+      "weight_hashes_computed": false,
+      "weights": [
+        {
+          "bytes": 8494539639,
+          "mtime_ns": 1790501586091448410,
+          "name": "model-00001-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00001-of-00007.safetensors"
+        },
+        {
+          "bytes": 8175800810,
+          "mtime_ns": 1790501352415215607,
+          "name": "model-00002-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00002-of-00007.safetensors"
+        },
+        {
+          "bytes": 8175819368,
+          "mtime_ns": 1790501403641993252,
+          "name": "model-00003-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00003-of-00007.safetensors"
+        },
+        {
+          "bytes": 8175819368,
+          "mtime_ns": 1790501554820058116,
+          "name": "model-00004-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00004-of-00007.safetensors"
+        },
+        {
+          "bytes": 8175819368,
+          "mtime_ns": 1790501490693220535,
+          "name": "model-00005-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00005-of-00007.safetensors"
+        },
+        {
+          "bytes": 8175819368,
+          "mtime_ns": 1790501438412496898,
+          "name": "model-00006-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00006-of-00007.safetensors"
+        },
+        {
+          "bytes": 2959581433,
+          "mtime_ns": 1790501044243365511,
+          "name": "model-00007-of-00007.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/model-00007-of-00007.safetensors"
+        },
+        {
+          "bytes": 13128048,
+          "mtime_ns": 1790500693868749610,
+          "name": "mtp_hyper_connection_mixer_patch.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/mtp_hyper_connection_mixer_patch.safetensors"
+        },
+        {
+          "bytes": 32640183408,
+          "mtime_ns": 1790502183364898937,
+          "name": "ngram_embedding.safetensors",
+          "resolved_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw/ngram_embedding.safetensors"
+        }
+      ]
+    },
+    "packages": {
+      "exllamav3": "1.6.0.post1",
+      "fastapi-slim": "0.129.1",
+      "llguidance": "1.9.1",
+      "numpy": "2.5.3",
+      "nvidia-cusparselt-cu13": "0.8.1",
+      "pydantic": "2.13.5",
+      "tabbyAPI": "0.0.1",
+      "tokenizers": "0.23.2",
+      "torch": "2.13.0+cu130",
+      "triton": "3.7.1",
+      "uvloop": "0.22.1"
+    },
+    "recipe": {
+      "commit": "3337bc8d64e4befafa2a1aff342e07abbea242ac",
+      "describe": "3337bc8 2026-10-08 test(ci): retain combined final budget regression coverage",
+      "path": "/home/cruzspark/qwen-spark-recipe",
+      "remotes": {
+        "origin": "https://github.com/vcruz305/Qwen3.8-Flash-Next-EXL3-DGX-Spark-recipe.git"
+      },
+      "tracked_changes": ""
+    },
+    "schema_version": 1,
+    "server": {
+      "commit": "5a4f3efa1c1f60b6966ba0d0d5610f6b953541fb",
+      "describe": "5a4f3efa 2026-10-08 Guard natural reasoning endings without imposing a token limit",
+      "path": "/home/cruzspark/qwen38-exl3-20261008/tabbyAPI",
+      "remotes": {
+        "origin": "https://github.com/vcruz305/tabbyAPI.git"
+      },
+      "tracked_changes": ""
+    }
+  },
+  "metadata_source": {
+    "path": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+    "sha256": "7cee96cf523ff7157b2c2e15cbc4f41ae93e0568000a3b7a9ad5e5c5155a38e6"
+  },
+  "expected_checks": 52,
+  "include_unbudgeted": true,
+  "cases": [
+    {
+      "name": "auto1/preflight_one_token_and_model",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.json"
+    },
+    {
+      "name": "auto1/auto_plain_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.json"
+    },
+    {
+      "name": "auto1/auto_plain_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.json"
+    },
+    {
+      "name": "auto1/auto_reasoning_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.json"
+    },
+    {
+      "name": "auto1/auto_reasoning_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.json"
+    },
+    {
+      "name": "auto1/auto_client_grammar_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.json"
+    },
+    {
+      "name": "auto1/auto_client_grammar_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.json"
+    },
+    {
+      "name": "auto1/auto_client_json_schema_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.json"
+    },
+    {
+      "name": "auto1/auto_client_json_schema_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.json"
+    },
+    {
+      "name": "auto2/preflight_one_token_and_model",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.json"
+    },
+    {
+      "name": "auto2/auto_plain_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.json"
+    },
+    {
+      "name": "auto2/auto_plain_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.json"
+    },
+    {
+      "name": "auto2/auto_reasoning_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.json"
+    },
+    {
+      "name": "auto2/auto_reasoning_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.json"
+    },
+    {
+      "name": "auto2/auto_client_grammar_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.json"
+    },
+    {
+      "name": "auto2/auto_client_grammar_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.json"
+    },
+    {
+      "name": "auto2/auto_client_json_schema_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.json"
+    },
+    {
+      "name": "auto2/auto_client_json_schema_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.json"
+    },
+    {
+      "name": "auto3/preflight_one_token_and_model",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.json"
+    },
+    {
+      "name": "auto3/auto_plain_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.json"
+    },
+    {
+      "name": "auto3/auto_plain_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.json"
+    },
+    {
+      "name": "auto3/auto_reasoning_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.json"
+    },
+    {
+      "name": "auto3/auto_reasoning_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.json"
+    },
+    {
+      "name": "auto3/auto_client_grammar_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.json"
+    },
+    {
+      "name": "auto3/auto_client_grammar_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.json"
+    },
+    {
+      "name": "auto3/auto_client_json_schema_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.json"
+    },
+    {
+      "name": "auto3/auto_client_json_schema_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.json"
+    },
+    {
+      "name": "auto4/preflight_one_token_and_model",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.json"
+    },
+    {
+      "name": "auto4/auto_plain_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.json"
+    },
+    {
+      "name": "auto4/auto_plain_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.json"
+    },
+    {
+      "name": "auto4/auto_reasoning_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.json"
+    },
+    {
+      "name": "auto4/auto_reasoning_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.json"
+    },
+    {
+      "name": "auto4/auto_client_grammar_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.json"
+    },
+    {
+      "name": "auto4/auto_client_grammar_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.json"
+    },
+    {
+      "name": "auto4/auto_client_json_schema_nonstream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.json"
+    },
+    {
+      "name": "auto4/auto_client_json_schema_stream",
+      "status": "pass",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.json"
+    },
+    {
+      "name": "forced-required/required/nonstream",
+      "status": "pass",
+      "errors": [],
+      "repeat_index": 0,
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required.json"
+    },
+    {
+      "name": "forced-required/required/stream",
+      "status": "pass",
+      "errors": [],
+      "repeat_index": 0,
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required.json"
+    },
+    {
+      "name": "forced-named/named/nonstream",
+      "status": "pass",
+      "errors": [],
+      "repeat_index": 0,
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named.json"
+    },
+    {
+      "name": "forced-named/named/stream",
+      "status": "pass",
+      "errors": [],
+      "repeat_index": 0,
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named.json"
+    },
+    {
+      "name": "forced-required_adversarial/required_adversarial/nonstream",
+      "status": "pass",
+      "errors": [],
+      "repeat_index": 0,
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required_adversarial.json"
+    },
+    {
+      "name": "forced-required_adversarial/required_adversarial/stream",
+      "status": "pass",
+      "errors": [],
+      "repeat_index": 0,
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required_adversarial.json"
+    },
+    {
+      "name": "forced-named_adversarial/named_adversarial/nonstream",
+      "status": "pass",
+      "errors": [],
+      "repeat_index": 0,
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named_adversarial.json"
+    },
+    {
+      "name": "forced-named_adversarial/named_adversarial/stream",
+      "status": "pass",
+      "errors": [],
+      "repeat_index": 0,
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named_adversarial.json"
+    },
+    {
+      "name": "literal-required-nonstream/literal_reasoning_required_nonstream",
+      "status": "fail",
+      "error": "CheckError: Literal closing tag was not preserved: {'text': 'thinkaliteralthink'}",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-nonstream.json"
+    },
+    {
+      "name": "literal-required-stream/literal_reasoning_required_stream",
+      "status": "fail",
+      "error": "CheckError: Literal closing tag was not preserved: {'text': 'thinkaliteralthink'}",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-stream.json"
+    },
+    {
+      "name": "literal-named-nonstream/literal_reasoning_named_nonstream",
+      "status": "fail",
+      "error": "CheckError: Literal closing tag was not preserved: {'text': 'thinkaliteralthink'}",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-nonstream.json"
+    },
+    {
+      "name": "literal-named-stream/literal_reasoning_named_stream",
+      "status": "fail",
+      "error": "CheckError: Literal closing tag was not preserved: {'text': 'thinkaliteralthink'}",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-stream.json"
+    },
+    {
+      "name": "literal-unbudgeted-required-nonstream/literal_reasoning_required_nonstream",
+      "status": "fail",
+      "error": "CheckError: Literal closing tag was not preserved: {'text': 'thinkaliteralthink'}",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-nonstream.json"
+    },
+    {
+      "name": "literal-unbudgeted-required-stream/literal_reasoning_required_stream",
+      "status": "fail",
+      "error": "CheckError: Literal closing tag was not preserved: {'text': 'thinkpliteral</think>'}",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-stream.json"
+    },
+    {
+      "name": "literal-unbudgeted-named-nonstream/literal_reasoning_named_nonstream",
+      "status": "fail",
+      "error": "CheckError: Literal closing tag was not preserved: {'text': 'thinkaliteralthink'}",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-nonstream.json"
+    },
+    {
+      "name": "literal-unbudgeted-named-stream/literal_reasoning_named_stream",
+      "status": "fail",
+      "error": "CheckError: Literal closing tag was not preserved: {'text': 'thinkpliteral</think>'}",
+      "child_report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-stream.json"
+    }
+  ],
+  "client_reports": [
+    {
+      "name": "auto1",
+      "pid": 465850,
+      "started_utc": "2026-10-08T13:44:55.957415+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-spark-recipe/bench/auto_compatibility.py",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--metadata",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+        "--timeout",
+        "180",
+        "--label",
+        "final-305-concurrent-auto1",
+        "--api-key-env",
+        "TABBY_API_KEY",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.json",
+      "exit_code": 0,
+      "finished_utc": "2026-10-08T13:45:18.236005+00:00",
+      "expected_checks": 9,
+      "observed_checks": 9,
+      "counts": {
+        "pass": 9
+      },
+      "errors": [],
+      "passed": true,
+      "report_sha256": "835019762061dbb13e1c8ee4037dfbb877009abe4578eacee29176c2a186fbfb",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 0,
+        "wall_seconds": 0.06968952500028536,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "auto2",
+      "pid": 465851,
+      "started_utc": "2026-10-08T13:44:55.957769+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-spark-recipe/bench/auto_compatibility.py",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--metadata",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+        "--timeout",
+        "180",
+        "--label",
+        "final-305-concurrent-auto2",
+        "--api-key-env",
+        "TABBY_API_KEY",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.json",
+      "exit_code": 0,
+      "finished_utc": "2026-10-08T13:45:18.236566+00:00",
+      "expected_checks": 9,
+      "observed_checks": 9,
+      "counts": {
+        "pass": 9
+      },
+      "errors": [],
+      "passed": true,
+      "report_sha256": "7cb294f57b232a3c071d5d504dddd3f82d5a5b266d2addc52f8bcc94cef9c80d",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 0,
+        "wall_seconds": 0.07368146700173384,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "auto3",
+      "pid": 465852,
+      "started_utc": "2026-10-08T13:44:55.957947+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-spark-recipe/bench/auto_compatibility.py",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--metadata",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+        "--timeout",
+        "180",
+        "--label",
+        "final-305-concurrent-auto3",
+        "--api-key-env",
+        "TABBY_API_KEY",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.json",
+      "exit_code": 0,
+      "finished_utc": "2026-10-08T13:45:18.236915+00:00",
+      "expected_checks": 9,
+      "observed_checks": 9,
+      "counts": {
+        "pass": 9
+      },
+      "errors": [],
+      "passed": true,
+      "report_sha256": "99cd69b5559751050971e21f9ad92db717c8859c7951ee2ef95c2d0cf3dcd721",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 0,
+        "wall_seconds": 0.07767745699675288,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "auto4",
+      "pid": 465853,
+      "started_utc": "2026-10-08T13:44:55.958213+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-spark-recipe/bench/auto_compatibility.py",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--metadata",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+        "--timeout",
+        "180",
+        "--label",
+        "final-305-concurrent-auto4",
+        "--api-key-env",
+        "TABBY_API_KEY",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.json",
+      "exit_code": 0,
+      "finished_utc": "2026-10-08T13:45:18.237133+00:00",
+      "expected_checks": 9,
+      "observed_checks": 9,
+      "counts": {
+        "pass": 9
+      },
+      "errors": [],
+      "passed": true,
+      "report_sha256": "617dcac985d7abb9e4f272c16e3429f38fb9198e81a3ec1953b0b77618dad087",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 0,
+        "wall_seconds": 0.08167069499904756,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "forced-required",
+      "pid": 465887,
+      "started_utc": "2026-10-08T13:45:18.330100+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-spark-recipe/bench/tool_smoke.py",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--case",
+        "required",
+        "--mode",
+        "both",
+        "--repeat",
+        "1",
+        "--timeout",
+        "180",
+        "--max-tokens",
+        "1024",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required.json",
+      "exit_code": 0,
+      "finished_utc": "2026-10-08T13:45:32.792199+00:00",
+      "expected_checks": 2,
+      "observed_checks": 2,
+      "counts": {
+        "pass": 2
+      },
+      "errors": [],
+      "passed": true,
+      "report_sha256": "8bc09cbc52c3e55a5407ffd948a0a5dd9088d81af72a5f98021c26787fc6f777",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 0,
+        "wall_seconds": 0.09774540799844544,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "forced-named",
+      "pid": 465888,
+      "started_utc": "2026-10-08T13:45:18.331020+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-spark-recipe/bench/tool_smoke.py",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--case",
+        "named",
+        "--mode",
+        "both",
+        "--repeat",
+        "1",
+        "--timeout",
+        "180",
+        "--max-tokens",
+        "1024",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named.json",
+      "exit_code": 0,
+      "finished_utc": "2026-10-08T13:45:32.792626+00:00",
+      "expected_checks": 2,
+      "observed_checks": 2,
+      "counts": {
+        "pass": 2
+      },
+      "errors": [],
+      "passed": true,
+      "report_sha256": "dd498f394164a765ecf713e32a44a22d841b3cb6822d9e41b92eb7b283a170b8",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 0,
+        "wall_seconds": 0.1016783579980256,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "forced-required_adversarial",
+      "pid": 465889,
+      "started_utc": "2026-10-08T13:45:18.331632+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-spark-recipe/bench/tool_smoke.py",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--case",
+        "required_adversarial",
+        "--mode",
+        "both",
+        "--repeat",
+        "1",
+        "--timeout",
+        "180",
+        "--max-tokens",
+        "1024",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required_adversarial.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required_adversarial.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required_adversarial.json",
+      "exit_code": 0,
+      "finished_utc": "2026-10-08T13:45:32.792812+00:00",
+      "expected_checks": 2,
+      "observed_checks": 2,
+      "counts": {
+        "pass": 2
+      },
+      "errors": [],
+      "passed": true,
+      "report_sha256": "bdc55eaba3f8c3899d8da90bd290b7ce23db21656d571c64a54fce1a8ae0491f",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 0,
+        "wall_seconds": 0.10559766100050183,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "forced-named_adversarial",
+      "pid": 465890,
+      "started_utc": "2026-10-08T13:45:18.332073+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-spark-recipe/bench/tool_smoke.py",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--case",
+        "named_adversarial",
+        "--mode",
+        "both",
+        "--repeat",
+        "1",
+        "--timeout",
+        "180",
+        "--max-tokens",
+        "1024",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named_adversarial.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named_adversarial.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named_adversarial.json",
+      "exit_code": 0,
+      "finished_utc": "2026-10-08T13:45:32.792951+00:00",
+      "expected_checks": 2,
+      "observed_checks": 2,
+      "counts": {
+        "pass": 2
+      },
+      "errors": [],
+      "passed": true,
+      "report_sha256": "585364adbbe528229a6ca753b33a12db27dc997ff69761a47425114e6a431667",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 0,
+        "wall_seconds": 0.109521970996866,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "literal-required-nonstream",
+      "pid": 466093,
+      "started_utc": "2026-10-08T13:45:32.914195+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+        "--recipe",
+        "/home/cruzspark/qwen-spark-recipe",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--metadata",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+        "--choice",
+        "required",
+        "--mode",
+        "nonstream",
+        "--timeout",
+        "180",
+        "--label",
+        "final-305-concurrent-literal-required-nonstream",
+        "--api-key-env",
+        "TABBY_API_KEY",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-nonstream.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-nonstream.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-nonstream.json",
+      "exit_code": 1,
+      "finished_utc": "2026-10-08T13:45:41.254417+00:00",
+      "expected_checks": 1,
+      "observed_checks": 1,
+      "counts": {
+        "fail": 1
+      },
+      "errors": [],
+      "passed": false,
+      "report_sha256": "0dc059282accfc3f1735c0b806e1bb9088199730bd7cb1be63bfa5f1e7b03c91",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 1,
+        "wall_seconds": 0.06849587999749929,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "literal-required-stream",
+      "pid": 466094,
+      "started_utc": "2026-10-08T13:45:32.914532+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+        "--recipe",
+        "/home/cruzspark/qwen-spark-recipe",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--metadata",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+        "--choice",
+        "required",
+        "--mode",
+        "stream",
+        "--timeout",
+        "180",
+        "--label",
+        "final-305-concurrent-literal-required-stream",
+        "--api-key-env",
+        "TABBY_API_KEY",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-stream.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-stream.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-stream.json",
+      "exit_code": 1,
+      "finished_utc": "2026-10-08T13:45:41.254705+00:00",
+      "expected_checks": 1,
+      "observed_checks": 1,
+      "counts": {
+        "fail": 1
+      },
+      "errors": [],
+      "passed": false,
+      "report_sha256": "63ae89c877faada96ce1395f4d6fc358793ae9751498911544edd7417294d8e4",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 1,
+        "wall_seconds": 0.07242718199995579,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "literal-named-nonstream",
+      "pid": 466095,
+      "started_utc": "2026-10-08T13:45:32.914801+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+        "--recipe",
+        "/home/cruzspark/qwen-spark-recipe",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--metadata",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+        "--choice",
+        "named",
+        "--mode",
+        "nonstream",
+        "--timeout",
+        "180",
+        "--label",
+        "final-305-concurrent-literal-named-nonstream",
+        "--api-key-env",
+        "TABBY_API_KEY",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-nonstream.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-nonstream.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-nonstream.json",
+      "exit_code": 1,
+      "finished_utc": "2026-10-08T13:45:41.254831+00:00",
+      "expected_checks": 1,
+      "observed_checks": 1,
+      "counts": {
+        "fail": 1
+      },
+      "errors": [],
+      "passed": false,
+      "report_sha256": "cb044d11963e0b54739a63ab839ffb54cc720f8f7b1671c713489148d83b86df",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 1,
+        "wall_seconds": 0.0763643559985212,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "literal-named-stream",
+      "pid": 466096,
+      "started_utc": "2026-10-08T13:45:32.915137+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+        "--recipe",
+        "/home/cruzspark/qwen-spark-recipe",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--metadata",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+        "--choice",
+        "named",
+        "--mode",
+        "stream",
+        "--timeout",
+        "180",
+        "--label",
+        "final-305-concurrent-literal-named-stream",
+        "--api-key-env",
+        "TABBY_API_KEY",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-stream.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-stream.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-stream.json",
+      "exit_code": 1,
+      "finished_utc": "2026-10-08T13:45:41.254913+00:00",
+      "expected_checks": 1,
+      "observed_checks": 1,
+      "counts": {
+        "fail": 1
+      },
+      "errors": [],
+      "passed": false,
+      "report_sha256": "0001cf4f4597e96e57e9c9dfb8a050d92986eea8bd8c2588df2953623139a489",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 1,
+        "wall_seconds": 0.08030753099592403,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "literal-unbudgeted-required-nonstream",
+      "pid": 466100,
+      "started_utc": "2026-10-08T13:45:41.346899+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+        "--recipe",
+        "/home/cruzspark/qwen-spark-recipe",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--metadata",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+        "--choice",
+        "required",
+        "--mode",
+        "nonstream",
+        "--timeout",
+        "180",
+        "--label",
+        "final-305-concurrent-literal-unbudgeted-required-nonstream",
+        "--api-key-env",
+        "TABBY_API_KEY",
+        "--unbudgeted",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-nonstream.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-nonstream.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-nonstream.json",
+      "exit_code": 1,
+      "finished_utc": "2026-10-08T13:45:46.466030+00:00",
+      "expected_checks": 1,
+      "observed_checks": 1,
+      "counts": {
+        "fail": 1
+      },
+      "errors": [],
+      "passed": false,
+      "report_sha256": "70979da0a8d0e477dad0b0c048387cf0f5204b8a9f2af13a8ef77b0357540c03",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 1,
+        "wall_seconds": 0.06921037499705562,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "literal-unbudgeted-required-stream",
+      "pid": 466101,
+      "started_utc": "2026-10-08T13:45:41.347256+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+        "--recipe",
+        "/home/cruzspark/qwen-spark-recipe",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--metadata",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+        "--choice",
+        "required",
+        "--mode",
+        "stream",
+        "--timeout",
+        "180",
+        "--label",
+        "final-305-concurrent-literal-unbudgeted-required-stream",
+        "--api-key-env",
+        "TABBY_API_KEY",
+        "--unbudgeted",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-stream.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-stream.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-stream.json",
+      "exit_code": 1,
+      "finished_utc": "2026-10-08T13:45:46.466349+00:00",
+      "expected_checks": 1,
+      "observed_checks": 1,
+      "counts": {
+        "fail": 1
+      },
+      "errors": [],
+      "passed": false,
+      "report_sha256": "8bc568ba835425de41f4e23fdfa64906de6bbcea0ac227fce05f1601ab3bc0ab",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 1,
+        "wall_seconds": 0.07319022099545691,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "literal-unbudgeted-named-nonstream",
+      "pid": 466102,
+      "started_utc": "2026-10-08T13:45:41.347578+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+        "--recipe",
+        "/home/cruzspark/qwen-spark-recipe",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--metadata",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+        "--choice",
+        "named",
+        "--mode",
+        "nonstream",
+        "--timeout",
+        "180",
+        "--label",
+        "final-305-concurrent-literal-unbudgeted-named-nonstream",
+        "--api-key-env",
+        "TABBY_API_KEY",
+        "--unbudgeted",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-nonstream.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-nonstream.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-nonstream.json",
+      "exit_code": 1,
+      "finished_utc": "2026-10-08T13:45:46.466458+00:00",
+      "expected_checks": 1,
+      "observed_checks": 1,
+      "counts": {
+        "fail": 1
+      },
+      "errors": [],
+      "passed": false,
+      "report_sha256": "a07c86edc11bbbb0b96deab6185379c970253a4c1ec3344c829fd973cb36ba12",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 1,
+        "wall_seconds": 0.07717280299402773,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    },
+    {
+      "name": "literal-unbudgeted-named-stream",
+      "pid": 466103,
+      "started_utc": "2026-10-08T13:45:41.347858+00:00",
+      "command": [
+        "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+        "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+        "--recipe",
+        "/home/cruzspark/qwen-spark-recipe",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--metadata",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+        "--choice",
+        "named",
+        "--mode",
+        "stream",
+        "--timeout",
+        "180",
+        "--label",
+        "final-305-concurrent-literal-unbudgeted-named-stream",
+        "--api-key-env",
+        "TABBY_API_KEY",
+        "--unbudgeted",
+        "--output",
+        "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-stream.json"
+      ],
+      "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-stream.log",
+      "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-stream.json",
+      "exit_code": 1,
+      "finished_utc": "2026-10-08T13:45:46.466538+00:00",
+      "expected_checks": 1,
+      "observed_checks": 1,
+      "counts": {
+        "fail": 1
+      },
+      "errors": [],
+      "passed": false,
+      "report_sha256": "983838c660f8271182a970a2cd4e51272cf73a749b518e8243396b48ed4e54f3",
+      "cleanup_attempted": true,
+      "cleanup": {
+        "signals": [],
+        "exit_code": 1,
+        "wall_seconds": 0.08115962499869056,
+        "owned_group_empty": true
+      },
+      "owned_client_group_empty": true
+    }
+  ],
+  "phases": [
+    {
+      "name": "auto4",
+      "started_utc": "2026-10-08T13:44:55.957044+00:00",
+      "clients": [
+        {
+          "name": "auto1",
+          "pid": 465850,
+          "started_utc": "2026-10-08T13:44:55.957415+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-spark-recipe/bench/auto_compatibility.py",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--metadata",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+            "--timeout",
+            "180",
+            "--label",
+            "final-305-concurrent-auto1",
+            "--api-key-env",
+            "TABBY_API_KEY",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto1.json",
+          "exit_code": 0,
+          "finished_utc": "2026-10-08T13:45:18.236005+00:00",
+          "expected_checks": 9,
+          "observed_checks": 9,
+          "counts": {
+            "pass": 9
+          },
+          "errors": [],
+          "passed": true,
+          "report_sha256": "835019762061dbb13e1c8ee4037dfbb877009abe4578eacee29176c2a186fbfb",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 0,
+            "wall_seconds": 0.06968952500028536,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        },
+        {
+          "name": "auto2",
+          "pid": 465851,
+          "started_utc": "2026-10-08T13:44:55.957769+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-spark-recipe/bench/auto_compatibility.py",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--metadata",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+            "--timeout",
+            "180",
+            "--label",
+            "final-305-concurrent-auto2",
+            "--api-key-env",
+            "TABBY_API_KEY",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto2.json",
+          "exit_code": 0,
+          "finished_utc": "2026-10-08T13:45:18.236566+00:00",
+          "expected_checks": 9,
+          "observed_checks": 9,
+          "counts": {
+            "pass": 9
+          },
+          "errors": [],
+          "passed": true,
+          "report_sha256": "7cb294f57b232a3c071d5d504dddd3f82d5a5b266d2addc52f8bcc94cef9c80d",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 0,
+            "wall_seconds": 0.07368146700173384,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        },
+        {
+          "name": "auto3",
+          "pid": 465852,
+          "started_utc": "2026-10-08T13:44:55.957947+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-spark-recipe/bench/auto_compatibility.py",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--metadata",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+            "--timeout",
+            "180",
+            "--label",
+            "final-305-concurrent-auto3",
+            "--api-key-env",
+            "TABBY_API_KEY",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto3.json",
+          "exit_code": 0,
+          "finished_utc": "2026-10-08T13:45:18.236915+00:00",
+          "expected_checks": 9,
+          "observed_checks": 9,
+          "counts": {
+            "pass": 9
+          },
+          "errors": [],
+          "passed": true,
+          "report_sha256": "99cd69b5559751050971e21f9ad92db717c8859c7951ee2ef95c2d0cf3dcd721",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 0,
+            "wall_seconds": 0.07767745699675288,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        },
+        {
+          "name": "auto4",
+          "pid": 465853,
+          "started_utc": "2026-10-08T13:44:55.958213+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-spark-recipe/bench/auto_compatibility.py",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--metadata",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+            "--timeout",
+            "180",
+            "--label",
+            "final-305-concurrent-auto4",
+            "--api-key-env",
+            "TABBY_API_KEY",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/auto4.json",
+          "exit_code": 0,
+          "finished_utc": "2026-10-08T13:45:18.237133+00:00",
+          "expected_checks": 9,
+          "observed_checks": 9,
+          "counts": {
+            "pass": 9
+          },
+          "errors": [],
+          "passed": true,
+          "report_sha256": "617dcac985d7abb9e4f272c16e3429f38fb9198e81a3ec1953b0b77618dad087",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 0,
+            "wall_seconds": 0.08167069499904756,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        }
+      ],
+      "finished_utc": "2026-10-08T13:45:18.239676+00:00"
+    },
+    {
+      "name": "forced4",
+      "started_utc": "2026-10-08T13:45:18.329053+00:00",
+      "clients": [
+        {
+          "name": "forced-required",
+          "pid": 465887,
+          "started_utc": "2026-10-08T13:45:18.330100+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-spark-recipe/bench/tool_smoke.py",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--case",
+            "required",
+            "--mode",
+            "both",
+            "--repeat",
+            "1",
+            "--timeout",
+            "180",
+            "--max-tokens",
+            "1024",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required.json",
+          "exit_code": 0,
+          "finished_utc": "2026-10-08T13:45:32.792199+00:00",
+          "expected_checks": 2,
+          "observed_checks": 2,
+          "counts": {
+            "pass": 2
+          },
+          "errors": [],
+          "passed": true,
+          "report_sha256": "8bc09cbc52c3e55a5407ffd948a0a5dd9088d81af72a5f98021c26787fc6f777",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 0,
+            "wall_seconds": 0.09774540799844544,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        },
+        {
+          "name": "forced-named",
+          "pid": 465888,
+          "started_utc": "2026-10-08T13:45:18.331020+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-spark-recipe/bench/tool_smoke.py",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--case",
+            "named",
+            "--mode",
+            "both",
+            "--repeat",
+            "1",
+            "--timeout",
+            "180",
+            "--max-tokens",
+            "1024",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named.json",
+          "exit_code": 0,
+          "finished_utc": "2026-10-08T13:45:32.792626+00:00",
+          "expected_checks": 2,
+          "observed_checks": 2,
+          "counts": {
+            "pass": 2
+          },
+          "errors": [],
+          "passed": true,
+          "report_sha256": "dd498f394164a765ecf713e32a44a22d841b3cb6822d9e41b92eb7b283a170b8",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 0,
+            "wall_seconds": 0.1016783579980256,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        },
+        {
+          "name": "forced-required_adversarial",
+          "pid": 465889,
+          "started_utc": "2026-10-08T13:45:18.331632+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-spark-recipe/bench/tool_smoke.py",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--case",
+            "required_adversarial",
+            "--mode",
+            "both",
+            "--repeat",
+            "1",
+            "--timeout",
+            "180",
+            "--max-tokens",
+            "1024",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required_adversarial.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required_adversarial.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-required_adversarial.json",
+          "exit_code": 0,
+          "finished_utc": "2026-10-08T13:45:32.792812+00:00",
+          "expected_checks": 2,
+          "observed_checks": 2,
+          "counts": {
+            "pass": 2
+          },
+          "errors": [],
+          "passed": true,
+          "report_sha256": "bdc55eaba3f8c3899d8da90bd290b7ce23db21656d571c64a54fce1a8ae0491f",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 0,
+            "wall_seconds": 0.10559766100050183,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        },
+        {
+          "name": "forced-named_adversarial",
+          "pid": 465890,
+          "started_utc": "2026-10-08T13:45:18.332073+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-spark-recipe/bench/tool_smoke.py",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--case",
+            "named_adversarial",
+            "--mode",
+            "both",
+            "--repeat",
+            "1",
+            "--timeout",
+            "180",
+            "--max-tokens",
+            "1024",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named_adversarial.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named_adversarial.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/forced-named_adversarial.json",
+          "exit_code": 0,
+          "finished_utc": "2026-10-08T13:45:32.792951+00:00",
+          "expected_checks": 2,
+          "observed_checks": 2,
+          "counts": {
+            "pass": 2
+          },
+          "errors": [],
+          "passed": true,
+          "report_sha256": "585364adbbe528229a6ca753b33a12db27dc997ff69761a47425114e6a431667",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 0,
+            "wall_seconds": 0.109521970996866,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        }
+      ],
+      "finished_utc": "2026-10-08T13:45:32.796411+00:00"
+    },
+    {
+      "name": "literal4",
+      "started_utc": "2026-10-08T13:45:32.912982+00:00",
+      "clients": [
+        {
+          "name": "literal-required-nonstream",
+          "pid": 466093,
+          "started_utc": "2026-10-08T13:45:32.914195+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+            "--recipe",
+            "/home/cruzspark/qwen-spark-recipe",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--metadata",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+            "--choice",
+            "required",
+            "--mode",
+            "nonstream",
+            "--timeout",
+            "180",
+            "--label",
+            "final-305-concurrent-literal-required-nonstream",
+            "--api-key-env",
+            "TABBY_API_KEY",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-nonstream.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-nonstream.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-nonstream.json",
+          "exit_code": 1,
+          "finished_utc": "2026-10-08T13:45:41.254417+00:00",
+          "expected_checks": 1,
+          "observed_checks": 1,
+          "counts": {
+            "fail": 1
+          },
+          "errors": [],
+          "passed": false,
+          "report_sha256": "0dc059282accfc3f1735c0b806e1bb9088199730bd7cb1be63bfa5f1e7b03c91",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 1,
+            "wall_seconds": 0.06849587999749929,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        },
+        {
+          "name": "literal-required-stream",
+          "pid": 466094,
+          "started_utc": "2026-10-08T13:45:32.914532+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+            "--recipe",
+            "/home/cruzspark/qwen-spark-recipe",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--metadata",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+            "--choice",
+            "required",
+            "--mode",
+            "stream",
+            "--timeout",
+            "180",
+            "--label",
+            "final-305-concurrent-literal-required-stream",
+            "--api-key-env",
+            "TABBY_API_KEY",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-stream.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-stream.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-required-stream.json",
+          "exit_code": 1,
+          "finished_utc": "2026-10-08T13:45:41.254705+00:00",
+          "expected_checks": 1,
+          "observed_checks": 1,
+          "counts": {
+            "fail": 1
+          },
+          "errors": [],
+          "passed": false,
+          "report_sha256": "63ae89c877faada96ce1395f4d6fc358793ae9751498911544edd7417294d8e4",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 1,
+            "wall_seconds": 0.07242718199995579,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        },
+        {
+          "name": "literal-named-nonstream",
+          "pid": 466095,
+          "started_utc": "2026-10-08T13:45:32.914801+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+            "--recipe",
+            "/home/cruzspark/qwen-spark-recipe",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--metadata",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+            "--choice",
+            "named",
+            "--mode",
+            "nonstream",
+            "--timeout",
+            "180",
+            "--label",
+            "final-305-concurrent-literal-named-nonstream",
+            "--api-key-env",
+            "TABBY_API_KEY",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-nonstream.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-nonstream.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-nonstream.json",
+          "exit_code": 1,
+          "finished_utc": "2026-10-08T13:45:41.254831+00:00",
+          "expected_checks": 1,
+          "observed_checks": 1,
+          "counts": {
+            "fail": 1
+          },
+          "errors": [],
+          "passed": false,
+          "report_sha256": "cb044d11963e0b54739a63ab839ffb54cc720f8f7b1671c713489148d83b86df",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 1,
+            "wall_seconds": 0.0763643559985212,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        },
+        {
+          "name": "literal-named-stream",
+          "pid": 466096,
+          "started_utc": "2026-10-08T13:45:32.915137+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+            "--recipe",
+            "/home/cruzspark/qwen-spark-recipe",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--metadata",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+            "--choice",
+            "named",
+            "--mode",
+            "stream",
+            "--timeout",
+            "180",
+            "--label",
+            "final-305-concurrent-literal-named-stream",
+            "--api-key-env",
+            "TABBY_API_KEY",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-stream.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-stream.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-named-stream.json",
+          "exit_code": 1,
+          "finished_utc": "2026-10-08T13:45:41.254913+00:00",
+          "expected_checks": 1,
+          "observed_checks": 1,
+          "counts": {
+            "fail": 1
+          },
+          "errors": [],
+          "passed": false,
+          "report_sha256": "0001cf4f4597e96e57e9c9dfb8a050d92986eea8bd8c2588df2953623139a489",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 1,
+            "wall_seconds": 0.08030753099592403,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        }
+      ],
+      "finished_utc": "2026-10-08T13:45:41.257344+00:00"
+    },
+    {
+      "name": "literal-unbudgeted4",
+      "started_utc": "2026-10-08T13:45:41.345664+00:00",
+      "clients": [
+        {
+          "name": "literal-unbudgeted-required-nonstream",
+          "pid": 466100,
+          "started_utc": "2026-10-08T13:45:41.346899+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+            "--recipe",
+            "/home/cruzspark/qwen-spark-recipe",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--metadata",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+            "--choice",
+            "required",
+            "--mode",
+            "nonstream",
+            "--timeout",
+            "180",
+            "--label",
+            "final-305-concurrent-literal-unbudgeted-required-nonstream",
+            "--api-key-env",
+            "TABBY_API_KEY",
+            "--unbudgeted",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-nonstream.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-nonstream.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-nonstream.json",
+          "exit_code": 1,
+          "finished_utc": "2026-10-08T13:45:46.466030+00:00",
+          "expected_checks": 1,
+          "observed_checks": 1,
+          "counts": {
+            "fail": 1
+          },
+          "errors": [],
+          "passed": false,
+          "report_sha256": "70979da0a8d0e477dad0b0c048387cf0f5204b8a9f2af13a8ef77b0357540c03",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 1,
+            "wall_seconds": 0.06921037499705562,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        },
+        {
+          "name": "literal-unbudgeted-required-stream",
+          "pid": 466101,
+          "started_utc": "2026-10-08T13:45:41.347256+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+            "--recipe",
+            "/home/cruzspark/qwen-spark-recipe",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--metadata",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+            "--choice",
+            "required",
+            "--mode",
+            "stream",
+            "--timeout",
+            "180",
+            "--label",
+            "final-305-concurrent-literal-unbudgeted-required-stream",
+            "--api-key-env",
+            "TABBY_API_KEY",
+            "--unbudgeted",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-stream.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-stream.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-required-stream.json",
+          "exit_code": 1,
+          "finished_utc": "2026-10-08T13:45:46.466349+00:00",
+          "expected_checks": 1,
+          "observed_checks": 1,
+          "counts": {
+            "fail": 1
+          },
+          "errors": [],
+          "passed": false,
+          "report_sha256": "8bc568ba835425de41f4e23fdfa64906de6bbcea0ac227fce05f1601ab3bc0ab",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 1,
+            "wall_seconds": 0.07319022099545691,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        },
+        {
+          "name": "literal-unbudgeted-named-nonstream",
+          "pid": 466102,
+          "started_utc": "2026-10-08T13:45:41.347578+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+            "--recipe",
+            "/home/cruzspark/qwen-spark-recipe",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--metadata",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+            "--choice",
+            "named",
+            "--mode",
+            "nonstream",
+            "--timeout",
+            "180",
+            "--label",
+            "final-305-concurrent-literal-unbudgeted-named-nonstream",
+            "--api-key-env",
+            "TABBY_API_KEY",
+            "--unbudgeted",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-nonstream.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-nonstream.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-nonstream.json",
+          "exit_code": 1,
+          "finished_utc": "2026-10-08T13:45:46.466458+00:00",
+          "expected_checks": 1,
+          "observed_checks": 1,
+          "counts": {
+            "fail": 1
+          },
+          "errors": [],
+          "passed": false,
+          "report_sha256": "a07c86edc11bbbb0b96deab6185379c970253a4c1ec3344c829fd973cb36ba12",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 1,
+            "wall_seconds": 0.07717280299402773,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        },
+        {
+          "name": "literal-unbudgeted-named-stream",
+          "pid": 466103,
+          "started_utc": "2026-10-08T13:45:41.347858+00:00",
+          "command": [
+            "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+            "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py",
+            "--recipe",
+            "/home/cruzspark/qwen-spark-recipe",
+            "--base-url",
+            "http://127.0.0.1:8899/v1",
+            "--model",
+            "Qwen3.8-Flash-Next-EXL3",
+            "--metadata",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json",
+            "--choice",
+            "named",
+            "--mode",
+            "stream",
+            "--timeout",
+            "180",
+            "--label",
+            "final-305-concurrent-literal-unbudgeted-named-stream",
+            "--api-key-env",
+            "TABBY_API_KEY",
+            "--unbudgeted",
+            "--output",
+            "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-stream.json"
+          ],
+          "log": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-stream.log",
+          "report": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases/literal-unbudgeted-named-stream.json",
+          "exit_code": 1,
+          "finished_utc": "2026-10-08T13:45:46.466538+00:00",
+          "expected_checks": 1,
+          "observed_checks": 1,
+          "counts": {
+            "fail": 1
+          },
+          "errors": [],
+          "passed": false,
+          "report_sha256": "983838c660f8271182a970a2cd4e51272cf73a749b518e8243396b48ed4e54f3",
+          "cleanup_attempted": true,
+          "cleanup": {
+            "signals": [],
+            "exit_code": 1,
+            "wall_seconds": 0.08115962499869056,
+            "owned_group_empty": true
+          },
+          "owned_client_group_empty": true
+        }
+      ],
+      "finished_utc": "2026-10-08T13:45:46.468952+00:00"
+    }
+  ],
+  "passed": false,
+  "child_reports_directory": "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/concurrency-cases",
+  "errors": [],
+  "summary": {
+    "pass": 44,
+    "fail": 8
+  },
+  "server_pid": 465451,
+  "server_start_identity": "3323066",
+  "source_hashes": {
+    "/home/cruzspark/qwen-overnight-20261008/reasoning_concurrency_smoke.py": "1e88c70eb82fa180b97d52b3ee71ad998153c24c99c2827e6da9646e1bbc102f",
+    "/home/cruzspark/qwen-overnight-20261008/reasoning_literal_smoke.py": "8f964990d448a75d632c34e4820a426e7de4c3c80d4f4006c2dae3eb379fb054",
+    "/home/cruzspark/qwen-overnight-20261008/spark_experiment_controller.py": "48281d5b51b1b64509385548c6f41f34909c328070274fcb4a06945ddcc44586",
+    "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/deployment.json": "7cee96cf523ff7157b2c2e15cbc4f41ae93e0568000a3b7a9ad5e5c5155a38e6",
+    "/home/cruzspark/qwen-overnight-20261008/results/final-api-24f0-5a/final-305-concurrent/state/config.yml": "7f3d215bd3fe6b54313cce7cb8ab026962679d8fc2d66a749419457a34a35f5b",
+    "/home/cruzspark/qwen-spark-recipe/bench/api_resilience.py": "193ec973e9dd2d77317912a312b8865933f791aa4b943673539c6283671dbd90",
+    "/home/cruzspark/qwen-spark-recipe/bench/auto_compatibility.py": "e1d95bed85546323c915ecacadea6153ba154d79a930d8f607a94fa94c569c1d",
+    "/home/cruzspark/qwen-spark-recipe/bench/tool_smoke.py": "666d7e4540637ad6dcaa13012b0bd3c57733f469a47587a17f0debedbc52d312",
+    "/home/cruzspark/qwen-spark-recipe/bench/api_client.py": "a834cd1ac95e1519a5a14856819c762a581d22ee1e61df5f4d57ca5f4c054adc",
+    "/home/cruzspark/qwen-spark-recipe/bench/bench_v1.py": "c60542c8d9c972a2f1d2ba66edf67a716e3b65e989952d94ed174008876f1191"
+  },
+  "client_owner_token": "171d26459f424275b632c26824a28aae",
+  "owned_client_groups_empty": true,
+  "cleanup_failed": false,
+  "finished_utc": "2026-10-08T13:45:46.558415+00:00"
+}

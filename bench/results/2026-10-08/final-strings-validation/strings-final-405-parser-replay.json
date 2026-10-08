@@ -1,0 +1,791 @@
+{
+  "scope": "Replay only the saved two-request strings observer capture on the final CPU parser.\n\nNo API requests, tokenizer decoding, native generation, template changes or source\nmutations. Raw strings are retained verbatim. The actual collector is replayed\nwith a deterministic text source; phase injection is neither simulated nor needed\nfor these already-generated traces. Fresh call IDs are deliberately excluded\nfrom comparisons, because their random identity cannot be recreated.\n",
+  "source": {
+    "head": "5a4f3efa1c1f60b6966ba0d0d5610f6b953541fb",
+    "clean": true,
+    "source_sha256": {
+      "endpoints/OAI/utils/chat_completion.py": "7e2656530a0524d3c3e0f66e71aa6840fa144d1c571ef007b30ed11a5e814e73",
+      "endpoints/OAI/utils/stream_parser.py": "a3f2d256c9b68076fe2455e0d29207dbd64831815da2d427357b85a07b59a92a",
+      "endpoints/OAI/utils/toolcall_stream.py": "221d7fd9e24db43192d8bdc6bde071ce152ffce3e4721731b79e264fe9c63644",
+      "endpoints/OAI/utils/toolcall_formats/qwen3_coder.py": "fda73ae720caa3e9d58beae609283a78559431c5f4fd832b6ad964b372db7ae2"
+    },
+    "script_sha256": "022133f56829740ec5cd601792c0fb08dd8140299bbcad4337a2df7e4373f1b8",
+    "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]"
+  },
+  "observed_engine_head": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+  "input_directory": "/home/vcruz/src/qwen-overnight-20261008/final-strings-captures/strings-final-405-24f0-5a",
+  "files_sha256": {
+    "strings-capture.json": "588513768ea5a8ab345456aca63a623d2736aea7d317228f460bed883078dc5e",
+    "tools.json": "2c93e439992ead409466cf3751819033d06cc04f9f98080d5d328795c8bb7c84",
+    "result.json": "05dc2f45fee5c64d88654f1475b511f0803f647a16d8c0567adda461e372bf26",
+    "raw-strings/observer-manifest.json": "74947649335158f8f5f7da24f1bf59a75073c2dfdb1d1bd1234efe39c2387a6a"
+  },
+  "trace_sha256": {
+    "request-00.json": "0b1229ddf38f47a32a166acc96bc4afa399dd1c22fa1b0913260c40716be0fc8",
+    "request-01.json": "d35288dfd6c6ce423669833c028a367e5e3f73a260a60541a553bc0a1dd6b913"
+  },
+  "capture_semantic_passed": true,
+  "cases": [
+    {
+      "mode": "nonstream",
+      "request_id": "8eae58dba5af494c99882c71db5eb744",
+      "original_case_passed": true,
+      "original_case_errors": [],
+      "rendered_prompt": "<|im_start|>system\n# Tools\n\nYou have access to the following functions:\n\n<tools>\n{\"function\": {\"name\": \"record_strings\", \"description\": \"Record each value exactly as a string; do not interpret its contents.\", \"parameters\": {\"type\": \"object\", \"properties\": {\"number_text\": {\"type\": \"string\"}, \"bool_text\": {\"type\": \"string\"}, \"json_text\": {\"type\": \"string\"}, \"tag_text\": {\"type\": \"string\"}}, \"required\": [\"number_text\", \"bool_text\", \"json_text\", \"tag_text\"], \"additionalProperties\": false}}, \"type\": \"function\"}\n</tools>\n\nIf you choose to call a function ONLY reply in the following format with NO suffix:\n\n<tool_call>\n<function=example_function_name>\n<parameter=example_parameter_1>\nvalue_1\n</parameter>\n<parameter=example_parameter_2>\nThis is the value for the second parameter\nthat can span\nmultiple lines\n</parameter>\n</function>\n</tool_call>\n\n<IMPORTANT>\nReminder:\n- Function calls MUST follow the specified format: an inner <function=...></function> block must be nested within <tool_call></tool_call> XML tags\n- Required parameters MUST be specified\n- You may provide optional reasoning for your function call in natural language BEFORE the function call, but NOT after\n- If there is no function call available, answer the question like normal with your current knowledge and do not tell the user about function calls\n</IMPORTANT><|im_end|>\n<|im_start|>user\nCall record_strings once with these exact string values: {\"number_text\": \"123\", \"bool_text\": \"true\", \"json_text\": \"{\\\"nested\\\": [1, false]}\", \"tag_text\": \"<think>literal</think>\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "rendered_prompt_sha256": "934c2fe67618cb33da660d556dc31b1625d044ea2c0051994898387c1297d343",
+      "start_in_reasoning_mode": false,
+      "raw_native_full_completion": "<tool_call>\n<function=record_strings>\n<parameter=number_text>\n123\n</parameter>\n<parameter=bool_text>\ntrue\n</parameter>\n<parameter=json_text>\n{\"nested\": [1, false]}\n</parameter>\n<parameter=tag_text>\n<think>literal</think>\n</parameter>\n</function>\n</tool_call>",
+      "raw_backend_full_response": "<tool_call>\n<function=record_strings>\n<parameter=number_text>\n123\n</parameter>\n<parameter=bool_text>\ntrue\n</parameter>\n<parameter=json_text>\n{\"nested\": [1, false]}\n</parameter>\n<parameter=tag_text>\n<think>literal</think>\n</parameter>\n</function>\n</tool_call>",
+      "native_equals_backend": true,
+      "observed_api": {
+        "content": "",
+        "reasoning_content": "",
+        "tool_calls": [
+          {
+            "name": "record_strings",
+            "arguments": {
+              "number_text": "123",
+              "bool_text": "true",
+              "json_text": "{\"nested\": [1, false]}",
+              "tag_text": "<think>literal</think>"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "native_replays": [
+        {
+          "chunk_characters": 1,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 1,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 7,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 7,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 31,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 31,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 258,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 258,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        }
+      ],
+      "backend_replays": [
+        {
+          "chunk_characters": 1,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 1,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 7,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 7,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 31,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 31,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 258,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 258,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        }
+      ],
+      "category": "exact_requested_arguments_preserved",
+      "backend_replay_matches_api": true,
+      "native_replay_matches_api": true,
+      "chunk_partition_consistent": true,
+      "attribution_note": "Parser replay alone cannot exclude a deterministic parser defect. Attribution to model generation requires independent inspection of the retained raw parameter text.",
+      "expected_calls": [
+        {
+          "name": "record_strings",
+          "arguments": {
+            "number_text": "123",
+            "bool_text": "true",
+            "json_text": "{\"nested\": [1, false]}",
+            "tag_text": "<think>literal</think>"
+          }
+        }
+      ],
+      "observed_calls": [
+        {
+          "name": "record_strings",
+          "arguments": {
+            "number_text": "123",
+            "bool_text": "true",
+            "json_text": "{\"nested\": [1, false]}",
+            "tag_text": "<think>literal</think>"
+          }
+        }
+      ]
+    },
+    {
+      "mode": "stream",
+      "request_id": "d3e466c3f2b14a96bb9740baf062bb69",
+      "original_case_passed": true,
+      "original_case_errors": [],
+      "rendered_prompt": "<|im_start|>system\n# Tools\n\nYou have access to the following functions:\n\n<tools>\n{\"function\": {\"name\": \"record_strings\", \"description\": \"Record each value exactly as a string; do not interpret its contents.\", \"parameters\": {\"type\": \"object\", \"properties\": {\"number_text\": {\"type\": \"string\"}, \"bool_text\": {\"type\": \"string\"}, \"json_text\": {\"type\": \"string\"}, \"tag_text\": {\"type\": \"string\"}}, \"required\": [\"number_text\", \"bool_text\", \"json_text\", \"tag_text\"], \"additionalProperties\": false}}, \"type\": \"function\"}\n</tools>\n\nIf you choose to call a function ONLY reply in the following format with NO suffix:\n\n<tool_call>\n<function=example_function_name>\n<parameter=example_parameter_1>\nvalue_1\n</parameter>\n<parameter=example_parameter_2>\nThis is the value for the second parameter\nthat can span\nmultiple lines\n</parameter>\n</function>\n</tool_call>\n\n<IMPORTANT>\nReminder:\n- Function calls MUST follow the specified format: an inner <function=...></function> block must be nested within <tool_call></tool_call> XML tags\n- Required parameters MUST be specified\n- You may provide optional reasoning for your function call in natural language BEFORE the function call, but NOT after\n- If there is no function call available, answer the question like normal with your current knowledge and do not tell the user about function calls\n</IMPORTANT><|im_end|>\n<|im_start|>user\nCall record_strings once with these exact string values: {\"number_text\": \"123\", \"bool_text\": \"true\", \"json_text\": \"{\\\"nested\\\": [1, false]}\", \"tag_text\": \"<think>literal</think>\"}<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+      "rendered_prompt_sha256": "934c2fe67618cb33da660d556dc31b1625d044ea2c0051994898387c1297d343",
+      "start_in_reasoning_mode": false,
+      "raw_native_full_completion": "<tool_call>\n<function=record_strings>\n<parameter=number_text>\n123\n</parameter>\n<parameter=bool_text>\ntrue\n</parameter>\n<parameter=json_text>\n{\"nested\": [1, false]}\n</parameter>\n<parameter=tag_text>\n<think>literal</think>\n</parameter>\n</function>\n</tool_call>",
+      "raw_backend_full_response": "<tool_call>\n<function=record_strings>\n<parameter=number_text>\n123\n</parameter>\n<parameter=bool_text>\ntrue\n</parameter>\n<parameter=json_text>\n{\"nested\": [1, false]}\n</parameter>\n<parameter=tag_text>\n<think>literal</think>\n</parameter>\n</function>\n</tool_call>",
+      "native_equals_backend": true,
+      "observed_api": {
+        "content": "",
+        "reasoning_content": "",
+        "tool_calls": [
+          {
+            "name": "record_strings",
+            "arguments": {
+              "number_text": "123",
+              "bool_text": "true",
+              "json_text": "{\"nested\": [1, false]}",
+              "tag_text": "<think>literal</think>"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls"
+      },
+      "native_replays": [
+        {
+          "chunk_characters": 1,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 1,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 7,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 7,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 31,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 31,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 258,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 258,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        }
+      ],
+      "backend_replays": [
+        {
+          "chunk_characters": 1,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 1,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 7,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 7,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 31,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 31,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 258,
+          "collector_streaming": false,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        },
+        {
+          "chunk_characters": 258,
+          "collector_streaming": true,
+          "result": {
+            "content": "",
+            "reasoning_content": "",
+            "tool_calls": [
+              {
+                "name": "record_strings",
+                "arguments": {
+                  "number_text": "123",
+                  "bool_text": "true",
+                  "json_text": "{\"nested\": [1, false]}",
+                  "tag_text": "<think>literal</think>"
+                }
+              }
+            ],
+            "finish_reason": "tool_calls"
+          }
+        }
+      ],
+      "category": "exact_requested_arguments_preserved",
+      "backend_replay_matches_api": true,
+      "native_replay_matches_api": true,
+      "chunk_partition_consistent": true,
+      "attribution_note": "Parser replay alone cannot exclude a deterministic parser defect. Attribution to model generation requires independent inspection of the retained raw parameter text.",
+      "expected_calls": [
+        {
+          "name": "record_strings",
+          "arguments": {
+            "number_text": "123",
+            "bool_text": "true",
+            "json_text": "{\"nested\": [1, false]}",
+            "tag_text": "<think>literal</think>"
+          }
+        }
+      ],
+      "observed_calls": [
+        {
+          "name": "record_strings",
+          "arguments": {
+            "number_text": "123",
+            "bool_text": "true",
+            "json_text": "{\"nested\": [1, false]}",
+            "tag_text": "<think>literal</think>"
+          }
+        }
+      ]
+    }
+  ],
+  "replay_count": 32,
+  "all_backend_replays_match_api": true,
+  "normalization_note": "Only absent/null/empty textual API fields are normalized to empty text; tool argument JSON is decoded without string normalization. Fresh random tool-call IDs are omitted. This tests complete routed output and assembled arguments, not original SSE timing or IDs."
+}

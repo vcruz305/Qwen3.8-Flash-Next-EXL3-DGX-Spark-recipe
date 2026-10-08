@@ -1,0 +1,87 @@
+{
+  "state": "failed",
+  "stages": [
+    {
+      "name": "gpu-policy-1",
+      "exit_code": 0
+    },
+    {
+      "name": "gpu-policy-0",
+      "exit_code": 0
+    },
+    {
+      "name": "api-f4-gemm",
+      "exit_code": 1
+    },
+    {
+      "name": "fp16-recovery",
+      "exit_code": 0,
+      "assessments": [
+        {
+          "name": "candidate-short-405",
+          "core_passed": true,
+          "investigation_count": 2,
+          "assessment_exit": 0
+        },
+        {
+          "name": "candidate-qsa-305",
+          "core_passed": true,
+          "investigation_count": 4,
+          "assessment_exit": 0
+        }
+      ]
+    },
+    {
+      "name": "q8-allpacks",
+      "exit_code": 0,
+      "assessments": [
+        {
+          "name": "candidate-305",
+          "core_passed": true,
+          "investigation_count": 1,
+          "assessment_exit": 0
+        },
+        {
+          "name": "candidate-405",
+          "core_passed": true,
+          "investigation_count": 2,
+          "assessment_exit": 0
+        },
+        {
+          "name": "candidate-415",
+          "core_passed": true,
+          "investigation_count": 0,
+          "assessment_exit": 0
+        },
+        {
+          "name": "candidate-cyber387",
+          "core_passed": true,
+          "investigation_count": 0,
+          "assessment_exit": 0
+        }
+      ]
+    },
+    {
+      "name": "q8-batch4",
+      "exit_code": 0,
+      "assessments": [
+        {
+          "name": "candidate-batch4-305",
+          "core_passed": false,
+          "investigation_count": 1,
+          "assessment_exit": 2
+        },
+        {
+          "name": "candidate-batch4-415",
+          "core_passed": true,
+          "investigation_count": 0,
+          "assessment_exit": 0
+        }
+      ]
+    }
+  ],
+  "updated_utc": "2026-10-08T10:32:13.692278+00:00",
+  "active": "q8-batch4",
+  "api_passed": false,
+  "error": "q8-batch4 has core numerical failures"
+}

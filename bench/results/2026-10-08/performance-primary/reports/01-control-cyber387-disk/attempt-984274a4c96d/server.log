@@ -1,0 +1,501 @@
+==> profile single: 262144 tokens per request, 262144 shared tokens, 1 jobs, ngram_ram=false, chunk=2048, draft=mtp/5
+exllamav3 1.6.0.post1 (fork) at /home/cruzspark/qwen38-exl3-20261008/exllamav3/exllamav3
+build fingerprint verified: d2a40a03d577
+==> config: /home/cruzspark/qwen-overnight-20261008/results/performance-primary-16ca-ksplit1/01-control-cyber387-disk/attempt-984274a4c96d/state/config.yml
+==> memory estimate: 75.7 GiB (non-ngram weights 61.2, ngram stream 36.4, K/V 3.25, scales 0.20, QSA 1.02, slack 10); MemAvailable 118.9 GiB. Estimate only.
+deployment snapshot: /home/cruzspark/qwen-overnight-20261008/results/performance-primary-16ca-ksplit1/01-control-cyber387-disk/attempt-984274a4c96d/state/deployment.json
+==> TabbyAPI f4fb6b73 on http://127.0.0.1:8899/v1, model id: Qwen3.8-Flash-Next-EXL3
+04:01:46.381 INFO:     Using config file
+                       /home/cruzspark/qwen-overnight-20261008/results/performan
+                       ce-primary-16ca-ksplit1/01-control-cyber387-disk/attempt-
+                       984274a4c96d/state/config.yml
+04:01:46.385 INFO:     The 'config.yml' file cannot be found
+04:01:47.463 INFO:     Sampler overrides (inline): temperature 1.0, top_k 20,
+                       top_p 0.95, min_p 0.0
+04:01:47.466 INFO:     exllamav3 version: 1.6.0.post1
+ !! Overriding mtp.hyper_connection_mixer.hc_norm.weight from /home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/model-00009-of-00009.safetensors with /home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/mtp_hyper_connection_mixer_patch.safetensors
+ !! Overriding mtp.hyper_connection_mixer.input_mix_weight_down.weight from /home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/model-00009-of-00009.safetensors with /home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/mtp_hyper_connection_mixer_patch.safetensors
+ !! Overriding mtp.hyper_connection_mixer.input_mix_weight_up.weight from /home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/model-00009-of-00009.safetensors with /home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/mtp_hyper_connection_mixer_patch.safetensors
+ !! Replaced 3 tensors from /home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw
+04:01:48.935 INFO:     The provided model has vision capabilities, vision is
+                       disabled in config.
+04:01:48.942 INFO:     Using main model MTP component for drafting
+04:01:48.947 INFO:     Disabling GPU split because one GPU is in use.
+04:01:48.948 INFO:     Context: max_seq_len 262,144 tokens (configured),
+                       cache_size 262,144 tokens
+04:01:48.987 INFO:     Using template "chat_template" for chat completions.
+04:01:48.987 INFO:     Response parsing: tool format qwen3_coder (config),
+                       reasoning tags <think> </think> (template)
+04:01:50.276 INFO:     Loading model
+                       /home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw
+                       (manual GPU split)
+ -- Mixed-K experts in model.language_model.layers.0.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.0.mlp: 3 groups, 510/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.0.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.1.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.1.mlp: 3 groups, 511/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.1.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.2.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.2.mlp: 2 groups, 510/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.2.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.3.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.3.mlp: 3 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.3.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.4.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.4.mlp: 3 groups, 511/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.4.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.5.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.5.mlp: 2 groups, 511/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.5.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.6.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.6.mlp: 2 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.6.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.7.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.7.mlp: 2 groups, 508/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.7.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.8.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.8.mlp: 2 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.8.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.9.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.9.mlp: 2 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.9.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.10.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.10.mlp: 2 groups, 511/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.10.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.11.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.11.mlp: 2 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.11.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.12.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.12.mlp: 3 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.12.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.13.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.13.mlp: 4 groups, 511/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.13.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.14.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.14.mlp: 4 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.14.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.15.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.15.mlp: 4 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.15.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.16.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.16.mlp: 6 groups, 511/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.16.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.17.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.17.mlp: 7 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.17.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.18.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.18.mlp: 5 groups, 507/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.18.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.19.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.19.mlp: 6 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.19.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.20.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.20.mlp: 4 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.20.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.21.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.21.mlp: 4 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.21.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.22.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.22.mlp: 4 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.22.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.23.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.23.mlp: 3 groups, 509/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.23.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.24.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.24.mlp: 6 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.24.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.25.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.25.mlp: 5 groups, 510/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.25.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.26.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.26.mlp: 7 groups, 510/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.26.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.27.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.27.mlp: 7 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.27.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.28.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.28.mlp: 4 groups, 511/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.28.mlp: 512 experts, K_up range [6,8]
+ -- Mixed-K experts in model.language_model.layers.29.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.29.mlp: 4 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.29.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.30.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.30.mlp: 4 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.30.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.31.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.31.mlp: 3 groups, 510/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.31.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.32.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.32.mlp: 3 groups, 510/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.32.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.33.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.33.mlp: 3 groups, 510/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.33.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.34.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.34.mlp: 3 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.34.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.35.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.35.mlp: 3 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.35.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.36.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.36.mlp: 2 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.36.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.37.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.37.mlp: 2 groups, 511/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.37.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.38.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.38.mlp: 2 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.38.mlp: 512 experts, K_up range [6,6]
+ -- Mixed-K experts in model.language_model.layers.39.mlp: dense per-expert path
+ -- Mixed-K fused groups in model.language_model.layers.39.mlp: 2 groups, 512/512 experts fused
+ -- Mixed-K UNIFIED kernel enabled in model.language_model.layers.39.mlp: 512 experts, K_up range [6,6]
+Loading draft modules ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 3/3   0:00:00
+Loading model modules ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 53/53 0:00:00
+Warming up            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 15/15 0:00:00
+04:02:29.232 INFO:     Warmup finished in 8.1 s
+04:02:29.415 INFO:     Model loaded in 40.4 s
+
+04:02:29.415 WARNING:  Disabling authentication makes your instance vulnerable.
+                       Set the `disable_auth` flag to False in config.yml if you
+                       want to share this instance with others.
+04:02:29.415 WARNING:  With authentication disabled and `allowed_origins` left
+                       at ["*"], any website open in a browser on this machine
+                       can send requests to this instance and read the
+                       responses, including admin endpoints. Set
+                       `network.allowed_origins` to your own frontends (or [])
+                       unless you use a browser-based frontend that needs it.
+04:02:29.416 INFO:     Serving OAI API on http://127.0.0.1:8899 (docs at
+                       http://127.0.0.1:8899/redoc)
+04:02:29.924 INFO:     #4 chat/completions (stream): 196 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 400 (req)
+04:02:40.187 INFO:     #4 chat/completions (stream): 400 tokens generated at
+                       41.7 T/s · prompt 196 tokens, none cached, 196 new in
+                       0.66 s · first token 0.66 s, total 10.3 s · draft 272/396
+                       accepted (69%) · max_tokens reached
+04:02:40.191 INFO:     #5 chat/completions (stream): 196 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 400 (req)
+04:02:49.859 INFO:     #5 chat/completions (stream): 400 tokens generated at
+                       44.1 T/s · prompt 196 tokens, none cached, 196 new in
+                       0.59 s · first token 0.59 s, total 9.67 s · draft 277/378
+                       accepted (73%) · max_tokens reached
+04:02:49.864 INFO:     #6 chat/completions (stream): 196 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 400 (req)
+04:02:59.488 INFO:     #6 chat/completions (stream): 400 tokens generated at
+                       44.3 T/s · prompt 196 tokens, none cached, 196 new in
+                       0.58 s · first token 0.58 s, total 9.62 s · draft 274/372
+                       accepted (74%) · max_tokens reached
+04:02:59.492 INFO:     #7 chat/completions (stream): 196 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 400 (req)
+04:03:09.342 INFO:     #7 chat/completions (stream): 400 tokens generated at
+                       43.2 T/s · prompt 196 tokens, none cached, 196 new in
+                       0.58 s · first token 0.58 s, total 9.85 s · draft 273/396
+                       accepted (69%) · max_tokens reached
+04:03:09.346 INFO:     #8 chat/completions (stream): 172 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 400 (req)
+04:03:21.911 INFO:     #8 chat/completions (stream): 400 tokens generated at
+                       33.3 T/s · prompt 172 tokens, none cached, 172 new in
+                       0.55 s · first token 0.55 s, total 12.6 s · draft 219/346
+                       accepted (63%) · max_tokens reached
+04:03:21.914 INFO:     #9 chat/completions (stream): 172 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 400 (req)
+04:03:34.188 INFO:     #9 chat/completions (stream): 400 tokens generated at
+                       34.1 T/s · prompt 172 tokens, none cached, 172 new in
+                       0.54 s · first token 0.54 s, total 12.3 s · draft 223/342
+                       accepted (65%) · max_tokens reached
+04:03:34.192 INFO:     #10 chat/completions (stream): 172 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 400 (req)
+04:03:45.477 INFO:     #10 chat/completions (stream): 400 tokens generated at
+                       37.2 T/s · prompt 172 tokens, none cached, 172 new in
+                       0.54 s · first token 0.54 s, total 11.3 s · draft 243/346
+                       accepted (70%) · max_tokens reached
+04:03:45.480 INFO:     #11 chat/completions (stream): 172 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 400 (req)
+04:03:56.378 INFO:     #11 chat/completions (stream): 400 tokens generated at
+                       38.6 T/s · prompt 172 tokens, none cached, 172 new in
+                       0.54 s · first token 0.54 s, total 10.9 s · draft 255/384
+                       accepted (66%) · max_tokens reached
+04:03:56.383 INFO:     #12 chat/completions (stream): 181 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 400 (req)
+04:04:08.891 INFO:     #12 chat/completions (stream): 400 tokens generated at
+                       33.5 T/s · prompt 181 tokens, none cached, 181 new in
+                       0.57 s · first token 0.57 s, total 12.5 s · draft 215/352
+                       accepted (61%) · max_tokens reached
+04:04:08.895 INFO:     #13 chat/completions (stream): 181 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 400 (req)
+04:04:20.958 INFO:     #13 chat/completions (stream): 400 tokens generated at
+                       34.8 T/s · prompt 181 tokens, none cached, 181 new in
+                       0.56 s · first token 0.56 s, total 12.1 s · draft 230/369
+                       accepted (62%) · max_tokens reached
+04:04:20.962 INFO:     #14 chat/completions (stream): 181 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 400 (req)
+04:04:33.408 INFO:     #14 chat/completions (stream): 400 tokens generated at
+                       33.7 T/s · prompt 181 tokens, none cached, 181 new in
+                       0.56 s · first token 0.56 s, total 12.4 s · draft 219/353
+                       accepted (62%) · max_tokens reached
+04:04:33.412 INFO:     #15 chat/completions (stream): 181 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 400 (req)
+04:04:44.873 INFO:     #15 chat/completions (stream): 400 tokens generated at
+                       36.7 T/s · prompt 181 tokens, none cached, 181 new in
+                       0.57 s · first token 0.57 s, total 11.5 s · draft 243/371
+                       accepted (65%) · max_tokens reached
+04:04:45.176 INFO:     #17 chat/completions (stream): 12,266 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req)
+04:05:07.041 INFO:     #17 chat/completions (stream): 256 tokens generated at
+                       32.6 T/s · prompt 12,266 tokens, none cached, 12,266 new
+                       in 14.0 s (875 T/s) · first token 14.0 s, total 21.9 s ·
+                       draft 160/245 accepted (65%) · max_tokens reached
+04:05:07.070 INFO:     #18 chat/completions (stream): 12,266 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req)
+04:05:28.625 INFO:     #18 chat/completions (stream): 256 tokens generated at
+                       34.6 T/s · prompt 12,266 tokens, none cached, 12,266 new
+                       in 14.2 s (866 T/s) · first token 14.2 s, total 21.6 s ·
+                       draft 169/248 accepted (68%) · max_tokens reached
+04:05:28.658 INFO:     #19 chat/completions (stream): 12,266 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req)
+04:05:50.222 INFO:     #19 chat/completions (stream): 256 tokens generated at
+                       35.4 T/s · prompt 12,266 tokens, none cached, 12,266 new
+                       in 14.3 s (855 T/s) · first token 14.3 s, total 21.6 s ·
+                       draft 176/259 accepted (68%) · max_tokens reached
+04:05:51.498 INFO:     #21 chat/completions: 422 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req), grammar_string
+                       (req)
+04:05:55.624 INFO:     #21 chat/completions: parsed 1 tool call (qwen3_coder)
+04:05:55.624 INFO:     #21 chat/completions: 68 tokens generated at 44.1 T/s ·
+                       prompt 422 tokens, none cached, 422 new in 2.58 s (164
+                       T/s) · first token 2.58 s, total 4.13 s · draft 51/68
+                       accepted (75%)
+04:05:55.633 INFO:     #22 chat/completions (stream): 422 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req),
+                       grammar_string (req)
+04:05:57.710 INFO:     #22 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+04:05:57.711 INFO:     #22 chat/completions (stream): 68 tokens generated at
+                       46.5 T/s · prompt 422 tokens, 61% cached, 166 new in 0.61
+                       s · first token 0.61 s, total 2.08 s · draft 51/68
+                       accepted (75%)
+04:05:57.718 INFO:     #23 chat/completions: 386 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req), grammar_string
+                       (req)
+04:06:00.866 INFO:     #23 chat/completions: parsed 1 tool call (qwen3_coder)
+04:06:00.867 INFO:     #23 chat/completions: 36 tokens generated at 41.2 T/s ·
+                       prompt 386 tokens, none cached, 386 new in 2.27 s (170
+                       T/s) · first token 2.27 s, total 3.15 s · draft 26/40
+                       accepted (65%)
+04:06:00.875 INFO:     #24 chat/completions (stream): 386 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req),
+                       grammar_string (req)
+04:06:02.234 INFO:     #24 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+04:06:02.235 INFO:     #24 chat/completions (stream): 36 tokens generated at
+                       43.0 T/s · prompt 386 tokens, 66% cached, 130 new in 0.52
+                       s · first token 0.52 s, total 1.36 s · draft 26/40
+                       accepted (65%)
+04:06:02.242 INFO:     #25 chat/completions: 479 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req), grammar_string
+                       (req)
+04:06:06.529 INFO:     #25 chat/completions: 81 tokens generated at 45.3 T/s ·
+                       prompt 479 tokens, none cached, 479 new in 2.50 s (192
+                       T/s) · first token 2.50 s, total 4.29 s · draft 58/73
+                       accepted (79%)
+04:06:06.537 INFO:     #26 chat/completions (stream): 479 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req),
+                       grammar_string (req)
+04:06:08.928 INFO:     #26 chat/completions (stream): 81 tokens generated at
+                       47.1 T/s · prompt 479 tokens, 53% cached, 223 new in 0.67
+                       s · first token 0.67 s, total 2.39 s · draft 58/73
+                       accepted (79%)
+04:06:08.935 INFO:     #27 chat/completions: 661 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req), grammar_string
+                       (req)
+04:06:14.893 INFO:     #27 chat/completions: parsed 1 tool call (qwen3_coder)
+04:06:14.893 INFO:     #27 chat/completions: 160 tokens generated at 47.2 T/s ·
+                       prompt 661 tokens, none cached, 661 new in 2.56 s (258
+                       T/s) · first token 2.56 s, total 5.95 s · draft 124/154
+                       accepted (81%)
+04:06:14.902 INFO:     #28 chat/completions (stream): 661 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req),
+                       grammar_string (req)
+04:06:18.634 INFO:     #28 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+04:06:18.635 INFO:     #28 chat/completions (stream): 160 tokens generated at
+                       50.3 T/s · prompt 661 tokens, 77% cached, 149 new in 0.54
+                       s · first token 0.54 s, total 3.73 s · draft 124/151
+                       accepted (82%)
+04:06:18.641 INFO:     #29 chat/completions: 467 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req), grammar_string
+                       (req)
+04:06:22.919 INFO:     #29 chat/completions: parsed 1 tool call (qwen3_coder)
+04:06:22.920 INFO:     #29 chat/completions: 79 tokens generated at 46.3 T/s ·
+                       prompt 467 tokens, none cached, 467 new in 2.57 s (182
+                       T/s) · first token 2.57 s, total 4.28 s · draft 59/75
+                       accepted (79%)
+04:06:22.927 INFO:     #30 chat/completions (stream): 467 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req),
+                       grammar_string (req)
+04:06:25.270 INFO:     #30 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+04:06:25.271 INFO:     #30 chat/completions (stream): 79 tokens generated at
+                       46.7 T/s · prompt 467 tokens, 55% cached, 211 new in 0.65
+                       s · first token 0.65 s, total 2.34 s · draft 59/75
+                       accepted (79%)
+04:06:25.277 INFO:     #31 chat/completions: 416 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req), grammar_string
+                       (req)
+04:06:27.315 INFO:     #31 chat/completions: parsed 1 tool call (qwen3_coder)
+04:06:27.316 INFO:     #31 chat/completions: 61 tokens generated at 41.8 T/s ·
+                       prompt 416 tokens, 62% cached, 160 new in 0.57 s · first
+                       token 0.57 s, total 2.03 s · draft 44/64 accepted (69%)
+04:06:27.323 INFO:     #32 chat/completions (stream): 416 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req),
+                       grammar_string (req)
+04:06:29.367 INFO:     #32 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+04:06:29.368 INFO:     #32 chat/completions (stream): 61 tokens generated at
+                       42.1 T/s · prompt 416 tokens, 62% cached, 160 new in 0.59
+                       s · first token 0.59 s, total 2.04 s · draft 44/65
+                       accepted (68%)
+04:06:29.374 INFO:     #33 chat/completions: 394 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req), grammar_string
+                       (req)
+04:06:31.218 INFO:     #33 chat/completions: parsed 1 tool call (qwen3_coder)
+04:06:31.219 INFO:     #33 chat/completions: 54 tokens generated at 41.4 T/s ·
+                       prompt 394 tokens, 65% cached, 138 new in 0.53 s · first
+                       token 0.53 s, total 1.84 s · draft 36/47 accepted (77%)
+04:06:31.225 INFO:     #34 chat/completions (stream): 394 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req),
+                       grammar_string (req)
+04:06:33.055 INFO:     #34 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+04:06:33.056 INFO:     #34 chat/completions (stream): 54 tokens generated at
+                       42.2 T/s · prompt 394 tokens, 65% cached, 138 new in 0.54
+                       s · first token 0.54 s, total 1.83 s · draft 36/48
+                       accepted (75%)
+04:06:33.062 INFO:     #35 chat/completions: 436 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req), grammar_string
+                       (req)
+04:06:43.318 INFO:     #35 chat/completions: parsed 1 tool call (qwen3_coder)
+04:06:43.319 INFO:     #35 chat/completions: 341 tokens generated at 35.3 T/s ·
+                       prompt 436 tokens, 59% cached, 180 new in 0.60 s · first
+                       token 0.60 s, total 10.3 s · draft 200/296 accepted (68%)
+04:06:43.326 INFO:     #36 chat/completions (stream): 436 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req),
+                       grammar_string (req)
+04:06:54.444 INFO:     #36 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+04:06:54.445 INFO:     #36 chat/completions (stream): 356 tokens generated at
+                       33.9 T/s · prompt 436 tokens, 59% cached, 180 new in 0.60
+                       s · first token 0.60 s, total 11.1 s · draft 201/313
+                       accepted (64%)
+04:06:54.450 INFO:     #37 chat/completions: 131 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req)
+04:06:55.397 INFO:     #37 chat/completions: 15 tokens generated at 32.8 T/s ·
+                       prompt 131 tokens, none cached, 131 new in 0.49 s · first
+                       token 0.49 s, total 0.95 s · draft 8/12 accepted (67%)
+04:06:55.401 INFO:     #38 chat/completions (stream): 131 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req)
+04:06:56.319 INFO:     #38 chat/completions (stream): 15 tokens generated at
+                       35.2 T/s · prompt 131 tokens, none cached, 131 new in
+                       0.49 s · first token 0.49 s, total 0.92 s · draft 8/12
+                       accepted (67%)
+04:06:56.328 INFO:     #39 chat/completions: 428 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req), grammar_string
+                       (req)
+04:06:59.703 INFO:     #39 chat/completions: parsed 2 tool calls (qwen3_coder)
+04:06:59.704 INFO:     #39 chat/completions: 124 tokens generated at 44.7 T/s ·
+                       prompt 428 tokens, 60% cached, 172 new in 0.59 s · first
+                       token 0.59 s, total 3.37 s · draft 91/108 accepted (84%)
+04:06:59.713 INFO:     #40 chat/completions (stream): 428 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req),
+                       grammar_string (req)
+04:07:03.014 INFO:     #40 chat/completions (stream): parsed 2 tool calls
+                       (qwen3_coder)
+04:07:03.015 INFO:     #40 chat/completions (stream): 124 tokens generated at
+                       46.1 T/s · prompt 428 tokens, 60% cached, 172 new in 0.60
+                       s · first token 0.60 s, total 3.30 s · draft 91/108
+                       accepted (84%)
+04:07:03.025 INFO:     #41 chat/completions: 423 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req), grammar_string
+                       (req)
+04:07:05.790 INFO:     #41 chat/completions: parsed 1 tool call (qwen3_coder)
+04:07:05.790 INFO:     #41 chat/completions: 90 tokens generated at 41.2 T/s ·
+                       prompt 423 tokens, 61% cached, 167 new in 0.57 s · first
+                       token 0.57 s, total 2.76 s · draft 60/77 accepted (78%)
+04:07:05.800 INFO:     #42 chat/completions (stream): 423 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req),
+                       grammar_string (req)
+04:07:08.507 INFO:     #42 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+04:07:08.508 INFO:     #42 chat/completions (stream): 90 tokens generated at
+                       42.8 T/s · prompt 423 tokens, 61% cached, 167 new in 0.60
+                       s · first token 0.60 s, total 2.71 s · draft 61/77
+                       accepted (79%)
+04:07:08.516 INFO:     #43 chat/completions: 427 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req), grammar_string
+                       (req)
+04:07:10.523 INFO:     #43 chat/completions: parsed 1 tool call (qwen3_coder)
+04:07:10.524 INFO:     #43 chat/completions: 62 tokens generated at 43.8 T/s ·
+                       prompt 427 tokens, 60% cached, 171 new in 0.59 s · first
+                       token 0.59 s, total 2.01 s · draft 44/55 accepted (80%)
+04:07:10.543 INFO:     #44 chat/completions (stream): 427 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req),
+                       grammar_string (req)
+04:07:12.531 INFO:     #44 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+04:07:12.532 INFO:     #44 chat/completions (stream): 62 tokens generated at
+                       44.2 T/s · prompt 427 tokens, 60% cached, 171 new in 0.58
+                       s · first token 0.58 s, total 1.99 s · draft 44/54
+                       accepted (81%)
+04:07:12.540 INFO:     #45 chat/completions: 442 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req), grammar_string
+                       (req)
+04:07:16.195 INFO:     #45 chat/completions: parsed 2 tool calls (qwen3_coder)
+04:07:16.196 INFO:     #45 chat/completions: 129 tokens generated at 42.6 T/s ·
+                       prompt 442 tokens, 58% cached, 186 new in 0.62 s · first
+                       token 0.62 s, total 3.65 s · draft 91/117 accepted (78%)
+04:07:16.199 INFO:     #46 chat/completions: 335 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req)
+04:07:19.004 INFO:     #46 chat/completions: 30 tokens generated at 44.5 T/s ·
+                       prompt 335 tokens, none cached, 335 new in 2.13 s (157
+                       T/s) · first token 2.13 s, total 2.81 s · draft 21/26
+                       accepted (81%)
+04:07:19.007 INFO:     #47 chat/completions: 390 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 1024 (req)
+04:07:19.893 INFO:     #47 chat/completions: 14 tokens generated at 40.9 T/s ·
+                       prompt 390 tokens, 66% cached, 134 new in 0.54 s · first
+                       token 0.54 s, total 0.89 s · draft 9/10 accepted (90%)
+04:07:19.904 INFO:     #48 chat/completions (stream): 442 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req),
+                       grammar_string (req)
+04:07:23.567 INFO:     #48 chat/completions (stream): parsed 2 tool calls
+                       (qwen3_coder)
+04:07:23.568 INFO:     #48 chat/completions (stream): 129 tokens generated at
+                       42.8 T/s · prompt 442 tokens, 58% cached, 186 new in 0.64
+                       s · first token 0.64 s, total 3.66 s · draft 91/116
+                       accepted (78%)
+04:07:23.572 INFO:     #49 chat/completions (stream): 335 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req)
+04:07:24.599 INFO:     #49 chat/completions (stream): 30 tokens generated at
+                       46.8 T/s · prompt 335 tokens, 76% cached, 79 new in 0.38
+                       s · first token 0.38 s, total 1.03 s · draft 21/25
+                       accepted (84%)
+04:07:24.603 INFO:     #50 chat/completions (stream): 390 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 1024 (req)
+04:07:25.535 INFO:     #50 chat/completions (stream): 14 tokens generated at
+                       35.2 T/s · prompt 390 tokens, 66% cached, 134 new in 0.53
+                       s · first token 0.53 s, total 0.93 s · draft 8/11
+                       accepted (73%)
+04:07:25.543 INFO:     #51 chat/completions: 477 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 2 (req), grammar_string (req)
+04:07:26.302 INFO:     #51 chat/completions: 2 tokens generated at 26.5 T/s ·
+                       prompt 477 tokens, 54% cached, 221 new in 0.68 s · first
+                       token 0.68 s, total 0.76 s · draft 1/4 accepted (25%) ·
+                       max_tokens reached
+04:07:26.312 INFO:     #52 chat/completions (stream): 477 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 2 (req),
+                       grammar_string (req)
+04:07:27.068 INFO:     #52 chat/completions (stream): 2 tokens generated at 26.1
+                       T/s · prompt 477 tokens, 54% cached, 221 new in 0.67 s ·
+                       first token 0.67 s, total 0.75 s · draft 1/4 accepted
+                       (25%) · max_tokens reached
+04:07:27.770 WARNING:  Shutdown signal called. Exiting gracefully.
+04:07:29.032 INFO:     Model unloaded.
