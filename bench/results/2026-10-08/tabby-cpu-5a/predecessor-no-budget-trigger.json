@@ -1,0 +1,65 @@
+{
+  "scope": "CPU reproduction of default reasoning's raw END trigger inside literal tool data.\n\nExecutes the actual collector and backend methods, then actual native Job and\nFilter.feed code through bounded CPU fixtures. No model, server, GPU or HTTP.\n",
+  "confirmed": true,
+  "python": "3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]",
+  "platform": "Linux-5.15.167.4-microsoft-standard-WSL2-x86_64-with-glibc2.35",
+  "torch": "2.13.0+cpu",
+  "collector_cases": [
+    {
+      "stream": false,
+      "reasoning_budget_tokens": null,
+      "native_plan_forwarded": false
+    },
+    {
+      "stream": true,
+      "reasoning_budget_tokens": null,
+      "native_plan_forwarded": false
+    }
+  ],
+  "backend_trigger_token_id": 9,
+  "protected_literal_state": {
+    "parser_in_tool": true,
+    "parser_in_reasoning": true,
+    "filter_active": true,
+    "journal": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        9
+      ]
+    ],
+    "producer_budget": null
+  },
+  "next_proposed_token": 5,
+  "next_accepted_token": 8,
+  "accepted_ids": [
+    1,
+    9,
+    8
+  ],
+  "source": {
+    "tabby": {
+      "head": "3adc9813f30c4b92d110e7e0235129031dae1c25",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "files_sha256": {
+        "backends/exllamav3/model.py": "62f77cc0ce4004b4aa452bb27bf361e896dcfba7ff00322f5bfb146ac1917eb3",
+        "backends/exllamav3/reasoning.py": "4f438fba22e7305db506cf84433d6152867cd7ae544c99c4a5ec5f1f1f44269a",
+        "endpoints/OAI/utils/chat_completion.py": "25d8fbc7720ddee5ae6d5ef082fc8c2e7bb892d2f2d7434dce1b407e11f5aad5",
+        "tests/test_reasoning_budget.py": "9a3b7cd54d050f6fa6cb9e4a0b5e8dd40cdd838e36cb443e8f0b0117723cf2d9"
+      }
+    },
+    "engine": {
+      "head": "9c0bbaaa31043f84a62e618d8c3b2e19c45b22c2",
+      "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "files_sha256": {
+        "exllamav3/generator/job.py": "7b9fb2eff2000dc19ed28d2e0fea67ce6665b2163edbac14a28db77bf041a6c1",
+        "exllamav3/generator/filter/filter.py": "f70928434811888e3ffb02b8e80fd525b7a704ad2c32d41eee9a05b96c836c3b",
+        "tests/test_token_budget_cpu.py": "d518fdf3cd3eadeccb3767f75bf2a6f5117ac68a95b0bca9cc85b2f2dfd4f5e1"
+      }
+    }
+  },
+  "harness_sha256": "31c3dd401e9f25f5cf14fccfe6e243e62da4dab538ad5c838c22162722a2ecf4"
+}
