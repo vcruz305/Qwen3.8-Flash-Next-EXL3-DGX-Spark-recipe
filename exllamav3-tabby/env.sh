@@ -4,11 +4,12 @@
 # The runtime: vcruz305/exllamav3 (upstream + aarch64 guards + GB10 decode kernels + mixed-K MoE
 # + EXL3_DRAFT_CONFIDENCE). Stock turboderp exllamav3 runs this model but misses the GB10 work.
 EXL3_REPO="${EXL3_REPO:-https://github.com/vcruz305/exllamav3.git}"
-EXL3_REF="${EXL3_REF:-94ba01d50a13fa9ff672473f2d0eef8b51a71e99}"
-EXL3_MIN_VERSION="${EXL3_MIN_VERSION:-1.5.1}"
+EXL3_REF="${EXL3_REF:-6fb0e2f878a7570c2e269da67f0bf72aa7752a73}"
+EXL3_MIN_VERSION="${EXL3_MIN_VERSION:-1.6.0.post1}"
 
-# The API server: latest theroyallab/tabbyAPI main, deliberately not pinned.
-TABBY_REPO="${TABBY_REPO:-https://github.com/theroyallab/tabbyAPI.git}"
+# The API server: latest vcruz305/tabbyAPI main, including the validated Qwen tool fixes.
+# TabbyAPI follows the fork branch; setup records the exact deployed commit.
+TABBY_REPO="${TABBY_REPO:-https://github.com/vcruz305/tabbyAPI.git}"
 TABBY_REF="${TABBY_REF:-main}"
 
 # Where things live.
@@ -43,6 +44,7 @@ fi
 
 RECIPE_EXL3_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MARKER="$VENV/.qwen38-recipe-runtime"
+BUILD_STATE="$VENV/.qwen38-recipe-runtime.json"
 
 die() { echo "error: $*" >&2; exit 1; }
 say() { echo "==> $*" >&2; }
@@ -52,12 +54,17 @@ say() { echo "==> $*" >&2; }
 verify_runtime() {
   local py="$VENV/bin/python"
   [[ -x "$py" ]] || die "no venv at $VENV. Run: bash exllamav3-tabby/setup.sh"
-  "$py" - "$EXL3_MIN_VERSION" <<'PY' || die "the exllamav3 in $VENV is not the vcruz305 fork runtime. Run: bash exllamav3-tabby/setup.sh"
+  "$py" - "$EXL3_MIN_VERSION" "$EXL3_SRC" <<'PY' || die "the exllamav3 in $VENV is not the vcruz305 fork runtime. Run: bash exllamav3-tabby/setup.sh"
 import sys
+from pathlib import Path
 from packaging.version import Version
 import triton  # gated-delta-net kernels; fail here, not mid-load
 import exllamav3
 from exllamav3.version import __version__ as v
+expected_path = (Path(sys.argv[2]) / "exllamav3").resolve()
+if Path(exllamav3.__file__).resolve().parent != expected_path:
+    print(f"exllamav3 imported from {exllamav3.__file__}; expected {expected_path}", file=sys.stderr)
+    sys.exit(1)
 from exllamav3 import ext
 e = ext.exllamav3_ext
 need = ["gr_mix_int8", "exl3_moe_mixedk"]
@@ -68,14 +75,25 @@ if Version(v.split("+")[0]) < Version(sys.argv[1]):
     print(f"exllamav3 {v} < {sys.argv[1]} (latest TabbyAPI refuses it)", file=sys.stderr); sys.exit(1)
 import inspect
 from exllamav3 import Generator
-if inspect.signature(Generator.__init__).parameters["draft_confidence"].default is not None:
+parameter = inspect.signature(Generator.__init__).parameters.get("draft_confidence")
+if parameter is None or parameter.default is not None:
     print("exllamav3 fork predates EXL3_DRAFT_CONFIDENCE (vcruz305/exllamav3#11)", file=sys.stderr); sys.exit(1)
 print(f"exllamav3 {v} (fork) at {exllamav3.__path__[0]}", file=sys.stderr)
 PY
   if [[ -f "$MARKER" ]]; then
     local built; built="$(cat "$MARKER")"
-    [[ "$built" == "$EXL3_REF"* || "$EXL3_REF" == "$built"* ]] \
-      || echo "warning: runtime was built at $built, recipe pins $EXL3_REF. Re-run setup.sh to update." >&2
+    local actual; actual="$(git -C "$EXL3_SRC" rev-parse HEAD)"
+    [[ "$built" == "$actual" ]] || die "runtime marker is $built but source checkout is $actual. Re-run setup.sh."
+    if [[ "$EXL3_REF" =~ ^[0-9a-fA-F]{7,40}$ ]]; then
+      [[ "$built" == "$EXL3_REF"* ]] || die "runtime is $built, recipe pins $EXL3_REF. Re-run setup.sh."
+    fi
+  fi
+  if [[ -f "$BUILD_STATE" ]]; then
+    "$py" "$RECIPE_EXL3_DIR/tools/runtime_state.py" fingerprint \
+      --engine "$EXL3_SRC" --cuda-home "$CUDA_HOME" --arch "$TORCH_CUDA_ARCH_LIST" \
+      --compare "$BUILD_STATE" || die "runtime build fingerprint changed; re-run setup.sh before serving"
+  else
+    echo "warning: no ABI fingerprint for this older install; re-run setup.sh to rebuild and record it" >&2
   fi
 }
 
@@ -100,27 +118,18 @@ pin_cmd() {
   if [[ -n "$BIGCORES" ]] && command -v taskset >/dev/null; then echo "taskset -c $BIGCORES"; fi
 }
 
-# Rough fit check against MemAvailable (unified memory on GB10). Warns, never blocks: the numbers
-# are an estimate from the pack's file sizes, not a measurement.
-#   weights: every *.safetensors except the n-gram table, plus the table when it goes to RAM
-#   KV:      ~13 KB/token at 8-bit (12 full-attention layers + MTP layer, 2 KV heads x 256)
-#   slack:   8 GiB for activations, recurrent slots, CUDA context, and the OS
+# Conservative, header-based fit advisory. It distinguishes n-gram tensors even when
+# they share a shard with ordinary weights. Actual peak use still needs validation.
 check_memory() {
   local cache="$1" ngram_ram="$2"
-  python3 - "$MODEL_DIR" "$cache" "$ngram_ram" <<'PY' || true
-import glob, os, sys
-d, cache, ram = sys.argv[1], int(sys.argv[2]), sys.argv[3] == "true"
-G = 1024**3
-files = [os.path.realpath(p) for p in glob.glob(os.path.join(d, "*.safetensors"))]
-ngram = sum(os.path.getsize(p) for p in files if "ngram" in os.path.basename(p))
-rest = sum(os.path.getsize(p) for p in files if "ngram" not in os.path.basename(p))
-need = rest + (ngram if ram else 0) + cache * 13 * 1024 + 8 * G
-avail = next(int(l.split()[1]) * 1024 for l in open("/proc/meminfo") if l.startswith("MemAvailable"))
-msg = (f"memory estimate: {need/G:.0f} GiB needed (weights {rest/G:.0f}"
-       f"{f' + n-gram {ngram/G:.0f}' if ram else ''} + KV {cache*13*1024/G:.0f} + 8 slack), "
-       f"{avail/G:.0f} GiB available")
-print(("warning: " if need > avail else "==> ") + msg, file=sys.stderr)
-if need > avail:
-    print("         lower CACHE_SIZE, use NGRAM_RAM=false, or PROFILE=single", file=sys.stderr)
-PY
+  "$PYTHON_BIN" "$RECIPE_EXL3_DIR/tools/model_memory.py" --model "$MODEL_DIR" \
+    --cache-size "$cache" --ngram-ram "$ngram_ram" --draft-mode "${DRAFT_MODE:-mtp}" \
+    --slack-gib "${MEMORY_SLACK_GIB:-10}" || true
+}
+
+snapshot_runtime() {
+  local output="$1"; shift
+  "$VENV/bin/python" "$RECIPE_EXL3_DIR/tools/runtime_state.py" snapshot \
+    --engine "$EXL3_SRC" --server "$TABBY_DIR" --build-state "$BUILD_STATE" \
+    --output "$output" "$@"
 }

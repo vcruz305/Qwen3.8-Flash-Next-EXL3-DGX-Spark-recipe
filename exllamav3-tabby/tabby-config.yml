@@ -1,6 +1,6 @@
 # TabbyAPI config for Qwen3.8-Flash-Next EXL3 on one DGX Spark.
 # serve.sh renders this into <recipe home>/state/config.yml, filling the dollar-brace fields from
-# serve.sh variables and the environment. Every key below exists in theroyallab/tabbyAPI main; see its config_sample.yml
+# serve.sh variables and the environment. Every key below exists in vcruz305/tabbyAPI main; see its config_sample.yml
 # for the full list.
 
 network:
@@ -31,7 +31,7 @@ model:
   max_seq_len: ${MAX_SEQ_LEN}
   cache_size: ${CACHE_SIZE}
   cache_mode: "8,8"
-  chunk_size: 2048
+  chunk_size: ${CHUNK_SIZE}
 
   # Concurrent generation jobs. Each one also reserves a recurrent-state slot for the 36
   # linear-attention layers. TabbyAPI's own default for recurrent models is 4.
@@ -39,26 +39,26 @@ model:
 
   # n-gram (PLE) table: true loads it into RAM (how the README's single-stream numbers were
   # measured); false streams rows from disk per forward (~30 GB less resident, which is the room
-  # the concurrent profile spends on KV and batch; also needed for the 4.05 bpw pack).
+  # the concurrent profile spends on KV and batch; often useful for larger packs; validate each pack).
   ngram_ram: ${NGRAM_RAM}
 
   vision: ${VISION}
   warmup: true
 
   # Qwen3.x XML tool calls (<function=...><parameter=...>) and <think> reasoning.
-  tool_format: qwen3_5
-  reasoning: true
+  tool_format: ${TOOL_FORMAT}
+  reasoning: ${REASONING}
 
 draft_model:
   # The model's own MTP head. Up to 5 drafts, cut early by confidence (the 0.6 target is read by
   # the fork from EXL3_DRAFT_CONFIDENCE, which serve.sh exports).
-  draft_mode: mtp
+  draft_mode: ${DRAFT_MODE}
   draft_cache_mode: "8,8"
   draft_num_tokens: ${DRAFT_NUM_TOKENS}
-  dynamic_draft: true
+  dynamic_draft: ${DYNAMIC_DRAFT}
 
 memory:
-  sysmem_recurrent_cache: 4096
+  sysmem_recurrent_cache: ${SYSMEM_RECURRENT_CACHE}
 
 # Sampler fallbacks for requests that leave a value out. force: false, so any value a client
 # sends still wins. These are the model's own recommended settings (generation_config.json:
