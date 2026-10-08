@@ -4,7 +4,7 @@
 # The runtime: vcruz305/exllamav3 (upstream + aarch64 guards + GB10 decode kernels + mixed-K MoE
 # + EXL3_DRAFT_CONFIDENCE). Stock turboderp exllamav3 runs this model but misses the GB10 work.
 EXL3_REPO="${EXL3_REPO:-https://github.com/vcruz305/exllamav3.git}"
-EXL3_REF="${EXL3_REF:-6fb0e2f878a7570c2e269da67f0bf72aa7752a73}"
+EXL3_REF="${EXL3_REF:-3b9631292aedd202dfb8777c5c668cb023123c04}"
 EXL3_MIN_VERSION="${EXL3_MIN_VERSION:-1.6.0.post1}"
 
 # The API server: latest vcruz305/tabbyAPI main, including the validated Qwen tool fixes.
