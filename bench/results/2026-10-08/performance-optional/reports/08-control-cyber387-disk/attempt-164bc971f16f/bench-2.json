@@ -1,0 +1,567 @@
+{
+  "schema_version": 2,
+  "started_at_utc": "2026-10-08T12:50:13.879592+00:00",
+  "label": "08-control-cyber387-disk-bench-2",
+  "expected_response_model": null,
+  "run_id": "overnight-prefill",
+  "base_url": "http://127.0.0.1:8899/v1",
+  "client": {
+    "python": "3.12.3",
+    "platform": "Linux-7.0.0-1019-nvidia-aarch64-with-glibc2.39"
+  },
+  "provenance": {
+    "build": {
+      "build_environment": {
+        "CC": null,
+        "CFLAGS": null,
+        "CUDAHOSTCXX": null,
+        "CXX": null,
+        "CXXFLAGS": null,
+        "LDFLAGS": null,
+        "NVCC_APPEND_FLAGS": null,
+        "NVCC_PREPEND_FLAGS": null
+      },
+      "cuda_arch_list": "12.1",
+      "cuda_home": "/usr/local/cuda-13.0",
+      "engine_commit": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+      "engine_path": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+      "fingerprint_sha256": "d2a40a03d577ba1dc09e858a313164e44d6fd75a048a016b0c8ab9ab91118439",
+      "host_compiler": "c++ (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+      "host_compiler_path": "/usr/bin/c++",
+      "machine": "aarch64",
+      "nvcc": "nvcc: NVIDIA (R) Cuda compiler driver\nCopyright (c) 2005-2025 NVIDIA Corporation\nBuilt on Wed_Aug_20_01:57:39_PM_PDT_2025\nCuda compilation tools, release 13.0, V13.0.88\nBuild cuda_13.0.r13.0/compiler.36424714_0",
+      "python": "3.12.3 (main, Aug 31 2026, 10:18:26) [GCC 13.3.0]",
+      "python_cache_tag": "cpython-312",
+      "python_executable": "/usr/bin/python3.12",
+      "schema_version": 1,
+      "torch": "2.13.0+cu130",
+      "torch_cuda": "13.0",
+      "torch_cxx11_abi": true
+    },
+    "captured_at_utc": "2026-10-08T12:47:14.498832+00:00",
+    "compatibility_repairs": [
+      {
+        "after": {
+          "record": "nvidia/cusparselt/LICENSE.txt,sha256=6NFYiFpoG5Xsem_AbdjUpSmJ83TLE4DIpMj7J_09XV4,17948\r\nnvidia/cusparselt/include/cusparseLt.h,sha256=DfhLWAaIdx14vmK87rxAiGehYcZB_gvKilB1ugQ7Y7M,18157\r\nnvidia/cusparselt/lib/libcusparseLt.so.0,sha256=-7A7v40iOGcPJCVsVFIoHCpmAWKJm4OLtNDMBtrQJ98,274143825\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/METADATA,sha256=NTZpuvuAy_IvEyQSGsBQSdNqaw-0Sx_tP6sAtRMjEXE,12677\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/RECORD,,\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/WHEEL,sha256=ABAV42k93WKqnYKLN0BIVQbWApIm1M5UwJVvVB4zSLM,109\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/top_level.txt,sha256=ofIC-dbK0s22jN55sgfVpbhHWT63ZdJLWeSb6K_1-BI,18\r\n",
+          "record_sha256": "sha256=rifiEf2Xhut6uEh0wmFjPmPSxDg8AoKYJwkDJV6gB4M",
+          "wheel": "Wheel-Version: 1.0\nGenerator: setuptools (80.9.0)\nRoot-Is-Purelib: true\nTag: py3-none-manylinux2014_aarch64\n\n",
+          "wheel_sha256": "sha256=ABAV42k93WKqnYKLN0BIVQbWApIm1M5UwJVvVB4zSLM"
+        },
+        "before": {
+          "record": "nvidia/cusparselt/LICENSE.txt,sha256=6NFYiFpoG5Xsem_AbdjUpSmJ83TLE4DIpMj7J_09XV4,17948\r\nnvidia/cusparselt/include/cusparseLt.h,sha256=DfhLWAaIdx14vmK87rxAiGehYcZB_gvKilB1ugQ7Y7M,18157\r\nnvidia/cusparselt/lib/libcusparseLt.so.0,sha256=-7A7v40iOGcPJCVsVFIoHCpmAWKJm4OLtNDMBtrQJ98,274143825\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/INSTALLER,sha256=zuuue4knoyJ-UwPPXg8fezS7VCrXJQrAP7zeNuwvFQg,4\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/METADATA,sha256=NTZpuvuAy_IvEyQSGsBQSdNqaw-0Sx_tP6sAtRMjEXE,12677\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/RECORD,,\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/WHEEL,sha256=9EEww1DEpSYdq-rReTwY88G51UoHWvABWuRF6Sy_8Bs,106\r\nnvidia_cusparselt_cu13-0.8.1.dist-info/top_level.txt,sha256=ofIC-dbK0s22jN55sgfVpbhHWT63ZdJLWeSb6K_1-BI,18\r\n",
+          "record_sha256": "sha256=9aTJW8klA2i_lTk8MBXzd_0hmYGRGcm3FFYOG4crCus",
+          "wheel": "Wheel-Version: 1.0\nGenerator: setuptools (80.9.0)\nRoot-Is-Purelib: true\nTag: py3-none-manylinux2014_sbsa\n\n",
+          "wheel_sha256": "sha256=9EEww1DEpSYdq-rReTwY88G51UoHWvABWuRF6Sy_8Bs"
+        },
+        "completed_at_utc": "2026-10-08T07:42:50.931661+00:00",
+        "host": {
+          "machine": "aarch64",
+          "system": "Linux"
+        },
+        "known_official_artifact": {
+          "filename": "nvidia_cusparselt_cu13-0.8.1-py3-none-manylinux2014_aarch64.whl",
+          "sha256": "4dca476c50bf4780d46cd0bfbd82e2bc10a08e4fef7950917ce8d7578d22a23f",
+          "source": "https://pypi.org/project/nvidia-cusparselt-cu13/0.8.1/"
+        },
+        "library": {
+          "bytes": 274143825,
+          "elf_class": 64,
+          "elf_machine": 183,
+          "path": "/home/cruzspark/qwen38-exl3-20261008/venv/lib/python3.12/site-packages/nvidia/cusparselt/lib/libcusparseLt.so.0",
+          "verified_record_sha256": "sha256=-7A7v40iOGcPJCVsVFIoHCpmAWKJm4OLtNDMBtrQJ98"
+        },
+        "new_tag": "py3-none-manylinux2014_aarch64",
+        "old_tag": "py3-none-manylinux2014_sbsa",
+        "package": "nvidia-cusparselt-cu13",
+        "prepared_at_utc": "2026-10-08T07:42:50.919539+00:00",
+        "record_path": "/home/cruzspark/qwen38-exl3-20261008/venv/lib/python3.12/site-packages/nvidia_cusparselt_cu13-0.8.1.dist-info/RECORD",
+        "schema_version": 1,
+        "status": "repaired",
+        "version": "0.8.1",
+        "wheel_path": "/home/cruzspark/qwen38-exl3-20261008/venv/lib/python3.12/site-packages/nvidia_cusparselt_cu13-0.8.1.dist-info/WHEEL"
+      }
+    ],
+    "config": {
+      "path": "/home/cruzspark/qwen-overnight-20261008/results/performance-optional-16ca-ksplit1/08-control-cyber387-disk/attempt-164bc971f16f/state/config.yml",
+      "sha256": "a4a1c06fe86f61691cda2c21849f1784133c02d23db4122bab0692014233b728",
+      "values": {
+        "draft_model": {
+          "draft_cache_mode": "8,8",
+          "draft_mode": "mtp",
+          "draft_num_tokens": 5,
+          "dynamic_draft": true
+        },
+        "logging": {
+          "log_generation_params": false,
+          "log_prompt": false,
+          "log_requests": false
+        },
+        "memory": {
+          "sysmem_recurrent_cache": 4096
+        },
+        "model": {
+          "backend": "exllamav3",
+          "cache_mode": "8,8",
+          "cache_size": 262144,
+          "chunk_size": 2048,
+          "inline_model_loading": false,
+          "max_batch_size": 1,
+          "max_seq_len": 262144,
+          "model_dir": "/home/cruzspark/qwen-overnight-20261008/results/performance-optional-16ca-ksplit1/08-control-cyber387-disk/attempt-164bc971f16f/state/models",
+          "model_name": "Qwen3.8-Flash-Next-EXL3",
+          "ngram_ram": false,
+          "reasoning": true,
+          "tool_format": "qwen3_5",
+          "vision": false,
+          "warmup": true
+        },
+        "network": {
+          "api_servers": [
+            "OAI"
+          ],
+          "disable_auth": true,
+          "host": "127.0.0.1",
+          "port": 8899
+        },
+        "sampling": {
+          "min_p": {
+            "force": false,
+            "override": 0.0
+          },
+          "temperature": {
+            "force": false,
+            "override": 1.0
+          },
+          "top_k": {
+            "force": false,
+            "override": 20
+          },
+          "top_p": {
+            "force": false,
+            "override": 0.95
+          }
+        }
+      }
+    },
+    "engine": {
+      "commit": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+      "describe": "16ca20d27 2026-10-08 Add opt-in historical CUDA GEMM tiles and cache domain",
+      "path": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+      "remotes": {
+        "origin": "https://github.com/vcruz305/exllamav3.git"
+      },
+      "tracked_changes": ""
+    },
+    "environment": {
+      "BIGCORES": "5-9,15-19",
+      "CACHE_SIZE": "262144",
+      "CHUNK_SIZE": "2048",
+      "CUDA_HOME": "/usr/local/cuda",
+      "DRAFT_MODE": "mtp",
+      "DRAFT_NUM_TOKENS": "5",
+      "EXL3_ATTN_DECODE_LEGACY_SPLITS": "1",
+      "EXL3_COOPMK_PLAN": "3",
+      "EXL3_DRAFT_CONFIDENCE": "0.6",
+      "EXL3_DRAFT_ROW_BUDGET": "0",
+      "EXL3_GDN_CONV_BF16_PRODUCT": "1",
+      "EXL3_GDN_CONV_TOKEN_MAJOR": "0",
+      "EXL3_GDN_PROJ_FP32": "1",
+      "EXL3_GEMM_LEGACY_TILES": "1",
+      "EXL3_GR_INT8": "1",
+      "EXL3_INT8_GEMV": "0",
+      "EXL3_MIN_VERSION": "1.6.0.post1",
+      "EXL3_MOE_COOP_KSPLIT": "1",
+      "EXL3_MOE_COOP_MIXEDK": "0",
+      "EXL3_MOE_COOP_WIDE": "1",
+      "EXL3_MOE_MIXEDK_NOSYNC": "1",
+      "EXL3_MTP_HEAD_N": "65536",
+      "EXL3_REF": "16ca20d27c0e4cce15a9bbc131e6d047065395b5",
+      "EXL3_REPO": "https://github.com/vcruz305/exllamav3.git",
+      "EXL3_SRC": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+      "MAX_BATCH_SIZE": "1",
+      "MAX_SEQ_LEN": "262144",
+      "NGRAM_RAM": "false",
+      "PROFILE": "single",
+      "TORCH_CUDA_ARCH_LIST": "12.1"
+    },
+    "host": {
+      "kernel": "7.0.0-1019-nvidia",
+      "machine": "aarch64",
+      "python": "3.12.3",
+      "python_executable_invoked": "/home/cruzspark/qwen38-exl3-20261008/venv/bin/python",
+      "python_executable_resolved": "/usr/bin/python3.12",
+      "python_prefix": "/home/cruzspark/qwen38-exl3-20261008/venv",
+      "python_prefix_resolved": "/home/cruzspark/qwen38-exl3-20261008/venv"
+    },
+    "model": {
+      "configuration_files": {
+        "config.json": {
+          "bytes": 4244,
+          "sha256": "6d6a220f677036b5c0114b8a97821c6b4b84a957dde8276766f147763bb73d4a"
+        },
+        "generation_config.json": {
+          "bytes": 202,
+          "sha256": "e70c136c1b78ddc1fb0905bac8e733a4dc448d4f852a5dd75143fffc70be550e"
+        },
+        "tokenizer_config.json": {
+          "bytes": 16414,
+          "sha256": "3bc90552399707778ca94ef93fb1da7aa3c4dfa5ba94ca15f52b18c2a38ec904"
+        }
+      },
+      "path": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw",
+      "resolved_path": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw",
+      "weight_bytes": 104781392789,
+      "weight_hashes_computed": false,
+      "weights": [
+        {
+          "bytes": 7765147117,
+          "mtime_ns": 1790628285052501690,
+          "name": "model-00001-of-00009.safetensors",
+          "resolved_path": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/model-00001-of-00009.safetensors"
+        },
+        {
+          "bytes": 7915248342,
+          "mtime_ns": 1790628297636444017,
+          "name": "model-00002-of-00009.safetensors",
+          "resolved_path": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/model-00002-of-00009.safetensors"
+        },
+        {
+          "bytes": 8047136787,
+          "mtime_ns": 1790628328570301978,
+          "name": "model-00003-of-00009.safetensors",
+          "resolved_path": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/model-00003-of-00009.safetensors"
+        },
+        {
+          "bytes": 8008259394,
+          "mtime_ns": 1790627852720430255,
+          "name": "model-00004-of-00009.safetensors",
+          "resolved_path": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/model-00004-of-00009.safetensors"
+        },
+        {
+          "bytes": 7881247798,
+          "mtime_ns": 1790628312076377759,
+          "name": "model-00005-of-00009.safetensors",
+          "resolved_path": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/model-00005-of-00009.safetensors"
+        },
+        {
+          "bytes": 8429226309,
+          "mtime_ns": 1790628087665396727,
+          "name": "model-00006-of-00009.safetensors",
+          "resolved_path": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/model-00006-of-00009.safetensors"
+        },
+        {
+          "bytes": 8332592019,
+          "mtime_ns": 1790628297823443159,
+          "name": "model-00007-of-00009.safetensors",
+          "resolved_path": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/model-00007-of-00009.safetensors"
+        },
+        {
+          "bytes": 7448528944,
+          "mtime_ns": 1790628316198358831,
+          "name": "model-00008-of-00009.safetensors",
+          "resolved_path": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/model-00008-of-00009.safetensors"
+        },
+        {
+          "bytes": 1900663863,
+          "mtime_ns": 1790628398015981828,
+          "name": "model-00009-of-00009.safetensors",
+          "resolved_path": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/model-00009-of-00009.safetensors"
+        },
+        {
+          "bytes": 13128048,
+          "mtime_ns": 1791178719895269765,
+          "name": "mtp_hyper_connection_mixer_patch.safetensors",
+          "resolved_path": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/mtp_hyper_connection_mixer_patch.safetensors"
+        },
+        {
+          "bytes": 39040214168,
+          "mtime_ns": 1790628819240012379,
+          "name": "ngram_embedding.safetensors",
+          "resolved_path": "/home/cruzspark/models/CYBER-FROST-3.8-EXL3-SAGE-3.87bpw/ngram_embedding.safetensors"
+        }
+      ]
+    },
+    "packages": {
+      "exllamav3": "1.6.0.post1",
+      "fastapi-slim": "0.129.1",
+      "llguidance": "1.9.1",
+      "numpy": "2.5.3",
+      "nvidia-cusparselt-cu13": "0.8.1",
+      "pydantic": "2.13.5",
+      "tabbyAPI": "0.0.1",
+      "tokenizers": "0.23.2",
+      "torch": "2.13.0+cu130",
+      "triton": "3.7.1",
+      "uvloop": "0.22.1"
+    },
+    "recipe": {
+      "commit": "218bd438225243e795383f10ef7a886b06d5d839",
+      "describe": "218bd43 2026-10-08 Add explicit Q8 regression and long-context probes with live API evidence",
+      "path": "/home/cruzspark/qwen-overnight-20261008/recipe-updated",
+      "remotes": {
+        "origin": "https://github.com/vcruz305/Qwen3.8-Flash-Next-EXL3-DGX-Spark-recipe.git"
+      },
+      "tracked_changes": ""
+    },
+    "schema_version": 1,
+    "server": {
+      "commit": "f4fb6b73a4adbf5f4faa4a3d9b90b3455c8c7fd6",
+      "describe": "f4fb6b73 2026-10-08 Guide nullable Qwen XML values in copied tool descriptions",
+      "path": "/home/cruzspark/qwen38-exl3-20261008/tabbyAPI",
+      "remotes": {
+        "origin": "https://github.com/vcruz305/tabbyAPI.git"
+      },
+      "tracked_changes": ""
+    }
+  },
+  "settings": {
+    "max_tokens": 256,
+    "repeat": 2,
+    "warmup": 1,
+    "context_tokens_approx": 16384,
+    "cache_mode": "cold",
+    "thinking": false,
+    "temperature": 0,
+    "top_k": 1,
+    "seed": 0
+  },
+  "metric_notes": [
+    "server_decode_tok_s and server_prefill_tok_s are server-reported timings.",
+    "client_end_to_end_tok_s includes prefill, queueing and HTTP overhead.",
+    "TTFT is time to first visible content/reasoning/tool delta, not a role or ping event.",
+    "SSE events may contain multiple speculative tokens; client_decode_tok_s_estimate is approximate.",
+    "A unique cold prefix avoids reusable user prompt blocks; inspect actual cached_prompt_tokens.",
+    "context_tokens_approx is only a prompt construction target; usage.prompt_tokens is authoritative.",
+    "Early EOS is allowed and reported; no request is counted as max_tokens unless usage says so."
+  ],
+  "cases": {
+    "code": {
+      "prompt_sha256": "04941277fec997f5df5ac7c02613e737121b2aef753be6f6aba264c5bb161fed",
+      "warmup": [
+        {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 12266,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 12266,
+          "completion_tokens": 256,
+          "ttft_s": 14.39964981799858,
+          "wall_s": 22.185381175997463,
+          "server_decode_tok_s": 31.94,
+          "server_prefill_tok_s": 868.08,
+          "client_end_to_end_tok_s": 11.539130113165168,
+          "client_decode_tok_s_estimate": 32.75253077000314,
+          "draft_acceptance": 0.6530612244897959,
+          "usage": {
+            "prompt_tokens": 12266,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 14.13,
+            "prompt_tokens_per_sec": 868.08,
+            "completion_tokens": 256,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 160,
+              "rejected_prediction_tokens": 85
+            },
+            "completion_time": 8.02,
+            "completion_tokens_per_sec": 31.94,
+            "total_tokens": 12522,
+            "total_time": 22.15
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 12266,
+            "prompt_ms": 14130.0,
+            "prompt_per_token_ms": 1.151964780694603,
+            "prompt_per_second": 868.0820948336873,
+            "predicted_n": 256,
+            "predicted_ms": 8020.0,
+            "predicted_per_token_ms": 31.328125,
+            "predicted_per_second": 31.920199501246884,
+            "draft_n": 245,
+            "draft_n_accepted": 160
+          },
+          "sse_events": 98,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "e5051f69e396b285543b55303b54e280a1e07c76d48981e4161cedb46c4a7631",
+          "response_sha256": "bbcec8591fbbb4f0a6e420c9fa32d510d8db61f74077c2c02615f8c79889b3ba",
+          "phase": "warmup",
+          "repeat_index": 0
+        }
+      ],
+      "runs": [
+        {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 12266,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 12266,
+          "completion_tokens": 256,
+          "ttft_s": 14.501067860001058,
+          "wall_s": 21.827962441002455,
+          "server_decode_tok_s": 34.09,
+          "server_prefill_tok_s": 858.96,
+          "client_end_to_end_tok_s": 11.72807588852728,
+          "client_decode_tok_s_estimate": 34.803616939757866,
+          "draft_acceptance": 0.6814516129032258,
+          "usage": {
+            "prompt_tokens": 12266,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 14.28,
+            "prompt_tokens_per_sec": 858.96,
+            "completion_tokens": 256,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 169,
+              "rejected_prediction_tokens": 79
+            },
+            "completion_time": 7.51,
+            "completion_tokens_per_sec": 34.09,
+            "total_tokens": 12522,
+            "total_time": 21.79
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 12266,
+            "prompt_ms": 14280.0,
+            "prompt_per_token_ms": 1.1641937061796837,
+            "prompt_per_second": 858.9635854341736,
+            "predicted_n": 256,
+            "predicted_ms": 7510.0,
+            "predicted_per_token_ms": 29.3359375,
+            "predicted_per_second": 34.0878828229028,
+            "draft_n": 248,
+            "draft_n_accepted": 169
+          },
+          "sse_events": 89,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "62adb1b1774283d8760a3eb2485adaf95003b50428b81fae9319d3c5992da22f",
+          "response_sha256": "53b34d10d8bbf2b3beebbccd0b29badf45da28fad986b24e1a601eeeb947e88d",
+          "phase": "measured",
+          "repeat_index": 0
+        },
+        {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+          "stream": true,
+          "finish_reason": "length",
+          "prompt_tokens": 12266,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 12266,
+          "completion_tokens": 256,
+          "ttft_s": 13.925995620000322,
+          "wall_s": 20.76909422799872,
+          "server_decode_tok_s": 36.42,
+          "server_prefill_tok_s": 895.33,
+          "client_end_to_end_tok_s": 12.326006959652943,
+          "client_decode_tok_s_estimate": 37.2643113848099,
+          "draft_acceptance": 0.6795366795366795,
+          "usage": {
+            "prompt_tokens": 12266,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 13.7,
+            "prompt_tokens_per_sec": 895.33,
+            "completion_tokens": 256,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 176,
+              "rejected_prediction_tokens": 83
+            },
+            "completion_time": 7.03,
+            "completion_tokens_per_sec": 36.42,
+            "total_tokens": 12522,
+            "total_time": 20.73
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 12266,
+            "prompt_ms": 13700.0,
+            "prompt_per_token_ms": 1.1169085276373716,
+            "prompt_per_second": 895.3284671532846,
+            "predicted_n": 256,
+            "predicted_ms": 7030.0,
+            "predicted_per_token_ms": 27.4609375,
+            "predicted_per_second": 36.41536273115221,
+            "draft_n": 259,
+            "draft_n_accepted": 176
+          },
+          "sse_events": 82,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "ac0a55dcdb776b8b572f071949411eccae3880efa4db29363c7be731fa27833e",
+          "response_sha256": "8a297f4f76536270b0fdd36a0c2681ca2807f4a2319fb350fb1f7c0fae046495",
+          "phase": "measured",
+          "repeat_index": 1
+        }
+      ],
+      "summary": {
+        "requests": 2,
+        "server_decode_tok_s": {
+          "p50": 35.255,
+          "p95": 36.3035,
+          "samples": 2
+        },
+        "server_prefill_tok_s": {
+          "p50": 877.145,
+          "p95": 893.5115000000001,
+          "samples": 2
+        },
+        "ttft_s": {
+          "p50": 14.21353174000069,
+          "p95": 14.472314248001021,
+          "samples": 2
+        },
+        "wall_s": {
+          "p50": 21.29852833450059,
+          "p95": 21.77501903035227,
+          "samples": 2
+        },
+        "client_end_to_end_tok_s": {
+          "p50": 12.027041424090111,
+          "p95": 12.29611040609666,
+          "samples": 2
+        },
+        "client_decode_tok_s_estimate": {
+          "p50": 36.03396416228388,
+          "p95": 37.141276662557296,
+          "samples": 2
+        },
+        "draft_acceptance": {
+          "p50": 0.6804941462199526,
+          "p95": 0.6813558662348984,
+          "samples": 2
+        },
+        "completion_tokens": [
+          256,
+          256
+        ],
+        "prompt_tokens": [
+          12266,
+          12266
+        ],
+        "cached_prompt_tokens": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "errors": [],
+  "model": "Qwen3.8-Flash-Next-EXL3",
+  "completed_at_utc": "2026-10-08T12:51:18.682439+00:00"
+}

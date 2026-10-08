@@ -1,0 +1,1651 @@
+﻿2026-10-08T12:25:30.3679545Z Current runner version: '2.337.0'
+2026-10-08T12:25:30.3704296Z ##[group]Runner Image Provisioner
+2026-10-08T12:25:30.3705250Z Hosted Compute Agent
+2026-10-08T12:25:30.3706123Z Version: 20260901.588
+2026-10-08T12:25:30.3706805Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+2026-10-08T12:25:30.3707658Z Build Date: 2026-09-01T19:56:44Z
+2026-10-08T12:25:30.3708418Z Worker ID: {1ee72f57-6ff8-4f94-b82b-c22298f76da0}
+2026-10-08T12:25:30.3709196Z Azure Region: westus3
+2026-10-08T12:25:30.3709805Z ##[endgroup]
+2026-10-08T12:25:30.3711266Z ##[group]Operating System
+2026-10-08T12:25:30.3712049Z Ubuntu
+2026-10-08T12:25:30.3712590Z 22.04.5
+2026-10-08T12:25:30.3713153Z LTS
+2026-10-08T12:25:30.3713715Z ##[endgroup]
+2026-10-08T12:25:30.3714282Z ##[group]Runner Image
+2026-10-08T12:25:30.3715021Z Image: ubuntu-22.04
+2026-10-08T12:25:30.3715602Z Version: 20260927.309.1
+2026-10-08T12:25:30.3717374Z Included Software: https://github.com/actions/runner-images/blob/ubuntu22/20260927.309/images/ubuntu/Ubuntu2204-Readme.md
+2026-10-08T12:25:30.3718958Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu22%2F20260927.309
+2026-10-08T12:25:30.3720073Z ##[endgroup]
+2026-10-08T12:25:30.3721168Z ##[group]GITHUB_TOKEN Permissions
+2026-10-08T12:25:30.3723146Z Contents: read
+2026-10-08T12:25:30.3723764Z Metadata: read
+2026-10-08T12:25:30.3724434Z ##[endgroup]
+2026-10-08T12:25:30.3726834Z Secret source: Actions
+2026-10-08T12:25:30.3727919Z Cache mode: write
+2026-10-08T12:25:30.3728651Z Prepare workflow directory
+2026-10-08T12:25:30.4122503Z Prepare all required actions
+2026-10-08T12:25:30.4169526Z Getting action download info
+2026-10-08T12:25:30.7386429Z Download action repository 'jlumbroso/free-disk-space@v1.3.1' (SHA:54081f138730dfa15788a46383842cd2f914a1be)
+2026-10-08T12:25:31.0978134Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-08T12:25:31.1349393Z Download action repository 'Jimver/cuda-toolkit@v0.2.35' (SHA:3d45d157f327c09c04b50ee6ccdea2d9d017ec76)
+2026-10-08T12:25:31.9147270Z Download action repository 'astral-sh/setup-uv@v5' (SHA:d4b2f3b6ecc6e67c4457f6d3e41ec42d3d0fcb86)
+2026-10-08T12:25:32.7470980Z Complete job name: Build linux wheel (py3.12, cu128, sm_120)
+2026-10-08T12:25:32.8463936Z ##[group]Run jlumbroso/free-disk-space@v1.3.1
+2026-10-08T12:25:32.8465381Z with:
+2026-10-08T12:25:32.8466469Z   tool-cache: true
+2026-10-08T12:25:32.8467293Z   android: true
+2026-10-08T12:25:32.8468075Z   dotnet: true
+2026-10-08T12:25:32.8468841Z   haskell: true
+2026-10-08T12:25:32.8469645Z   large-packages: false
+2026-10-08T12:25:32.8470515Z   swap-storage: true
+2026-10-08T12:25:32.8471354Z   docker-images: true
+2026-10-08T12:25:32.8472425Z env:
+2026-10-08T12:25:32.8473189Z   TORCH_CUDA_ARCH_LIST: 12.0
+2026-10-08T12:25:32.8474096Z ##[endgroup]
+2026-10-08T12:25:32.8593575Z ##[start-action display=Run # ======;id=__jlumbroso_free-disk-space.__run]
+2026-10-08T12:25:32.8666816Z ##[group]Run # ======
+2026-10-08T12:25:32.8668412Z [36;1m[0m
+2026-10-08T12:25:32.8669175Z [36;1m# ======[0m
+2026-10-08T12:25:32.8670005Z [36;1m# MACROS[0m
+2026-10-08T12:25:32.8670793Z [36;1m# ======[0m
+2026-10-08T12:25:32.8671565Z [36;1m[0m
+2026-10-08T12:25:32.8672423Z [36;1m# macro to print a line of equals[0m
+2026-10-08T12:25:32.8673547Z [36;1m# (silly but works)[0m
+2026-10-08T12:25:32.8674513Z [36;1mprintSeparationLine() {[0m
+2026-10-08T12:25:32.8675492Z [36;1m  str=${1:=}[0m
+2026-10-08T12:25:32.8676513Z [36;1m  num=${2:-80}[0m
+2026-10-08T12:25:32.8677383Z [36;1m  counter=1[0m
+2026-10-08T12:25:32.8678216Z [36;1m  output=""[0m
+2026-10-08T12:25:32.8679098Z [36;1m  while [ $counter -le $num ][0m
+2026-10-08T12:25:32.8680108Z [36;1m  do[0m
+2026-10-08T12:25:32.8680930Z [36;1m     output="${output}${str}"[0m
+2026-10-08T12:25:32.8681977Z [36;1m     counter=$((counter+1))[0m
+2026-10-08T12:25:32.8682956Z [36;1m  done[0m
+2026-10-08T12:25:32.8683763Z [36;1m  echo "${output}"[0m
+2026-10-08T12:25:32.8684735Z [36;1m}[0m
+2026-10-08T12:25:32.8685476Z [36;1m[0m
+2026-10-08T12:25:32.8686719Z [36;1m# macro to compute available space[0m
+2026-10-08T12:25:32.8688044Z [36;1m# REF: https://unix.stackexchange.com/a/42049/60849[0m
+2026-10-08T12:25:32.8689453Z [36;1m# REF: https://stackoverflow.com/a/450821/408734[0m
+2026-10-08T12:25:32.8691150Z [36;1mgetAvailableSpace() { echo $(df -a $1 | awk 'NR > 1 {avail+=$4} END {print avail}'); }[0m
+2026-10-08T12:25:32.8773268Z [36;1m[0m
+2026-10-08T12:25:32.8774458Z [36;1m# macro to make Kb human readable (assume the input is Kb)[0m
+2026-10-08T12:25:32.8776193Z [36;1m# REF: https://unix.stackexchange.com/a/44087/60849[0m
+2026-10-08T12:25:32.8777957Z [36;1mformatByteCount() { echo $(numfmt --to=iec-i --suffix=B --padding=7 $1'000'); }[0m
+2026-10-08T12:25:32.8779496Z [36;1m[0m
+2026-10-08T12:25:32.8780306Z [36;1m# macro to output saved space[0m
+2026-10-08T12:25:32.8781379Z [36;1mprintSavedSpace() {[0m
+2026-10-08T12:25:32.8782323Z [36;1m  saved=${1}[0m
+2026-10-08T12:25:32.8783173Z [36;1m  title=${2:-}[0m
+2026-10-08T12:25:32.8784022Z [36;1m[0m
+2026-10-08T12:25:32.8784785Z [36;1m  echo ""[0m
+2026-10-08T12:25:32.8785653Z [36;1m  printSeparationLine '*' 80[0m
+2026-10-08T12:25:32.8786869Z [36;1m  if [ ! -z "${title}" ]; then[0m
+2026-10-08T12:25:32.8788092Z [36;1m    echo "=> ${title}: Saved $(formatByteCount $saved)"[0m
+2026-10-08T12:25:32.8789311Z [36;1m  else[0m
+2026-10-08T12:25:32.8790249Z [36;1m    echo "=> Saved $(formatByteCount $saved)"[0m
+2026-10-08T12:25:32.8791382Z [36;1m  fi[0m
+2026-10-08T12:25:32.8792215Z [36;1m  printSeparationLine '*' 80[0m
+2026-10-08T12:25:32.8793240Z [36;1m  echo ""[0m
+2026-10-08T12:25:32.8794030Z [36;1m}[0m
+2026-10-08T12:25:32.8794750Z [36;1m[0m
+2026-10-08T12:25:32.8795620Z [36;1m# macro to print output of dh with caption[0m
+2026-10-08T12:25:32.8796861Z [36;1mprintDH() {[0m
+2026-10-08T12:25:32.8797702Z [36;1m  caption=${1:-}[0m
+2026-10-08T12:25:32.8798542Z [36;1m[0m
+2026-10-08T12:25:32.8799332Z [36;1m  printSeparationLine '=' 80[0m
+2026-10-08T12:25:32.8800359Z [36;1m  echo "${caption}"[0m
+2026-10-08T12:25:32.8801265Z [36;1m  echo ""[0m
+2026-10-08T12:25:32.8802070Z [36;1m  echo "$ dh -h /"[0m
+2026-10-08T12:25:32.8802951Z [36;1m  echo ""[0m
+2026-10-08T12:25:32.8803986Z [36;1m  df -h /[0m
+2026-10-08T12:25:32.8804804Z [36;1m  echo "$ dh -a /"[0m
+2026-10-08T12:25:32.8805685Z [36;1m  echo ""[0m
+2026-10-08T12:25:32.8806621Z [36;1m  df -a /[0m
+2026-10-08T12:25:32.8807423Z [36;1m  echo "$ dh -a"[0m
+2026-10-08T12:25:32.8808274Z [36;1m  echo ""[0m
+2026-10-08T12:25:32.8809059Z [36;1m  df -a[0m
+2026-10-08T12:25:32.8809888Z [36;1m  printSeparationLine '=' 80[0m
+2026-10-08T12:25:32.8810877Z [36;1m}[0m
+2026-10-08T12:25:32.8811597Z [36;1m[0m
+2026-10-08T12:25:32.8812295Z [36;1m[0m
+2026-10-08T12:25:32.8813002Z [36;1m[0m
+2026-10-08T12:25:32.8813710Z [36;1m# ======[0m
+2026-10-08T12:25:32.8814683Z [36;1m# SCRIPT[0m
+2026-10-08T12:25:32.8815488Z [36;1m# ======[0m
+2026-10-08T12:25:32.8816899Z [36;1m[0m
+2026-10-08T12:25:32.8817710Z [36;1m# Display initial disk space stats[0m
+2026-10-08T12:25:32.8818776Z [36;1m[0m
+2026-10-08T12:25:32.8819623Z [36;1mAVAILABLE_INITIAL=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8820944Z [36;1mAVAILABLE_ROOT_INITIAL=$(getAvailableSpace '/')[0m
+2026-10-08T12:25:32.8822105Z [36;1m[0m
+2026-10-08T12:25:32.8822888Z [36;1mprintDH "BEFORE CLEAN-UP:"[0m
+2026-10-08T12:25:32.8823872Z [36;1mecho ""[0m
+2026-10-08T12:25:32.8824619Z [36;1m[0m
+2026-10-08T12:25:32.8825320Z [36;1m[0m
+2026-10-08T12:25:32.8826379Z [36;1m# Option: Remove Android library[0m
+2026-10-08T12:25:32.8827405Z [36;1m[0m
+2026-10-08T12:25:32.8828166Z [36;1mif [[ true == 'true' ]]; then[0m
+2026-10-08T12:25:32.8829280Z [36;1m  BEFORE=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8830277Z [36;1m  [0m
+2026-10-08T12:25:32.8831153Z [36;1m  sudo rm -rf /usr/local/lib/android || true[0m
+2026-10-08T12:25:32.8832246Z [36;1m[0m
+2026-10-08T12:25:32.8833014Z [36;1m  AFTER=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8834044Z [36;1m  SAVED=$((AFTER-BEFORE))[0m
+2026-10-08T12:25:32.8835374Z [36;1m  printSavedSpace $SAVED "Android library"[0m
+2026-10-08T12:25:32.8836628Z [36;1mfi[0m
+2026-10-08T12:25:32.8837344Z [36;1m[0m
+2026-10-08T12:25:32.8838136Z [36;1m# Option: Remove .NET runtime[0m
+2026-10-08T12:25:32.8839123Z [36;1m[0m
+2026-10-08T12:25:32.8839876Z [36;1mif [[ true == 'true' ]]; then[0m
+2026-10-08T12:25:32.8840902Z [36;1m  BEFORE=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8841871Z [36;1m[0m
+2026-10-08T12:25:32.8843179Z [36;1m  # https://github.community/t/bigger-github-hosted-runners-disk-space/17267/11[0m
+2026-10-08T12:25:32.8844849Z [36;1m  sudo rm -rf /usr/share/dotnet || true[0m
+2026-10-08T12:25:32.8846018Z [36;1m  [0m
+2026-10-08T12:25:32.8847146Z [36;1m  AFTER=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8848174Z [36;1m  SAVED=$((AFTER-BEFORE))[0m
+2026-10-08T12:25:32.8849233Z [36;1m  printSavedSpace $SAVED ".NET runtime"[0m
+2026-10-08T12:25:32.8850299Z [36;1mfi[0m
+2026-10-08T12:25:32.8851010Z [36;1m[0m
+2026-10-08T12:25:32.8851823Z [36;1m# Option: Remove Haskell runtime[0m
+2026-10-08T12:25:32.8852824Z [36;1m[0m
+2026-10-08T12:25:32.8853565Z [36;1mif [[ true == 'true' ]]; then[0m
+2026-10-08T12:25:32.8854587Z [36;1m  BEFORE=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8855559Z [36;1m[0m
+2026-10-08T12:25:32.8856593Z [36;1m  sudo rm -rf /opt/ghc || true[0m
+2026-10-08T12:25:32.8857682Z [36;1m  sudo rm -rf /usr/local/.ghcup || true[0m
+2026-10-08T12:25:32.8858720Z [36;1m  [0m
+2026-10-08T12:25:32.8859498Z [36;1m  AFTER=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8860518Z [36;1m  SAVED=$((AFTER-BEFORE))[0m
+2026-10-08T12:25:32.8861601Z [36;1m  printSavedSpace $SAVED "Haskell runtime"[0m
+2026-10-08T12:25:32.8862681Z [36;1mfi[0m
+2026-10-08T12:25:32.8863389Z [36;1m[0m
+2026-10-08T12:25:32.8864159Z [36;1m# Option: Remove large packages[0m
+2026-10-08T12:25:32.8865968Z [36;1m# REF: https://github.com/apache/flink/blob/master/tools/azure-pipelines/free_disk_space.sh[0m
+2026-10-08T12:25:32.8867624Z [36;1m[0m
+2026-10-08T12:25:32.8868386Z [36;1mif [[ false == 'true' ]]; then[0m
+2026-10-08T12:25:32.8869426Z [36;1m  BEFORE=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8870399Z [36;1m  [0m
+2026-10-08T12:25:32.8872664Z [36;1m  sudo apt-get remove -y '^aspnetcore-.*' || echo "::warning::The command [sudo apt-get remove -y '^aspnetcore-.*'] failed to complete successfully. Proceeding..."[0m
+2026-10-08T12:25:32.8876685Z [36;1m  sudo apt-get remove -y '^dotnet-.*' --fix-missing || echo "::warning::The command [sudo apt-get remove -y '^dotnet-.*' --fix-missing] failed to complete successfully. Proceeding..."[0m
+2026-10-08T12:25:32.8880666Z [36;1m  sudo apt-get remove -y '^llvm-.*' --fix-missing || echo "::warning::The command [sudo apt-get remove -y '^llvm-.*' --fix-missing] failed to complete successfully. Proceeding..."[0m
+2026-10-08T12:25:32.8884542Z [36;1m  sudo apt-get remove -y 'php.*' --fix-missing || echo "::warning::The command [sudo apt-get remove -y 'php.*' --fix-missing] failed to complete successfully. Proceeding..."[0m
+2026-10-08T12:25:32.8888654Z [36;1m  sudo apt-get remove -y '^mongodb-.*' --fix-missing || echo "::warning::The command [sudo apt-get remove -y '^mongodb-.*' --fix-missing] failed to complete successfully. Proceeding..."[0m
+2026-10-08T12:25:32.8892691Z [36;1m  sudo apt-get remove -y '^mysql-.*' --fix-missing || echo "::warning::The command [sudo apt-get remove -y '^mysql-.*' --fix-missing] failed to complete successfully. Proceeding..."[0m
+2026-10-08T12:25:32.8898471Z [36;1m  sudo apt-get remove -y azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri --fix-missing || echo "::warning::The command [sudo apt-get remove -y azure-cli google-chrome-stable firefox powershell mono-devel libgl1-mesa-dri --fix-missing] failed to complete successfully. Proceeding..."[0m
+2026-10-08T12:25:32.8904385Z [36;1m  sudo apt-get remove -y google-cloud-sdk --fix-missing || echo "::debug::The command [sudo apt-get remove -y google-cloud-sdk --fix-missing] failed to complete successfully. Proceeding..."[0m
+2026-10-08T12:25:32.8909067Z [36;1m  sudo apt-get remove -y google-cloud-cli --fix-missing || echo "::debug::The command [sudo apt-get remove -y google-cloud-cli --fix-missing] failed to complete successfully. Proceeding..."[0m
+2026-10-08T12:25:32.8912833Z [36;1m  sudo apt-get autoremove -y || echo "::warning::The command [sudo apt-get autoremove -y] failed to complete successfully. Proceeding..."[0m
+2026-10-08T12:25:32.8915825Z [36;1m  sudo apt-get clean || echo "::warning::The command [sudo apt-get clean] failed to complete successfully. Proceeding..."[0m
+2026-10-08T12:25:32.8917833Z [36;1m[0m
+2026-10-08T12:25:32.8918606Z [36;1m  AFTER=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8919621Z [36;1m  SAVED=$((AFTER-BEFORE))[0m
+2026-10-08T12:25:32.8920750Z [36;1m  printSavedSpace $SAVED "Large misc. packages"[0m
+2026-10-08T12:25:32.8921877Z [36;1mfi[0m
+2026-10-08T12:25:32.8922589Z [36;1m[0m
+2026-10-08T12:25:32.8923372Z [36;1m# Option: Remove Docker images[0m
+2026-10-08T12:25:32.8924340Z [36;1m[0m
+2026-10-08T12:25:32.8925090Z [36;1mif [[ true == 'true' ]]; then[0m
+2026-10-08T12:25:32.8926235Z [36;1m  BEFORE=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8927212Z [36;1m[0m
+2026-10-08T12:25:32.8928119Z [36;1m  sudo docker image prune --all --force || true[0m
+2026-10-08T12:25:32.8929241Z [36;1m[0m
+2026-10-08T12:25:32.8930010Z [36;1m  AFTER=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8931021Z [36;1m  SAVED=$((AFTER-BEFORE))[0m
+2026-10-08T12:25:32.8932089Z [36;1m  printSavedSpace $SAVED "Docker images"[0m
+2026-10-08T12:25:32.8933160Z [36;1mfi[0m
+2026-10-08T12:25:32.8933869Z [36;1m[0m
+2026-10-08T12:25:32.8934631Z [36;1m# Option: Remove tool cache[0m
+2026-10-08T12:25:32.8936377Z [36;1m# REF: https://github.com/actions/virtual-environments/issues/2875#issuecomment-1163392159[0m
+2026-10-08T12:25:32.8938005Z [36;1m[0m
+2026-10-08T12:25:32.8938763Z [36;1mif [[ true == 'true' ]]; then[0m
+2026-10-08T12:25:32.8939783Z [36;1m  BEFORE=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8940760Z [36;1m[0m
+2026-10-08T12:25:32.8941619Z [36;1m  sudo rm -rf "$AGENT_TOOLSDIRECTORY" || true[0m
+2026-10-08T12:25:32.8942706Z [36;1m  [0m
+2026-10-08T12:25:32.8943650Z [36;1m  AFTER=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8944679Z [36;1m  SAVED=$((AFTER-BEFORE))[0m
+2026-10-08T12:25:32.8945723Z [36;1m  printSavedSpace $SAVED "Tool cache"[0m
+2026-10-08T12:25:32.8946891Z [36;1mfi[0m
+2026-10-08T12:25:32.8947600Z [36;1m[0m
+2026-10-08T12:25:32.8948367Z [36;1m# Option: Remove Swap storage[0m
+2026-10-08T12:25:32.8949324Z [36;1m[0m
+2026-10-08T12:25:32.8950067Z [36;1mif [[ true == 'true' ]]; then[0m
+2026-10-08T12:25:32.8951133Z [36;1m  BEFORE=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8952111Z [36;1m[0m
+2026-10-08T12:25:32.8952862Z [36;1m  sudo swapoff -a || true[0m
+2026-10-08T12:25:32.8953894Z [36;1m  sudo rm -f /mnt/swapfile || true[0m
+2026-10-08T12:25:32.8954923Z [36;1m  free -h[0m
+2026-10-08T12:25:32.8955697Z [36;1m  [0m
+2026-10-08T12:25:32.8956600Z [36;1m  AFTER=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8957649Z [36;1m  SAVED=$((AFTER-BEFORE))[0m
+2026-10-08T12:25:32.8958719Z [36;1m  printSavedSpace $SAVED "Swap storage"[0m
+2026-10-08T12:25:32.8959791Z [36;1mfi[0m
+2026-10-08T12:25:32.8960522Z [36;1m[0m
+2026-10-08T12:25:32.8961211Z [36;1m[0m
+2026-10-08T12:25:32.8961908Z [36;1m[0m
+2026-10-08T12:25:32.8962688Z [36;1m# Output saved space statistic[0m
+2026-10-08T12:25:32.8963669Z [36;1m[0m
+2026-10-08T12:25:32.8964490Z [36;1mAVAILABLE_END=$(getAvailableSpace)[0m
+2026-10-08T12:25:32.8965710Z [36;1mAVAILABLE_ROOT_END=$(getAvailableSpace '/')[0m
+2026-10-08T12:25:32.8966938Z [36;1m[0m
+2026-10-08T12:25:32.8967673Z [36;1mecho ""[0m
+2026-10-08T12:25:32.8968502Z [36;1mprintDH "AFTER CLEAN-UP:"[0m
+2026-10-08T12:25:32.8969444Z [36;1m[0m
+2026-10-08T12:25:32.8970157Z [36;1mecho ""[0m
+2026-10-08T12:25:32.8970911Z [36;1mecho ""[0m
+2026-10-08T12:25:32.8971649Z [36;1m[0m
+2026-10-08T12:25:32.8972390Z [36;1mecho "/dev/root:"[0m
+2026-10-08T12:25:32.8973667Z [36;1mprintSavedSpace $((AVAILABLE_ROOT_END - AVAILABLE_ROOT_INITIAL))[0m
+2026-10-08T12:25:32.8975230Z [36;1mecho "overall:"[0m
+2026-10-08T12:25:32.8976511Z [36;1mprintSavedSpace $((AVAILABLE_END - AVAILABLE_INITIAL))[0m
+2026-10-08T12:25:32.9359485Z shell: /usr/bin/bash --noprofile --norc -e -o pipefail {0}
+2026-10-08T12:25:32.9360700Z env:
+2026-10-08T12:25:32.9361451Z   TORCH_CUDA_ARCH_LIST: 12.0
+2026-10-08T12:25:32.9362340Z ##[endgroup]
+2026-10-08T12:25:32.9706106Z ================================================================================
+2026-10-08T12:25:32.9708367Z BEFORE CLEAN-UP:
+2026-10-08T12:25:32.9709169Z 
+2026-10-08T12:25:32.9709507Z $ dh -h /
+2026-10-08T12:25:32.9710072Z 
+2026-10-08T12:25:32.9710553Z Filesystem      Size  Used Avail Use% Mounted on
+2026-10-08T12:25:32.9711819Z /dev/root       146G   59G   87G  41% /
+2026-10-08T12:25:32.9712984Z $ dh -a /
+2026-10-08T12:25:32.9713601Z 
+2026-10-08T12:25:32.9720043Z Filesystem     1K-blocks     Used Available Use% Mounted on
+2026-10-08T12:25:32.9722430Z /dev/root      152243760 61739148  90488228  41% /
+2026-10-08T12:25:32.9723946Z $ dh -a
+2026-10-08T12:25:32.9724549Z 
+2026-10-08T12:25:32.9739662Z Filesystem     1K-blocks     Used Available Use% Mounted on
+2026-10-08T12:25:32.9742025Z /dev/root      152243760 61739148  90488228  41% /
+2026-10-08T12:25:32.9744133Z devtmpfs         8172640        0   8172640   0% /dev
+2026-10-08T12:25:32.9746531Z proc                   0        0         0    - /proc
+2026-10-08T12:25:32.9748710Z sysfs                  0        0         0    - /sys
+2026-10-08T12:25:32.9751070Z securityfs             0        0         0    - /sys/kernel/security
+2026-10-08T12:25:32.9753513Z tmpfs            8186236      172   8186064   1% /dev/shm
+2026-10-08T12:25:32.9755281Z devpts                 0        0         0    - /dev/pts
+2026-10-08T12:25:32.9756965Z tmpfs            3274496     1016   3273480   1% /run
+2026-10-08T12:25:32.9758363Z tmpfs               5120        0      5120   0% /run/lock
+2026-10-08T12:25:32.9759821Z cgroup2                0        0         0    - /sys/fs/cgroup
+2026-10-08T12:25:32.9762079Z pstore                 0        0         0    - /sys/fs/pstore
+2026-10-08T12:25:32.9764813Z efivarfs          131072       34    131034   1% /sys/firmware/efi/efivars
+2026-10-08T12:25:32.9767726Z bpf                    0        0         0    - /sys/fs/bpf
+2026-10-08T12:25:32.9770119Z systemd-1              -        -         -    - /proc/sys/fs/binfmt_misc
+2026-10-08T12:25:32.9772696Z hugetlbfs              0        0         0    - /dev/hugepages
+2026-10-08T12:25:32.9775151Z mqueue                 0        0         0    - /dev/mqueue
+2026-10-08T12:25:32.9777757Z debugfs                0        0         0    - /sys/kernel/debug
+2026-10-08T12:25:32.9780203Z tracefs                0        0         0    - /sys/kernel/tracing
+2026-10-08T12:25:32.9782682Z fusectl                0        0         0    - /sys/fs/fuse/connections
+2026-10-08T12:25:32.9785244Z configfs               0        0         0    - /sys/kernel/config
+2026-10-08T12:25:32.9788172Z ramfs                  0        0         0    - /run/credentials/systemd-sysusers.service
+2026-10-08T12:25:32.9790261Z /dev/loop0         75776    75776         0 100% /snap/core22/2411
+2026-10-08T12:25:32.9792030Z /dev/loop1        118144   118144         0 100% /snap/lxd/40338
+2026-10-08T12:25:32.9794112Z /dev/loop2         51328    51328         0 100% /snap/snapd/27591
+2026-10-08T12:25:32.9796667Z /dev/sda15        106832     6194    100638   6% /boot/efi
+2026-10-08T12:25:32.9798183Z binfmt_misc            0        0         0    - /proc/sys/fs/binfmt_misc
+2026-10-08T12:25:32.9799697Z tmpfs            1637244       12   1637232   1% /run/user/1001
+2026-10-08T12:25:32.9801121Z tmpfs            3274496     1016   3273480   1% /run/snapd/ns
+2026-10-08T12:25:32.9802631Z nsfs                   0        0         0    - /run/snapd/ns/lxd.mnt
+2026-10-08T12:25:32.9804159Z ================================================================================
+2026-10-08T12:25:32.9805154Z 
+2026-10-08T12:26:13.2521490Z 
+2026-10-08T12:26:13.2528794Z ********************************************************************************
+2026-10-08T12:26:13.2605596Z => Android library: Saved 11GiB
+2026-10-08T12:26:13.2612027Z ********************************************************************************
+2026-10-08T12:26:13.2613460Z 
+2026-10-08T12:26:19.8584390Z 
+2026-10-08T12:26:19.8593161Z ********************************************************************************
+2026-10-08T12:26:19.8612848Z => .NET runtime: Saved 5.7GiB
+2026-10-08T12:26:19.8619864Z ********************************************************************************
+2026-10-08T12:26:19.8620312Z 
+2026-10-08T12:26:21.4172908Z 
+2026-10-08T12:26:21.4179335Z ********************************************************************************
+2026-10-08T12:26:21.4198667Z => Haskell runtime: Saved 3.6GiB
+2026-10-08T12:26:21.4204979Z ********************************************************************************
+2026-10-08T12:26:21.5205416Z 
+2026-10-08T12:26:21.5206084Z Total reclaimed space: 0B
+2026-10-08T12:26:21.5300361Z 
+2026-10-08T12:26:21.5307149Z ********************************************************************************
+2026-10-08T12:26:21.5326990Z => Docker images: Saved 0B
+2026-10-08T12:26:21.5333112Z ********************************************************************************
+2026-10-08T12:26:21.5333623Z 
+2026-10-08T12:26:44.7038752Z 
+2026-10-08T12:26:44.7049337Z ********************************************************************************
+2026-10-08T12:26:44.7069057Z => Tool cache: Saved 5.1GiB
+2026-10-08T12:26:44.7080497Z ********************************************************************************
+2026-10-08T12:26:44.7080772Z 
+2026-10-08T12:26:44.7402901Z                total        used        free      shared  buff/cache   available
+2026-10-08T12:26:44.7403834Z Mem:            15Gi       561Mi        12Gi        45Mi       3.0Gi        14Gi
+2026-10-08T12:26:44.7404353Z Swap:             0B          0B          0B
+2026-10-08T12:26:44.7450652Z 
+2026-10-08T12:26:44.7461861Z ********************************************************************************
+2026-10-08T12:26:44.7483038Z => Swap storage: Saved 0B
+2026-10-08T12:26:44.7494402Z ********************************************************************************
+2026-10-08T12:26:44.7494864Z 
+2026-10-08T12:26:44.7585721Z 
+2026-10-08T12:26:44.7594363Z ================================================================================
+2026-10-08T12:26:44.7595360Z AFTER CLEAN-UP:
+2026-10-08T12:26:44.7595624Z 
+2026-10-08T12:26:44.7595783Z $ dh -h /
+2026-10-08T12:26:44.7596256Z 
+2026-10-08T12:26:44.7607147Z Filesystem      Size  Used Avail Use% Mounted on
+2026-10-08T12:26:44.7607784Z /dev/root       146G   34G  112G  23% /
+2026-10-08T12:26:44.7608538Z $ dh -a /
+2026-10-08T12:26:44.7608763Z 
+2026-10-08T12:26:44.7624630Z Filesystem     1K-blocks     Used Available Use% Mounted on
+2026-10-08T12:26:44.7625242Z /dev/root      152243760 34988252 117239124  23% /
+2026-10-08T12:26:44.7626979Z $ dh -a
+2026-10-08T12:26:44.7627221Z 
+2026-10-08T12:26:44.7646392Z Filesystem     1K-blocks     Used Available Use% Mounted on
+2026-10-08T12:26:44.7647346Z /dev/root      152243760 34988252 117239124  23% /
+2026-10-08T12:26:44.7648241Z devtmpfs         8172640        0   8172640   0% /dev
+2026-10-08T12:26:44.7649117Z proc                   0        0         0    - /proc
+2026-10-08T12:26:44.7649910Z sysfs                  0        0         0    - /sys
+2026-10-08T12:26:44.7650759Z securityfs             0        0         0    - /sys/kernel/security
+2026-10-08T12:26:44.7651616Z tmpfs            8186236      172   8186064   1% /dev/shm
+2026-10-08T12:26:44.7652392Z devpts                 0        0         0    - /dev/pts
+2026-10-08T12:26:44.7653160Z tmpfs            3274496     1016   3273480   1% /run
+2026-10-08T12:26:44.7653944Z tmpfs               5120        0      5120   0% /run/lock
+2026-10-08T12:26:44.7654816Z cgroup2                0        0         0    - /sys/fs/cgroup
+2026-10-08T12:26:44.7656326Z pstore                 0        0         0    - /sys/fs/pstore
+2026-10-08T12:26:44.7657312Z efivarfs          131072       34    131034   1% /sys/firmware/efi/efivars
+2026-10-08T12:26:44.7658208Z bpf                    0        0         0    - /sys/fs/bpf
+2026-10-08T12:26:44.7659109Z systemd-1              -        -         -    - /proc/sys/fs/binfmt_misc
+2026-10-08T12:26:44.7660046Z hugetlbfs              0        0         0    - /dev/hugepages
+2026-10-08T12:26:44.7660882Z mqueue                 0        0         0    - /dev/mqueue
+2026-10-08T12:26:44.7661748Z debugfs                0        0         0    - /sys/kernel/debug
+2026-10-08T12:26:44.7662618Z tracefs                0        0         0    - /sys/kernel/tracing
+2026-10-08T12:26:44.7663492Z fusectl                0        0         0    - /sys/fs/fuse/connections
+2026-10-08T12:26:44.7664373Z configfs               0        0         0    - /sys/kernel/config
+2026-10-08T12:26:44.7665324Z ramfs                  0        0         0    - /run/credentials/systemd-sysusers.service
+2026-10-08T12:26:44.7666573Z /dev/loop0         75776    75776         0 100% /snap/core22/2411
+2026-10-08T12:26:44.7667541Z /dev/loop1        118144   118144         0 100% /snap/lxd/40338
+2026-10-08T12:26:44.7668463Z /dev/loop2         51328    51328         0 100% /snap/snapd/27591
+2026-10-08T12:26:44.7669321Z /dev/sda15        106832     6194    100638   6% /boot/efi
+2026-10-08T12:26:44.7670184Z binfmt_misc            0        0         0    - /proc/sys/fs/binfmt_misc
+2026-10-08T12:26:44.7671103Z tmpfs            1637244       12   1637232   1% /run/user/1001
+2026-10-08T12:26:44.7671936Z tmpfs            3274496     1016   3273480   1% /run/snapd/ns
+2026-10-08T12:26:44.7672771Z nsfs                   0        0         0    - /run/snapd/ns/lxd.mnt
+2026-10-08T12:26:44.7673633Z ================================================================================
+2026-10-08T12:26:44.7674238Z 
+2026-10-08T12:26:44.7674447Z 
+2026-10-08T12:26:44.7674798Z /dev/root:
+2026-10-08T12:26:44.7675199Z 
+2026-10-08T12:26:44.7675619Z ********************************************************************************
+2026-10-08T12:26:44.7693356Z => Saved 25GiB
+2026-10-08T12:26:44.7702226Z ********************************************************************************
+2026-10-08T12:26:44.7702968Z 
+2026-10-08T12:26:44.7703303Z overall:
+2026-10-08T12:26:44.7703667Z 
+2026-10-08T12:26:44.7711540Z ********************************************************************************
+2026-10-08T12:26:44.7732896Z => Saved 25GiB
+2026-10-08T12:26:44.7740093Z ********************************************************************************
+2026-10-08T12:26:44.7740550Z 
+2026-10-08T12:26:44.7806841Z ##[end-action id=__jlumbroso_free-disk-space.__run;outcome=success;conclusion=success;duration_ms=71921]
+2026-10-08T12:26:44.7950161Z ##[group]Run actions/checkout@v4
+2026-10-08T12:26:44.7950448Z with:
+2026-10-08T12:26:44.7950648Z   repository: vcruz305/exllamav3
+2026-10-08T12:26:44.7953065Z   token: ***
+2026-10-08T12:26:44.7953295Z   ssh-strict: true
+2026-10-08T12:26:44.7953495Z   ssh-user: git
+2026-10-08T12:26:44.7953703Z   persist-credentials: true
+2026-10-08T12:26:44.7953933Z   clean: true
+2026-10-08T12:26:44.7954139Z   sparse-checkout-cone-mode: true
+2026-10-08T12:26:44.7954396Z   fetch-depth: 1
+2026-10-08T12:26:44.7954594Z   fetch-tags: false
+2026-10-08T12:26:44.7954798Z   show-progress: true
+2026-10-08T12:26:44.7954996Z   lfs: false
+2026-10-08T12:26:44.7955180Z   submodules: false
+2026-10-08T12:26:44.7955382Z   set-safe-directory: true
+2026-10-08T12:26:44.7955619Z   allow-unsafe-pr-checkout: false
+2026-10-08T12:26:44.7956067Z env:
+2026-10-08T12:26:44.7956263Z   TORCH_CUDA_ARCH_LIST: 12.0
+2026-10-08T12:26:44.7956488Z ##[endgroup]
+2026-10-08T12:26:44.8994741Z Syncing repository: vcruz305/exllamav3
+2026-10-08T12:26:44.8997081Z ##[group]Getting Git version info
+2026-10-08T12:26:44.8997633Z Working directory is '/home/runner/work/exllamav3/exllamav3'
+2026-10-08T12:26:44.9021901Z [command]/usr/bin/git version
+2026-10-08T12:26:44.9136840Z git version 2.55.0
+2026-10-08T12:26:44.9164150Z ##[endgroup]
+2026-10-08T12:26:44.9182464Z Temporarily overriding HOME='/home/runner/work/_temp/9ae3afb7-69a5-458b-89ff-b88b210ebbf4' before making global git config changes
+2026-10-08T12:26:44.9183808Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-08T12:26:44.9189413Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/exllamav3/exllamav3
+2026-10-08T12:26:44.9235289Z Deleting the contents of '/home/runner/work/exllamav3/exllamav3'
+2026-10-08T12:26:44.9240340Z ##[group]Initializing the repository
+2026-10-08T12:26:44.9244096Z [command]/usr/bin/git init /home/runner/work/exllamav3/exllamav3
+2026-10-08T12:26:44.9351759Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-08T12:26:44.9352867Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-08T12:26:44.9353887Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-08T12:26:44.9354699Z hint: call:
+2026-10-08T12:26:44.9355152Z hint:
+2026-10-08T12:26:44.9355713Z hint: 	git config --global init.defaultBranch <name>
+2026-10-08T12:26:44.9356738Z hint:
+2026-10-08T12:26:44.9357548Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-08T12:26:44.9358598Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-08T12:26:44.9359368Z hint:
+2026-10-08T12:26:44.9359821Z hint: 	git branch -m <name>
+2026-10-08T12:26:44.9360327Z hint:
+2026-10-08T12:26:44.9360977Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-08T12:26:44.9362077Z Initialized empty Git repository in /home/runner/work/exllamav3/exllamav3/.git/
+2026-10-08T12:26:44.9365329Z [command]/usr/bin/git remote add origin https://github.com/vcruz305/exllamav3
+2026-10-08T12:26:44.9410036Z ##[endgroup]
+2026-10-08T12:26:44.9410683Z ##[group]Disabling automatic garbage collection
+2026-10-08T12:26:44.9415630Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-08T12:26:44.9459554Z ##[endgroup]
+2026-10-08T12:26:44.9460147Z ##[group]Setting up auth
+2026-10-08T12:26:44.9470989Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-08T12:26:44.9530501Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-08T12:26:44.9957473Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-08T12:26:45.0000019Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-08T12:26:45.0317035Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-08T12:26:45.0362880Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-08T12:26:45.0652229Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-08T12:26:45.0699334Z ##[endgroup]
+2026-10-08T12:26:45.0700012Z ##[group]Fetching the repository
+2026-10-08T12:26:45.0710575Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +f405dd28bdcb71b6eff65e0c2a24f836f18010bd:refs/remotes/pull/21/merge
+2026-10-08T12:26:46.3346036Z From https://github.com/vcruz305/exllamav3
+2026-10-08T12:26:46.3347098Z  * [new ref]         f405dd28bdcb71b6eff65e0c2a24f836f18010bd -> pull/21/merge
+2026-10-08T12:26:46.3350998Z ##[endgroup]
+2026-10-08T12:26:46.3351405Z ##[group]Determining the checkout info
+2026-10-08T12:26:46.3353938Z ##[endgroup]
+2026-10-08T12:26:46.3360218Z [command]/usr/bin/git sparse-checkout disable
+2026-10-08T12:26:46.3451857Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-08T12:26:46.3488064Z ##[group]Checking out the ref
+2026-10-08T12:26:46.3492033Z [command]/usr/bin/git checkout --progress --force refs/remotes/pull/21/merge
+2026-10-08T12:26:46.4736789Z Note: switching to 'refs/remotes/pull/21/merge'.
+2026-10-08T12:26:46.4737355Z 
+2026-10-08T12:26:46.4737788Z You are in 'detached HEAD' state. You can look around, make experimental
+2026-10-08T12:26:46.4738429Z changes and commit them, and you can discard any commits you make in this
+2026-10-08T12:26:46.4739015Z state without impacting any branches by switching back to a branch.
+2026-10-08T12:26:46.4769498Z 
+2026-10-08T12:26:46.4769865Z If you want to create a new branch to retain commits you create, you may
+2026-10-08T12:26:46.4770662Z do so (now or later) by using -c with the switch command. Example:
+2026-10-08T12:26:46.4771060Z 
+2026-10-08T12:26:46.4771168Z   git switch -c <new-branch-name>
+2026-10-08T12:26:46.4771347Z 
+2026-10-08T12:26:46.4771453Z Or undo this operation with:
+2026-10-08T12:26:46.4771618Z 
+2026-10-08T12:26:46.4771709Z   git switch -
+2026-10-08T12:26:46.4771827Z 
+2026-10-08T12:26:46.4772042Z Turn off this advice by setting config variable advice.detachedHead to false
+2026-10-08T12:26:46.4772345Z 
+2026-10-08T12:26:46.4772689Z HEAD is now at f405dd2 Merge 24f0dece34f09c8d1e2359d6b3b3f7befef7331b into 764b4ad6c86c59052875ccb1c31e1daaa85813cb
+2026-10-08T12:26:46.4773779Z ##[endgroup]
+2026-10-08T12:26:46.4805495Z [command]/usr/bin/git log -1 --format=%H
+2026-10-08T12:26:46.4837389Z f405dd28bdcb71b6eff65e0c2a24f836f18010bd
+2026-10-08T12:26:46.5006750Z ##[group]Run Jimver/cuda-toolkit@v0.2.35
+2026-10-08T12:26:46.5007069Z with:
+2026-10-08T12:26:46.5007256Z   cuda: 12.8.1
+2026-10-08T12:26:46.5007468Z   linux-local-args: ["--toolkit"]
+2026-10-08T12:26:46.5007710Z   method: network
+2026-10-08T12:26:46.5007911Z   sub-packages: []
+2026-10-08T12:26:46.5008127Z   non-cuda-sub-packages: []
+2026-10-08T12:26:46.5008370Z   use-github-cache: true
+2026-10-08T12:26:46.5008591Z   use-local-cache: true
+2026-10-08T12:26:46.5008819Z   log-file-suffix: log.txt
+2026-10-08T12:26:46.5009033Z env:
+2026-10-08T12:26:46.5009217Z   TORCH_CUDA_ARCH_LIST: 12.0
+2026-10-08T12:26:46.5009436Z ##[endgroup]
+2026-10-08T12:26:46.6320651Z (node:2150) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-08T12:26:46.6321562Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-08T12:26:46.6945049Z [command]/usr/bin/lsb_release -sr
+2026-10-08T12:26:46.7246770Z 22.04
+2026-10-08T12:26:46.7316779Z [command]/usr/bin/wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb -O cuda_keyring.deb
+2026-10-08T12:26:46.7569048Z --2026-10-08 12:26:46--  https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-keyring_1.1-1_all.deb
+2026-10-08T12:26:46.7986242Z Resolving developer.download.nvidia.com (developer.download.nvidia.com)... 23.209.84.132, 23.209.84.141
+2026-10-08T12:26:46.8004313Z Connecting to developer.download.nvidia.com (developer.download.nvidia.com)|23.209.84.132|:443... connected.
+2026-10-08T12:26:46.8127306Z HTTP request sent, awaiting response... 200 OK
+2026-10-08T12:26:46.8128356Z Length: 4332 (4.2K) [application/x-deb]
+2026-10-08T12:26:46.8129378Z Saving to: ‘cuda_keyring.deb’
+2026-10-08T12:26:46.8129678Z 
+2026-10-08T12:26:46.8129900Z      0K ....                                                  100% 5.44G=0s
+2026-10-08T12:26:46.8130278Z 
+2026-10-08T12:26:46.8130732Z 2026-10-08 12:26:46 (5.44 GB/s) - ‘cuda_keyring.deb’ saved [4332/4332]
+2026-10-08T12:26:46.8131211Z 
+2026-10-08T12:26:46.8179295Z [command]/usr/bin/sudo dpkg -i cuda_keyring.deb
+2026-10-08T12:26:46.8857579Z Selecting previously unselected package cuda-keyring.
+2026-10-08T12:26:48.3357634Z (Reading database ... 260411 files and directories currently installed.)
+2026-10-08T12:26:48.3413386Z Preparing to unpack cuda_keyring.deb ...
+2026-10-08T12:26:48.3440793Z Unpacking cuda-keyring (1.1-1) ...
+2026-10-08T12:26:48.3594841Z Setting up cuda-keyring (1.1-1) ...
+2026-10-08T12:26:48.4277730Z [command]/usr/bin/wget https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+2026-10-08T12:26:48.4324196Z --2026-10-08 12:26:48--  https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/cuda-ubuntu2204.pin
+2026-10-08T12:26:48.4368971Z Resolving developer.download.nvidia.com (developer.download.nvidia.com)... 23.209.84.132, 23.209.84.141
+2026-10-08T12:26:48.4380707Z Connecting to developer.download.nvidia.com (developer.download.nvidia.com)|23.209.84.132|:443... connected.
+2026-10-08T12:26:48.6737855Z HTTP request sent, awaiting response... 200 OK
+2026-10-08T12:26:48.6738423Z Length: 190 [application/octet-stream]
+2026-10-08T12:26:48.6739382Z Saving to: ‘cuda-ubuntu2204.pin’
+2026-10-08T12:26:48.6739891Z 
+2026-10-08T12:26:48.6740126Z      0K                                                       100%  402M=0s
+2026-10-08T12:26:48.6740595Z 
+2026-10-08T12:26:48.6741181Z 2026-10-08 12:26:48 (402 MB/s) - ‘cuda-ubuntu2204.pin’ saved [190/190]
+2026-10-08T12:26:48.6741871Z 
+2026-10-08T12:26:48.6772364Z [command]/usr/bin/sudo mv cuda-ubuntu2204.pin /etc/apt/preferences.d/cuda-repository-pin-600
+2026-10-08T12:26:48.6915164Z [command]/usr/bin/sudo add-apt-repository deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/ /
+2026-10-08T12:26:49.8795816Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-08T12:26:49.9166656Z Hit:2 http://azure.archive.ubuntu.com/ubuntu jammy InRelease
+2026-10-08T12:26:49.9177470Z Get:7 https://packages.microsoft.com/ubuntu/22.04/prod jammy InRelease [3632 B]
+2026-10-08T12:26:49.9182277Z Get:3 http://azure.archive.ubuntu.com/ubuntu jammy-updates InRelease [128 kB]
+2026-10-08T12:26:49.9266919Z Get:4 http://azure.archive.ubuntu.com/ubuntu jammy-backports InRelease [127 kB]
+2026-10-08T12:26:49.9269027Z Get:5 http://azure.archive.ubuntu.com/ubuntu jammy-security InRelease [129 kB]
+2026-10-08T12:26:49.9893576Z Get:6 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease [1578 B]
+2026-10-08T12:26:50.0932164Z Get:8 https://packages.microsoft.com/ubuntu/22.04/prod jammy/main arm64 Packages [568 kB]
+2026-10-08T12:26:50.1207617Z Get:9 https://packages.microsoft.com/ubuntu/22.04/prod jammy/main amd64 Packages [815 kB]
+2026-10-08T12:26:50.1837257Z Get:10 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages [3908 kB]
+2026-10-08T12:26:50.2052210Z Get:11 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main Translation-en [576 kB]
+2026-10-08T12:26:50.2086930Z Get:12 http://azure.archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [6740 kB]
+2026-10-08T12:26:50.2394515Z Get:13 http://azure.archive.ubuntu.com/ubuntu jammy-updates/restricted Translation-en [1294 kB]
+2026-10-08T12:26:50.2477287Z Get:14 http://azure.archive.ubuntu.com/ubuntu jammy-updates/universe amd64 Packages [1286 kB]
+2026-10-08T12:26:50.2569668Z Get:15 http://azure.archive.ubuntu.com/ubuntu jammy-updates/universe Translation-en [325 kB]
+2026-10-08T12:26:50.2579613Z Get:16 http://azure.archive.ubuntu.com/ubuntu jammy-updates/multiverse amd64 Packages [86.1 kB]
+2026-10-08T12:26:50.2591464Z Get:17 http://azure.archive.ubuntu.com/ubuntu jammy-updates/multiverse Translation-en [16.6 kB]
+2026-10-08T12:26:50.3827898Z Get:18 http://azure.archive.ubuntu.com/ubuntu jammy-security/main amd64 Packages [3633 kB]
+2026-10-08T12:26:50.4016740Z Get:19 http://azure.archive.ubuntu.com/ubuntu jammy-security/main Translation-en [508 kB]
+2026-10-08T12:26:50.4395155Z Get:24 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  Packages [3061 kB]
+2026-10-08T12:26:50.4478120Z Get:20 http://azure.archive.ubuntu.com/ubuntu jammy-security/restricted amd64 Packages [6465 kB]
+2026-10-08T12:26:50.4766106Z Get:21 http://azure.archive.ubuntu.com/ubuntu jammy-security/restricted Translation-en [1244 kB]
+2026-10-08T12:26:50.4814860Z Get:22 http://azure.archive.ubuntu.com/ubuntu jammy-security/universe amd64 Packages [1053 kB]
+2026-10-08T12:26:50.4864237Z Get:23 http://azure.archive.ubuntu.com/ubuntu jammy-security/universe Translation-en [237 kB]
+2026-10-08T12:26:56.4497545Z Fetched 32.2 MB in 3s (9657 kB/s)
+2026-10-08T12:26:57.9282621Z Reading package lists...
+2026-10-08T12:26:57.9460223Z W: Target Packages (Packages) is configured multiple times in /etc/apt/sources.list.d/archive_uri-http_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list:1 and /etc/apt/sources.list.d/cuda-ubuntu2204-x86_64.list:1
+2026-10-08T12:26:57.9462580Z W: Target Translations (en) is configured multiple times in /etc/apt/sources.list.d/archive_uri-http_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list:1 and /etc/apt/sources.list.d/cuda-ubuntu2204-x86_64.list:1
+2026-10-08T12:26:57.9464579Z W: Target Packages (Packages) is configured multiple times in /etc/apt/sources.list.d/archive_uri-http_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list:1 and /etc/apt/sources.list.d/cuda-ubuntu2204-x86_64.list:1
+2026-10-08T12:26:57.9467085Z W: Target Translations (en) is configured multiple times in /etc/apt/sources.list.d/archive_uri-http_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list:1 and /etc/apt/sources.list.d/cuda-ubuntu2204-x86_64.list:1
+2026-10-08T12:26:57.9469812Z Repository: 'deb http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/ /'
+2026-10-08T12:26:57.9470634Z Description:
+2026-10-08T12:26:57.9470891Z Archive for codename: / components: 
+2026-10-08T12:26:57.9471713Z More info: http://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64/
+2026-10-08T12:26:57.9472211Z Adding repository.
+2026-10-08T12:26:57.9472828Z Adding deb entry to /etc/apt/sources.list.d/archive_uri-http_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list
+2026-10-08T12:26:57.9473930Z Adding disabled deb-src entry to /etc/apt/sources.list.d/archive_uri-http_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list
+2026-10-08T12:26:57.9695808Z [command]/usr/bin/sudo apt-get update
+2026-10-08T12:26:58.0713422Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-08T12:26:58.1018141Z Hit:2 http://azure.archive.ubuntu.com/ubuntu jammy InRelease
+2026-10-08T12:26:58.1108487Z Hit:7 https://packages.microsoft.com/ubuntu/22.04/prod jammy InRelease
+2026-10-08T12:26:58.1114359Z Hit:3 http://azure.archive.ubuntu.com/ubuntu jammy-updates InRelease
+2026-10-08T12:26:58.1115482Z Hit:4 http://azure.archive.ubuntu.com/ubuntu jammy-backports InRelease
+2026-10-08T12:26:58.1116928Z Hit:5 http://azure.archive.ubuntu.com/ubuntu jammy-security InRelease
+2026-10-08T12:26:58.1790791Z Hit:6 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  InRelease
+2026-10-08T12:27:00.1923029Z Reading package lists...
+2026-10-08T12:27:00.2084632Z W: Target Packages (Packages) is configured multiple times in /etc/apt/sources.list.d/archive_uri-http_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list:1 and /etc/apt/sources.list.d/cuda-ubuntu2204-x86_64.list:1
+2026-10-08T12:27:00.2087870Z W: Target Translations (en) is configured multiple times in /etc/apt/sources.list.d/archive_uri-http_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list:1 and /etc/apt/sources.list.d/cuda-ubuntu2204-x86_64.list:1
+2026-10-08T12:27:00.2107563Z W: Target Packages (Packages) is configured multiple times in /etc/apt/sources.list.d/archive_uri-http_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list:1 and /etc/apt/sources.list.d/cuda-ubuntu2204-x86_64.list:1
+2026-10-08T12:27:00.2110289Z W: Target Translations (en) is configured multiple times in /etc/apt/sources.list.d/archive_uri-http_developer_download_nvidia_com_compute_cuda_repos_ubuntu2204_x86_64_-jammy.list:1 and /etc/apt/sources.list.d/cuda-ubuntu2204-x86_64.list:1
+2026-10-08T12:27:00.2127763Z [command]/usr/bin/sudo apt-get -y install cuda-12-8
+2026-10-08T12:27:00.2693618Z Reading package lists...
+2026-10-08T12:27:00.5673747Z Building dependency tree...
+2026-10-08T12:27:00.5685320Z Reading state information...
+2026-10-08T12:27:00.7636655Z The following additional packages will be installed:
+2026-10-08T12:27:00.7637597Z   ca-certificates-java cuda-cccl-12-8 cuda-command-line-tools-12-8
+2026-10-08T12:27:00.7638778Z   cuda-compiler-12-8 cuda-crt-12-8 cuda-cudart-12-8 cuda-cudart-dev-12-8
+2026-10-08T12:27:00.7640016Z   cuda-cuobjdump-12-8 cuda-cupti-12-8 cuda-cupti-dev-12-8 cuda-cuxxfilt-12-8
+2026-10-08T12:27:00.7640780Z   cuda-demo-suite-12-8 cuda-documentation-12-8 cuda-driver-dev-12-8
+2026-10-08T12:27:00.7641329Z   cuda-gdb-12-8 cuda-libraries-12-8 cuda-libraries-dev-12-8 cuda-nsight-12-8
+2026-10-08T12:27:00.7641883Z   cuda-nsight-compute-12-8 cuda-nsight-systems-12-8 cuda-nvcc-12-8
+2026-10-08T12:27:00.7642415Z   cuda-nvdisasm-12-8 cuda-nvml-dev-12-8 cuda-nvprof-12-8 cuda-nvprune-12-8
+2026-10-08T12:27:00.7643293Z   cuda-nvrtc-12-8 cuda-nvrtc-dev-12-8 cuda-nvtx-12-8 cuda-nvvm-12-8
+2026-10-08T12:27:00.7643877Z   cuda-nvvp-12-8 cuda-opencl-12-8 cuda-opencl-dev-12-8 cuda-profiler-api-12-8
+2026-10-08T12:27:00.7644389Z   cuda-runtime-12-8 cuda-sanitizer-12-8 cuda-toolkit-12-8
+2026-10-08T12:27:00.7645199Z   cuda-toolkit-12-8-config-common cuda-toolkit-12-config-common
+2026-10-08T12:27:00.7645732Z   cuda-toolkit-config-common cuda-tools-12-8 cuda-visual-tools-12-8
+2026-10-08T12:27:00.7646556Z   default-jre default-jre-headless gds-tools-12-8 libatk-wrapper-java
+2026-10-08T12:27:00.7647486Z   libatk-wrapper-java-jni libcublas-12-8 libcublas-dev-12-8 libcufft-12-8
+2026-10-08T12:27:00.7648026Z   libcufft-dev-12-8 libcufile-12-8 libcufile-dev-12-8 libcurand-12-8
+2026-10-08T12:27:00.7648552Z   libcurand-dev-12-8 libcusolver-12-8 libcusolver-dev-12-8 libcusparse-12-8
+2026-10-08T12:27:00.7649095Z   libcusparse-dev-12-8 libegl-mesa0 libegl1 libnpp-12-8 libnpp-dev-12-8
+2026-10-08T12:27:00.7649586Z   libnvfatbin-12-8 libnvfatbin-dev-12-8 libnvidia-cfg1-570
+2026-10-08T12:27:00.7650038Z   libnvidia-compute-570 libnvidia-decode-570 libnvjitlink-12-8
+2026-10-08T12:27:00.7650541Z   libnvjitlink-dev-12-8 libnvjpeg-12-8 libnvjpeg-dev-12-8 libopengl0
+2026-10-08T12:27:00.7651040Z   libpcsclite1 libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1
+2026-10-08T12:27:00.7651496Z   libxcb-render-util0 libxcb-shape0 libxcb-util1 libxcb-xinerama0
+2026-10-08T12:27:00.7652053Z   libxcb-xinput0 libxcb-xkb1 libxkbcommon-x11-0 libxv1 libxxf86dga1
+2026-10-08T12:27:00.7652876Z   nsight-compute-2025.1.1 nsight-systems-2024.6.2 nvidia-persistenced
+2026-10-08T12:27:00.7653315Z   openjdk-11-jre openjdk-11-jre-headless x11-utils
+2026-10-08T12:27:00.7653629Z Suggested packages:
+2026-10-08T12:27:00.7653945Z   nvidia-driver-pinning-570 pcscd libnss-mdns fonts-ipafont-gothic
+2026-10-08T12:27:00.7654421Z   fonts-ipafont-mincho fonts-wqy-microhei | fonts-wqy-zenhei fonts-indic
+2026-10-08T12:27:00.7654790Z   mesa-utils
+2026-10-08T12:27:00.8716662Z The following NEW packages will be installed:
+2026-10-08T12:27:00.8717596Z   ca-certificates-java cuda-12-8 cuda-cccl-12-8 cuda-command-line-tools-12-8
+2026-10-08T12:27:00.8718581Z   cuda-compiler-12-8 cuda-crt-12-8 cuda-cudart-12-8 cuda-cudart-dev-12-8
+2026-10-08T12:27:00.8719497Z   cuda-cuobjdump-12-8 cuda-cupti-12-8 cuda-cupti-dev-12-8 cuda-cuxxfilt-12-8
+2026-10-08T12:27:00.8720286Z   cuda-demo-suite-12-8 cuda-documentation-12-8 cuda-driver-dev-12-8
+2026-10-08T12:27:00.8720998Z   cuda-gdb-12-8 cuda-libraries-12-8 cuda-libraries-dev-12-8 cuda-nsight-12-8
+2026-10-08T12:27:00.8721942Z   cuda-nsight-compute-12-8 cuda-nsight-systems-12-8 cuda-nvcc-12-8
+2026-10-08T12:27:00.8722789Z   cuda-nvdisasm-12-8 cuda-nvml-dev-12-8 cuda-nvprof-12-8 cuda-nvprune-12-8
+2026-10-08T12:27:00.8723350Z   cuda-nvrtc-12-8 cuda-nvrtc-dev-12-8 cuda-nvtx-12-8 cuda-nvvm-12-8
+2026-10-08T12:27:00.8723916Z   cuda-nvvp-12-8 cuda-opencl-12-8 cuda-opencl-dev-12-8 cuda-profiler-api-12-8
+2026-10-08T12:27:00.8724444Z   cuda-runtime-12-8 cuda-sanitizer-12-8 cuda-toolkit-12-8
+2026-10-08T12:27:00.8725181Z   cuda-toolkit-12-8-config-common cuda-toolkit-12-config-common
+2026-10-08T12:27:00.8726586Z   cuda-toolkit-config-common cuda-tools-12-8 cuda-visual-tools-12-8
+2026-10-08T12:27:00.8727252Z   default-jre default-jre-headless gds-tools-12-8 libatk-wrapper-java
+2026-10-08T12:27:00.8728110Z   libatk-wrapper-java-jni libcublas-12-8 libcublas-dev-12-8 libcufft-12-8
+2026-10-08T12:27:00.8728690Z   libcufft-dev-12-8 libcufile-12-8 libcufile-dev-12-8 libcurand-12-8
+2026-10-08T12:27:00.8729254Z   libcurand-dev-12-8 libcusolver-12-8 libcusolver-dev-12-8 libcusparse-12-8
+2026-10-08T12:27:00.8729857Z   libcusparse-dev-12-8 libegl-mesa0 libegl1 libnpp-12-8 libnpp-dev-12-8
+2026-10-08T12:27:00.8730369Z   libnvfatbin-12-8 libnvfatbin-dev-12-8 libnvidia-cfg1-570
+2026-10-08T12:27:00.8730838Z   libnvidia-compute-570 libnvidia-decode-570 libnvjitlink-12-8
+2026-10-08T12:27:00.8731355Z   libnvjitlink-dev-12-8 libnvjpeg-12-8 libnvjpeg-dev-12-8 libopengl0
+2026-10-08T12:27:00.8731930Z   libpcsclite1 libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1
+2026-10-08T12:27:00.8732487Z   libxcb-render-util0 libxcb-shape0 libxcb-util1 libxcb-xinerama0
+2026-10-08T12:27:00.8733008Z   libxcb-xinput0 libxcb-xkb1 libxkbcommon-x11-0 libxv1 libxxf86dga1
+2026-10-08T12:27:00.8733480Z   nsight-compute-2025.1.1 nsight-systems-2024.6.2 nvidia-persistenced
+2026-10-08T12:27:00.8733885Z   openjdk-11-jre openjdk-11-jre-headless x11-utils
+2026-10-08T12:27:00.9002018Z 0 upgraded, 93 newly installed, 0 to remove and 38 not upgraded.
+2026-10-08T12:27:00.9002661Z Need to get 3705 MB of archives.
+2026-10-08T12:27:00.9003390Z After this operation, 8811 MB of additional disk space will be used.
+2026-10-08T12:27:00.9003825Z Get:1 file:/etc/apt/apt-mirrors.txt Mirrorlist [144 B]
+2026-10-08T12:27:01.0043385Z Get:27 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-toolkit-config-common 13.4.92-1 [17.4 kB]
+2026-10-08T12:27:01.0171822Z Get:28 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-toolkit-12-config-common 12.9.79-1 [16.6 kB]
+2026-10-08T12:27:01.0206917Z Get:29 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-toolkit-12-8-config-common 12.8.90-1 [16.4 kB]
+2026-10-08T12:27:01.0277263Z Get:30 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-cudart-12-8 12.8.90-1 [170 kB]
+2026-10-08T12:27:01.0629838Z Get:31 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-nvrtc-12-8 12.8.93-1 [62.3 MB]
+2026-10-08T12:27:01.1124673Z Get:2 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libpcsclite1 amd64 1.9.5-3ubuntu1 [19.8 kB]
+2026-10-08T12:27:01.1761120Z Get:3 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 openjdk-11-jre-headless amd64 11.0.32.1+1-1ubuntu1~22.04 [42.6 MB]
+2026-10-08T12:27:02.1984263Z Get:32 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-opencl-12-8 12.8.90-1 [24.0 kB]
+2026-10-08T12:27:02.2029456Z Get:33 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libcublas-12-8 12.8.5.5-1 [464 MB]
+2026-10-08T12:27:02.2351066Z Get:4 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 default-jre-headless amd64 2:1.11-72build2 [3042 B]
+2026-10-08T12:27:02.2988640Z Get:5 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 ca-certificates-java all 20190909ubuntu1.3 [12.3 kB]
+2026-10-08T12:27:02.3620863Z Get:6 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxcb-xinerama0 amd64 1.14-3ubuntu3 [5414 B]
+2026-10-08T12:27:02.4265570Z Get:7 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxcb-icccm4 amd64 0.4.1-1.1build2 [11.5 kB]
+2026-10-08T12:27:02.5040834Z Get:8 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxcb-util1 amd64 0.4.0-1build2 [11.4 kB]
+2026-10-08T12:27:02.5798899Z Get:9 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxcb-image0 amd64 0.4.0-2 [11.5 kB]
+2026-10-08T12:27:02.6432939Z Get:10 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxcb-keysyms1 amd64 0.4.0-1build3 [8746 B]
+2026-10-08T12:27:02.7067285Z Get:11 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxcb-render-util0 amd64 0.3.9-1build3 [10.3 kB]
+2026-10-08T12:27:02.7701664Z Get:12 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxcb-shape0 amd64 1.14-3ubuntu3 [6158 B]
+2026-10-08T12:27:02.8334971Z Get:13 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxcb-xkb1 amd64 1.14-3ubuntu3 [32.8 kB]
+2026-10-08T12:27:02.8971511Z Get:14 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxkbcommon-x11-0 amd64 1.4.0-1 [14.4 kB]
+2026-10-08T12:27:02.9603571Z Get:15 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxcb-xinput0 amd64 1.14-3ubuntu3 [34.3 kB]
+2026-10-08T12:27:03.0241891Z Get:16 http://azure.archive.ubuntu.com/ubuntu jammy/universe amd64 libxcb-cursor0 amd64 0.1.1-4ubuntu1 [10.5 kB]
+2026-10-08T12:27:03.0876487Z Get:17 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libopengl0 amd64 1.4.0-1 [36.5 kB]
+2026-10-08T12:27:03.1510938Z Get:18 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 libegl-mesa0 amd64 23.2.1-1ubuntu3.1~22.04.4 [118 kB]
+2026-10-08T12:27:03.2176468Z Get:19 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libegl1 amd64 1.4.0-1 [28.6 kB]
+2026-10-08T12:27:03.2824440Z Get:20 http://azure.archive.ubuntu.com/ubuntu jammy-updates/main amd64 openjdk-11-jre amd64 11.0.32.1+1-1ubuntu1~22.04 [214 kB]
+2026-10-08T12:27:03.3502721Z Get:21 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 default-jre amd64 2:1.11-72build2 [896 B]
+2026-10-08T12:27:03.4157049Z Get:22 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxv1 amd64 2:1.0.11-1build2 [11.2 kB]
+2026-10-08T12:27:03.4799454Z Get:23 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libxxf86dga1 amd64 2:1.1.5-0ubuntu3 [12.6 kB]
+2026-10-08T12:27:03.5447526Z Get:24 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 x11-utils amd64 7.7+5build2 [206 kB]
+2026-10-08T12:27:03.6130133Z Get:25 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libatk-wrapper-java all 0.38.0-5build1 [53.1 kB]
+2026-10-08T12:27:03.6773225Z Get:26 http://azure.archive.ubuntu.com/ubuntu jammy/main amd64 libatk-wrapper-java-jni amd64 0.38.0-5build1 [49.0 kB]
+2026-10-08T12:27:06.7152015Z Get:34 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libcufft-12-8 11.3.3.83-1 [151 MB]
+2026-10-08T12:27:08.1635523Z Get:35 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libcufile-12-8 1.13.1.3-1 [886 kB]
+2026-10-08T12:27:08.7190512Z Get:36 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libcurand-12-8 10.3.9.90-1 [44.8 MB]
+2026-10-08T12:27:09.0478623Z Get:37 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libcusolver-12-8 11.7.3.90-1 [159 MB]
+2026-10-08T12:27:10.2627578Z Get:38 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libcusparse-12-8 12.5.8.93-1 [164 MB]
+2026-10-08T12:27:12.4800058Z Get:39 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libnpp-12-8 12.3.3.100-1 [131 MB]
+2026-10-08T12:27:15.1193087Z Get:40 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libnvjitlink-12-8 12.8.93-1 [28.3 MB]
+2026-10-08T12:27:15.6133842Z Get:41 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libnvfatbin-12-8 12.8.90-1 [743 kB]
+2026-10-08T12:27:16.1237092Z Get:42 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libnvjpeg-12-8 12.3.5.92-1 [2910 kB]
+2026-10-08T12:27:16.5845691Z Get:43 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-libraries-12-8 12.8.2-1 [2606 B]
+2026-10-08T12:27:17.0096803Z Get:44 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libnvidia-decode-570 570.211.01-0ubuntu1 [2435 kB]
+2026-10-08T12:27:17.4775548Z Get:45 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libnvidia-cfg1-570 570.211.01-0ubuntu1 [146 kB]
+2026-10-08T12:27:17.8771844Z Get:46 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  nvidia-persistenced 615.71.09-2ubuntu1 [24.4 kB]
+2026-10-08T12:27:19.1951652Z Get:47 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libnvidia-compute-570 570.211.01-0ubuntu1 [44.6 MB]
+2026-10-08T12:27:20.3721490Z Get:48 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-runtime-12-8 12.8.2-1 [2510 B]
+2026-10-08T12:27:20.9097791Z Get:49 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-cuobjdump-12-8 12.8.90-1 [208 kB]
+2026-10-08T12:27:21.3105078Z Get:50 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-cuxxfilt-12-8 12.8.90-1 [191 kB]
+2026-10-08T12:27:21.3938477Z Get:51 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-cccl-12-8 12.8.90-1 [966 kB]
+2026-10-08T12:27:21.4093074Z Get:52 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-driver-dev-12-8 12.8.90-1 [29.1 kB]
+2026-10-08T12:27:21.4148911Z Get:53 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-cudart-dev-12-8 12.8.90-1 [1257 kB]
+2026-10-08T12:27:21.4286298Z Get:54 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-nvvm-12-8 12.8.93-1 [43.8 MB]
+2026-10-08T12:27:22.3648391Z Get:55 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-crt-12-8 12.8.93-1 [81.1 kB]
+2026-10-08T12:27:22.4086559Z Get:56 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-nvcc-12-8 12.8.93-1 [36.0 MB]
+2026-10-08T12:27:23.0982124Z Get:57 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-nvprune-12-8 12.8.90-1 [60.6 kB]
+2026-10-08T12:27:23.3820519Z Get:58 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-compiler-12-8 12.8.2-1 [2510 B]
+2026-10-08T12:27:23.7374809Z Get:59 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-profiler-api-12-8 12.8.90-1 [18.6 kB]
+2026-10-08T12:27:23.7440249Z Get:60 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-nvrtc-dev-12-8 12.8.93-1 [53.1 MB]
+2026-10-08T12:27:24.6146352Z Get:61 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-opencl-dev-12-8 12.8.90-1 [89.4 kB]
+2026-10-08T12:27:24.6212539Z Get:62 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libcublas-dev-12-8 12.8.5.5-1 [487 MB]
+2026-10-08T12:27:28.8025780Z Get:63 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libcufft-dev-12-8 11.3.3.83-1 [302 MB]
+2026-10-08T12:27:32.1666610Z Get:64 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libcufile-dev-12-8 1.13.1.3-1 [2679 kB]
+2026-10-08T12:27:32.6882506Z Get:65 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libcurand-dev-12-8 10.3.9.90-1 [44.8 MB]
+2026-10-08T12:27:33.0220587Z Get:66 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libcusolver-dev-12-8 11.7.3.90-1 [103 MB]
+2026-10-08T12:27:33.6876682Z Get:67 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libcusparse-dev-12-8 12.5.8.93-1 [168 MB]
+2026-10-08T12:27:34.9103724Z Get:68 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libnpp-dev-12-8 12.3.3.100-1 [130 MB]
+2026-10-08T12:27:37.9567625Z Get:69 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libnvjitlink-dev-12-8 12.8.93-1 [26.1 MB]
+2026-10-08T12:27:38.6158277Z Get:70 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libnvfatbin-dev-12-8 12.8.90-1 [619 kB]
+2026-10-08T12:27:39.0549963Z Get:71 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  libnvjpeg-dev-12-8 12.3.5.92-1 [2612 kB]
+2026-10-08T12:27:39.6193180Z Get:72 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-libraries-dev-12-8 12.8.2-1 [2646 B]
+2026-10-08T12:27:40.2350630Z Get:73 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-cupti-12-8 12.8.90-1 [11.4 MB]
+2026-10-08T12:27:40.8599691Z Get:74 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-cupti-dev-12-8 12.8.90-1 [4075 kB]
+2026-10-08T12:27:41.4480066Z Get:75 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-nvdisasm-12-8 12.8.90-1 [5088 kB]
+2026-10-08T12:27:42.0617489Z Get:76 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-gdb-12-8 12.8.90-1 [25.1 MB]
+2026-10-08T12:27:42.8066704Z Get:77 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-nvprof-12-8 12.8.90-1 [2398 kB]
+2026-10-08T12:27:43.1937422Z Get:78 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-nvtx-12-8 12.8.90-1 [52.0 kB]
+2026-10-08T12:27:43.6403265Z Get:79 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-sanitizer-12-8 12.8.93-1 [10.3 MB]
+2026-10-08T12:27:44.0926737Z Get:80 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-command-line-tools-12-8 12.8.2-1 [2538 B]
+2026-10-08T12:27:44.3044568Z Get:81 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  nsight-compute-2025.1.1 2025.1.1.2-1 [295 MB]
+2026-10-08T12:27:47.3061290Z Get:82 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-nsight-compute-12-8 12.8.2-1 [4056 B]
+2026-10-08T12:27:47.5314923Z Get:83 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  nsight-systems-2024.6.2 2024.6.2.225-246235244400v0 [374 MB]
+2026-10-08T12:27:51.2747112Z Get:84 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-nsight-systems-12-8 12.8.2-1 [3348 B]
+2026-10-08T12:27:51.4830081Z Get:85 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-nsight-12-8 12.8.90-1 [119 MB]
+2026-10-08T12:27:52.7981625Z Get:86 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-nvml-dev-12-8 12.8.90-1 [127 kB]
+2026-10-08T12:27:53.0187124Z Get:87 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-nvvp-12-8 12.8.93-1 [115 MB]
+2026-10-08T12:27:54.5277072Z Get:88 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-visual-tools-12-8 12.8.2-1 [2938 B]
+2026-10-08T12:27:54.9447182Z Get:89 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  gds-tools-12-8 1.13.1.3-1 [39.0 MB]
+2026-10-08T12:27:55.7667571Z Get:90 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-tools-12-8 12.8.2-1 [2466 B]
+2026-10-08T12:27:56.2913381Z Get:91 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-documentation-12-8 12.8.90-1 [49.9 kB]
+2026-10-08T12:27:56.8919484Z Get:92 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-toolkit-12-8 12.8.2-1 [3384 B]
+2026-10-08T12:27:57.3814859Z Get:93 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-demo-suite-12-8 12.8.90-1 [4001 kB]
+2026-10-08T12:27:57.8820095Z Get:94 https://developer.download.nvidia.com/compute/cuda/repos/ubuntu2204/x86_64  cuda-12-8 12.8.2-1 [2518 B]
+2026-10-08T12:27:58.3945767Z Fetched 3705 MB in 57s (65.0 MB/s)
+2026-10-08T12:27:58.4207101Z Selecting previously unselected package libpcsclite1:amd64.
+2026-10-08T12:27:58.4292535Z (Reading database ... 
+2026-10-08T12:27:58.4292832Z (Reading database ... 5%
+2026-10-08T12:27:58.4293105Z (Reading database ... 10%
+2026-10-08T12:27:58.4293387Z (Reading database ... 15%
+2026-10-08T12:27:58.4293686Z (Reading database ... 20%
+2026-10-08T12:27:58.4293947Z (Reading database ... 25%
+2026-10-08T12:27:58.4294208Z (Reading database ... 30%
+2026-10-08T12:27:58.4294469Z (Reading database ... 35%
+2026-10-08T12:27:58.4294744Z (Reading database ... 40%
+2026-10-08T12:27:58.4294999Z (Reading database ... 45%
+2026-10-08T12:27:58.4295253Z (Reading database ... 50%
+2026-10-08T12:27:58.4329994Z (Reading database ... 55%
+2026-10-08T12:27:58.4361515Z (Reading database ... 60%
+2026-10-08T12:27:58.4387421Z (Reading database ... 65%
+2026-10-08T12:27:58.4499318Z (Reading database ... 70%
+2026-10-08T12:27:58.4538668Z (Reading database ... 75%
+2026-10-08T12:27:58.4599653Z (Reading database ... 80%
+2026-10-08T12:27:58.4941682Z (Reading database ... 85%
+2026-10-08T12:27:58.4960241Z (Reading database ... 90%
+2026-10-08T12:27:58.5280359Z (Reading database ... 95%
+2026-10-08T12:27:58.5280748Z (Reading database ... 100%
+2026-10-08T12:27:58.5281185Z (Reading database ... 260416 files and directories currently installed.)
+2026-10-08T12:27:58.5330559Z Preparing to unpack .../00-libpcsclite1_1.9.5-3ubuntu1_amd64.deb ...
+2026-10-08T12:27:58.5346630Z Unpacking libpcsclite1:amd64 (1.9.5-3ubuntu1) ...
+2026-10-08T12:27:58.5591574Z Selecting previously unselected package openjdk-11-jre-headless:amd64.
+2026-10-08T12:27:58.5790131Z Preparing to unpack .../01-openjdk-11-jre-headless_11.0.32.1+1-1ubuntu1~22.04_amd64.deb ...
+2026-10-08T12:27:58.5798063Z Unpacking openjdk-11-jre-headless:amd64 (11.0.32.1+1-1ubuntu1~22.04) ...
+2026-10-08T12:27:59.1934744Z Selecting previously unselected package default-jre-headless.
+2026-10-08T12:27:59.2140998Z Preparing to unpack .../02-default-jre-headless_2%3a1.11-72build2_amd64.deb ...
+2026-10-08T12:27:59.2147442Z Unpacking default-jre-headless (2:1.11-72build2) ...
+2026-10-08T12:27:59.2401424Z Selecting previously unselected package ca-certificates-java.
+2026-10-08T12:27:59.2603023Z Preparing to unpack .../03-ca-certificates-java_20190909ubuntu1.3_all.deb ...
+2026-10-08T12:27:59.2625547Z Unpacking ca-certificates-java (20190909ubuntu1.3) ...
+2026-10-08T12:27:59.2870955Z Selecting previously unselected package cuda-toolkit-config-common.
+2026-10-08T12:27:59.3072643Z Preparing to unpack .../04-cuda-toolkit-config-common_13.4.92-1_all.deb ...
+2026-10-08T12:27:59.3078773Z Unpacking cuda-toolkit-config-common (13.4.92-1) ...
+2026-10-08T12:27:59.3308583Z Selecting previously unselected package cuda-toolkit-12-config-common.
+2026-10-08T12:27:59.3511732Z Preparing to unpack .../05-cuda-toolkit-12-config-common_12.9.79-1_all.deb ...
+2026-10-08T12:27:59.3526204Z Unpacking cuda-toolkit-12-config-common (12.9.79-1) ...
+2026-10-08T12:27:59.3751155Z Selecting previously unselected package cuda-toolkit-12-8-config-common.
+2026-10-08T12:27:59.3952633Z Preparing to unpack .../06-cuda-toolkit-12-8-config-common_12.8.90-1_all.deb ...
+2026-10-08T12:27:59.3962844Z Unpacking cuda-toolkit-12-8-config-common (12.8.90-1) ...
+2026-10-08T12:27:59.4206797Z Selecting previously unselected package cuda-cudart-12-8.
+2026-10-08T12:27:59.4398890Z Preparing to unpack .../07-cuda-cudart-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:27:59.4406451Z Unpacking cuda-cudart-12-8 (12.8.90-1) ...
+2026-10-08T12:27:59.4789983Z Selecting previously unselected package cuda-nvrtc-12-8.
+2026-10-08T12:27:59.4993857Z Preparing to unpack .../08-cuda-nvrtc-12-8_12.8.93-1_amd64.deb ...
+2026-10-08T12:27:59.4999962Z Unpacking cuda-nvrtc-12-8 (12.8.93-1) ...
+2026-10-08T12:28:03.3868765Z Selecting previously unselected package cuda-opencl-12-8.
+2026-10-08T12:28:03.4072375Z Preparing to unpack .../09-cuda-opencl-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:28:03.4079173Z Unpacking cuda-opencl-12-8 (12.8.90-1) ...
+2026-10-08T12:28:03.4303820Z Selecting previously unselected package libcublas-12-8.
+2026-10-08T12:28:03.4508323Z Preparing to unpack .../10-libcublas-12-8_12.8.5.5-1_amd64.deb ...
+2026-10-08T12:28:03.4515481Z Unpacking libcublas-12-8 (12.8.5.5-1) ...
+2026-10-08T12:28:19.6817229Z Selecting previously unselected package libcufft-12-8.
+2026-10-08T12:28:19.7018783Z Preparing to unpack .../11-libcufft-12-8_11.3.3.83-1_amd64.deb ...
+2026-10-08T12:28:19.7024745Z Unpacking libcufft-12-8 (11.3.3.83-1) ...
+2026-10-08T12:28:26.7827330Z Selecting previously unselected package libcufile-12-8.
+2026-10-08T12:28:26.8030661Z Preparing to unpack .../12-libcufile-12-8_1.13.1.3-1_amd64.deb ...
+2026-10-08T12:28:26.8037372Z Unpacking libcufile-12-8 (1.13.1.3-1) ...
+2026-10-08T12:28:26.8844776Z Selecting previously unselected package libcurand-12-8.
+2026-10-08T12:28:26.9047025Z Preparing to unpack .../13-libcurand-12-8_10.3.9.90-1_amd64.deb ...
+2026-10-08T12:28:26.9053485Z Unpacking libcurand-12-8 (10.3.9.90-1) ...
+2026-10-08T12:28:28.1392482Z Selecting previously unselected package libcusolver-12-8.
+2026-10-08T12:28:28.1595235Z Preparing to unpack .../14-libcusolver-12-8_11.7.3.90-1_amd64.deb ...
+2026-10-08T12:28:28.1601927Z Unpacking libcusolver-12-8 (11.7.3.90-1) ...
+2026-10-08T12:28:38.3871718Z Selecting previously unselected package libcusparse-12-8.
+2026-10-08T12:28:38.4073794Z Preparing to unpack .../15-libcusparse-12-8_12.5.8.93-1_amd64.deb ...
+2026-10-08T12:28:38.4080720Z Unpacking libcusparse-12-8 (12.5.8.93-1) ...
+2026-10-08T12:28:49.0766887Z Selecting previously unselected package libnpp-12-8.
+2026-10-08T12:28:49.0969249Z Preparing to unpack .../16-libnpp-12-8_12.3.3.100-1_amd64.deb ...
+2026-10-08T12:28:49.0974368Z Unpacking libnpp-12-8 (12.3.3.100-1) ...
+2026-10-08T12:28:57.2381425Z Selecting previously unselected package libnvjitlink-12-8.
+2026-10-08T12:28:57.2583667Z Preparing to unpack .../17-libnvjitlink-12-8_12.8.93-1_amd64.deb ...
+2026-10-08T12:28:57.2591188Z Unpacking libnvjitlink-12-8 (12.8.93-1) ...
+2026-10-08T12:28:58.9929043Z Selecting previously unselected package libnvfatbin-12-8.
+2026-10-08T12:28:59.0134334Z Preparing to unpack .../18-libnvfatbin-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:28:59.0140311Z Unpacking libnvfatbin-12-8 (12.8.90-1) ...
+2026-10-08T12:28:59.0898931Z Selecting previously unselected package libnvjpeg-12-8.
+2026-10-08T12:28:59.1102614Z Preparing to unpack .../19-libnvjpeg-12-8_12.3.5.92-1_amd64.deb ...
+2026-10-08T12:28:59.1109887Z Unpacking libnvjpeg-12-8 (12.3.5.92-1) ...
+2026-10-08T12:28:59.3231699Z Selecting previously unselected package cuda-libraries-12-8.
+2026-10-08T12:28:59.3432746Z Preparing to unpack .../20-cuda-libraries-12-8_12.8.2-1_amd64.deb ...
+2026-10-08T12:28:59.3439571Z Unpacking cuda-libraries-12-8 (12.8.2-1) ...
+2026-10-08T12:28:59.3657619Z Selecting previously unselected package libnvidia-decode-570:amd64.
+2026-10-08T12:28:59.3859858Z Preparing to unpack .../21-libnvidia-decode-570_570.211.01-0ubuntu1_amd64.deb ...
+2026-10-08T12:28:59.3868284Z Unpacking libnvidia-decode-570:amd64 (570.211.01-0ubuntu1) ...
+2026-10-08T12:28:59.5896546Z Selecting previously unselected package libnvidia-cfg1-570:amd64.
+2026-10-08T12:28:59.6099830Z Preparing to unpack .../22-libnvidia-cfg1-570_570.211.01-0ubuntu1_amd64.deb ...
+2026-10-08T12:28:59.6136267Z Unpacking libnvidia-cfg1-570:amd64 (570.211.01-0ubuntu1) ...
+2026-10-08T12:28:59.6463579Z Selecting previously unselected package nvidia-persistenced.
+2026-10-08T12:28:59.6666325Z Preparing to unpack .../23-nvidia-persistenced_615.71.09-2ubuntu1_amd64.deb ...
+2026-10-08T12:28:59.6673215Z Unpacking nvidia-persistenced (615.71.09-2ubuntu1) ...
+2026-10-08T12:28:59.6927735Z Selecting previously unselected package libnvidia-compute-570:amd64.
+2026-10-08T12:28:59.7129166Z Preparing to unpack .../24-libnvidia-compute-570_570.211.01-0ubuntu1_amd64.deb ...
+2026-10-08T12:28:59.7136877Z Unpacking libnvidia-compute-570:amd64 (570.211.01-0ubuntu1) ...
+2026-10-08T12:29:02.9011558Z Selecting previously unselected package cuda-runtime-12-8.
+2026-10-08T12:29:02.9215141Z Preparing to unpack .../25-cuda-runtime-12-8_12.8.2-1_amd64.deb ...
+2026-10-08T12:29:02.9242153Z Unpacking cuda-runtime-12-8 (12.8.2-1) ...
+2026-10-08T12:29:02.9452461Z Selecting previously unselected package cuda-cuobjdump-12-8.
+2026-10-08T12:29:02.9653832Z Preparing to unpack .../26-cuda-cuobjdump-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:29:02.9661516Z Unpacking cuda-cuobjdump-12-8 (12.8.90-1) ...
+2026-10-08T12:29:03.0007479Z Selecting previously unselected package cuda-cuxxfilt-12-8.
+2026-10-08T12:29:03.0214985Z Preparing to unpack .../27-cuda-cuxxfilt-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:29:03.0222576Z Unpacking cuda-cuxxfilt-12-8 (12.8.90-1) ...
+2026-10-08T12:29:03.0635040Z Selecting previously unselected package cuda-cccl-12-8.
+2026-10-08T12:29:03.0837258Z Preparing to unpack .../28-cuda-cccl-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:29:03.0844077Z Unpacking cuda-cccl-12-8 (12.8.90-1) ...
+2026-10-08T12:29:03.3880061Z Selecting previously unselected package cuda-driver-dev-12-8.
+2026-10-08T12:29:03.4091006Z Preparing to unpack .../29-cuda-driver-dev-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:29:03.4098177Z Unpacking cuda-driver-dev-12-8 (12.8.90-1) ...
+2026-10-08T12:29:03.4328531Z Selecting previously unselected package cuda-cudart-dev-12-8.
+2026-10-08T12:29:03.4531868Z Preparing to unpack .../30-cuda-cudart-dev-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:29:03.4538505Z Unpacking cuda-cudart-dev-12-8 (12.8.90-1) ...
+2026-10-08T12:29:03.5732424Z Selecting previously unselected package cuda-nvvm-12-8.
+2026-10-08T12:29:03.5936877Z Preparing to unpack .../31-cuda-nvvm-12-8_12.8.93-1_amd64.deb ...
+2026-10-08T12:29:03.5943990Z Unpacking cuda-nvvm-12-8 (12.8.93-1) ...
+2026-10-08T12:29:06.3677632Z Selecting previously unselected package cuda-crt-12-8.
+2026-10-08T12:29:06.3882622Z Preparing to unpack .../32-cuda-crt-12-8_12.8.93-1_amd64.deb ...
+2026-10-08T12:29:06.3889476Z Unpacking cuda-crt-12-8 (12.8.93-1) ...
+2026-10-08T12:29:06.4197446Z Selecting previously unselected package cuda-nvcc-12-8.
+2026-10-08T12:29:06.4402316Z Preparing to unpack .../33-cuda-nvcc-12-8_12.8.93-1_amd64.deb ...
+2026-10-08T12:29:06.4409844Z Unpacking cuda-nvcc-12-8 (12.8.93-1) ...
+2026-10-08T12:29:08.7328954Z Selecting previously unselected package cuda-nvprune-12-8.
+2026-10-08T12:29:08.7536716Z Preparing to unpack .../34-cuda-nvprune-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:29:08.7543506Z Unpacking cuda-nvprune-12-8 (12.8.90-1) ...
+2026-10-08T12:29:08.7823490Z Selecting previously unselected package cuda-compiler-12-8.
+2026-10-08T12:29:08.8028519Z Preparing to unpack .../35-cuda-compiler-12-8_12.8.2-1_amd64.deb ...
+2026-10-08T12:29:08.8034903Z Unpacking cuda-compiler-12-8 (12.8.2-1) ...
+2026-10-08T12:29:08.8244808Z Selecting previously unselected package cuda-profiler-api-12-8.
+2026-10-08T12:29:08.8448923Z Preparing to unpack .../36-cuda-profiler-api-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:29:08.8456353Z Unpacking cuda-profiler-api-12-8 (12.8.90-1) ...
+2026-10-08T12:29:08.8679728Z Selecting previously unselected package cuda-nvrtc-dev-12-8.
+2026-10-08T12:29:08.8886186Z Preparing to unpack .../37-cuda-nvrtc-dev-12-8_12.8.93-1_amd64.deb ...
+2026-10-08T12:29:08.8893806Z Unpacking cuda-nvrtc-dev-12-8 (12.8.93-1) ...
+2026-10-08T12:29:12.7508958Z Selecting previously unselected package cuda-opencl-dev-12-8.
+2026-10-08T12:29:12.7714607Z Preparing to unpack .../38-cuda-opencl-dev-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:29:12.7721634Z Unpacking cuda-opencl-dev-12-8 (12.8.90-1) ...
+2026-10-08T12:29:12.8012091Z Selecting previously unselected package libcublas-dev-12-8.
+2026-10-08T12:29:12.8217288Z Preparing to unpack .../39-libcublas-dev-12-8_12.8.5.5-1_amd64.deb ...
+2026-10-08T12:29:12.8223570Z Unpacking libcublas-dev-12-8 (12.8.5.5-1) ...
+2026-10-08T12:29:33.6377073Z Selecting previously unselected package libcufft-dev-12-8.
+2026-10-08T12:29:33.6593189Z Preparing to unpack .../40-libcufft-dev-12-8_11.3.3.83-1_amd64.deb ...
+2026-10-08T12:29:33.6595607Z Unpacking libcufft-dev-12-8 (11.3.3.83-1) ...
+2026-10-08T12:29:47.8930902Z Selecting previously unselected package libcufile-dev-12-8.
+2026-10-08T12:29:47.9133285Z Preparing to unpack .../41-libcufile-dev-12-8_1.13.1.3-1_amd64.deb ...
+2026-10-08T12:29:47.9140919Z Unpacking libcufile-dev-12-8 (1.13.1.3-1) ...
+2026-10-08T12:29:48.2098365Z Selecting previously unselected package libcurand-dev-12-8.
+2026-10-08T12:29:48.2303850Z Preparing to unpack .../42-libcurand-dev-12-8_10.3.9.90-1_amd64.deb ...
+2026-10-08T12:29:48.2310835Z Unpacking libcurand-dev-12-8 (10.3.9.90-1) ...
+2026-10-08T12:29:49.4940486Z Selecting previously unselected package libcusolver-dev-12-8.
+2026-10-08T12:29:49.5142648Z Preparing to unpack .../43-libcusolver-dev-12-8_11.7.3.90-1_amd64.deb ...
+2026-10-08T12:29:49.5150161Z Unpacking libcusolver-dev-12-8 (11.7.3.90-1) ...
+2026-10-08T12:29:56.2412938Z Selecting previously unselected package libcusparse-dev-12-8.
+2026-10-08T12:29:56.2619994Z Preparing to unpack .../44-libcusparse-dev-12-8_12.5.8.93-1_amd64.deb ...
+2026-10-08T12:29:56.2627678Z Unpacking libcusparse-dev-12-8 (12.5.8.93-1) ...
+2026-10-08T12:30:07.1301673Z Selecting previously unselected package libnpp-dev-12-8.
+2026-10-08T12:30:07.1507986Z Preparing to unpack .../45-libnpp-dev-12-8_12.3.3.100-1_amd64.deb ...
+2026-10-08T12:30:07.1515688Z Unpacking libnpp-dev-12-8 (12.3.3.100-1) ...
+2026-10-08T12:30:15.2611967Z Selecting previously unselected package libnvjitlink-dev-12-8.
+2026-10-08T12:30:15.2815116Z Preparing to unpack .../46-libnvjitlink-dev-12-8_12.8.93-1_amd64.deb ...
+2026-10-08T12:30:15.2820925Z Unpacking libnvjitlink-dev-12-8 (12.8.93-1) ...
+2026-10-08T12:30:17.1831200Z Selecting previously unselected package libnvfatbin-dev-12-8.
+2026-10-08T12:30:17.2036420Z Preparing to unpack .../47-libnvfatbin-dev-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:30:17.2043478Z Unpacking libnvfatbin-dev-12-8 (12.8.90-1) ...
+2026-10-08T12:30:17.2681805Z Selecting previously unselected package libnvjpeg-dev-12-8.
+2026-10-08T12:30:17.2886040Z Preparing to unpack .../48-libnvjpeg-dev-12-8_12.3.5.92-1_amd64.deb ...
+2026-10-08T12:30:17.2892358Z Unpacking libnvjpeg-dev-12-8 (12.3.5.92-1) ...
+2026-10-08T12:30:17.4945357Z Selecting previously unselected package cuda-libraries-dev-12-8.
+2026-10-08T12:30:17.5150099Z Preparing to unpack .../49-cuda-libraries-dev-12-8_12.8.2-1_amd64.deb ...
+2026-10-08T12:30:17.5157196Z Unpacking cuda-libraries-dev-12-8 (12.8.2-1) ...
+2026-10-08T12:30:17.5369189Z Selecting previously unselected package cuda-cupti-12-8.
+2026-10-08T12:30:17.5571368Z Preparing to unpack .../50-cuda-cupti-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:30:17.5578232Z Unpacking cuda-cupti-12-8 (12.8.90-1) ...
+2026-10-08T12:30:18.6043534Z Selecting previously unselected package cuda-cupti-dev-12-8.
+2026-10-08T12:30:18.6248473Z Preparing to unpack .../51-cuda-cupti-dev-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:30:18.6254353Z Unpacking cuda-cupti-dev-12-8 (12.8.90-1) ...
+2026-10-08T12:30:18.9097480Z Selecting previously unselected package cuda-nvdisasm-12-8.
+2026-10-08T12:30:18.9305063Z Preparing to unpack .../52-cuda-nvdisasm-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:30:18.9311490Z Unpacking cuda-nvdisasm-12-8 (12.8.90-1) ...
+2026-10-08T12:30:19.0210446Z Selecting previously unselected package cuda-gdb-12-8.
+2026-10-08T12:30:19.0415232Z Preparing to unpack .../53-cuda-gdb-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:30:19.0425130Z Unpacking cuda-gdb-12-8 (12.8.90-1) ...
+2026-10-08T12:30:20.7423756Z Selecting previously unselected package cuda-nvprof-12-8.
+2026-10-08T12:30:20.7628142Z Preparing to unpack .../54-cuda-nvprof-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:30:20.7634854Z Unpacking cuda-nvprof-12-8 (12.8.90-1) ...
+2026-10-08T12:30:20.9484948Z Selecting previously unselected package cuda-nvtx-12-8.
+2026-10-08T12:30:20.9690609Z Preparing to unpack .../55-cuda-nvtx-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:30:20.9697568Z Unpacking cuda-nvtx-12-8 (12.8.90-1) ...
+2026-10-08T12:30:20.9972402Z Selecting previously unselected package cuda-sanitizer-12-8.
+2026-10-08T12:30:21.0173004Z Preparing to unpack .../56-cuda-sanitizer-12-8_12.8.93-1_amd64.deb ...
+2026-10-08T12:30:21.0180722Z Unpacking cuda-sanitizer-12-8 (12.8.93-1) ...
+2026-10-08T12:30:21.6904319Z Selecting previously unselected package cuda-command-line-tools-12-8.
+2026-10-08T12:30:21.7109626Z Preparing to unpack .../57-cuda-command-line-tools-12-8_12.8.2-1_amd64.deb ...
+2026-10-08T12:30:21.7116286Z Unpacking cuda-command-line-tools-12-8 (12.8.2-1) ...
+2026-10-08T12:30:21.7339826Z Selecting previously unselected package nsight-compute-2025.1.1.
+2026-10-08T12:30:21.7543505Z Preparing to unpack .../58-nsight-compute-2025.1.1_2025.1.1.2-1_amd64.deb ...
+2026-10-08T12:30:21.7551030Z Unpacking nsight-compute-2025.1.1 (2025.1.1.2-1) ...
+2026-10-08T12:30:40.9162117Z Selecting previously unselected package cuda-nsight-compute-12-8.
+2026-10-08T12:30:40.9372982Z Preparing to unpack .../59-cuda-nsight-compute-12-8_12.8.2-1_amd64.deb ...
+2026-10-08T12:30:40.9380856Z Unpacking cuda-nsight-compute-12-8 (12.8.2-1) ...
+2026-10-08T12:30:40.9603370Z Selecting previously unselected package libxcb-xinerama0:amd64.
+2026-10-08T12:30:40.9806555Z Preparing to unpack .../60-libxcb-xinerama0_1.14-3ubuntu3_amd64.deb ...
+2026-10-08T12:30:40.9813828Z Unpacking libxcb-xinerama0:amd64 (1.14-3ubuntu3) ...
+2026-10-08T12:30:41.0032553Z Selecting previously unselected package libxcb-icccm4:amd64.
+2026-10-08T12:30:41.0241725Z Preparing to unpack .../61-libxcb-icccm4_0.4.1-1.1build2_amd64.deb ...
+2026-10-08T12:30:41.0248521Z Unpacking libxcb-icccm4:amd64 (0.4.1-1.1build2) ...
+2026-10-08T12:30:41.0478710Z Selecting previously unselected package libxcb-util1:amd64.
+2026-10-08T12:30:41.0698873Z Preparing to unpack .../62-libxcb-util1_0.4.0-1build2_amd64.deb ...
+2026-10-08T12:30:41.0711469Z Unpacking libxcb-util1:amd64 (0.4.0-1build2) ...
+2026-10-08T12:30:41.1020625Z Selecting previously unselected package libxcb-image0:amd64.
+2026-10-08T12:30:41.1257132Z Preparing to unpack .../63-libxcb-image0_0.4.0-2_amd64.deb ...
+2026-10-08T12:30:41.1264819Z Unpacking libxcb-image0:amd64 (0.4.0-2) ...
+2026-10-08T12:30:41.1491147Z Selecting previously unselected package libxcb-keysyms1:amd64.
+2026-10-08T12:30:41.1702015Z Preparing to unpack .../64-libxcb-keysyms1_0.4.0-1build3_amd64.deb ...
+2026-10-08T12:30:41.1711464Z Unpacking libxcb-keysyms1:amd64 (0.4.0-1build3) ...
+2026-10-08T12:30:41.1942691Z Selecting previously unselected package libxcb-render-util0:amd64.
+2026-10-08T12:30:41.2153975Z Preparing to unpack .../65-libxcb-render-util0_0.3.9-1build3_amd64.deb ...
+2026-10-08T12:30:41.2159249Z Unpacking libxcb-render-util0:amd64 (0.3.9-1build3) ...
+2026-10-08T12:30:41.2391504Z Selecting previously unselected package libxcb-shape0:amd64.
+2026-10-08T12:30:41.2603618Z Preparing to unpack .../66-libxcb-shape0_1.14-3ubuntu3_amd64.deb ...
+2026-10-08T12:30:41.2611190Z Unpacking libxcb-shape0:amd64 (1.14-3ubuntu3) ...
+2026-10-08T12:30:41.2841781Z Selecting previously unselected package libxcb-xkb1:amd64.
+2026-10-08T12:30:41.3046086Z Preparing to unpack .../67-libxcb-xkb1_1.14-3ubuntu3_amd64.deb ...
+2026-10-08T12:30:41.3053487Z Unpacking libxcb-xkb1:amd64 (1.14-3ubuntu3) ...
+2026-10-08T12:30:41.3288947Z Selecting previously unselected package libxkbcommon-x11-0:amd64.
+2026-10-08T12:30:41.3493661Z Preparing to unpack .../68-libxkbcommon-x11-0_1.4.0-1_amd64.deb ...
+2026-10-08T12:30:41.3501025Z Unpacking libxkbcommon-x11-0:amd64 (1.4.0-1) ...
+2026-10-08T12:30:41.3725345Z Selecting previously unselected package libxcb-xinput0:amd64.
+2026-10-08T12:30:41.3927838Z Preparing to unpack .../69-libxcb-xinput0_1.14-3ubuntu3_amd64.deb ...
+2026-10-08T12:30:41.3935327Z Unpacking libxcb-xinput0:amd64 (1.14-3ubuntu3) ...
+2026-10-08T12:30:41.4174377Z Selecting previously unselected package libxcb-cursor0:amd64.
+2026-10-08T12:30:41.4375667Z Preparing to unpack .../70-libxcb-cursor0_0.1.1-4ubuntu1_amd64.deb ...
+2026-10-08T12:30:41.4382934Z Unpacking libxcb-cursor0:amd64 (0.1.1-4ubuntu1) ...
+2026-10-08T12:30:41.4608298Z Selecting previously unselected package libopengl0:amd64.
+2026-10-08T12:30:41.4810003Z Preparing to unpack .../71-libopengl0_1.4.0-1_amd64.deb ...
+2026-10-08T12:30:41.4820279Z Unpacking libopengl0:amd64 (1.4.0-1) ...
+2026-10-08T12:30:41.5065129Z Selecting previously unselected package libegl-mesa0:amd64.
+2026-10-08T12:30:41.5267678Z Preparing to unpack .../72-libegl-mesa0_23.2.1-1ubuntu3.1~22.04.4_amd64.deb ...
+2026-10-08T12:30:41.5275667Z Unpacking libegl-mesa0:amd64 (23.2.1-1ubuntu3.1~22.04.4) ...
+2026-10-08T12:30:41.5533241Z Selecting previously unselected package libegl1:amd64.
+2026-10-08T12:30:41.5737064Z Preparing to unpack .../73-libegl1_1.4.0-1_amd64.deb ...
+2026-10-08T12:30:41.5744863Z Unpacking libegl1:amd64 (1.4.0-1) ...
+2026-10-08T12:30:41.5980435Z Selecting previously unselected package nsight-systems-2024.6.2.
+2026-10-08T12:30:41.6184357Z Preparing to unpack .../74-nsight-systems-2024.6.2_2024.6.2.225-246235244400v0_amd64.deb ...
+2026-10-08T12:30:41.6191895Z Unpacking nsight-systems-2024.6.2 (2024.6.2.225-246235244400v0) ...
+2026-10-08T12:30:46.9562182Z Selecting previously unselected package cuda-nsight-systems-12-8.
+2026-10-08T12:30:46.9777927Z Preparing to unpack .../75-cuda-nsight-systems-12-8_12.8.2-1_amd64.deb ...
+2026-10-08T12:30:46.9784769Z Unpacking cuda-nsight-systems-12-8 (12.8.2-1) ...
+2026-10-08T12:30:47.0021438Z Selecting previously unselected package openjdk-11-jre:amd64.
+2026-10-08T12:30:47.0229917Z Preparing to unpack .../76-openjdk-11-jre_11.0.32.1+1-1ubuntu1~22.04_amd64.deb ...
+2026-10-08T12:30:47.0237536Z Unpacking openjdk-11-jre:amd64 (11.0.32.1+1-1ubuntu1~22.04) ...
+2026-10-08T12:30:47.0708404Z Selecting previously unselected package default-jre.
+2026-10-08T12:30:47.0914130Z Preparing to unpack .../77-default-jre_2%3a1.11-72build2_amd64.deb ...
+2026-10-08T12:30:47.0923516Z Unpacking default-jre (2:1.11-72build2) ...
+2026-10-08T12:30:47.1132854Z Selecting previously unselected package cuda-nsight-12-8.
+2026-10-08T12:30:47.1338462Z Preparing to unpack .../78-cuda-nsight-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:30:47.1345416Z Unpacking cuda-nsight-12-8 (12.8.90-1) ...
+2026-10-08T12:30:47.6096921Z Selecting previously unselected package cuda-nvml-dev-12-8.
+2026-10-08T12:30:47.6306807Z Preparing to unpack .../79-cuda-nvml-dev-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:30:47.6313350Z Unpacking cuda-nvml-dev-12-8 (12.8.90-1) ...
+2026-10-08T12:30:47.6673292Z Selecting previously unselected package cuda-nvvp-12-8.
+2026-10-08T12:30:47.6880738Z Preparing to unpack .../80-cuda-nvvp-12-8_12.8.93-1_amd64.deb ...
+2026-10-08T12:30:47.6888753Z Unpacking cuda-nvvp-12-8 (12.8.93-1) ...
+2026-10-08T12:30:53.5498316Z Selecting previously unselected package cuda-visual-tools-12-8.
+2026-10-08T12:30:53.5713957Z Preparing to unpack .../81-cuda-visual-tools-12-8_12.8.2-1_amd64.deb ...
+2026-10-08T12:30:53.5720793Z Unpacking cuda-visual-tools-12-8 (12.8.2-1) ...
+2026-10-08T12:30:53.6177867Z Selecting previously unselected package gds-tools-12-8.
+2026-10-08T12:30:53.6388310Z Preparing to unpack .../82-gds-tools-12-8_1.13.1.3-1_amd64.deb ...
+2026-10-08T12:30:53.6405559Z Unpacking gds-tools-12-8 (1.13.1.3-1) ...
+2026-10-08T12:30:54.3653075Z Selecting previously unselected package cuda-tools-12-8.
+2026-10-08T12:30:54.3861103Z Preparing to unpack .../83-cuda-tools-12-8_12.8.2-1_amd64.deb ...
+2026-10-08T12:30:54.3868216Z Unpacking cuda-tools-12-8 (12.8.2-1) ...
+2026-10-08T12:30:54.4079002Z Selecting previously unselected package cuda-documentation-12-8.
+2026-10-08T12:30:54.4282617Z Preparing to unpack .../84-cuda-documentation-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:30:54.4289125Z Unpacking cuda-documentation-12-8 (12.8.90-1) ...
+2026-10-08T12:30:54.4538159Z Selecting previously unselected package cuda-toolkit-12-8.
+2026-10-08T12:30:54.4742364Z Preparing to unpack .../85-cuda-toolkit-12-8_12.8.2-1_amd64.deb ...
+2026-10-08T12:30:54.4749332Z Unpacking cuda-toolkit-12-8 (12.8.2-1) ...
+2026-10-08T12:30:54.4958145Z Selecting previously unselected package cuda-demo-suite-12-8.
+2026-10-08T12:30:54.5160303Z Preparing to unpack .../86-cuda-demo-suite-12-8_12.8.90-1_amd64.deb ...
+2026-10-08T12:30:54.5165799Z Unpacking cuda-demo-suite-12-8 (12.8.90-1) ...
+2026-10-08T12:30:54.8112092Z Selecting previously unselected package cuda-12-8.
+2026-10-08T12:30:54.8322023Z Preparing to unpack .../87-cuda-12-8_12.8.2-1_amd64.deb ...
+2026-10-08T12:30:54.8328177Z Unpacking cuda-12-8 (12.8.2-1) ...
+2026-10-08T12:30:54.8575737Z Selecting previously unselected package libxv1:amd64.
+2026-10-08T12:30:54.8783760Z Preparing to unpack .../88-libxv1_2%3a1.0.11-1build2_amd64.deb ...
+2026-10-08T12:30:54.8790383Z Unpacking libxv1:amd64 (2:1.0.11-1build2) ...
+2026-10-08T12:30:54.9012836Z Selecting previously unselected package libxxf86dga1:amd64.
+2026-10-08T12:30:54.9217791Z Preparing to unpack .../89-libxxf86dga1_2%3a1.1.5-0ubuntu3_amd64.deb ...
+2026-10-08T12:30:54.9225397Z Unpacking libxxf86dga1:amd64 (2:1.1.5-0ubuntu3) ...
+2026-10-08T12:30:54.9455313Z Selecting previously unselected package x11-utils.
+2026-10-08T12:30:54.9661946Z Preparing to unpack .../90-x11-utils_7.7+5build2_amd64.deb ...
+2026-10-08T12:30:54.9670118Z Unpacking x11-utils (7.7+5build2) ...
+2026-10-08T12:30:55.0078585Z Selecting previously unselected package libatk-wrapper-java.
+2026-10-08T12:30:55.0287786Z Preparing to unpack .../91-libatk-wrapper-java_0.38.0-5build1_all.deb ...
+2026-10-08T12:30:55.0294122Z Unpacking libatk-wrapper-java (0.38.0-5build1) ...
+2026-10-08T12:30:55.0561665Z Selecting previously unselected package libatk-wrapper-java-jni:amd64.
+2026-10-08T12:30:55.0773814Z Preparing to unpack .../92-libatk-wrapper-java-jni_0.38.0-5build1_amd64.deb ...
+2026-10-08T12:30:55.0781222Z Unpacking libatk-wrapper-java-jni:amd64 (0.38.0-5build1) ...
+2026-10-08T12:30:55.1350720Z Setting up cuda-toolkit-config-common (13.4.92-1) ...
+2026-10-08T12:30:55.1465693Z Setting up cuda-nvprof-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.1482432Z Setting up libxcb-xinput0:amd64 (1.14-3ubuntu3) ...
+2026-10-08T12:30:55.1499980Z Setting up cuda-cuobjdump-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.1516991Z Setting up cuda-nvrtc-12-8 (12.8.93-1) ...
+2026-10-08T12:30:55.1535403Z Setting up cuda-sanitizer-12-8 (12.8.93-1) ...
+2026-10-08T12:30:55.1553340Z Setting up cuda-nvvm-12-8 (12.8.93-1) ...
+2026-10-08T12:30:55.1571722Z Setting up cuda-nvprune-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.1591475Z Setting up cuda-cupti-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.1608839Z Setting up libxcb-keysyms1:amd64 (0.4.0-1build3) ...
+2026-10-08T12:30:55.1628036Z Setting up libxcb-shape0:amd64 (1.14-3ubuntu3) ...
+2026-10-08T12:30:55.1646499Z Setting up libxxf86dga1:amd64 (2:1.1.5-0ubuntu3) ...
+2026-10-08T12:30:55.1664570Z Setting up cuda-nvml-dev-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.1682249Z Setting up libxcb-render-util0:amd64 (0.3.9-1build3) ...
+2026-10-08T12:30:55.1699743Z Setting up cuda-toolkit-12-8-config-common (12.8.90-1) ...
+2026-10-08T12:30:55.1722840Z Setting alternatives
+2026-10-08T12:30:55.1778155Z update-alternatives: using /usr/local/cuda-12.8 to provide /usr/local/cuda (cuda) in auto mode
+2026-10-08T12:30:55.1861809Z update-alternatives: using /usr/local/cuda-12.8 to provide /usr/local/cuda-12 (cuda-12) in auto mode
+2026-10-08T12:30:55.1908951Z Setting up libxcb-icccm4:amd64 (0.4.1-1.1build2) ...
+2026-10-08T12:30:55.1925860Z Setting up cuda-nvrtc-dev-12-8 (12.8.93-1) ...
+2026-10-08T12:30:55.1946893Z Setting up libopengl0:amd64 (1.4.0-1) ...
+2026-10-08T12:30:55.1966585Z Setting up libxcb-util1:amd64 (0.4.0-1build2) ...
+2026-10-08T12:30:55.1982829Z Setting up libxcb-xkb1:amd64 (1.14-3ubuntu3) ...
+2026-10-08T12:30:55.2000354Z Setting up libxcb-image0:amd64 (0.4.0-2) ...
+2026-10-08T12:30:55.2016815Z Setting up cuda-driver-dev-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.2036230Z Setting up cuda-documentation-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.2054144Z Setting up libegl-mesa0:amd64 (23.2.1-1ubuntu3.1~22.04.4) ...
+2026-10-08T12:30:55.2073368Z Setting up libxcb-xinerama0:amd64 (1.14-3ubuntu3) ...
+2026-10-08T12:30:55.2090785Z Setting up libxcb-cursor0:amd64 (0.1.1-4ubuntu1) ...
+2026-10-08T12:30:55.2112200Z Setting up cuda-profiler-api-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.2130801Z Setting up libnvidia-cfg1-570:amd64 (570.211.01-0ubuntu1) ...
+2026-10-08T12:30:55.2147790Z Setting up libxkbcommon-x11-0:amd64 (1.4.0-1) ...
+2026-10-08T12:30:55.2165473Z Setting up libxv1:amd64 (2:1.0.11-1build2) ...
+2026-10-08T12:30:55.2183303Z Setting up cuda-demo-suite-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.2200488Z Setting up libpcsclite1:amd64 (1.9.5-3ubuntu1) ...
+2026-10-08T12:30:55.2218069Z Setting up cuda-nvdisasm-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.2236504Z Setting up libegl1:amd64 (1.4.0-1) ...
+2026-10-08T12:30:55.2255130Z Setting up x11-utils (7.7+5build2) ...
+2026-10-08T12:30:55.2338910Z Setting up cuda-cuxxfilt-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.2357042Z Setting up cuda-nvtx-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.2374371Z Setting up libatk-wrapper-java (0.38.0-5build1) ...
+2026-10-08T12:30:55.2396881Z Setting up ca-certificates-java (20190909ubuntu1.3) ...
+2026-10-08T12:30:55.2556206Z head: cannot open '/etc/ssl/certs/java/cacerts' for reading: No such file or directory
+2026-10-08T12:30:55.5746807Z Adding debian:D-TRUST_EV_Root_CA_2_2023.pem
+2026-10-08T12:30:55.5988751Z Adding debian:D-TRUST_EV_Root_CA_1_2020.pem
+2026-10-08T12:30:55.6017032Z Adding debian:TWCA_Root_Certification_Authority.pem
+2026-10-08T12:30:55.6046454Z Adding debian:DigiCert_Global_Root_G2.pem
+2026-10-08T12:30:55.6059871Z Adding debian:Amazon_Root_CA_4.pem
+2026-10-08T12:30:55.6093118Z Adding debian:IdenTrust_Commercial_Root_CA_1.pem
+2026-10-08T12:30:55.6113061Z Adding debian:Sectigo_Public_Server_Authentication_Root_E46.pem
+2026-10-08T12:30:55.6137571Z Adding debian:ssl-cert-snakeoil.pem
+2026-10-08T12:30:55.6176615Z Adding debian:UCA_Extended_Validation_Root.pem
+2026-10-08T12:30:55.6194800Z Adding debian:HARICA_TLS_ECC_Root_CA_2021.pem
+2026-10-08T12:30:55.6226520Z Adding debian:DigiCert_Assured_ID_Root_G2.pem
+2026-10-08T12:30:55.6286762Z Adding debian:certSIGN_Root_CA_G2.pem
+2026-10-08T12:30:55.6319791Z Adding debian:NetLock_Arany_=Class_Gold=_Főtanúsítvány.pem
+2026-10-08T12:30:55.6353264Z Adding debian:ePKI_Root_Certification_Authority.pem
+2026-10-08T12:30:55.6381891Z Adding debian:TrustAsia_TLS_ECC_Root_CA.pem
+2026-10-08T12:30:55.6444756Z Adding debian:Izenpe.com.pem
+2026-10-08T12:30:55.6471373Z Adding debian:GTS_Root_R3.pem
+2026-10-08T12:30:55.6501511Z Adding debian:BJCA_Global_Root_CA1.pem
+2026-10-08T12:30:55.6550493Z Adding debian:SSL.com_Root_Certification_Authority_RSA.pem
+2026-10-08T12:30:55.6576523Z Adding debian:SSL.com_TLS_ECC_Root_CA_2022.pem
+2026-10-08T12:30:55.6608008Z Adding debian:SecureSign_Root_CA12.pem
+2026-10-08T12:30:55.6636663Z Adding debian:USERTrust_ECC_Certification_Authority.pem
+2026-10-08T12:30:55.6647194Z Adding debian:COMODO_ECC_Certification_Authority.pem
+2026-10-08T12:30:55.6674838Z Adding debian:D-TRUST_Root_Class_3_CA_2_EV_2009.pem
+2026-10-08T12:30:55.6711718Z Adding debian:GTS_Root_R1.pem
+2026-10-08T12:30:55.6748009Z Adding debian:emSign_Root_CA_-_C1.pem
+2026-10-08T12:30:55.6794399Z Adding debian:Atos_TrustedRoot_Root_CA_RSA_TLS_2021.pem
+2026-10-08T12:30:55.6807551Z Adding debian:vTrus_ECC_Root_CA.pem
+2026-10-08T12:30:55.6822602Z Adding debian:OISTE_WISeKey_Global_Root_GC_CA.pem
+2026-10-08T12:30:55.6898277Z Adding debian:ACCVRAIZ1.pem
+2026-10-08T12:30:55.6914430Z Adding debian:BJCA_Global_Root_CA2.pem
+2026-10-08T12:30:55.6936672Z Adding debian:Atos_TrustedRoot_Root_CA_ECC_TLS_2021.pem
+2026-10-08T12:30:55.6970087Z Adding debian:Buypass_Class_3_Root_CA.pem
+2026-10-08T12:30:55.7009823Z Adding debian:ISRG_Root_X1.pem
+2026-10-08T12:30:55.7048226Z Adding debian:Hellenic_Academic_and_Research_Institutions_RootCA_2015.pem
+2026-10-08T12:30:55.7076869Z Adding debian:T-TeleSec_GlobalRoot_Class_2.pem
+2026-10-08T12:30:55.7117492Z Adding debian:Go_Daddy_Root_Certificate_Authority_-_G2.pem
+2026-10-08T12:30:55.7123570Z Adding debian:emSign_ECC_Root_CA_-_G3.pem
+2026-10-08T12:30:55.7143711Z Adding debian:emSign_ECC_Root_CA_-_C3.pem
+2026-10-08T12:30:55.7180053Z Adding debian:Certum_Trusted_Network_CA_2.pem
+2026-10-08T12:30:55.7218492Z Adding debian:COMODO_RSA_Certification_Authority.pem
+2026-10-08T12:30:55.7247098Z Adding debian:Starfield_Root_Certificate_Authority_-_G2.pem
+2026-10-08T12:30:55.7283886Z Adding debian:DigiCert_Trusted_Root_G4.pem
+2026-10-08T12:30:55.7320616Z Adding debian:SSL.com_EV_Root_Certification_Authority_RSA_R2.pem
+2026-10-08T12:30:55.7362584Z Adding debian:ANF_Secure_Server_Root_CA.pem
+2026-10-08T12:30:55.7406749Z Adding debian:QuoVadis_Root_CA_3_G3.pem
+2026-10-08T12:30:55.7419823Z Adding debian:T-TeleSec_GlobalRoot_Class_3.pem
+2026-10-08T12:30:55.7441839Z Adding debian:emSign_Root_CA_-_G1.pem
+2026-10-08T12:30:55.7480181Z Adding debian:Hongkong_Post_Root_CA_3.pem
+2026-10-08T12:30:55.7493457Z Adding debian:Certum_EC-384_CA.pem
+2026-10-08T12:30:55.7527616Z Adding debian:GDCA_TrustAUTH_R5_ROOT.pem
+2026-10-08T12:30:55.7562784Z Adding debian:D-TRUST_BR_Root_CA_2_2023.pem
+2026-10-08T12:30:55.7590012Z Adding debian:Starfield_Services_Root_Certificate_Authority_-_G2.pem
+2026-10-08T12:30:55.7623128Z Adding debian:UCA_Global_G2_Root.pem
+2026-10-08T12:30:55.7646992Z Adding debian:Microsec_e-Szigno_Root_CA_2009.pem
+2026-10-08T12:30:55.7682074Z Adding debian:Actalis_Authentication_Root_CA.pem
+2026-10-08T12:30:55.7715345Z Adding debian:GlobalSign_Root_CA_-_R6.pem
+2026-10-08T12:30:55.7744348Z Adding debian:Amazon_Root_CA_2.pem
+2026-10-08T12:30:55.7762723Z Adding debian:SSL.com_EV_Root_Certification_Authority_ECC.pem
+2026-10-08T12:30:55.7781084Z Adding debian:e-Szigno_Root_CA_2017.pem
+2026-10-08T12:30:55.7794523Z Adding debian:GlobalSign_ECC_Root_CA_-_R4.pem
+2026-10-08T12:30:55.7888298Z Adding debian:Entrust_Root_Certification_Authority.pem
+2026-10-08T12:30:55.7889043Z Adding debian:SSL.com_TLS_RSA_Root_CA_2022.pem
+2026-10-08T12:30:55.7920716Z Adding debian:Amazon_Root_CA_1.pem
+2026-10-08T12:30:55.7972017Z Adding debian:IdenTrust_Public_Sector_Root_CA_1.pem
+2026-10-08T12:30:55.7991694Z Adding debian:TunTrust_Root_CA.pem
+2026-10-08T12:30:55.8020897Z Adding debian:Certainly_Root_R1.pem
+2026-10-08T12:30:55.8040994Z Adding debian:Certainly_Root_E1.pem
+2026-10-08T12:30:55.8077834Z Adding debian:GlobalSign_Root_CA_-_R3.pem
+2026-10-08T12:30:55.8107845Z Adding debian:Certigna_Root_CA.pem
+2026-10-08T12:30:55.8139832Z Adding debian:HARICA_TLS_RSA_Root_CA_2021.pem
+2026-10-08T12:30:55.8166593Z Adding debian:OISTE_WISeKey_Global_Root_GB_CA.pem
+2026-10-08T12:30:55.8221033Z Adding debian:Atos_TrustedRoot_2011.pem
+2026-10-08T12:30:55.8248756Z Adding debian:Telekom_Security_TLS_ECC_Root_2020.pem
+2026-10-08T12:30:55.8251868Z Adding debian:vTrus_Root_CA.pem
+2026-10-08T12:30:55.8277060Z Adding debian:Security_Communication_ECC_RootCA1.pem
+2026-10-08T12:30:55.8327877Z Adding debian:SwissSign_RSA_TLS_Root_CA_2022_-_1.pem
+2026-10-08T12:30:55.8338965Z Adding debian:OISTE_Server_Root_RSA_G1.pem
+2026-10-08T12:30:55.8378493Z Adding debian:TUBITAK_Kamu_SM_SSL_Kok_Sertifikasi_-_Surum_1.pem
+2026-10-08T12:30:55.8391364Z Adding debian:Security_Communication_RootCA2.pem
+2026-10-08T12:30:55.8427281Z Adding debian:TWCA_CYBER_Root_CA.pem
+2026-10-08T12:30:55.8439151Z Adding debian:TrustAsia_Global_Root_CA_G4.pem
+2026-10-08T12:30:55.8471975Z Adding debian:Telia_Root_CA_v2.pem
+2026-10-08T12:30:55.8494134Z Adding debian:SZAFIR_ROOT_CA2.pem
+2026-10-08T12:30:55.8521138Z Adding debian:GlobalSign_Root_E46.pem
+2026-10-08T12:30:55.8555525Z Adding debian:Buypass_Class_2_Root_CA.pem
+2026-10-08T12:30:55.8571167Z Adding debian:DigiCert_Global_Root_G3.pem
+2026-10-08T12:30:55.8596956Z Adding debian:Sectigo_Public_Server_Authentication_Root_R46.pem
+2026-10-08T12:30:55.8646600Z Adding debian:CA_Disig_Root_R2.pem
+2026-10-08T12:30:55.8657243Z Adding debian:D-TRUST_Root_Class_3_CA_2_2009.pem
+2026-10-08T12:30:55.8665796Z Adding debian:Hellenic_Academic_and_Research_Institutions_ECC_RootCA_2015.pem
+2026-10-08T12:30:55.8695217Z Adding debian:QuoVadis_Root_CA_1_G3.pem
+2026-10-08T12:30:55.8709552Z Adding debian:SecureSign_Root_CA15.pem
+2026-10-08T12:30:55.8724699Z Adding debian:e-Szigno_TLS_Root_CA_2023.pem
+2026-10-08T12:30:55.8757142Z Adding debian:DigiCert_TLS_RSA4096_Root_G5.pem
+2026-10-08T12:30:55.8787814Z Adding debian:AC_RAIZ_FNMT-RCM.pem
+2026-10-08T12:30:55.8801047Z Adding debian:DigiCert_Assured_ID_Root_G3.pem
+2026-10-08T12:30:55.8814511Z Adding debian:AC_RAIZ_FNMT-RCM_SERVIDORES_SEGUROS.pem
+2026-10-08T12:30:55.8841379Z Adding debian:QuoVadis_Root_CA_2_G3.pem
+2026-10-08T12:30:55.8866815Z Adding debian:TWCA_Global_Root_CA.pem
+2026-10-08T12:30:55.8895518Z Adding debian:USERTrust_RSA_Certification_Authority.pem
+2026-10-08T12:30:55.8910860Z Adding debian:GlobalSign_ECC_Root_CA_-_R5.pem
+2026-10-08T12:30:55.8944118Z Adding debian:TrustAsia_TLS_RSA_Root_CA.pem
+2026-10-08T12:30:55.8968791Z Adding debian:SecureSign_Root_CA14.pem
+2026-10-08T12:30:55.8981618Z Adding debian:OISTE_Server_Root_ECC_G1.pem
+2026-10-08T12:30:55.9007125Z Adding debian:Microsoft_RSA_Root_Certificate_Authority_2017.pem
+2026-10-08T12:30:55.9019405Z Adding debian:ISRG_Root_X2.pem
+2026-10-08T12:30:55.9040350Z Adding debian:D-TRUST_BR_Root_CA_1_2020.pem
+2026-10-08T12:30:55.9054632Z Adding debian:SSL.com_Root_Certification_Authority_ECC.pem
+2026-10-08T12:30:55.9083677Z Adding debian:Autoridad_de_Certificacion_Firmaprofesional_CIF_A62634068.pem
+2026-10-08T12:30:55.9114459Z Adding debian:TrustAsia_Global_Root_CA_G3.pem
+2026-10-08T12:30:55.9122993Z Adding debian:GTS_Root_R4.pem
+2026-10-08T12:30:55.9156675Z Adding debian:CFCA_EV_ROOT.pem
+2026-10-08T12:30:55.9168716Z Adding debian:Microsoft_ECC_Root_Certificate_Authority_2017.pem
+2026-10-08T12:30:55.9181827Z Adding debian:Amazon_Root_CA_3.pem
+2026-10-08T12:30:55.9215750Z Adding debian:HiPKI_Root_CA_-_G1.pem
+2026-10-08T12:30:55.9234270Z Adding debian:NAVER_Global_Root_Certification_Authority.pem
+2026-10-08T12:30:55.9259207Z Adding debian:DigiCert_TLS_ECC_P384_Root_G5.pem
+2026-10-08T12:30:55.9274988Z Adding debian:GlobalSign_Root_R46.pem
+2026-10-08T12:30:55.9301382Z Adding debian:Telekom_Security_TLS_RSA_Root_2023.pem
+2026-10-08T12:30:55.9326261Z Adding debian:Certum_Trusted_Root_CA.pem
+2026-10-08T12:30:55.9343812Z Adding debian:Certum_Trusted_Network_CA.pem
+2026-10-08T12:30:55.9617320Z done.
+2026-10-08T12:30:55.9643060Z Setting up cuda-cccl-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.9662220Z Setting up cuda-toolkit-12-config-common (12.9.79-1) ...
+2026-10-08T12:30:55.9731959Z Setting up cuda-cudart-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.9752900Z Setting up cuda-cupti-dev-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.9770951Z Setting up cuda-cudart-dev-12-8 (12.8.90-1) ...
+2026-10-08T12:30:55.9788855Z Setting up gds-tools-12-8 (1.13.1.3-1) ...
+2026-10-08T12:30:55.9807887Z Setting up nsight-compute-2025.1.1 (2025.1.1.2-1) ...
+2026-10-08T12:30:55.9826373Z Setting up cuda-crt-12-8 (12.8.93-1) ...
+2026-10-08T12:30:55.9844488Z Setting up libcufft-12-8 (11.3.3.83-1) ...
+2026-10-08T12:30:55.9861650Z Setting up libcublas-12-8 (12.8.5.5-1) ...
+2026-10-08T12:30:55.9880089Z Setting up libcusparse-12-8 (12.5.8.93-1) ...
+2026-10-08T12:30:55.9898797Z Setting up nvidia-persistenced (615.71.09-2ubuntu1) ...
+2026-10-08T12:30:56.0369637Z Warning: The home dir /var/run/nvidia-persistenced/ you specified can't be accessed: No such file or directory
+2026-10-08T12:30:56.0405828Z Adding system user `nvidia-persistenced' (UID 118) ...
+2026-10-08T12:30:56.0411966Z Adding new group `nvidia-persistenced' (GID 128) ...
+2026-10-08T12:30:56.0501733Z Adding new user `nvidia-persistenced' (UID 118) with group `nvidia-persistenced' ...
+2026-10-08T12:30:56.0854364Z Not creating home directory `/var/run/nvidia-persistenced/'.
+2026-10-08T12:30:56.2059850Z Created symlink /etc/systemd/system/multi-user.target.wants/nvidia-persistenced.service → /lib/systemd/system/nvidia-persistenced.service.
+2026-10-08T12:30:56.7072151Z Could not execute systemctl:  at /usr/bin/deb-systemd-invoke line 142.
+2026-10-08T12:30:56.7087896Z Setting up libnvjitlink-12-8 (12.8.93-1) ...
+2026-10-08T12:30:56.7108906Z Setting up libcurand-12-8 (10.3.9.90-1) ...
+2026-10-08T12:30:56.7127145Z Setting up libcufft-dev-12-8 (11.3.3.83-1) ...
+2026-10-08T12:30:56.7145432Z Setting up libnpp-12-8 (12.3.3.100-1) ...
+2026-10-08T12:30:56.7164151Z Setting up libnpp-dev-12-8 (12.3.3.100-1) ...
+2026-10-08T12:30:56.7182069Z Setting up cuda-opencl-12-8 (12.8.90-1) ...
+2026-10-08T12:30:56.7200574Z Setting up libatk-wrapper-java-jni:amd64 (0.38.0-5build1) ...
+2026-10-08T12:30:56.7218209Z Setting up cuda-gdb-12-8 (12.8.90-1) ...
+2026-10-08T12:30:56.7256630Z Setting up nsight-systems-2024.6.2 (2024.6.2.225-246235244400v0) ...
+2026-10-08T12:30:56.7343294Z update-alternatives: using /opt/nvidia/nsight-systems/2024.6.2/target-linux-x64/nsys to provide /usr/local/bin/nsys (nsys) in auto mode
+2026-10-08T12:30:56.7426283Z update-alternatives: using /opt/nvidia/nsight-systems/2024.6.2/host-linux-x64/nsys-ui to provide /usr/local/bin/nsys-ui (nsys-ui) in auto mode
+2026-10-08T12:30:56.7461772Z Setting up libnvjitlink-dev-12-8 (12.8.93-1) ...
+2026-10-08T12:30:56.7480565Z Setting up libcusolver-12-8 (11.7.3.90-1) ...
+2026-10-08T12:30:56.7499539Z Setting up libnvfatbin-12-8 (12.8.90-1) ...
+2026-10-08T12:30:56.7518571Z Setting up libnvjpeg-12-8 (12.3.5.92-1) ...
+2026-10-08T12:30:56.7538422Z Setting up cuda-nsight-systems-12-8 (12.8.2-1) ...
+2026-10-08T12:30:56.7559199Z Setting up libcurand-dev-12-8 (10.3.9.90-1) ...
+2026-10-08T12:30:56.7577664Z Setting up libcusolver-dev-12-8 (11.7.3.90-1) ...
+2026-10-08T12:30:56.7595134Z Setting up cuda-nsight-compute-12-8 (12.8.2-1) ...
+2026-10-08T12:30:56.7613347Z Setting up libcufile-12-8 (1.13.1.3-1) ...
+2026-10-08T12:30:56.7641249Z Setting alternatives
+2026-10-08T12:30:56.7696207Z update-alternatives: using /usr/local/cuda-12.8/gds/cufile.json to provide /etc/cufile.json (cufile.json) in auto mode
+2026-10-08T12:30:56.7744065Z Setting up libcusparse-dev-12-8 (12.5.8.93-1) ...
+2026-10-08T12:30:56.7763875Z Setting up libnvfatbin-dev-12-8 (12.8.90-1) ...
+2026-10-08T12:30:56.7782205Z Setting up libcublas-dev-12-8 (12.8.5.5-1) ...
+2026-10-08T12:30:56.7800419Z Setting up cuda-nvcc-12-8 (12.8.93-1) ...
+2026-10-08T12:30:56.7818905Z Setting up libnvjpeg-dev-12-8 (12.3.5.92-1) ...
+2026-10-08T12:30:56.7836892Z Setting up libcufile-dev-12-8 (1.13.1.3-1) ...
+2026-10-08T12:30:56.7853868Z Setting up cuda-opencl-dev-12-8 (12.8.90-1) ...
+2026-10-08T12:30:56.7878413Z Setting up cuda-command-line-tools-12-8 (12.8.2-1) ...
+2026-10-08T12:30:56.7900710Z Setting up cuda-compiler-12-8 (12.8.2-1) ...
+2026-10-08T12:30:56.7919523Z Setting up cuda-libraries-dev-12-8 (12.8.2-1) ...
+2026-10-08T12:30:56.8190048Z Setting up cuda-libraries-12-8 (12.8.2-1) ...
+2026-10-08T12:30:56.8254433Z Setting up default-jre-headless (2:1.11-72build2) ...
+2026-10-08T12:30:56.8279223Z Setting up openjdk-11-jre-headless:amd64 (11.0.32.1+1-1ubuntu1~22.04) ...
+2026-10-08T12:30:57.2698997Z Setting up openjdk-11-jre:amd64 (11.0.32.1+1-1ubuntu1~22.04) ...
+2026-10-08T12:30:57.2792080Z Setting up default-jre (2:1.11-72build2) ...
+2026-10-08T12:30:57.2820144Z Setting up cuda-nvvp-12-8 (12.8.93-1) ...
+2026-10-08T12:30:57.2846274Z Setting up libnvidia-compute-570:amd64 (570.211.01-0ubuntu1) ...
+2026-10-08T12:30:57.2908691Z Setting up libnvidia-decode-570:amd64 (570.211.01-0ubuntu1) ...
+2026-10-08T12:30:57.2935291Z Setting up cuda-nsight-12-8 (12.8.90-1) ...
+2026-10-08T12:30:57.2970434Z Setting up cuda-runtime-12-8 (12.8.2-1) ...
+2026-10-08T12:30:57.2999378Z Setting up cuda-visual-tools-12-8 (12.8.2-1) ...
+2026-10-08T12:30:57.3070614Z Setting up cuda-tools-12-8 (12.8.2-1) ...
+2026-10-08T12:30:57.3103709Z Setting up cuda-toolkit-12-8 (12.8.2-1) ...
+2026-10-08T12:30:57.3135035Z Setting up cuda-12-8 (12.8.2-1) ...
+2026-10-08T12:30:57.3157865Z Processing triggers for man-db (2.10.2-1) ...
+2026-10-08T12:30:57.3178357Z Not building database; man-db/auto-update is not 'true'.
+2026-10-08T12:30:57.3190837Z Processing triggers for ca-certificates (20260601~22.04.1) ...
+2026-10-08T12:30:57.3245706Z Updating certificates in /etc/ssl/certs...
+2026-10-08T12:30:57.8653233Z 0 added, 0 removed; done.
+2026-10-08T12:30:57.8653604Z Running hooks in /etc/ca-certificates/update.d...
+2026-10-08T12:30:57.9266350Z /etc/ssl/certs/adoptium/cacerts successfully populated.
+2026-10-08T12:30:57.9290343Z 
+2026-10-08T12:30:58.1532551Z done.
+2026-10-08T12:30:58.1545054Z Updating Mono key store
+2026-10-08T12:30:58.1809277Z Mono Certificate Store Sync - version 6.12.0.200
+2026-10-08T12:30:58.1809881Z Populate Mono certificate store from a concatenated list of certificates.
+2026-10-08T12:30:58.1810589Z Copyright 2002, 2003 Motus Technologies. Copyright 2004-2008 Novell. BSD licensed.
+2026-10-08T12:30:58.1811121Z 
+2026-10-08T12:30:58.2191655Z Importing into legacy system store:
+2026-10-08T12:30:58.3541475Z I already trust 121, your new list has 121
+2026-10-08T12:30:58.3598128Z Import process completed.
+2026-10-08T12:30:58.3613162Z 
+2026-10-08T12:30:58.3613366Z Importing into BTLS system store:
+2026-10-08T12:30:58.5042792Z I already trust 121, your new list has 121
+2026-10-08T12:30:58.5069555Z Import process completed.
+2026-10-08T12:30:58.5216297Z Done
+2026-10-08T12:30:58.5219555Z done.
+2026-10-08T12:30:58.5271146Z Processing triggers for mailcap (3.70+nmu1ubuntu1.22.04.1) ...
+2026-10-08T12:30:58.5549490Z Processing triggers for hicolor-icon-theme (0.17-2) ...
+2026-10-08T12:30:58.7268871Z Processing triggers for libc-bin (2.35-0ubuntu3.15) ...
+2026-10-08T12:30:59.5123392Z 
+2026-10-08T12:30:59.5123941Z Running kernel seems to be up-to-date.
+2026-10-08T12:30:59.5126542Z 
+2026-10-08T12:30:59.5127180Z No services need to be restarted.
+2026-10-08T12:30:59.5127577Z 
+2026-10-08T12:30:59.5127786Z No containers need to be restarted.
+2026-10-08T12:30:59.5128182Z 
+2026-10-08T12:30:59.5128447Z No user sessions are running outdated binaries.
+2026-10-08T12:30:59.5128911Z 
+2026-10-08T12:30:59.5129359Z No VM guests are running outdated hypervisor (qemu) binaries on this host.
+2026-10-08T12:31:01.1358638Z ##[group]Run astral-sh/setup-uv@v5
+2026-10-08T12:31:01.1358930Z with:
+2026-10-08T12:31:01.1359133Z   python-version: 3.12
+2026-10-08T12:31:01.1361574Z   github-token: ***
+2026-10-08T12:31:01.1361789Z   enable-cache: auto
+2026-10-08T12:31:01.1362062Z   cache-dependency-glob: **/uv.lock
+**/requirements*.txt
+
+2026-10-08T12:31:01.1362390Z   prune-cache: true
+2026-10-08T12:31:01.1362608Z   ignore-nothing-to-cache: false
+2026-10-08T12:31:01.1362882Z   ignore-empty-workdir: false
+2026-10-08T12:31:01.1363111Z env:
+2026-10-08T12:31:01.1363302Z   TORCH_CUDA_ARCH_LIST: 12.0
+2026-10-08T12:31:01.1363549Z   CUDA_PATH: /usr/local/cuda-12.8
+2026-10-08T12:31:01.1363806Z   CUDA_PATH_V12_8: /usr/local/cuda-12.8
+2026-10-08T12:31:01.1364074Z   CUDA_PATH_VX_Y: CUDA_PATH_V12_8
+2026-10-08T12:31:01.1364345Z   LD_LIBRARY_PATH: /usr/local/cuda-12.8/lib64:
+2026-10-08T12:31:01.1364622Z ##[endgroup]
+2026-10-08T12:31:01.3406765Z (node:5611) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-08T12:31:01.3407983Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-08T12:31:01.7574528Z Downloading uv from "https://github.com/astral-sh/uv/releases/download/0.12.23/uv-x86_64-unknown-linux-gnu.tar.gz" ...
+2026-10-08T12:31:02.1646709Z [command]/usr/bin/tar xz --warning=no-unknown-keyword --overwrite -C /home/runner/work/_temp/0ac1292b-7bcd-4302-a784-92dea68380b5 -f /home/runner/work/_temp/9106656f-1916-4fcb-baad-db85b5ee04e6
+2026-10-08T12:31:02.5448981Z Added /home/runner/.local/bin to the path
+2026-10-08T12:31:02.5452327Z Added /opt/hostedtoolcache/uv/0.12.23/x86_64 to the path
+2026-10-08T12:31:02.5454814Z Set UV_PYTHON to 3.12
+2026-10-08T12:31:02.5455422Z Activating python venv...
+2026-10-08T12:31:03.7036262Z Set UV_CACHE_DIR to /home/runner/work/_temp/setup-uv-cache
+2026-10-08T12:31:03.7036955Z Successfully installed uv version 0.12.23
+2026-10-08T12:31:03.7037730Z Searching files using cache dependency glob: **/uv.lock,**/requirements*.txt
+2026-10-08T12:31:03.7893185Z /home/runner/work/exllamav3/exllamav3/requirements.txt
+2026-10-08T12:31:03.7911399Z /home/runner/work/exllamav3/exllamav3/requirements_eval.txt
+2026-10-08T12:31:03.7940755Z /home/runner/work/exllamav3/exllamav3/requirements_examples.txt
+2026-10-08T12:31:03.7949324Z /home/runner/work/exllamav3/exllamav3/requirements_sam.txt
+2026-10-08T12:31:03.8056103Z Found 4 files to hash.
+2026-10-08T12:31:03.8131852Z Trying to restore uv cache from GitHub Actions cache with key: setup-uv-1-x86_64-unknown-linux-gnu-3.12-326c564ee1d686a8946de645cfdbb6b1e914ab0387989656a1ceffaf13736ccb
+2026-10-08T12:31:04.0353824Z Cache hit for: setup-uv-1-x86_64-unknown-linux-gnu-3.12-326c564ee1d686a8946de645cfdbb6b1e914ab0387989656a1ceffaf13736ccb
+2026-10-08T12:31:04.0472119Z (node:5611) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-08T12:31:04.9533725Z Received 4170939 of 4170939 (100.0%), 5.6 MBs/sec
+2026-10-08T12:31:04.9534450Z Cache Size: ~4 MB (4170939 B)
+2026-10-08T12:31:04.9654517Z [command]/usr/bin/tar -xf /home/runner/work/_temp/daa99e87-ef48-474c-b954-9a109faa2a1b/cache.tzst -P -C /home/runner/work/exllamav3/exllamav3 --use-compress-program unzstd
+2026-10-08T12:31:04.9974421Z Cache restored successfully
+2026-10-08T12:31:04.9989375Z uv cache restored from GitHub Actions cache with key: setup-uv-1-x86_64-unknown-linux-gnu-3.12-326c564ee1d686a8946de645cfdbb6b1e914ab0387989656a1ceffaf13736ccb
+2026-10-08T12:31:05.0144366Z ##[group]Run uv pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cu128
+2026-10-08T12:31:05.0145017Z [36;1muv pip install torch==2.11.0 --index-url https://download.pytorch.org/whl/cu128[0m
+2026-10-08T12:31:05.0145598Z [36;1m# Same pins as build.yml, plus pytest and the runtime requirements the import needs,[0m
+2026-10-08T12:31:05.0146416Z [36;1m# so the wheel can be installed with --no-deps and nothing is resolved from PyPI[0m
+2026-10-08T12:31:05.0147004Z [36;1muv pip install --upgrade pip build "setuptools==84.0.0" wheel packaging ninja pytest \[0m
+2026-10-08T12:31:05.0147598Z [36;1m  "safetensors>=0.3.2" tokenizers "numpy>=2.1.0" rich typing_extensions pillow pyyaml \[0m
+2026-10-08T12:31:05.0148060Z [36;1m  marisa_trie pydantic "llguidance>=1.7.0"[0m
+2026-10-08T12:31:05.0217356Z shell: /usr/bin/bash -e {0}
+2026-10-08T12:31:05.0217615Z env:
+2026-10-08T12:31:05.0217812Z   TORCH_CUDA_ARCH_LIST: 12.0
+2026-10-08T12:31:05.0218098Z   CUDA_PATH: /usr/local/cuda-12.8
+2026-10-08T12:31:05.0218363Z   CUDA_PATH_V12_8: /usr/local/cuda-12.8
+2026-10-08T12:31:05.0218636Z   CUDA_PATH_VX_Y: CUDA_PATH_V12_8
+2026-10-08T12:31:05.0218912Z   LD_LIBRARY_PATH: /usr/local/cuda-12.8/lib64:
+2026-10-08T12:31:05.0219190Z   UV_PYTHON: 3.12
+2026-10-08T12:31:05.0219454Z   VIRTUAL_ENV: /home/runner/work/exllamav3/exllamav3/.venv
+2026-10-08T12:31:05.0219834Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+2026-10-08T12:31:05.0220138Z ##[endgroup]
+2026-10-08T12:31:06.0306843Z Resolved 29 packages in 853ms
+2026-10-08T12:31:06.0400625Z Downloading setuptools (1.2MiB)
+2026-10-08T12:31:06.0422253Z Downloading networkx (2.0MiB)
+2026-10-08T12:31:06.0422770Z Downloading sympy (6.0MiB)
+2026-10-08T12:31:06.0450785Z Downloading nvidia-nvjitlink-cu12 (37.4MiB)
+2026-10-08T12:31:06.0477001Z Downloading cuda-bindings (7.3MiB)
+2026-10-08T12:31:06.0546556Z Downloading nvidia-cusparse-cu12 (274.9MiB)
+2026-10-08T12:31:06.0565431Z Downloading torch (782.3MiB)
+2026-10-08T12:31:06.0644884Z Downloading nvidia-cuda-cupti-cu12 (9.8MiB)
+2026-10-08T12:31:06.0709333Z Downloading nvidia-cudnn-cu12 (627.4MiB)
+2026-10-08T12:31:06.0726544Z Downloading nvidia-cusparselt-cu12 (273.9MiB)
+2026-10-08T12:31:06.0774722Z Downloading triton (179.6MiB)
+2026-10-08T12:31:06.0927188Z Downloading nvidia-nvshmem-cu12 (132.7MiB)
+2026-10-08T12:31:06.0928196Z Downloading nvidia-curand-cu12 (60.7MiB)
+2026-10-08T12:31:06.0928942Z Downloading nvidia-nccl-cu12 (283.0MiB)
+2026-10-08T12:31:06.0971870Z Downloading nvidia-cusolver-cu12 (255.1MiB)
+2026-10-08T12:31:06.1005333Z Downloading nvidia-cublas-cu12 (566.8MiB)
+2026-10-08T12:31:06.1086687Z Downloading nvidia-cufft-cu12 (184.2MiB)
+2026-10-08T12:31:06.1126784Z Downloading nvidia-cuda-nvrtc-cu12 (84.0MiB)
+2026-10-08T12:31:06.1149188Z  Downloaded setuptools
+2026-10-08T12:31:06.1165698Z Downloading nvidia-cufile-cu12 (1.1MiB)
+2026-10-08T12:31:06.2127828Z  Downloaded nvidia-cufile-cu12
+2026-10-08T12:31:06.2271577Z  Downloaded networkx
+2026-10-08T12:31:06.3887501Z  Downloaded sympy
+2026-10-08T12:31:06.4686230Z  Downloaded cuda-bindings
+2026-10-08T12:31:06.9737028Z  Downloaded nvidia-cuda-cupti-cu12
+2026-10-08T12:31:07.6264919Z  Downloaded nvidia-nvjitlink-cu12
+2026-10-08T12:31:08.3770347Z  Downloaded nvidia-curand-cu12
+2026-10-08T12:31:10.3876968Z  Downloaded triton
+2026-10-08T12:31:10.7233318Z  Downloaded nvidia-nvshmem-cu12
+2026-10-08T12:31:11.1438058Z  Downloaded nvidia-cuda-nvrtc-cu12
+2026-10-08T12:31:14.5248344Z  Downloaded nvidia-cufft-cu12
+2026-10-08T12:31:15.2465289Z  Downloaded nvidia-cusparse-cu12
+2026-10-08T12:31:15.3080139Z  Downloaded nvidia-nccl-cu12
+2026-10-08T12:31:15.9709100Z  Downloaded nvidia-cusparselt-cu12
+2026-10-08T12:31:17.7324030Z  Downloaded nvidia-cusolver-cu12
+2026-10-08T12:31:18.6171636Z  Downloaded torch
+2026-10-08T12:31:19.3142970Z  Downloaded nvidia-cublas-cu12
+2026-10-08T12:31:19.8006478Z  Downloaded nvidia-cudnn-cu12
+2026-10-08T12:31:20.1646535Z Prepared 29 packages in 14.13s
+2026-10-08T12:31:20.8677141Z Installed 29 packages in 702ms
+2026-10-08T12:31:20.8678256Z  + cuda-bindings==12.9.7
+2026-10-08T12:31:20.8678891Z  + cuda-pathfinder==1.6.0
+2026-10-08T12:31:20.8679424Z  + cuda-toolkit==12.8.1
+2026-10-08T12:31:20.8679959Z  + filelock==3.32.3
+2026-10-08T12:31:20.8680422Z  + fsspec==2026.7.0
+2026-10-08T12:31:20.8680921Z  + jinja2==3.1.6
+2026-10-08T12:31:20.8681385Z  + markupsafe==3.0.3
+2026-10-08T12:31:20.8681903Z  + mpmath==1.3.0
+2026-10-08T12:31:20.8682356Z  + networkx==3.6.1
+2026-10-08T12:31:20.8682888Z  + nvidia-cublas-cu12==12.8.4.1
+2026-10-08T12:31:20.8683487Z  + nvidia-cuda-cupti-cu12==12.8.90
+2026-10-08T12:31:20.8684098Z  + nvidia-cuda-nvrtc-cu12==12.8.93
+2026-10-08T12:31:20.8684630Z  + nvidia-cuda-runtime-cu12==12.8.90
+2026-10-08T12:31:20.8685221Z  + nvidia-cudnn-cu12==9.19.0.56
+2026-10-08T12:31:20.8685726Z  + nvidia-cufft-cu12==11.3.3.83
+2026-10-08T12:31:20.8686550Z  + nvidia-cufile-cu12==1.13.1.3
+2026-10-08T12:31:20.8687101Z  + nvidia-curand-cu12==10.3.9.90
+2026-10-08T12:31:20.8687681Z  + nvidia-cusolver-cu12==11.7.3.90
+2026-10-08T12:31:20.8688216Z  + nvidia-cusparse-cu12==12.5.8.93
+2026-10-08T12:31:20.8688785Z  + nvidia-cusparselt-cu12==0.7.1
+2026-10-08T12:31:20.8689296Z  + nvidia-nccl-cu12==2.28.9
+2026-10-08T12:31:20.8689834Z  + nvidia-nvjitlink-cu12==12.8.93
+2026-10-08T12:31:20.8690353Z  + nvidia-nvshmem-cu12==3.4.5
+2026-10-08T12:31:20.8690894Z  + nvidia-nvtx-cu12==12.8.90
+2026-10-08T12:31:20.8691368Z  + setuptools==78.1.0
+2026-10-08T12:31:20.8691839Z  + sympy==1.14.0
+2026-10-08T12:31:20.8692261Z  + torch==2.11.0+cu128
+2026-10-08T12:31:20.8692942Z  + triton==3.6.0
+2026-10-08T12:31:20.8693339Z  + typing-extensions==4.16.0
+2026-10-08T12:31:21.6272639Z Resolved 38 packages in 410ms
+2026-10-08T12:31:21.6403405Z Downloading hf-xet (4.0MiB)
+2026-10-08T12:31:21.6404504Z Downloading llguidance (2.9MiB)
+2026-10-08T12:31:21.6446579Z Downloading marisa-trie (1.4MiB)
+2026-10-08T12:31:21.6455441Z Downloading tokenizers (3.2MiB)
+2026-10-08T12:31:21.6456443Z Downloading numpy (15.9MiB)
+2026-10-08T12:31:21.6456965Z Downloading pillow (6.6MiB)
+2026-10-08T12:31:21.6459173Z Downloading pip (1.7MiB)
+2026-10-08T12:31:21.6465325Z Downloading pydantic-core (2.0MiB)
+2026-10-08T12:31:21.6467567Z Downloading pygments (1.2MiB)
+2026-10-08T12:31:21.8316754Z  Downloaded marisa-trie
+2026-10-08T12:31:21.9202508Z  Downloaded tokenizers
+2026-10-08T12:31:21.9257374Z  Downloaded pydantic-core
+2026-10-08T12:31:21.9286513Z  Downloaded llguidance
+2026-10-08T12:31:21.9288244Z  Downloaded hf-xet
+2026-10-08T12:31:21.9295807Z  Downloaded pygments
+2026-10-08T12:31:21.9757897Z  Downloaded pip
+2026-10-08T12:31:22.0130189Z  Downloaded pillow
+2026-10-08T12:31:22.1158537Z  Downloaded numpy
+2026-10-08T12:31:22.2203228Z Prepared 37 packages in 592ms
+2026-10-08T12:31:22.4385713Z Uninstalled 3 packages in 218ms
+2026-10-08T12:31:22.6642211Z Installed 37 packages in 223ms
+2026-10-08T12:31:22.6642990Z  + annotated-types==0.8.0
+2026-10-08T12:31:22.6643557Z  + anyio==4.15.1
+2026-10-08T12:31:22.6644143Z  + build==1.6.1
+2026-10-08T12:31:22.6644651Z  + certifi==2026.7.22
+2026-10-08T12:31:22.6645396Z  + click==8.5.0
+2026-10-08T12:31:22.6646123Z  - filelock==3.32.3
+2026-10-08T12:31:22.6646514Z  + filelock==4.0.12
+2026-10-08T12:31:22.6646886Z  - fsspec==2026.7.0
+2026-10-08T12:31:22.6647249Z  + fsspec==2026.9.0
+2026-10-08T12:31:22.6647613Z  + h11==0.16.0
+2026-10-08T12:31:22.6647948Z  + hf-xet==1.7.0
+2026-10-08T12:31:22.6648296Z  + httpcore==1.0.9
+2026-10-08T12:31:22.6648636Z  + httpx==0.28.1
+2026-10-08T12:31:22.6648994Z  + huggingface-hub==1.33.0
+2026-10-08T12:31:22.6649395Z  + idna==3.20
+2026-10-08T12:31:22.6649730Z  + iniconfig==2.3.1
+2026-10-08T12:31:22.6650103Z  + llguidance==1.9.1
+2026-10-08T12:31:22.6650468Z  + marisa-trie==1.4.1
+2026-10-08T12:31:22.6650851Z  + markdown-it-py==4.2.0
+2026-10-08T12:31:22.6651245Z  + mdurl==0.1.2
+2026-10-08T12:31:22.6651584Z  + ninja==1.13.2
+2026-10-08T12:31:22.6651915Z  + numpy==2.5.3
+2026-10-08T12:31:22.6652257Z  + packaging==26.3
+2026-10-08T12:31:22.6652604Z  + pillow==12.3.0
+2026-10-08T12:31:22.6653304Z  + pip==26.2.1
+2026-10-08T12:31:22.6653636Z  + pluggy==1.6.0
+2026-10-08T12:31:22.6654265Z  + pydantic==2.13.5
+2026-10-08T12:31:22.6654675Z  + pydantic-core==2.46.5
+2026-10-08T12:31:22.6655071Z  + pygments==2.21.0
+2026-10-08T12:31:22.6655448Z  + pyproject-hooks==1.3.3
+2026-10-08T12:31:22.6655836Z  + pytest==9.1.1
+2026-10-08T12:31:22.6656432Z  + pyyaml==6.0.3
+2026-10-08T12:31:22.6656765Z  + rich==15.0.0
+2026-10-08T12:31:22.6657118Z  + safetensors==0.8.0
+2026-10-08T12:31:22.6657500Z  - setuptools==78.1.0
+2026-10-08T12:31:22.6657881Z  + setuptools==84.0.0
+2026-10-08T12:31:22.6658251Z  + tokenizers==0.23.2
+2026-10-08T12:31:22.6658607Z  + tqdm==4.70.1
+2026-10-08T12:31:22.6658976Z  + typing-inspection==0.4.4
+2026-10-08T12:31:22.6659382Z  + wheel==0.48.0
+2026-10-08T12:31:22.6833652Z ##[group]Run python -m pip wheel . --no-deps --no-build-isolation -w dist
+2026-10-08T12:31:22.6834217Z [36;1mpython -m pip wheel . --no-deps --no-build-isolation -w dist[0m
+2026-10-08T12:31:24.9704660Z shell: /usr/bin/bash -e {0}
+2026-10-08T12:31:24.9704987Z env:
+2026-10-08T12:31:24.9705237Z   TORCH_CUDA_ARCH_LIST: 12.0
+2026-10-08T12:31:24.9705542Z   CUDA_PATH: /usr/local/cuda-12.8
+2026-10-08T12:31:24.9706051Z   CUDA_PATH_V12_8: /usr/local/cuda-12.8
+2026-10-08T12:31:24.9706385Z   CUDA_PATH_VX_Y: CUDA_PATH_V12_8
+2026-10-08T12:31:24.9706719Z   LD_LIBRARY_PATH: /usr/local/cuda-12.8/lib64:
+2026-10-08T12:31:24.9707066Z   UV_PYTHON: 3.12
+2026-10-08T12:31:24.9707384Z   VIRTUAL_ENV: /home/runner/work/exllamav3/exllamav3/.venv
+2026-10-08T12:31:24.9707807Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+2026-10-08T12:31:24.9708151Z ##[endgroup]
+2026-10-08T12:31:26.2884039Z Processing ./.
+2026-10-08T12:31:26.2899420Z   Preparing metadata (pyproject.toml): started
+2026-10-08T12:31:29.7901340Z   Preparing metadata (pyproject.toml): finished with status 'done'
+2026-10-08T12:31:29.7937692Z Building wheels for collected packages: exllamav3
+2026-10-08T12:31:29.7944541Z   Building wheel for exllamav3 (pyproject.toml): started
+2026-10-08T12:32:31.2617194Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:33:35.7597189Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:34:37.5144468Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:35:44.2689067Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:36:46.7450414Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:37:47.0527355Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:39:18.8657154Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:40:25.3217092Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:41:34.7145655Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:43:01.1034375Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:44:03.4887457Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:45:06.6477248Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:46:07.6337273Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:47:14.8047229Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:48:21.3687071Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:49:30.2131051Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:50:31.7464685Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:51:36.8134615Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:52:39.9417065Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:53:45.7767425Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:54:46.6637422Z   Building wheel for exllamav3 (pyproject.toml): still running...
+2026-10-08T12:55:06.1209227Z   Building wheel for exllamav3 (pyproject.toml): finished with status 'done'
+2026-10-08T12:55:06.1687093Z   Created wheel for exllamav3: filename=exllamav3-1.6.0.post1-cp312-cp312-linux_x86_64.whl size=60723442 sha256=1d5e773a774f2205c53b1b9ae022c132433e8607b8d41d3a8c631f7e042ee613
+2026-10-08T12:55:06.1691188Z   Stored in directory: /tmp/pip-ephem-wheel-cache-d7intz5i/wheels/40/85/9b/2cb4a8d065e55c72609aaaf587262bbbe4932c549c7215387e
+2026-10-08T12:55:06.1761002Z Successfully built exllamav3
+2026-10-08T12:55:06.2900928Z ##[group]Run ls -l dist
+2026-10-08T12:55:06.2901266Z [36;1mls -l dist[0m
+2026-10-08T12:55:06.2901593Z [36;1mpython -m pip install --no-deps --force-reinstall dist/*.whl[0m
+2026-10-08T12:55:06.2901992Z [36;1mpython -m pip show exllamav3[0m
+2026-10-08T12:55:06.3137906Z shell: /usr/bin/bash -e {0}
+2026-10-08T12:55:06.3138194Z env:
+2026-10-08T12:55:06.3138407Z   TORCH_CUDA_ARCH_LIST: 12.0
+2026-10-08T12:55:06.3138679Z   CUDA_PATH: /usr/local/cuda-12.8
+2026-10-08T12:55:06.3138955Z   CUDA_PATH_V12_8: /usr/local/cuda-12.8
+2026-10-08T12:55:06.3139264Z   CUDA_PATH_VX_Y: CUDA_PATH_V12_8
+2026-10-08T12:55:06.3139543Z   LD_LIBRARY_PATH: /usr/local/cuda-12.8/lib64:
+2026-10-08T12:55:06.3139836Z   UV_PYTHON: 3.12
+2026-10-08T12:55:06.3140106Z   VIRTUAL_ENV: /home/runner/work/exllamav3/exllamav3/.venv
+2026-10-08T12:55:06.3140499Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+2026-10-08T12:55:06.3140808Z ##[endgroup]
+2026-10-08T12:55:06.3255732Z total 59304
+2026-10-08T12:55:06.3256526Z -rw-r--r-- 1 runner runner 60723442 Oct  8 12:55 exllamav3-1.6.0.post1-cp312-cp312-linux_x86_64.whl
+2026-10-08T12:55:06.7764984Z Processing ./dist/exllamav3-1.6.0.post1-cp312-cp312-linux_x86_64.whl
+2026-10-08T12:55:06.8950697Z Installing collected packages: exllamav3
+2026-10-08T12:55:08.1527316Z Successfully installed exllamav3-1.6.0.post1
+2026-10-08T12:55:08.3961163Z Name: exllamav3
+2026-10-08T12:55:08.3962000Z Version: 1.6.0.post1
+2026-10-08T12:55:08.3963834Z Summary: Inference library for running local LLMs on modern consumer GPUs
+2026-10-08T12:55:08.3964676Z Home-page: 
+2026-10-08T12:55:08.3965765Z Author: turboderp
+2026-10-08T12:55:08.3967479Z Author-email: 
+2026-10-08T12:55:08.3968325Z License-Expression: MIT
+2026-10-08T12:55:08.3969599Z Location: /home/runner/work/exllamav3/exllamav3/.venv/lib/python3.12/site-packages
+2026-10-08T12:55:08.3970885Z Requires: llguidance, marisa_trie, ninja, numpy, pillow, pydantic, pyyaml, rich, safetensors, tokenizers, torch, typing_extensions
+2026-10-08T12:55:08.3971763Z Required-by: 
+2026-10-08T12:55:08.4262031Z ##[group]Run python -c "import exllamav3; print('import ok:', exllamav3.__file__)"
+2026-10-08T12:55:08.4263062Z [36;1mpython -c "import exllamav3; print('import ok:', exllamav3.__file__)"[0m
+2026-10-08T12:55:08.4264063Z [36;1mpython -c "from exllamav3.version import __version__; print('exllamav3', __version__)"[0m
+2026-10-08T12:55:08.4265282Z [36;1mpython -c "from importlib.metadata import version; print('installed dist version:', version('exllamav3'))"[0m
+2026-10-08T12:55:08.4365085Z shell: /usr/bin/bash -e {0}
+2026-10-08T12:55:08.4365517Z env:
+2026-10-08T12:55:08.4366193Z   TORCH_CUDA_ARCH_LIST: 12.0
+2026-10-08T12:55:08.4366669Z   CUDA_PATH: /usr/local/cuda-12.8
+2026-10-08T12:55:08.4367149Z   CUDA_PATH_V12_8: /usr/local/cuda-12.8
+2026-10-08T12:55:08.4367639Z   CUDA_PATH_VX_Y: CUDA_PATH_V12_8
+2026-10-08T12:55:08.4368129Z   LD_LIBRARY_PATH: /usr/local/cuda-12.8/lib64:
+2026-10-08T12:55:08.4368643Z   UV_PYTHON: 3.12
+2026-10-08T12:55:08.4369159Z   VIRTUAL_ENV: /home/runner/work/exllamav3/exllamav3/.venv
+2026-10-08T12:55:08.4369818Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+2026-10-08T12:55:08.4370357Z ##[endgroup]
+2026-10-08T12:55:10.0370761Z W1008 12:55:10.036000 10099 torch/utils/cpp_extension.py:140] No CUDA runtime is found, using CUDA_HOME='/usr/local/cuda-12.8'
+2026-10-08T12:55:10.5834612Z import ok: /home/runner/work/exllamav3/exllamav3/.venv/lib/python3.12/site-packages/exllamav3/__init__.py
+2026-10-08T12:55:12.2534105Z W1008 12:55:12.252000 10104 torch/utils/cpp_extension.py:140] No CUDA runtime is found, using CUDA_HOME='/usr/local/cuda-12.8'
+2026-10-08T12:55:12.4354285Z exllamav3 1.6.0.post1
+2026-10-08T12:55:12.8059726Z installed dist version: 1.6.0.post1
+2026-10-08T12:55:12.8180241Z ##[group]Run python -m pytest -q \
+2026-10-08T12:55:12.8180603Z [36;1mpython -m pytest -q \[0m
+2026-10-08T12:55:12.8180894Z [36;1m  tests/test_mixedk_merge_abi.py \[0m
+2026-10-08T12:55:12.8181213Z [36;1m  tests/test_optimizer_targets.py \[0m
+2026-10-08T12:55:12.8181526Z [36;1m  tests/test_draft_confidence_env_.py \[0m
+2026-10-08T12:55:12.8181838Z [36;1m  tests/test_attn_fullgate_cpu.py[0m
+2026-10-08T12:55:12.8252102Z shell: /usr/bin/bash -e {0}
+2026-10-08T12:55:12.8252355Z env:
+2026-10-08T12:55:12.8252555Z   TORCH_CUDA_ARCH_LIST: 12.0
+2026-10-08T12:55:12.8252816Z   CUDA_PATH: /usr/local/cuda-12.8
+2026-10-08T12:55:12.8253088Z   CUDA_PATH_V12_8: /usr/local/cuda-12.8
+2026-10-08T12:55:12.8253383Z   CUDA_PATH_VX_Y: CUDA_PATH_V12_8
+2026-10-08T12:55:12.8253672Z   LD_LIBRARY_PATH: /usr/local/cuda-12.8/lib64:
+2026-10-08T12:55:12.8253978Z   UV_PYTHON: 3.12
+2026-10-08T12:55:12.8254246Z   VIRTUAL_ENV: /home/runner/work/exllamav3/exllamav3/.venv
+2026-10-08T12:55:12.8254664Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+2026-10-08T12:55:12.8254970Z ##[endgroup]
+2026-10-08T12:55:15.5477751Z .................                                                        [100%]
+2026-10-08T12:55:15.5478404Z 17 passed in 0.71s
+2026-10-08T12:55:15.9384614Z ##[group]Run python -m pytest --noconftest -q \
+2026-10-08T12:55:15.9385022Z [36;1mpython -m pytest --noconftest -q \[0m
+2026-10-08T12:55:15.9385354Z [36;1m  tests/test_uma_budget_cpu.py \[0m
+2026-10-08T12:55:15.9385679Z [36;1m  tests/test_dflash_page_reserve_cpu.py \[0m
+2026-10-08T12:55:15.9386420Z [36;1m  tests/test_sampler_batch_verify_cpu.py \[0m
+2026-10-08T12:55:15.9386753Z [36;1m  tests/test_token_budget_cpu.py[0m
+2026-10-08T12:55:15.9457340Z shell: /usr/bin/bash -e {0}
+2026-10-08T12:55:15.9457601Z env:
+2026-10-08T12:55:15.9457829Z   TORCH_CUDA_ARCH_LIST: 12.0
+2026-10-08T12:55:15.9458097Z   CUDA_PATH: /usr/local/cuda-12.8
+2026-10-08T12:55:15.9458375Z   CUDA_PATH_V12_8: /usr/local/cuda-12.8
+2026-10-08T12:55:15.9458664Z   CUDA_PATH_VX_Y: CUDA_PATH_V12_8
+2026-10-08T12:55:15.9458958Z   LD_LIBRARY_PATH: /usr/local/cuda-12.8/lib64:
+2026-10-08T12:55:15.9459253Z   UV_PYTHON: 3.12
+2026-10-08T12:55:15.9459534Z   VIRTUAL_ENV: /home/runner/work/exllamav3/exllamav3/.venv
+2026-10-08T12:55:15.9459952Z   UV_CACHE_DIR: /home/runner/work/_temp/setup-uv-cache
+2026-10-08T12:55:15.9460265Z ##[endgroup]
+2026-10-08T12:55:18.4778858Z .................................................... [ 16%]
+2026-10-08T12:55:18.5585187Z ........................................................................ [ 38%]
+2026-10-08T12:55:19.4752002Z ........................................................................ [ 61%]
+2026-10-08T12:55:22.2755474Z .................................................. [ 76%]
+2026-10-08T12:55:23.2132537Z ........................................................................ [ 99%]
+2026-10-08T12:55:23.5243838Z ..                                                                       [100%]
+2026-10-08T12:55:23.5244538Z 320 passed, 186 subtests passed in 7.25s
+2026-10-08T12:55:23.8978478Z Post job cleanup.
+2026-10-08T12:55:24.1476458Z Cache hit occurred on key setup-uv-1-x86_64-unknown-linux-gnu-3.12-326c564ee1d686a8946de645cfdbb6b1e914ab0387989656a1ceffaf13736ccb, not saving cache.
+2026-10-08T12:55:24.1478430Z (node:10122) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-08T12:55:24.1479677Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-08T12:55:24.1635345Z Post job cleanup.
+2026-10-08T12:55:24.2632271Z [command]/usr/bin/git version
+2026-10-08T12:55:24.2687916Z git version 2.55.0
+2026-10-08T12:55:24.2730926Z Temporarily overriding HOME='/home/runner/work/_temp/cad47ac7-9a4b-48ce-aa10-36734f81f03f' before making global git config changes
+2026-10-08T12:55:24.2732729Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-08T12:55:24.2738176Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/exllamav3/exllamav3
+2026-10-08T12:55:24.2785503Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-08T12:55:24.2827367Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-08T12:55:24.3169435Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-08T12:55:24.3202618Z http.https://github.com/.extraheader
+2026-10-08T12:55:24.3215588Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-08T12:55:24.3258280Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-08T12:55:24.3591147Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-08T12:55:24.3657874Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-08T12:55:24.4199108Z Cleaning up orphan processes
+2026-10-08T12:55:24.4707090Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, astral-sh/setup-uv@v5. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
