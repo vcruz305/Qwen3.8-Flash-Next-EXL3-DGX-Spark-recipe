@@ -3,8 +3,9 @@
 This recipe uses the Qwen pseudo-XML tool format through the
 [vcruz305 TabbyAPI fork](https://github.com/vcruz305/tabbyAPI). The server exposes
 OpenAI-compatible JSON tool calls; clients do not need to produce or parse the
-model's XML. Configure `TOOL_FORMAT=qwen3_coder` when using a pack whose model
-metadata does not select that format correctly.
+model's XML. This recipe selects `TOOL_FORMAT=qwen3_5`, a registered alias of
+the Qwen parser and grammar implementation (`qwen3_coder`). Override the format
+only for a pack that actually uses a different wire format.
 
 The contracts below describe the implementation and its CPU regression checks.
 Run the live validation commands against each deployed pack to verify model
@@ -24,7 +25,11 @@ weather results and execute no external tools.
 
 Tools without parameters are supported. For example,
 `{"type":"function","function":{"name":"ping"}}` declares a no-argument function;
-a successful call has the JSON argument string `"{}"`.
+a successful call has the JSON argument string `"{}"`. For an explicitly closed
+zero-parameter object (`type: object`, empty `properties`, and
+`additionalProperties: false`, without `patternProperties`), the grammar also
+forbids invented parameter blocks. That closed-empty rule does not restrict
+ordinary open object schemas.
 
 A named request uses the ordinary OpenAI shape:
 
@@ -102,6 +107,32 @@ the constraint.
 These forced modes are implemented for the `qwen3_coder` format and its
 registered aliases. Other formats retain their own parsing behavior and can
 use `auto` or `none`.
+
+## Reasoning budgets and literal boundaries
+
+The pinned engine and updated server coordinate reasoning closure before the
+next accepted token is sampled. The server supplies a small incremental parser
+at the producer, so a literal `</think>` inside a parameter does not activate the
+content grammar. The consumer still receives the normal ordered token stream.
+
+With `reasoning_budget_tokens`, the engine counts accepted producer positions
+and restores the content constraint at the accepted reasoning boundary. A
+partial call or argument can defer a forced boundary to avoid corrupting its
+literal data. The request's overall `max_tokens` remains the generation limit;
+a reasoning budget is not permission to exceed it. Rewinds and cancelled jobs
+must restore or discard their own parser and budget state.
+
+When no reasoning budget is supplied, the same guard observes natural closure
+only. It adds no deadline, token limit or forced closing text. The guard is
+installed only for eligible requests that begin in reasoning, and the server
+negotiates the engine capability explicitly. Ordinary content generation and
+the existing policy for calls inside reasoning retain their behavior.
+
+These paths are covered by engine and server CPU regressions and by the live
+reasoning and concurrent client checks in the
+[October report](../VALIDATION_2026-10-08.md). Literal-data preservation in the
+parser does not guarantee that a quantized model will copy the requested text
+correctly; the live tests compare the requested value as well as valid syntax.
 
 ## Argument types and literal content
 
