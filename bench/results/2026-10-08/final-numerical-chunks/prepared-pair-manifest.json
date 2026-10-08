@@ -1,0 +1,47 @@
+{
+  "created_at_utc": "2026-10-08T13:09:03.840546+00:00",
+  "jobs_file": "/home/vcruz/src/qwen-overnight-20261008/quality-chunk2048-final-pair-jobs.json",
+  "jobs_sha256": "eefa1312ea922c63fd083553d8ed1d6cae210fd1f02d82bcc4a47a7c10d2829a",
+  "expected_output_directory": "/home/cruzspark/qwen-overnight-20261008/results/quality-final-chunk2048-pair",
+  "command": [
+    "python3",
+    "/home/cruzspark/qwen-overnight-20261008/spark_quality_q8_matrix.py",
+    "--jobs",
+    "/home/cruzspark/qwen-overnight-20261008/quality-chunk2048-final-pair-jobs.json",
+    "--output",
+    "/home/cruzspark/qwen-overnight-20261008/results/quality-final-chunk2048-pair"
+  ],
+  "frozen_tools_sha256": {
+    "spark_quality_q8_matrix.py": "2ebe476c6520da8a9f9f6558d03b7b9fe2dc6d2429b5918db65e3845b255cc71",
+    "spark_quality_q8_probe.py": "51b4942b6293737bf81ec402b3621232771cd8f3f75d1d01568f5b83ea1a2be6",
+    "spark_quality_probe.py": "88d83c07acf46f8fbb5964ecc4920d199abe89106917e5f1b822dc75ff7c04f8",
+    "assess_paired_quality_q8.py": "959d120ea116a87413f41b9c060960097dfb6ee16a62a64c8b3b5130ff426f47",
+    "assess_paired_quality.py": "86be2aa97b390e76625f64cd2f95d5affc48ede5b2bceaa5026abfcd95962bc3"
+  },
+  "expected_jobs": [
+    "baseline-305-chunk2048-final-pair",
+    "candidate-305-chunk2048-final-pair"
+  ],
+  "expected_paged_cases_per_runtime": 36,
+  "expected_paged_positions_per_runtime": 4320,
+  "expected_unique_prefill_cases_per_runtime": 18,
+  "expected_unique_prefill_positions_per_runtime": 2160,
+  "source_only_diagnostic": true,
+  "target_only_mtp_loaded": false,
+  "pairing": {
+    "same_model": true,
+    "same_q8_cache": true,
+    "same_ngram_ram": true,
+    "same_prefill_chunk": 2048,
+    "same_input_cases_contexts_q_lens_batches_steps": true,
+    "candidate_compares_new_old2048_artifacts": true
+  },
+  "notes": [
+    "No GPU job was run to prepare this file.",
+    "Old and final engine run the same frozen target-only Q8 probe with prefill chunk 2048.",
+    "The candidate compares the freshly generated baseline in the same owned result directory, not the historical 1024 reference.",
+    "Full cache-free prefill is still the frozen reference path; prefill_chunk controls cached prompt ingestion.",
+    "The frozen runner exits zero after successful experiments even when numerical gates fail; root must review core_passed and investigations.",
+    "This is numerical validation, not serving, MTP acceptance, grammar or throughput qualification."
+  ]
+}
