@@ -34,7 +34,7 @@ def small_pack(path):
     # Put n-gram and ordinary tensors in one generically named shard.
     header = {
         "model.layers.0.weight": {"dtype": "F16", "shape": [2, 2], "data_offsets": [0, 8]},
-        "model.ngram.table": {"dtype": "I16", "shape": [2, 2], "data_offsets": [8, 16]},
+        "model.ple_embedding.trellis": {"dtype": "I16", "shape": [2, 2], "data_offsets": [8, 16]},
     }
     raw = json.dumps(header).encode()
     (path / "model-00001.safetensors").write_bytes(struct.pack("<Q", len(raw)) + raw + bytes(16))

@@ -94,7 +94,10 @@ else
   verify_runtime
   [[ -f "$TABBY_DIR/main.py" ]] || die "no TabbyAPI at $TABBY_DIR. Run setup.sh."
   verify_pack
+  [[ ! -L "$MODEL_PARENT" ]] || die "$MODEL_PARENT must be a recipe-owned directory, not a symlink"
   mkdir -p "$MODEL_PARENT"
+  [[ ! -e "$MODEL_PARENT/$MODEL_NAME" || -L "$MODEL_PARENT/$MODEL_NAME" ]] \
+    || die "$MODEL_PARENT/$MODEL_NAME already exists and is not a model-view symlink"
   find "$MODEL_PARENT" -mindepth 1 -maxdepth 1 -type l -delete
   ln -sfn "$MODEL_DIR" "$MODEL_PARENT/$MODEL_NAME"
 fi

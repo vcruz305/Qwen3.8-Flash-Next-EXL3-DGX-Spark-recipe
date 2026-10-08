@@ -47,7 +47,8 @@ def pack_bytes(directory):
                 if begin < 0 or end < begin or end > info.st_size - 8 - length:
                     raise ValueError("invalid tensor offsets")
                 size = end - begin
-                if "ngram" in name.lower() or "ngram" in file.name.lower():
+                if ("ngram" in name.lower() or "ple_embedding" in name.lower()
+                        or "ngram" in file.name.lower()):
                     file_ngram += size
                 else:
                     file_other += size
