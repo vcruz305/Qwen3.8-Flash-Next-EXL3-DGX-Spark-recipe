@@ -1,0 +1,112 @@
+{
+  "schema_version": 1,
+  "diagnostic_only": true,
+  "run_label": "literal-final-305-24f0-5a-p095",
+  "scope": "Exact retained fields of the original eight literal record_text reasoning requests only; raw native full_completion, backend full_response, and exact rendered prompt. No token/KV reads, response changes, or added generation awaits.",
+  "max_records": 8,
+  "source": {
+    "tabby": {
+      "path": "/home/cruzspark/qwen38-exl3-20261008/tabbyAPI",
+      "commit": "5a4f3efa1c1f60b6966ba0d0d5610f6b953541fb",
+      "tracked_changes": ""
+    },
+    "engine": {
+      "path": "/home/cruzspark/qwen38-exl3-20261008/exllamav3",
+      "commit": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+      "tracked_changes": ""
+    },
+    "observer_sha256": "674453a31893defd299939fe801cd58b48bdb20c7bbfaf0ec0c0fbb5f82418f6",
+    "sitecustomize_sha256": "3d7a620c8cfc39fec68a84f221170b9105fa19260dcdee430d317b869bd1474f",
+    "config_sha256": "5e34920522aa061e1d9d6fe60f7ff406bb60c318886837599cf5672068ec6ed5"
+  },
+  "request_schema_note": "Tabby does not retain the wire seed field. Greedy request temperature/top_k and all scope-defining message/schema fields are matched.",
+  "expected_request": {
+    "messages": [
+      {
+        "role": "user",
+        "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "record_text",
+          "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    ],
+    "tool_choices": [
+      "required",
+      {
+        "type": "function",
+        "function": {
+          "name": "record_text"
+        }
+      }
+    ],
+    "reasoning_budget_tokens": [
+      24,
+      null
+    ],
+    "template_vars": {
+      "enable_thinking": true
+    }
+  },
+  "expected_variants": [
+    {
+      "unbudgeted": false,
+      "choice": "required",
+      "stream": false
+    },
+    {
+      "unbudgeted": false,
+      "choice": "required",
+      "stream": true
+    },
+    {
+      "unbudgeted": false,
+      "choice": "named",
+      "stream": false
+    },
+    {
+      "unbudgeted": false,
+      "choice": "named",
+      "stream": true
+    },
+    {
+      "unbudgeted": true,
+      "choice": "required",
+      "stream": false
+    },
+    {
+      "unbudgeted": true,
+      "choice": "required",
+      "stream": true
+    },
+    {
+      "unbudgeted": true,
+      "choice": "named",
+      "stream": false
+    },
+    {
+      "unbudgeted": true,
+      "choice": "named",
+      "stream": true
+    }
+  ],
+  "expected_prompt_sha256": "32655bc461bfa9685942882754b89e75f6640a5605004d4a3d609ebfc6076f58",
+  "required_initial_reasoning_phase": true
+}

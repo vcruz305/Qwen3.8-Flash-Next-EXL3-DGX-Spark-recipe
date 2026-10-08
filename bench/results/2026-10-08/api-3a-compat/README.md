@@ -1,6 +1,6 @@
 # Intermediate b532 / 3a live run
 
-This is an intermediate flat-3.05 run, not the final deployment record.
+This is an intermediate flat 3.05 run, not the final deployment record.
 The controller completed and cleanly stopped its owned server. Its overall
 `passed` value is **false**: nullable-value checks still returned an empty
 string where the prompt requested null. No failed response was retried or

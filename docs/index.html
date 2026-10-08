@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Qwen3.8-Flash-Next EXL3 | Before → After on One DGX Spark</title>
-<meta name="description" content="Animated before-and-after benchmark presentation for Qwen3.8-Flash-Next EXL3 on one NVIDIA DGX Spark: 58.8 tok/s native, 157.6 tok/s vLLM aggregate, and full 262K context.">
+<title>Qwen EXL3 | Historical September 2026 Spark benchmarks</title>
+<meta name="description" content="Historical September 13–14, 2026 benchmark presentation for Qwen3.8-Flash-Next EXL3 on one NVIDIA DGX Spark: 58.8 tok/s native, 157.6 tok/s vLLM aggregate, and full 262K context.">
 <meta name="theme-color" content="#040712">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Qwen3.8-Flash-Next EXL3 | Before → After">
-<meta property="og:description" content="From the earlier 47.6 tok/s / 64K serving baseline to 58.8 tok/s native, 157.6 tok/s aggregate, and full 262K context on one DGX Spark.">
+<meta property="og:title" content="Qwen3.8-Flash-Next EXL3 | Historical September 2026">
+<meta property="og:description" content="September 13–14, 2026 archive: from the earlier 47.6 tok/s / 64K serving baseline to 58.8 tok/s native, 157.6 tok/s aggregate, and full 262K context on one DGX Spark.">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:creator" content="@ViC305">
 <style>
@@ -43,6 +43,7 @@ canvas{display:block;width:100%;height:100%;background:#07101f}
   <div id="hint">16:9 landscape • Swipe or arrows • Space play/pause • F fullscreen • H controls</div>
   <div id="progress"><i></i></div>
   <nav id="dock" aria-label="Benchmark controls">
+    <a href="https://github.com/vcruz305/Qwen3.8-Flash-Next-EXL3-DGX-Spark-recipe/blob/main/VALIDATION_2026-10-08.md" style="color:#7ff4ca;padding:8px 10px">October 8 report</a>
     <select id="scene" aria-label="Scene">
       <option value="0">01 · Headline</option>
       <option value="1">02 · Speed</option>
@@ -87,7 +88,7 @@ function text(x,y,s,size=30,color=C.white,weight=600,align='left',family='system
 function label(x,y,s,color=C.cyan,size=19,a=1){text(x,y,s.toUpperCase(),size,color,820,'left','system-ui',a)}
 function paragraph(x,y,lines,size=24,color=C.muted,lh=1.38,a=1){lines.forEach((s,i)=>text(x,y+i*size*lh,s,size,color,500,'left','system-ui',a))}
 function header(k,title,sub,scene,a=1){label(84,82,k,C.cyan,19,a);text(84,154,title,66,C.white,900,'left','system-ui',a);if(sub)text(86,202,sub,25,C.muted,520,'left','system-ui',a);line(84,226,1836,226,rgba(C.cyan,.28),2,a);footer(scene)}
-function footer(scene){text(84,1045,'ONE NVIDIA DGX SPARK · RECORDED RESULTS · SEP 13–14, 2026',15,'#7489aa',600);text(1835,1045,`${scene+1} / ${SCENES}`,16,'#7489aa',700,'right')}
+function footer(scene){text(84,1045,'ONE NVIDIA DGX SPARK · HISTORICAL RESULTS · SEP 13–14, 2026',15,'#7489aa',600);text(1835,1045,`${scene+1} / ${SCENES}`,16,'#7489aa',700,'right')}
 function num(x,y,v,size,color,a=1,digits=1,suffix=''){text(x,y,`${Number(v).toFixed(digits)}${suffix}`,size,color,900,'left','ui-monospace, SFMono-Regular, Menlo, monospace',a)}
 function chip(x,y,w,s,color=C.cyan,a=1){ctx.save();ctx.globalAlpha=a;rr(x,y,w,43,22);ctx.fillStyle=rgba(color,.10);ctx.fill();ctx.strokeStyle=rgba(color,.55);ctx.lineWidth=1.5;ctx.stroke();ctx.restore();text(x+w/2,y+29,s,17,color,760,'center','system-ui',a)}
 function arrow(x1,y,x2,p,color=C.mint){const t=ease(p),xe=lerp(x1,x2,t);line(x1,y,xe,y,color,7,t);if(t>.8){ctx.save();ctx.globalAlpha=(t-.8)/.2;ctx.fillStyle=color;ctx.beginPath();ctx.moveTo(x2,y);ctx.lineTo(x2-30,y-18);ctx.lineTo(x2-30,y+18);ctx.closePath();ctx.fill();ctx.restore()}}

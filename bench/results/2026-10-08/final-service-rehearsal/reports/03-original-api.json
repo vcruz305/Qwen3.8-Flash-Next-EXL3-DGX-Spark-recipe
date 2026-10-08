@@ -1,0 +1,146 @@
+{
+  "load_wait_seconds": 42.16670095700101,
+  "api": {
+    "models": {
+      "object": "list",
+      "data": [
+        {
+          "id": "Qwen3.8-Flash-Next-EXL3",
+          "object": "model",
+          "created": 1791468934,
+          "owned_by": "tabbyAPI",
+          "logging": null,
+          "parameters": null,
+          "meta": {
+            "n_ctx_train": 262144,
+            "n_ctx": null,
+            "n_vocab": 248320,
+            "n_embd": 2560,
+            "size": 0
+          }
+        }
+      ]
+    },
+    "requests": [
+      {
+        "model": "flashnext-exl3-3.05bpw",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "flashnext-exl3-3.05bpw",
+        "stream": false,
+        "finish_reason": "stop",
+        "prompt_tokens": 19,
+        "cached_prompt_tokens": 0,
+        "uncached_prompt_tokens": 19,
+        "completion_tokens": 2,
+        "ttft_s": null,
+        "wall_s": 0.449233022001863,
+        "server_decode_tok_s": 20.4,
+        "server_prefill_tok_s": 55.88,
+        "client_end_to_end_tok_s": 4.452032468778989,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.2,
+        "usage": {
+          "prompt_tokens": 19,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 0.34,
+          "prompt_tokens_per_sec": 55.88,
+          "completion_tokens": 2,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 1,
+            "rejected_prediction_tokens": 4
+          },
+          "completion_time": 0.1,
+          "completion_tokens_per_sec": 20.4,
+          "total_tokens": 21,
+          "total_time": 0.44
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 19,
+          "prompt_ms": 340.0,
+          "prompt_per_token_ms": 17.894736842105264,
+          "prompt_per_second": 55.88235294117648,
+          "predicted_n": 2,
+          "predicted_ms": 100.0,
+          "predicted_per_token_ms": 50.0,
+          "predicted_per_second": 20.0,
+          "draft_n": 5,
+          "draft_n_accepted": 1
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "082224629b7c72f5449fc9a4a6fb6bc94a79000f873a4af8bbd8673585b20723",
+        "response_sha256": "15abb638d50aae65453bc9054ec230b9c2c3ca7ce69e2299f1c7d80f4afef035",
+        "message": {
+          "role": "assistant",
+          "content": "READY",
+          "reasoning_content": null,
+          "tool_calls": null,
+          "tool_call_id": null
+        }
+      },
+      {
+        "model": "flashnext-exl3-3.05bpw",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "flashnext-exl3-3.05bpw",
+        "stream": true,
+        "finish_reason": "stop",
+        "prompt_tokens": 19,
+        "cached_prompt_tokens": 0,
+        "uncached_prompt_tokens": 19,
+        "completion_tokens": 2,
+        "ttft_s": 0.31699686699721497,
+        "wall_s": 0.3171145140004228,
+        "server_decode_tok_s": 35.45,
+        "server_prefill_tok_s": 79.17,
+        "client_end_to_end_tok_s": 6.306869952970155,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.2,
+        "usage": {
+          "prompt_tokens": 19,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 0.24,
+          "prompt_tokens_per_sec": 79.17,
+          "completion_tokens": 2,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 1,
+            "rejected_prediction_tokens": 4
+          },
+          "completion_time": 0.06,
+          "completion_tokens_per_sec": 35.45,
+          "total_tokens": 21,
+          "total_time": 0.3
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 19,
+          "prompt_ms": 240.0,
+          "prompt_per_token_ms": 12.631578947368421,
+          "prompt_per_second": 79.16666666666667,
+          "predicted_n": 2,
+          "predicted_ms": 60.0,
+          "predicted_per_token_ms": 30.0,
+          "predicted_per_second": 33.333333333333336,
+          "draft_n": 5,
+          "draft_n_accepted": 1
+        },
+        "sse_events": 2,
+        "warnings": [],
+        "request_sha256": "401f56c490ed71277743e2ea512a95891085ac93b3a316aad53c4738154334d2",
+        "response_sha256": "ca9f237418e2ac026382e6944b9f55bbce882d1f6392ce3948b3fe75f3ce273c",
+        "message": {
+          "role": "assistant",
+          "content": "READY",
+          "reasoning_content": ""
+        }
+      }
+    ],
+    "scope": "Basic transport/generation check, not a semantic benchmark"
+  },
+  "config": "# TabbyAPI config for Qwen3.8-Flash-Next EXL3 on one DGX Spark.\n# serve.sh renders this into <recipe home>/state/config.yml, filling the dollar-brace fields from\n# serve.sh variables and the environment. Every key below exists in theroyallab/tabbyAPI main; see its config_sample.yml\n# for the full list.\n\nnetwork:\n  host: 127.0.0.1\n  port: 8899\n  # true only when bound to loopback (serve.sh decides). Otherwise TabbyAPI writes\n  # api_tokens.yml into its own directory and clients need the key.\n  disable_auth: true\n  api_servers: [\"OAI\"]\n\nlogging:\n  log_prompt: false\n  log_generation_params: false\n  log_requests: false\n\nmodel:\n  model_dir: /home/cruzspark/qwen-overnight-20261008/results/service-rehearsal-final/old-state/models\n  model_name: Qwen3.8-Flash-Next-EXL3\n  backend: exllamav3\n  inline_model_loading: false\n\n  # Context. max_seq_len is the per-request ceiling: 262,144 is the trained window, and needle\n  # retrieval fails past it (README, \"Context: the ceiling\"). cache_size is ONE shared KV pool\n  # for all concurrent requests, so it must be sized for concurrency, not per request:\n  # at 8-bit KV this geometry costs ~12-13 KB/token (12 of 48 layers are full attention plus the\n  # MTP layer, 2 KV heads at 256), so 1,048,576 tokens is ~13 GiB and holds four full-length\n  # sessions at once. serve.sh PROFILE=concurrent|single picks these values.\n  max_seq_len: 262144\n  cache_size: 262144\n  cache_mode: \"8,8\"\n  chunk_size: 2048\n\n  # Concurrent generation jobs. Each one also reserves a recurrent-state slot for the 36\n  # linear-attention layers. TabbyAPI's own default for recurrent models is 4.\n  max_batch_size: 1\n\n  # n-gram (PLE) table: true loads it into RAM (how the README's single-stream numbers were\n  # measured); false streams rows from disk per forward (~30 GB less resident, which is the room\n  # the concurrent profile spends on KV and batch; also needed for the 4.05 bpw pack).\n  ngram_ram: true\n\n  vision: false\n  warmup: true\n\n  # Qwen3.x XML tool calls (<function=...><parameter=...>) and <think> reasoning.\n  tool_format: qwen3_5\n  reasoning: true\n\ndraft_model:\n  # The model's own MTP head. Up to 5 drafts, cut early by confidence (the 0.6 target is read by\n  # the fork from EXL3_DRAFT_CONFIDENCE, which serve.sh exports).\n  draft_mode: mtp\n  draft_cache_mode: \"8,8\"\n  draft_num_tokens: 5\n  dynamic_draft: true\n\nmemory:\n  sysmem_recurrent_cache: 4096\n\n# Sampler fallbacks for requests that leave a value out. force: false, so any value a client\n# sends still wins. These are the model's own recommended settings (generation_config.json:\n# temperature 1.0, top_k 20, top_p 0.95). TabbyAPI does not read them from generation_config,\n# and with no sampling section it falls back to top_k 0 and top_p 1.0, i.e. no truncation:\n# every token is drawn from the full ~250k vocabulary. Clients that send no sampler values\n# (agent frameworks such as Hermes) then drift into garbage once a long reply draws a tail\n# token. Draft acceptance collapsing on one request is the tell.\nsampling:\n  temperature:\n    override: 1.0\n    force: false\n  top_k:\n    override: 20\n    force: false\n  top_p:\n    override: 0.95\n    force: false\n  min_p:\n    override: 0.0\n    force: false\n",
+  "recorded_at_utc": "2026-10-08T14:15:35.574982+00:00"
+}

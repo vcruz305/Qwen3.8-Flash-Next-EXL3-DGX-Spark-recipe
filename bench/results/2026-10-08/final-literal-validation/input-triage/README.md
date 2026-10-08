@@ -1,0 +1,11 @@
+# Final 3.05 literal-input triage at Tabby5a / engine24f0
+
+The unchanged budgeted and unbudgeted synthetic `record_text` clients each recorded four semantic failures on the first final3.05 single-request job. All eight returned HTTP200 with one completed `record_text` call whose string was `thinkaliteralthink`; their requested string was `<think>literal</think>`. The returned reasoning already described the altered spelling. The saved original API reports are copied byte-for-byte; they remain failures.
+
+The CPU replay checks the eight unchanged payload combinations through the actual5a Pydantic model, actual message formatting and actual downloaded3.05 template. All render the same348-token prompt, preserving the user string exactly. The actual tokenizer IDs round-trip to exactly the rendered prompt. The literal itself uses native IDs248068 (`<think>`),34600 (`literal`),248069 (`</think>`).
+
+The independent engine proof executes the relevant original94 and final24f0 tokenizer source methods using these same tokenizer assets. Both produce every retained token ID identically and decode the prompt exactly. This rules out the suspected input punctuation stripping in the checked formatter and encoder path; it does not prove whether a later generated-value mismatch is a model choice or a deterministic parser bug. An external opt-in raw native/backend capture of these exact requests is prepared separately for that distinction. No request or runtime source change was made by this CPU investigation.
+
+The CPU formatter container substitutes only model metadata and uses the actual downloaded template. It has no GPU or model object. The348 token count matches the saved live reports. The full raw prompt and IDs are retained as bounded synthetic evidence. No throughput inference follows from CPU rendering.
+
+Run from the WSL task directory with `tabbyapi-agent/.venv-tools/bin/python literal-final-triage-5a/render_replay.py` into a new evidence directory (the script refuses existing outputs). The engine proof command and exact source identities are in its report. Live default tool28, SDK5, resilience19 and auto27 passed separately; these eight extra failures must not be folded into those counts or hidden.

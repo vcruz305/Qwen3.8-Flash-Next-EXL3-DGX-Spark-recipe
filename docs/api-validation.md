@@ -87,7 +87,7 @@ These checks verify that automatic tool parsing does not turn every request into
 
 The report includes every synthetic request, JSON response or received SSE frame, response ID, model field, finish reason, returned usage, error body, and wall time. The top-level `kind` identifies the runner, `label` names the run, and `summary` counts check results. Reports preserve full failure evidence instead of converting failed requests into successful samples.
 
-Completed streams require `[DONE]`, stable response IDs, assistant role before generated output, valid tool indices/types/IDs, and consistent actual token totals. A requested output budget is never substituted for returned usage. The intentionally aborted stream records its partial frames and `client_aborted` state; it is not passed through the completed-stream validator, because it is deliberately closed before a final usage/finish event.
+Completed streams require `[DONE]`, stable response IDs and consistent actual token totals. Completed chat streams also require the assistant role before generated output and valid tool indices, types and IDs when calls are present. A requested output budget is never substituted for returned usage. The intentionally aborted stream records its partial frames and `client_aborted` state; it is not passed through the completed-stream validator, because it is deliberately closed before a final usage/finish event.
 
 A successful disconnect case establishes that the client closed a response early and that an immediate subsequent generation, health check, and model check succeeded. Exact server-side cancellation latency requires the corresponding server logs.
 

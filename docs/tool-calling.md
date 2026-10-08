@@ -134,6 +134,23 @@ reasoning and concurrent client checks in the
 parser does not guarantee that a quantized model will copy the requested text
 correctly; the live tests compare the requested value as well as valid syntax.
 
+### Copying the model's native reasoning markers
+
+The final 3.05 tests expose a specific generation-time limitation: requests to
+copy `<think>literal</think>` exactly while reasoning is enabled can return
+changed strings. The rendered input is intact, and captured native output
+already contains the changed values; parser replays reproduce the API values.
+The original single/concurrent failures remain in the
+[validation report](../VALIDATION_2026-10-08.md#native-reasoning-marker-copying-retained-limitation-and-tested-workaround).
+
+For this task, changing only the existing request field to
+`"enable_thinking": false` passed the four tested required/named and
+streaming/nonstreaming variants in the 3.05 single/RAM diagnostic. This is a tested workaround,
+not a universal exact-copy guarantee. Validate returned values before executing
+a tool that depends on exact literal content. The parser's preservation of
+emitted argument bytes and the model's selection of those bytes are separate
+checks.
+
 ## Argument types and literal content
 
 Qwen writes parameter values as raw text. The request schema helps distinguish
