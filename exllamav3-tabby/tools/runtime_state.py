@@ -107,6 +107,22 @@ def model_state(path):
             "weight_hashes_computed": False, "configuration_files": configs}
 
 
+def prompt_template_state(path):
+    """Fingerprint the requested external file and its text as Tabby reads it."""
+    path = Path(path)
+    if not path.is_absolute() or path.suffix != ".jinja":
+        raise ValueError("PROMPT_TEMPLATE must be an absolute .jinja file path")
+    resolved = path.resolve(strict=True)
+    if not resolved.is_file():
+        raise ValueError("PROMPT_TEMPLATE must name a regular file")
+    raw = resolved.read_bytes()
+    # Text-mode UTF-8 reads normalize newlines. Keep the raw-file digest too.
+    content = raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    return {"path": str(path), "resolved_path": str(resolved), "bytes": len(raw),
+            "sha256": hashlib.sha256(raw).hexdigest(),
+            "content_sha256": hashlib.sha256(content.encode("utf-8")).hexdigest()}
+
+
 def snapshot(args):
     versions = {}
     for package in ("torch", "triton", "exllamav3", "tabbyAPI", "tokenizers",
@@ -121,7 +137,7 @@ def snapshot(args):
         if key.startswith("EXL3_") or key in {
             "TORCH_CUDA_ARCH_LIST", "CUDA_HOME", "BIGCORES", "OMP_NUM_THREADS",
             "PROFILE", "CHUNK_SIZE", "CACHE_SIZE", "MAX_SEQ_LEN", "MAX_BATCH_SIZE",
-            "NGRAM_RAM", "DRAFT_NUM_TOKENS", "DRAFT_MODE",
+            "NGRAM_RAM", "DRAFT_NUM_TOKENS", "DRAFT_MODE", "PROMPT_TEMPLATE",
         }
     }
     result = {
@@ -142,6 +158,11 @@ def snapshot(args):
         file = Path(args.config)
         result["config"] = {"path": str(file), "sha256": hashlib.sha256(file.read_bytes()).hexdigest(),
                             "values": redact(yaml.safe_load(file.read_text()))}
+    if os.environ.get("PROMPT_TEMPLATE"):
+        template = os.environ["PROMPT_TEMPLATE"]
+        if args.config and result["config"]["values"].get("model", {}).get("prompt_template") != template:
+            raise ValueError("Rendered config does not match PROMPT_TEMPLATE")
+        result["prompt_template_override"] = prompt_template_state(template)
     if args.model:
         result["model"] = model_state(args.model)
     if args.build_state and Path(args.build_state).is_file():

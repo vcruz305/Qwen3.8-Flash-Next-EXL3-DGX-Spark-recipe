@@ -2,7 +2,7 @@
 
 [`run_matrix.py`](run_matrix.py) starts one server at a time, runs the requested strict clients, saves each attempt and stops only its owned processes. Use it on the Linux host that owns the GPU and model files, after setup and the numerical/API qualification for the source/settings you intend to compare. It does not install packages, fetch Git refs, rewrite model packs or decide which setting wins.
 
-The published file is a byte-exact copy of the controller used to prepare the overnight experiments: SHA256 `48281d5b51b1b64509385548c6f41f34909c328070274fcb4a06945ddcc44586`. Its original docstring refers to `spark_experiment_controller.py`; the publication filename is `bench/run_matrix.py`. The filename change does not change its behavior or recorded source hash.
+The original published controller was a byte-exact copy of the overnight controller, SHA256 `48281d5b51b1b64509385548c6f41f34909c328070274fcb4a06945ddcc44586`. This public version adds optional external-template selection and provenance checks described below. Frozen controllers retained with historical measurements still have their original bytes and hashes; this new version must not be substituted when identifying those runs. Its historical docstring still refers to `spark_experiment_controller.py`.
 
 ## Prerequisites and ownership
 
@@ -85,6 +85,8 @@ This example compares depth5 with depth3 while retaining the same single-request
 
 `env` accepts the recipe tuning variables and `EXL3_*` options. It rejects controller-owned runtime, state, model-path and network variables, including `TABBY_REF`. The runner removes ambient tuning overrides before sourcing `env.sh`, so an assignment prefixed to the runner command does not silently replace the recipe default. An exact qualified `EXL3_REF` can be supplied inside each job's `env`. Tabby may retain the recipe's `main` policy: record and verify its actual clean tested commit separately. The runner performs no update operation during measurement.
 
+An optional `PROMPT_TEMPLATE` environment value selects an absolute readable UTF-8 `.jinja` file. The normalized job includes its requested/resolved paths, raw byte count/hash and normalized text hash. The runner rechecks that identity at the existing input gates and requires the deployment snapshot and `/v1/model` actual template text to match before any client runs. A fallback template or file change fails the attempt. See [explicit prompt templates](../docs/prompt-templates.md) for the Cyber-Frost override, API thinking flag and comparisons across prompt profiles.
+
 Keep the same model path/native view, loader file order, payload, `run_id`, sampling, output budget, cache mode, warmup and repeats across the control and candidate. The loader's natural file enumeration matters when an MTP patch duplicates tensor keys; the runner records that order. It hashes model/tokenizer configuration files and records weight paths, sizes and mtimes, but does not hash every large weight shard.
 
 ### Measurement fields
@@ -133,7 +135,7 @@ Ordinary failed measurements remain in the record and the matrix may proceed to 
 
 For source A/B, prepare and validate separate recipe/runtime pairs and use the same job payload/control environment in separate output directories. Run the pairs sequentially. Do not update checkouts while a matrix is active. Preserve actual commits and dependency sets; changing both code and tuning should be identified as a combined treatment rather than attributed to one flag.
 
-The original recipe revision6fbc0a2 used a different launcher contract. It emits no modern deployment snapshot, and its nonempty `DRY_RUN` handling differs. This frozen runner sets `DRY_RUN=0` for the current launcher and therefore cannot simply be pointed at that original recipe. Exact overnight baseline controller sources are archived separately as historical execution evidence, with their original hardcoded paths and outputs. They are not a portable replacement for this runner and should not be imported or casually rerun on retained results.
+The original recipe revision6fbc0a2 used a different launcher contract. It emits no modern deployment snapshot, and its nonempty `DRY_RUN` handling differs. This runner sets `DRY_RUN=0` for the current launcher and therefore cannot simply be pointed at that original recipe. Exact overnight baseline controller sources are archived separately as historical execution evidence, with their original hardcoded paths and outputs. They are not a portable replacement for this runner and should not be imported or casually rerun on retained results.
 
 ## CPU verification
 
@@ -141,4 +143,4 @@ The original recipe revision6fbc0a2 used a different launcher contract. It emits
 python3 -m unittest discover -s bench -p test_run_matrix.py -v
 ```
 
-The20 existing regressions cover command routing, strict settings, alias expectations, model/default/source drift, literal loader order, output/resume integrity, busy-port refusal, bounded sampling, interrupted/failed clients and owned cleanup. Server/API/GPU operations are mocked; one test sources a temporary synthetic Bash environment and the membership test parses a synthetic `/proc` fixture. The publication test changes only the adjacent controller filename, and the same suite is checked from a relocated directory.
+The20 existing regressions cover command routing, strict settings, alias expectations, model/default/source drift, literal loader order, output/resume integrity, busy-port refusal, bounded sampling, interrupted/failed clients and owned cleanup. Server/API/GPU operations are mocked; one test sources a temporary synthetic Bash environment and the membership test parses a synthetic `/proc` fixture. The original publication test changed only the adjacent controller filename and was checked from a relocated directory. `test_prompt_templates.py` adds file/config drift, actual loaded-content and optional real Tabby renderer checks for the external-template support.

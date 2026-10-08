@@ -30,6 +30,7 @@ SYSMEM_RECURRENT_CACHE="${SYSMEM_RECURRENT_CACHE:-4096}"
 VISION="${VISION:-false}"
 REASONING="${REASONING:-true}"
 TOOL_FORMAT="${TOOL_FORMAT:-qwen3_5}"
+PROMPT_TEMPLATE="${PROMPT_TEMPLATE:-}"
 DRY_RUN="${DRY_RUN:-0}"
 
 positive_int() {
@@ -52,6 +53,10 @@ for name in PORT MAX_SEQ_LEN CACHE_SIZE MAX_BATCH_SIZE DRAFT_NUM_TOKENS CHUNK_SI
 [[ "$DRY_RUN" == 0 || "$DRY_RUN" == 1 ]] || die "DRY_RUN must be 0 or 1"
 for name in VISION REASONING DYNAMIC_DRAFT; do boolean "$name"; done
 [[ "$NGRAM_RAM" == auto || "$NGRAM_RAM" == true || "$NGRAM_RAM" == false ]] || die "NGRAM_RAM must be auto, true or false"
+if [[ -n "$PROMPT_TEMPLATE" ]]; then
+  [[ "$PROMPT_TEMPLATE" == /* && "$PROMPT_TEMPLATE" == *.jinja && -f "$PROMPT_TEMPLATE" && -r "$PROMPT_TEMPLATE" ]] \
+    || die "PROMPT_TEMPLATE must be an absolute path to a readable .jinja file"
+fi
 
 case "$HOST" in
   127.0.0.1|localhost|::1) DISABLE_AUTH="${DISABLE_AUTH:-true}" ;;
@@ -104,12 +109,23 @@ fi
 
 export STATE_DIR HOST PORT DISABLE_AUTH MODEL_PARENT MODEL_NAME MAX_SEQ_LEN CACHE_SIZE MAX_BATCH_SIZE \
        NGRAM_RAM VISION DRAFT_MODE DRAFT_NUM_TOKENS DYNAMIC_DRAFT CHUNK_SIZE SYSMEM_RECURRENT_CACHE \
-       REASONING TOOL_FORMAT PROFILE BIGCORES
+       REASONING TOOL_FORMAT PROMPT_TEMPLATE PROFILE BIGCORES
 RENDER_PY="$VENV/bin/python"; [[ -x "$RENDER_PY" ]] || RENDER_PY="$PYTHON_BIN"
-"$RENDER_PY" - "$RECIPE_EXL3_DIR/tabby-config.yml" "$CONFIG" <<'PY'
+"$RENDER_PY" - "$RECIPE_EXL3_DIR/tabby-config.yml" "$CONFIG" "$TABBY_DIR" <<'PY'
 import json, os, pathlib, string, sys
 src, dst = map(pathlib.Path, sys.argv[1:3])
 values = dict(os.environ)
+if values["PROMPT_TEMPLATE"]:
+    # Tabby otherwise falls back to another template after a load/parse error.
+    # Compile the explicit file with the installed Tabby parser before launch.
+    # This imports templating utilities only; it does not load the model/backend.
+    sys.path.insert(0, sys.argv[3])
+    from common.templating import PromptTemplate
+    path = pathlib.Path(values["PROMPT_TEMPLATE"])
+    if path.suffix != ".jinja":
+        raise ValueError("PROMPT_TEMPLATE must have the .jinja extension")
+    PromptTemplate(path.stem, path.read_text(encoding="utf-8"))
+values["PROMPT_TEMPLATE"] = json.dumps(values["PROMPT_TEMPLATE"] or None)
 # JSON strings are valid YAML scalars, including spaces, quotes and colon characters.
 for name in ("HOST", "MODEL_PARENT", "MODEL_NAME", "TOOL_FORMAT", "DRAFT_MODE"):
     values[name] = json.dumps(values[name])

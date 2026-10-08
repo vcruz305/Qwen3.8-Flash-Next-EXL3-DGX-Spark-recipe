@@ -46,7 +46,7 @@ BASE = "http://127.0.0.1:8899/v1"
 TUNING = set(("PROFILE NGRAM_RAM BIGCORES OMP_NUM_THREADS MKL_NUM_THREADS CHUNK_SIZE "
               "CACHE_SIZE MAX_SEQ_LEN MAX_BATCH_SIZE DRAFT_MODE DRAFT_NUM_TOKENS "
               "DYNAMIC_DRAFT SYSMEM_RECURRENT_CACHE VISION REASONING TOOL_FORMAT "
-              "SERVED_NAME CUDA_HOME TORCH_CUDA_ARCH_LIST").split())
+              "SERVED_NAME CUDA_HOME TORCH_CUDA_ARCH_LIST PROMPT_TEMPLATE").split())
 CONTROLLED = set(("RECIPE_HOME VENV EXL3_SRC TABBY_DIR STATE_DIR MODEL_DIR MODEL_PARENT "
                   "MODEL_NAME HOST PORT DISABLE_AUTH DRY_RUN PYTHON_BIN TABBY_REF TABBY_REPO").split())
 SETTINGS = {
@@ -116,6 +116,32 @@ def model_identity(model):
         "full_weight_hashes_computed": False}
 
 
+def prompt_template_identity(path):
+    path = Path(path)
+    if not path.is_absolute() or path.suffix != ".jinja":
+        raise ValueError("PROMPT_TEMPLATE must be an absolute .jinja file path")
+    resolved = path.resolve(strict=True)
+    if not resolved.is_file():
+        raise ValueError("PROMPT_TEMPLATE must name a regular file")
+    raw = resolved.read_bytes()
+    content = raw.decode("utf-8").replace("\r\n", "\n").replace("\r", "\n")
+    return {"path": str(path), "resolved_path": str(resolved), "bytes": len(raw),
+            "sha256": digest(raw), "content_sha256": digest(content.encode("utf-8"))}
+
+
+def verify_prompt_template(job, deployment, current_model):
+    expected = job.get("prompt_template_identity")
+    if expected is None:
+        return
+    if deployment.get("prompt_template_override") != expected:
+        raise ValueError("Deployment template does not match the requested file fingerprint")
+    if deployment.get("config", {}).get("values", {}).get("model", {}).get("prompt_template") != expected["path"]:
+        raise ValueError("Deployed config does not select the requested template")
+    actual = current_model.get("parameters", {}).get("prompt_template_content")
+    if not isinstance(actual, str) or digest(actual.encode("utf-8")) != expected["content_sha256"]:
+        raise ValueError("Loaded template content differs from the requested override")
+
+
 def normalize(job):
     allowed = {"label", "model_path", "env", "bench", "concurrency", "tool_cases", "tools", "response_model"}
     if not isinstance(job, dict) or set(job) - allowed:
@@ -141,6 +167,8 @@ def normalize(job):
         env[key] = str(value).lower() if isinstance(value, bool) else str(value)
     if env.get("PROFILE") not in ("single", "concurrent") or env.get("NGRAM_RAM") not in ("true", "false"):
         raise ValueError("Set PROFILE and explicit NGRAM_RAM=true/false for comparable measurements")
+    if env.get("PROMPT_TEMPLATE"):
+        job["prompt_template_identity"] = prompt_template_identity(env["PROMPT_TEMPLATE"])
     benches = job.get("bench", [] if {"concurrency", "tools", "tool_cases"} & job.keys() else {})
     job["bench"] = [benches] if isinstance(benches, dict) else benches
     if not isinstance(job["bench"], list):
@@ -212,6 +240,9 @@ def verify_inputs(job, args, identity, env):
         raise ValueError("Recipe/runtime identity changed during the matrix")
     if model_identity(Path(job["model_path"])) != job["model_identity"]:
         raise ValueError("Model files, configuration or loader order changed during the matrix")
+    if (job.get("prompt_template_identity") is not None
+            and prompt_template_identity(job["env"]["PROMPT_TEMPLATE"]) != job["prompt_template_identity"]):
+        raise ValueError("Requested prompt template changed during the matrix")
     current = resolved_env(args.recipe, args.runtime, job)
     keys = {key for key in set(current) | set(env) if tuning_key(key) or key in {"TABBY_REF", "TABBY_REPO", "PYTHON_BIN"}}
     if any(current.get(key) != env.get(key) for key in keys):
@@ -408,6 +439,7 @@ def run_job(job, args, identity, env):
             if deployment[name]["commit"] != identity[name]["commit"] or git_identity(
                     Path(identity[name]["path"])) != identity[name]:
                 raise ValueError(f"{name} changed between preflight and load")
+        verify_prompt_template(job, deployment, record["current_model"])
         atomic(attempt / "deployment.json", deployment)
         record["deployment_sha256"] = digest(deployment)
         verify_inputs(job, args, identity, env)
