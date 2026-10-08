@@ -88,6 +88,10 @@ say "Ninja $(ninja --version) at $(command -v ninja), build workers: ${MAX_JOBS:
 # chat.sh uses upstream's optional console dependencies; they are not in the
 # API server package or the base runtime requirements.
 "$PY" -m pip install -q blessed prompt_toolkit pyperclip
+# Correct only NVIDIA's verified 0.8.1 aarch64/sbsa metadata mismatch. This
+# never changes library bytes, Torch, or the mandatory final pip check.
+"$PY" "$RECIPE_EXL3_DIR/tools/repair_vendor_wheel.py" \
+  --output "$VENV/.qwen38-cusparselt-wheel-repair.json"
 DESIRED_BUILD="$STATE_DIR/runtime-build-desired.json"
 "$PY" "$RECIPE_EXL3_DIR/tools/runtime_state.py" fingerprint \
   --engine "$EXL3_SRC" --cuda-home "$CUDA_HOME" --arch "$TORCH_CUDA_ARCH_LIST" > "$DESIRED_BUILD"

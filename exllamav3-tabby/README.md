@@ -20,3 +20,23 @@ in the [top-level README](../README.md#quick-start).
 | `tools/make_native_view.sh` | Native view of a pack that `vllm-plugin/prepare_pack.sh` rewrote |
 | `bench/`, `tuning/` | GB10 tuning research: harnesses, A/B scripts, logs, patches |
 | `legacy/` | Stock exllamav3 1.5.0 build for the historical baseline. Not the runtime |
+
+## NVIDIA wheel metadata compatibility
+
+The official `nvidia-cusparselt-cu13==0.8.1` aarch64 wheel has an internal
+`py3-none-manylinux2014_sbsa` tag even though its filename says aarch64 and its
+library is ELF64 AArch64. This makes `pip check` report an unsupported platform.
+Setup recognizes only that exact package/version/tag defect on Linux aarch64.
+It verifies the package location, the library's ELF architecture and RECORD
+hash, changes the WHEEL tag to `py3-none-manylinux2014_aarch64`, and updates
+only that metadata file's RECORD hash and size. Library bytes and Torch remain
+unchanged. All other unexpected metadata, architecture or integrity failures
+stop setup; the final `pip check` remains mandatory.
+
+The auditable journal is `$VENV/.qwen38-cusparselt-wheel-repair.json` and is
+included in setup/deployment snapshots. It records the known official wheel's
+filename/SHA256, the verified installed library hash, and the exact metadata
+before and after repair. Repeated setup does not rewrite corrected metadata;
+a prepared journal can recover an interrupted pair of atomic replacements.
+The helper uses a lock in the runtime so concurrent invocations cannot repair
+the same package independently.

@@ -110,7 +110,8 @@ def model_state(path):
 def snapshot(args):
     versions = {}
     for package in ("torch", "triton", "exllamav3", "tabbyAPI", "tokenizers",
-                    "numpy", "llguidance", "fastapi-slim", "pydantic", "uvloop"):
+                    "numpy", "llguidance", "fastapi-slim", "pydantic", "uvloop",
+                    "nvidia-cusparselt-cu13"):
         try:
             versions[package] = importlib.metadata.version(package)
         except importlib.metadata.PackageNotFoundError:
@@ -133,6 +134,9 @@ def snapshot(args):
                  "python_executable_resolved": str(Path(sys.executable).resolve()),
                  "python_prefix": sys.prefix, "python_prefix_resolved": str(Path(sys.prefix).resolve())},
     }
+    repair_record = Path(sys.prefix).resolve() / ".qwen38-cusparselt-wheel-repair.json"
+    if repair_record.is_file():
+        result["compatibility_repairs"] = [json.loads(repair_record.read_text())]
     if args.config:
         import yaml
         file = Path(args.config)
