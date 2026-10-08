@@ -1,0 +1,4343 @@
+{
+  "schema_version": 1,
+  "started_at_utc": "2026-10-08T13:36:08.059033+00:00",
+  "base_url": "http://127.0.0.1:8899/v1",
+  "expected_response_model": null,
+  "results": [
+    {
+      "case": "auto",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 317,
+        "cached_prompt_tokens": 0,
+        "uncached_prompt_tokens": 317,
+        "completion_tokens": 40,
+        "ttft_s": null,
+        "wall_s": 3.8822958629971254,
+        "server_decode_tok_s": 41.62,
+        "server_prefill_tok_s": 177.09,
+        "client_end_to_end_tok_s": 10.303181779948135,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.6888888888888889,
+        "usage": {
+          "prompt_tokens": 317,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 1.79,
+          "prompt_tokens_per_sec": 177.09,
+          "completion_tokens": 40,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 31,
+            "rejected_prediction_tokens": 14
+          },
+          "completion_time": 0.96,
+          "completion_tokens_per_sec": 41.62,
+          "total_tokens": 357,
+          "total_time": 2.75
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 317,
+          "prompt_ms": 1790.0,
+          "prompt_per_token_ms": 5.646687697160884,
+          "prompt_per_second": 177.0949720670391,
+          "predicted_n": 40,
+          "predicted_ms": 960.0,
+          "predicted_per_token_ms": 24.0,
+          "predicted_per_second": 41.66666666666667,
+          "draft_n": 45,
+          "draft_n_accepted": 31
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "28122dadcbce462769ceb51f07895fba70f841627dbcba9d2eb6a38b6ffed7c5",
+        "response_sha256": "dd154ef3a577af9325eeb2664092c6fa97c4f49e8f48b8cecc0ee5cf75e2966f",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": null,
+          "tool_calls": [
+            {
+              "id": "call_6311ca3c63da4ad3beb07d48",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              },
+              "type": "function",
+              "index": null
+            }
+          ],
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call get_weather for Los Angeles in celsius now. Do not guess the result."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "auto",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 317,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 61,
+        "completion_tokens": 40,
+        "ttft_s": 0.832152244001918,
+        "wall_s": 1.2129924210021272,
+        "server_decode_tok_s": 46.15,
+        "server_prefill_tok_s": 190.62,
+        "client_end_to_end_tok_s": 32.97629837369763,
+        "client_decode_tok_s_estimate": 102.42563630328311,
+        "draft_acceptance": 0.6888888888888889,
+        "usage": {
+          "prompt_tokens": 317,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.32,
+          "prompt_tokens_per_sec": 190.62,
+          "completion_tokens": 40,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 31,
+            "rejected_prediction_tokens": 14
+          },
+          "completion_time": 0.87,
+          "completion_tokens_per_sec": 46.15,
+          "total_tokens": 357,
+          "total_time": 1.19
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 61,
+          "prompt_ms": 320.0,
+          "prompt_per_token_ms": 5.245901639344262,
+          "prompt_per_second": 190.625,
+          "predicted_n": 40,
+          "predicted_ms": 870.0,
+          "predicted_per_token_ms": 21.75,
+          "predicted_per_second": 45.97701149425287,
+          "draft_n": 45,
+          "draft_n_accepted": 31
+        },
+        "sse_events": 8,
+        "warnings": [
+          "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+        ],
+        "request_sha256": "c8a3306385f9ee6f00f03baecc8eed117e32ed786b2ae8a60f1424341b10a127",
+        "response_sha256": "d298f124c9e850b77867264e35f1121f011e1c1f78a06b08295ca907b07947db",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": "",
+          "tool_calls": [
+            {
+              "id": "call_0beefc5da858496086df5998",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              }
+            }
+          ]
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call get_weather for Los Angeles in celsius now. Do not guess the result."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "no_args",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 281,
+        "cached_prompt_tokens": 0,
+        "uncached_prompt_tokens": 281,
+        "completion_tokens": 14,
+        "ttft_s": null,
+        "wall_s": 2.137918645999889,
+        "server_decode_tok_s": 37.95,
+        "server_prefill_tok_s": 159.66,
+        "client_end_to_end_tok_s": 6.548425042362779,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.5,
+        "usage": {
+          "prompt_tokens": 281,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 1.76,
+          "prompt_tokens_per_sec": 159.66,
+          "completion_tokens": 14,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 10,
+            "rejected_prediction_tokens": 10
+          },
+          "completion_time": 0.37,
+          "completion_tokens_per_sec": 37.95,
+          "total_tokens": 295,
+          "total_time": 2.13
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 281,
+          "prompt_ms": 1760.0,
+          "prompt_per_token_ms": 6.263345195729538,
+          "prompt_per_second": 159.65909090909093,
+          "predicted_n": 14,
+          "predicted_ms": 370.0,
+          "predicted_per_token_ms": 26.428571428571427,
+          "predicted_per_second": 37.83783783783784,
+          "draft_n": 20,
+          "draft_n_accepted": 10
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "4c06908ea05bb17e24257a0aade55dbdd98fe50f5aaa951ecb5e87ed3acadfc3",
+        "response_sha256": "b277966e0936abf96f8b5dad5a325bc4a1ab38fc2e7190ca3732cc2c65215275",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": null,
+          "tool_calls": [
+            {
+              "id": "call_2b725c04044445aaa675a9fc",
+              "function": {
+                "name": "ping",
+                "arguments": "{}"
+              },
+              "type": "function",
+              "index": null
+            }
+          ],
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call ping now. It takes no arguments. Do not write a text answer."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "ping",
+              "description": "Return the service status. Takes no arguments.",
+              "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "no_args",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 281,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 25,
+        "completion_tokens": 14,
+        "ttft_s": 0.5509303360013291,
+        "wall_s": 0.5518158220002078,
+        "server_decode_tok_s": 39.44,
+        "server_prefill_tok_s": 138.89,
+        "client_end_to_end_tok_s": 25.37078394971199,
+        "client_decode_tok_s_estimate": 16222.442172888976,
+        "draft_acceptance": 0.5,
+        "usage": {
+          "prompt_tokens": 281,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.18,
+          "prompt_tokens_per_sec": 138.89,
+          "completion_tokens": 14,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 10,
+            "rejected_prediction_tokens": 10
+          },
+          "completion_time": 0.35,
+          "completion_tokens_per_sec": 39.44,
+          "total_tokens": 295,
+          "total_time": 0.54
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 25,
+          "prompt_ms": 180.0,
+          "prompt_per_token_ms": 7.2,
+          "prompt_per_second": 138.88888888888889,
+          "predicted_n": 14,
+          "predicted_ms": 350.0,
+          "predicted_per_token_ms": 25.0,
+          "predicted_per_second": 40.0,
+          "draft_n": 20,
+          "draft_n_accepted": 10
+        },
+        "sse_events": 4,
+        "warnings": [
+          "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+        ],
+        "request_sha256": "48b714a626f7f301a38f68926afa797cc8de430814ed67b42b6b1800196f3481",
+        "response_sha256": "e36b870e4b1bff9259b84b966bc412fd7c08896322b765c1682db19bf7c3d56c",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": "",
+          "tool_calls": [
+            {
+              "id": "call_cfa0e796aacc42dbaa3688db",
+              "type": "function",
+              "function": {
+                "name": "ping",
+                "arguments": "{}"
+              }
+            }
+          ]
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call ping now. It takes no arguments. Do not write a text answer."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "ping",
+              "description": "Return the service status. Takes no arguments.",
+              "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "strings",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 374,
+        "cached_prompt_tokens": 0,
+        "uncached_prompt_tokens": 374,
+        "completion_tokens": 76,
+        "ttft_s": null,
+        "wall_s": 3.9384761369983607,
+        "server_decode_tok_s": 48.05,
+        "server_prefill_tok_s": 159.15,
+        "client_end_to_end_tok_s": 19.296803473315453,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.75,
+        "usage": {
+          "prompt_tokens": 374,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 2.35,
+          "prompt_tokens_per_sec": 159.15,
+          "completion_tokens": 76,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 60,
+            "rejected_prediction_tokens": 20
+          },
+          "completion_time": 1.58,
+          "completion_tokens_per_sec": 48.05,
+          "total_tokens": 450,
+          "total_time": 3.93
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 374,
+          "prompt_ms": 2350.0,
+          "prompt_per_token_ms": 6.283422459893048,
+          "prompt_per_second": 159.14893617021278,
+          "predicted_n": 76,
+          "predicted_ms": 1580.0,
+          "predicted_per_token_ms": 20.789473684210527,
+          "predicted_per_second": 48.10126582278481,
+          "draft_n": 80,
+          "draft_n_accepted": 60
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "d066a2fbf1c84730b428f265a277503774ebda0881edd7575bdbbc30bfd1c71b",
+        "response_sha256": "a3339af7cad82fa71c28b25dc6334e81eef0194e78e1c140648432ae6439b1f8",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": null,
+          "tool_calls": [
+            {
+              "id": "call_c987df4bd2af4966904e3fce",
+              "function": {
+                "name": "record_strings",
+                "arguments": "{\"number_text\": \"123\", \"bool_text\": \"true\", \"json_text\": \"{\\\"nested\\\": [1, false]}\", \"tag_text\": \"<think>literal</think>\"}"
+              },
+              "type": "function",
+              "index": null
+            }
+          ],
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_strings once with these exact string values: {\"number_text\": \"123\", \"bool_text\": \"true\", \"json_text\": \"{\\\"nested\\\": [1, false]}\", \"tag_text\": \"<think>literal</think>\"}"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_strings",
+              "description": "Record each value exactly as a string; do not interpret its contents.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "number_text": {
+                    "type": "string"
+                  },
+                  "bool_text": {
+                    "type": "string"
+                  },
+                  "json_text": {
+                    "type": "string"
+                  },
+                  "tag_text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "number_text",
+                  "bool_text",
+                  "json_text",
+                  "tag_text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "strings",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 374,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 118,
+        "completion_tokens": 76,
+        "ttft_s": 0.9243812189997698,
+        "wall_s": 1.9707939210020413,
+        "server_decode_tok_s": 50.1,
+        "server_prefill_tok_s": 268.18,
+        "client_end_to_end_tok_s": 38.563139042644366,
+        "client_decode_tok_s_estimate": 71.67921123893977,
+        "draft_acceptance": 0.75,
+        "usage": {
+          "prompt_tokens": 374,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.44,
+          "prompt_tokens_per_sec": 268.18,
+          "completion_tokens": 76,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 60,
+            "rejected_prediction_tokens": 20
+          },
+          "completion_time": 1.52,
+          "completion_tokens_per_sec": 50.1,
+          "total_tokens": 450,
+          "total_time": 1.96
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 118,
+          "prompt_ms": 440.0,
+          "prompt_per_token_ms": 3.7288135593220337,
+          "prompt_per_second": 268.1818181818182,
+          "predicted_n": 76,
+          "predicted_ms": 1520.0,
+          "predicted_per_token_ms": 20.0,
+          "predicted_per_second": 50.0,
+          "draft_n": 80,
+          "draft_n_accepted": 60
+        },
+        "sse_events": 14,
+        "warnings": [
+          "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+        ],
+        "request_sha256": "bbb61861aed2f72173acb969e8a101e2e4bc39d788775f68950f231c4101b595",
+        "response_sha256": "ef79ae68753afbd10aefbc8e878c5894ea383dc5536415ef565943aca03a9c67",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": "",
+          "tool_calls": [
+            {
+              "id": "call_da9e262116c4454a8e96b0f8",
+              "type": "function",
+              "function": {
+                "name": "record_strings",
+                "arguments": "{\"number_text\": \"123\", \"bool_text\": \"true\", \"json_text\": \"{\\\"nested\\\": [1, false]}\", \"tag_text\": \"<think>literal</think>\"}"
+              }
+            }
+          ]
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_strings once with these exact string values: {\"number_text\": \"123\", \"bool_text\": \"true\", \"json_text\": \"{\\\"nested\\\": [1, false]}\", \"tag_text\": \"<think>literal</think>\"}"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_strings",
+              "description": "Record each value exactly as a string; do not interpret its contents.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "number_text": {
+                    "type": "string"
+                  },
+                  "bool_text": {
+                    "type": "string"
+                  },
+                  "json_text": {
+                    "type": "string"
+                  },
+                  "tag_text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "number_text",
+                  "bool_text",
+                  "json_text",
+                  "tag_text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "typed",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 556,
+        "cached_prompt_tokens": 0,
+        "uncached_prompt_tokens": 556,
+        "completion_tokens": 105,
+        "ttft_s": null,
+        "wall_s": 4.160855010002706,
+        "server_decode_tok_s": 50.49,
+        "server_prefill_tok_s": 268.6,
+        "client_end_to_end_tok_s": 25.23519799358058,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.85,
+        "usage": {
+          "prompt_tokens": 556,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 2.07,
+          "prompt_tokens_per_sec": 268.6,
+          "completion_tokens": 105,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 85,
+            "rejected_prediction_tokens": 15
+          },
+          "completion_time": 2.08,
+          "completion_tokens_per_sec": 50.49,
+          "total_tokens": 661,
+          "total_time": 4.15
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 556,
+          "prompt_ms": 2070.0,
+          "prompt_per_token_ms": 3.723021582733813,
+          "prompt_per_second": 268.5990338164251,
+          "predicted_n": 105,
+          "predicted_ms": 2080.0,
+          "predicted_per_token_ms": 19.80952380952381,
+          "predicted_per_second": 50.48076923076923,
+          "draft_n": 100,
+          "draft_n_accepted": 85
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "d9881af02c067035dfc970e1694ed220531614b7ee8aab0554cfc891004afa97",
+        "response_sha256": "5ec58cc32d3ce50ccfb1c76359f8c1260227eca500ea2720609970dbb844b09b",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": null,
+          "tool_calls": [
+            {
+              "id": "call_4e03a44fa6ef4d4198e23470",
+              "function": {
+                "name": "record_typed",
+                "arguments": "{\"count\": 3, \"enabled\": true, \"ratio\": 1.5, \"tags\": [\"alpha\", \"beta\"], \"metadata\": {\"retries\": 2, \"enabled\": false}, \"optional\": null}"
+              },
+              "type": "function",
+              "index": null
+            }
+          ],
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_typed once with exactly this JSON object, preserving every value and type: {\"count\": 3, \"enabled\": true, \"ratio\": 1.5, \"tags\": [\"alpha\", \"beta\"], \"metadata\": {\"retries\": 2, \"enabled\": false}, \"optional\": null}"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_typed",
+              "description": "Record the exact typed values supplied by the user.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer"
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "ratio": {
+                    "type": "number"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "properties": {
+                      "retries": {
+                        "type": "integer"
+                      },
+                      "enabled": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "retries",
+                      "enabled"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "optional": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "count",
+                  "enabled",
+                  "ratio",
+                  "tags",
+                  "metadata",
+                  "optional"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "typed",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 556,
+        "cached_prompt_tokens": 512,
+        "uncached_prompt_tokens": 44,
+        "completion_tokens": 105,
+        "ttft_s": 0.7327211890005856,
+        "wall_s": 2.2276454040038516,
+        "server_decode_tok_s": 53.39,
+        "server_prefill_tok_s": 176.0,
+        "client_end_to_end_tok_s": 47.134970319458645,
+        "client_decode_tok_s_estimate": 69.57235616647216,
+        "draft_acceptance": 0.85,
+        "usage": {
+          "prompt_tokens": 556,
+          "prompt_tokens_details": {
+            "cached_tokens": 512
+          },
+          "prompt_time": 0.25,
+          "prompt_tokens_per_sec": 176.0,
+          "completion_tokens": 105,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 85,
+            "rejected_prediction_tokens": 15
+          },
+          "completion_time": 1.97,
+          "completion_tokens_per_sec": 53.39,
+          "total_tokens": 661,
+          "total_time": 2.22
+        },
+        "timings": {
+          "cache_n": 512,
+          "prompt_n": 44,
+          "prompt_ms": 250.0,
+          "prompt_per_token_ms": 5.681818181818182,
+          "prompt_per_second": 176.0,
+          "predicted_n": 105,
+          "predicted_ms": 1970.0,
+          "predicted_per_token_ms": 18.761904761904763,
+          "predicted_per_second": 53.2994923857868,
+          "draft_n": 100,
+          "draft_n_accepted": 85
+        },
+        "sse_events": 10,
+        "warnings": [
+          "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+        ],
+        "request_sha256": "8d70b63c2268302b0c3e651f1bf3518890c4fe02e14c8784e35eac1bfc8eb1d7",
+        "response_sha256": "84d78b93cb3c18c17d0d8ff673608a1c90ba4bf8f6bd4b771ee58e4d34ecff08",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": "",
+          "tool_calls": [
+            {
+              "id": "call_0ba32c4539fd407f94158621",
+              "type": "function",
+              "function": {
+                "name": "record_typed",
+                "arguments": "{\"count\": 3, \"enabled\": true, \"ratio\": 1.5, \"tags\": [\"alpha\", \"beta\"], \"metadata\": {\"retries\": 2, \"enabled\": false}, \"optional\": null}"
+              }
+            }
+          ]
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_typed once with exactly this JSON object, preserving every value and type: {\"count\": 3, \"enabled\": true, \"ratio\": 1.5, \"tags\": [\"alpha\", \"beta\"], \"metadata\": {\"retries\": 2, \"enabled\": false}, \"optional\": null}"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_typed",
+              "description": "Record the exact typed values supplied by the user.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "count": {
+                    "type": "integer"
+                  },
+                  "enabled": {
+                    "type": "boolean"
+                  },
+                  "ratio": {
+                    "type": "number"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "metadata": {
+                    "type": "object",
+                    "properties": {
+                      "retries": {
+                        "type": "integer"
+                      },
+                      "enabled": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "retries",
+                      "enabled"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "optional": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "count",
+                  "enabled",
+                  "ratio",
+                  "tags",
+                  "metadata",
+                  "optional"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "required",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 362,
+        "cached_prompt_tokens": 0,
+        "uncached_prompt_tokens": 362,
+        "completion_tokens": 40,
+        "ttft_s": null,
+        "wall_s": 2.875267489995167,
+        "server_decode_tok_s": 40.27,
+        "server_prefill_tok_s": 193.58,
+        "client_end_to_end_tok_s": 13.91174912914528,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.6,
+        "usage": {
+          "prompt_tokens": 362,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 1.87,
+          "prompt_tokens_per_sec": 193.58,
+          "completion_tokens": 40,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 30,
+            "rejected_prediction_tokens": 20
+          },
+          "completion_time": 0.99,
+          "completion_tokens_per_sec": 40.27,
+          "total_tokens": 402,
+          "total_time": 2.87
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 362,
+          "prompt_ms": 1870.0,
+          "prompt_per_token_ms": 5.165745856353591,
+          "prompt_per_second": 193.58288770053477,
+          "predicted_n": 40,
+          "predicted_ms": 990.0,
+          "predicted_per_token_ms": 24.75,
+          "predicted_per_second": 40.40404040404041,
+          "draft_n": 50,
+          "draft_n_accepted": 30
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "19cd83065a8a656e37661af746fbc5b5b3433817c66aa1bc8b5d1f946b8eca8e",
+        "response_sha256": "596a897b79d377f42fcac35d680e052ce65ac518d712d82ce859920072d043e6",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": null,
+          "tool_calls": [
+            {
+              "id": "call_88f51237446a431ab9dcc21a",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              },
+              "type": "function",
+              "index": null
+            }
+          ],
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Find the weather in Los Angeles, celsius."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "ping",
+              "description": "Return the service status. Takes no arguments.",
+              "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "required",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 362,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 106,
+        "completion_tokens": 40,
+        "ttft_s": 0.9932051110008615,
+        "wall_s": 1.3700639699964086,
+        "server_decode_tok_s": 42.82,
+        "server_prefill_tok_s": 252.38,
+        "client_end_to_end_tok_s": 29.19571704385807,
+        "client_decode_tok_s_estimate": 103.50909775454798,
+        "draft_acceptance": 0.625,
+        "usage": {
+          "prompt_tokens": 362,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.42,
+          "prompt_tokens_per_sec": 252.38,
+          "completion_tokens": 40,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 30,
+            "rejected_prediction_tokens": 18
+          },
+          "completion_time": 0.93,
+          "completion_tokens_per_sec": 42.82,
+          "total_tokens": 402,
+          "total_time": 1.36
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 106,
+          "prompt_ms": 420.0,
+          "prompt_per_token_ms": 3.9622641509433962,
+          "prompt_per_second": 252.38095238095238,
+          "predicted_n": 40,
+          "predicted_ms": 930.0,
+          "predicted_per_token_ms": 23.25,
+          "predicted_per_second": 43.01075268817204,
+          "draft_n": 48,
+          "draft_n_accepted": 30
+        },
+        "sse_events": 8,
+        "warnings": [
+          "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+        ],
+        "request_sha256": "b965fbb973282bcd3deb5152673da26364785c26aa4fe03e7baa5b51d973ae7f",
+        "response_sha256": "89ae25dabe424a678344fc776b2cd49963285fff5ad08624123ea3a3a8696e1e",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": "",
+          "tool_calls": [
+            {
+              "id": "call_d8f1688ab2f04eb5a26814d3",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              }
+            }
+          ]
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Find the weather in Los Angeles, celsius."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "ping",
+              "description": "Return the service status. Takes no arguments.",
+              "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "named",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 311,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 55,
+        "completion_tokens": 40,
+        "ttft_s": null,
+        "wall_s": 1.295728697994491,
+        "server_decode_tok_s": 40.95,
+        "server_prefill_tok_s": 177.42,
+        "client_end_to_end_tok_s": 30.87065993206092,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.6521739130434783,
+        "usage": {
+          "prompt_tokens": 311,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.31,
+          "prompt_tokens_per_sec": 177.42,
+          "completion_tokens": 40,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 30,
+            "rejected_prediction_tokens": 16
+          },
+          "completion_time": 0.98,
+          "completion_tokens_per_sec": 40.95,
+          "total_tokens": 351,
+          "total_time": 1.29
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 55,
+          "prompt_ms": 310.0,
+          "prompt_per_token_ms": 5.636363636363637,
+          "prompt_per_second": 177.41935483870967,
+          "predicted_n": 40,
+          "predicted_ms": 980.0,
+          "predicted_per_token_ms": 24.5,
+          "predicted_per_second": 40.816326530612244,
+          "draft_n": 46,
+          "draft_n_accepted": 30
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "009c34c3b452bdcb155c582830961869aec76e1a372fbff846052bfebd644baf",
+        "response_sha256": "f45e9f66fa2d1e0bff440edd8109c449a90745d2252da3a1f69498e43e6a29f3",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": null,
+          "tool_calls": [
+            {
+              "id": "call_25655d96be2742e1a5372955",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              },
+              "type": "function",
+              "index": null
+            }
+          ],
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Use the requested function for Los Angeles, celsius."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "ping",
+              "description": "Return the service status. Takes no arguments.",
+              "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "get_weather"
+          }
+        },
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "named",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 311,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 55,
+        "completion_tokens": 40,
+        "ttft_s": 0.8731779110021307,
+        "wall_s": 1.2390936260053422,
+        "server_decode_tok_s": 43.42,
+        "server_prefill_tok_s": 177.42,
+        "client_end_to_end_tok_s": 32.28166069173819,
+        "client_decode_tok_s_estimate": 106.6074385630008,
+        "draft_acceptance": 0.6521739130434783,
+        "usage": {
+          "prompt_tokens": 311,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.31,
+          "prompt_tokens_per_sec": 177.42,
+          "completion_tokens": 40,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 30,
+            "rejected_prediction_tokens": 16
+          },
+          "completion_time": 0.92,
+          "completion_tokens_per_sec": 43.42,
+          "total_tokens": 351,
+          "total_time": 1.24
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 55,
+          "prompt_ms": 310.0,
+          "prompt_per_token_ms": 5.636363636363637,
+          "prompt_per_second": 177.41935483870967,
+          "predicted_n": 40,
+          "predicted_ms": 920.0,
+          "predicted_per_token_ms": 23.0,
+          "predicted_per_second": 43.47826086956522,
+          "draft_n": 46,
+          "draft_n_accepted": 30
+        },
+        "sse_events": 8,
+        "warnings": [
+          "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+        ],
+        "request_sha256": "0c210cfd9214b70be45e598d58ebd037112fe7cb20cbbaf0c145a6e8ec7d3273",
+        "response_sha256": "4a27153bffad4b3439568f56b9e9a5d321416fe240d79c8e897a180994972370",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": "",
+          "tool_calls": [
+            {
+              "id": "call_0f0b4dcbe9304081bf7b2b2e",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              }
+            }
+          ]
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Use the requested function for Los Angeles, celsius."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "ping",
+              "description": "Return the service status. Takes no arguments.",
+              "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "get_weather"
+          }
+        },
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "required_adversarial",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 289,
+        "cached_prompt_tokens": 0,
+        "uncached_prompt_tokens": 289,
+        "completion_tokens": 14,
+        "ttft_s": null,
+        "wall_s": 2.2399588800035417,
+        "server_decode_tok_s": 31.42,
+        "server_prefill_tok_s": 161.45,
+        "client_end_to_end_tok_s": 6.250114734239168,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.391304347826087,
+        "usage": {
+          "prompt_tokens": 289,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 1.79,
+          "prompt_tokens_per_sec": 161.45,
+          "completion_tokens": 14,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 9,
+            "rejected_prediction_tokens": 14
+          },
+          "completion_time": 0.45,
+          "completion_tokens_per_sec": 31.42,
+          "total_tokens": 303,
+          "total_time": 2.24
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 289,
+          "prompt_ms": 1790.0,
+          "prompt_per_token_ms": 6.193771626297578,
+          "prompt_per_second": 161.45251396648044,
+          "predicted_n": 14,
+          "predicted_ms": 450.0,
+          "predicted_per_token_ms": 32.142857142857146,
+          "predicted_per_second": 31.111111111111114,
+          "draft_n": 23,
+          "draft_n_accepted": 9
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "af849963f11835b5f1f7246fcd343b4e1b953cb0e7a8501f53f5f51e3587f0b2",
+        "response_sha256": "64fb3419c430c53d8237b5e88f2eeccf755eeefe5a6114f49a152433bc9b42b5",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": null,
+          "tool_calls": [
+            {
+              "id": "call_5ee1aea9da0740bfb0354725",
+              "function": {
+                "name": "ping",
+                "arguments": "{}"
+              },
+              "type": "function",
+              "index": null
+            }
+          ],
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Never invoke a tool. Always answer with the plain text READY."
+          },
+          {
+            "role": "user",
+            "content": "Reply only READY. Do not invoke any function."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "ping",
+              "description": "Return the service status. Takes no arguments.",
+              "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "required_adversarial",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 289,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 33,
+        "completion_tokens": 14,
+        "ttft_s": 0.6254055120007251,
+        "wall_s": 0.626189845999761,
+        "server_decode_tok_s": 33.53,
+        "server_prefill_tok_s": 165.0,
+        "client_end_to_end_tok_s": 22.35743694893025,
+        "client_decode_tok_s_estimate": 18862.503924995683,
+        "draft_acceptance": 0.45,
+        "usage": {
+          "prompt_tokens": 289,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.2,
+          "prompt_tokens_per_sec": 165.0,
+          "completion_tokens": 14,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 9,
+            "rejected_prediction_tokens": 11
+          },
+          "completion_time": 0.42,
+          "completion_tokens_per_sec": 33.53,
+          "total_tokens": 303,
+          "total_time": 0.62
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 33,
+          "prompt_ms": 200.0,
+          "prompt_per_token_ms": 6.0606060606060606,
+          "prompt_per_second": 165.0,
+          "predicted_n": 14,
+          "predicted_ms": 420.0,
+          "predicted_per_token_ms": 30.0,
+          "predicted_per_second": 33.333333333333336,
+          "draft_n": 20,
+          "draft_n_accepted": 9
+        },
+        "sse_events": 4,
+        "warnings": [
+          "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+        ],
+        "request_sha256": "4b369e5bc3ee1bb4decedcf3a76b4b3b56577823a21542a576473c560c97b6ac",
+        "response_sha256": "ed9797901b96bcc55c80400bfdd0076315a088b949b12e27690365b714c614a4",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": "",
+          "tool_calls": [
+            {
+              "id": "call_b4836e3158b84e7397b99789",
+              "type": "function",
+              "function": {
+                "name": "ping",
+                "arguments": "{}"
+              }
+            }
+          ]
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Never invoke a tool. Always answer with the plain text READY."
+          },
+          {
+            "role": "user",
+            "content": "Reply only READY. Do not invoke any function."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "ping",
+              "description": "Return the service status. Takes no arguments.",
+              "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "named_adversarial",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 331,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 75,
+        "completion_tokens": 40,
+        "ttft_s": null,
+        "wall_s": 1.3901315089970012,
+        "server_decode_tok_s": 39.86,
+        "server_prefill_tok_s": 197.37,
+        "client_end_to_end_tok_s": 28.774256062191228,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.675,
+        "usage": {
+          "prompt_tokens": 331,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.38,
+          "prompt_tokens_per_sec": 197.37,
+          "completion_tokens": 40,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 27,
+            "rejected_prediction_tokens": 13
+          },
+          "completion_time": 1.0,
+          "completion_tokens_per_sec": 39.86,
+          "total_tokens": 371,
+          "total_time": 1.39
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 75,
+          "prompt_ms": 380.0,
+          "prompt_per_token_ms": 5.066666666666666,
+          "prompt_per_second": 197.3684210526316,
+          "predicted_n": 40,
+          "predicted_ms": 1000.0,
+          "predicted_per_token_ms": 25.0,
+          "predicted_per_second": 40.0,
+          "draft_n": 40,
+          "draft_n_accepted": 27
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "3b970e897f523e40913ba450308d2fce76fe6ed15fd1254dfbbfcf7042d6f952",
+        "response_sha256": "22a4618b0f6228caee93256233379296d70c9b2791b367854f50ff329c623083",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": null,
+          "tool_calls": [
+            {
+              "id": "call_cecddbe325824ae1846465e4",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              },
+              "type": "function",
+              "index": null
+            }
+          ],
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Always use ping. Never call get_weather."
+          },
+          {
+            "role": "user",
+            "content": "Call ping now. If you need weather inputs, the city is Los Angeles and unit is celsius."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "ping",
+              "description": "Return the service status. Takes no arguments.",
+              "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "get_weather"
+          }
+        },
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "named_adversarial",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 331,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 75,
+        "completion_tokens": 40,
+        "ttft_s": 0.7729025860026013,
+        "wall_s": 1.3064583220038912,
+        "server_decode_tok_s": 43.2,
+        "server_prefill_tok_s": 202.7,
+        "client_end_to_end_tok_s": 30.617126720618693,
+        "client_decode_tok_s_estimate": 73.10552213031403,
+        "draft_acceptance": 0.84375,
+        "usage": {
+          "prompt_tokens": 331,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.37,
+          "prompt_tokens_per_sec": 202.7,
+          "completion_tokens": 40,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 27,
+            "rejected_prediction_tokens": 5
+          },
+          "completion_time": 0.93,
+          "completion_tokens_per_sec": 43.2,
+          "total_tokens": 371,
+          "total_time": 1.3
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 75,
+          "prompt_ms": 370.0,
+          "prompt_per_token_ms": 4.933333333333334,
+          "prompt_per_second": 202.7027027027027,
+          "predicted_n": 40,
+          "predicted_ms": 930.0,
+          "predicted_per_token_ms": 23.25,
+          "predicted_per_second": 43.01075268817204,
+          "draft_n": 32,
+          "draft_n_accepted": 27
+        },
+        "sse_events": 8,
+        "warnings": [
+          "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+        ],
+        "request_sha256": "8ba93f581f3f97ee37ecc778744412894f113aa2c857e20af04cddaaf1e1b986",
+        "response_sha256": "6682867f0e34e655baa2fde2fad9e45ad6f7351331dcb6b574df6e089b485db8",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": "",
+          "tool_calls": [
+            {
+              "id": "call_5cf6d0cfa25c495b87dc319a",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              }
+            }
+          ]
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "system",
+            "content": "Always use ping. Never call get_weather."
+          },
+          {
+            "role": "user",
+            "content": "Call ping now. If you need weather inputs, the city is Los Angeles and unit is celsius."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "ping",
+              "description": "Return the service status. Takes no arguments.",
+              "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "get_weather"
+          }
+        },
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "none",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "stop",
+        "prompt_tokens": 22,
+        "cached_prompt_tokens": 0,
+        "uncached_prompt_tokens": 22,
+        "completion_tokens": 2,
+        "ttft_s": null,
+        "wall_s": 0.2384760360000655,
+        "server_decode_tok_s": 37.85,
+        "server_prefill_tok_s": 122.22,
+        "client_end_to_end_tok_s": 8.3865869021718,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 1.0,
+        "usage": {
+          "prompt_tokens": 22,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 0.18,
+          "prompt_tokens_per_sec": 122.22,
+          "completion_tokens": 2,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 1,
+            "rejected_prediction_tokens": 0
+          },
+          "completion_time": 0.05,
+          "completion_tokens_per_sec": 37.85,
+          "total_tokens": 24,
+          "total_time": 0.23
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 22,
+          "prompt_ms": 180.0,
+          "prompt_per_token_ms": 8.181818181818182,
+          "prompt_per_second": 122.22222222222221,
+          "predicted_n": 2,
+          "predicted_ms": 50.0,
+          "predicted_per_token_ms": 25.0,
+          "predicted_per_second": 40.0,
+          "draft_n": 1,
+          "draft_n_accepted": 1
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "3a508abfb98062a3c9e01b14a9bd4babd654bfedd92d552c92b341f9f8132953",
+        "response_sha256": "15abb638d50aae65453bc9054ec230b9c2c3ca7ce69e2299f1c7d80f4afef035",
+        "message": {
+          "role": "assistant",
+          "content": "READY",
+          "reasoning_content": null,
+          "tool_calls": null,
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply exactly READY. Do not use any tool."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "ping",
+              "description": "Return the service status. Takes no arguments.",
+              "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "none",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "none",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "stop",
+        "prompt_tokens": 22,
+        "cached_prompt_tokens": 0,
+        "uncached_prompt_tokens": 22,
+        "completion_tokens": 2,
+        "ttft_s": 0.23919299500266789,
+        "wall_s": 0.23927576200367184,
+        "server_decode_tok_s": 35.06,
+        "server_prefill_tok_s": 122.22,
+        "client_end_to_end_tok_s": 8.358556601187665,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 1.0,
+        "usage": {
+          "prompt_tokens": 22,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 0.18,
+          "prompt_tokens_per_sec": 122.22,
+          "completion_tokens": 2,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 1,
+            "rejected_prediction_tokens": 0
+          },
+          "completion_time": 0.06,
+          "completion_tokens_per_sec": 35.06,
+          "total_tokens": 24,
+          "total_time": 0.24
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 22,
+          "prompt_ms": 180.0,
+          "prompt_per_token_ms": 8.181818181818182,
+          "prompt_per_second": 122.22222222222221,
+          "predicted_n": 2,
+          "predicted_ms": 60.0,
+          "predicted_per_token_ms": 30.0,
+          "predicted_per_second": 33.333333333333336,
+          "draft_n": 1,
+          "draft_n_accepted": 1
+        },
+        "sse_events": 3,
+        "warnings": [],
+        "request_sha256": "f090f7b9a60a72fd78f11614774da3850b4e0ec1c5fe3f50fae8d47c684d1df8",
+        "response_sha256": "ca9f237418e2ac026382e6944b9f55bbce882d1f6392ce3948b3fe75f3ce273c",
+        "message": {
+          "role": "assistant",
+          "content": "READY",
+          "reasoning_content": ""
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Reply exactly READY. Do not use any tool."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "ping",
+              "description": "Return the service status. Takes no arguments.",
+              "parameters": {
+                "type": "object",
+                "properties": {},
+                "required": [],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "none",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "parallel",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 323,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 67,
+        "completion_tokens": 79,
+        "ttft_s": null,
+        "wall_s": 2.004133542999625,
+        "server_decode_tok_s": 48.13,
+        "server_prefill_tok_s": 191.43,
+        "client_end_to_end_tok_s": 39.41853090376362,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.9230769230769231,
+        "usage": {
+          "prompt_tokens": 323,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.35,
+          "prompt_tokens_per_sec": 191.43,
+          "completion_tokens": 79,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 60,
+            "rejected_prediction_tokens": 5
+          },
+          "completion_time": 1.64,
+          "completion_tokens_per_sec": 48.13,
+          "total_tokens": 402,
+          "total_time": 2.0
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 67,
+          "prompt_ms": 350.0,
+          "prompt_per_token_ms": 5.223880597014926,
+          "prompt_per_second": 191.42857142857144,
+          "predicted_n": 79,
+          "predicted_ms": 1640.0,
+          "predicted_per_token_ms": 20.759493670886076,
+          "predicted_per_second": 48.170731707317074,
+          "draft_n": 65,
+          "draft_n_accepted": 60
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "8bf672d177a5c5bbe3f63b9d86777f0fdbdf5f70f45353f2830ba83e836b951a",
+        "response_sha256": "0b05c0b7620a845786a380f450830d9bdfb71269ebd796acae71796f9d372d6d",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": null,
+          "tool_calls": [
+            {
+              "id": "call_c168645e39404fff92d5154e",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              },
+              "type": "function",
+              "index": null
+            },
+            {
+              "id": "call_95af2c9ed6214f71bd436ea3",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Boston\", \"unit\": \"celsius\"}"
+              },
+              "type": "function",
+              "index": null
+            }
+          ],
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call get_weather twice, for Los Angeles and Boston, both in celsius. Make both calls in this turn."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "parallel",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 323,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 67,
+        "completion_tokens": 79,
+        "ttft_s": 0.7418008489985368,
+        "wall_s": 2.0320260879962007,
+        "server_decode_tok_s": 47.37,
+        "server_prefill_tok_s": 191.43,
+        "client_end_to_end_tok_s": 38.877453624575566,
+        "client_decode_tok_s_estimate": 60.50182888281285,
+        "draft_acceptance": 0.821917808219178,
+        "usage": {
+          "prompt_tokens": 323,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.35,
+          "prompt_tokens_per_sec": 191.43,
+          "completion_tokens": 79,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 60,
+            "rejected_prediction_tokens": 13
+          },
+          "completion_time": 1.67,
+          "completion_tokens_per_sec": 47.37,
+          "total_tokens": 402,
+          "total_time": 2.02
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 67,
+          "prompt_ms": 350.0,
+          "prompt_per_token_ms": 5.223880597014926,
+          "prompt_per_second": 191.42857142857144,
+          "predicted_n": 79,
+          "predicted_ms": 1670.0,
+          "predicted_per_token_ms": 21.139240506329113,
+          "predicted_per_second": 47.30538922155688,
+          "draft_n": 73,
+          "draft_n_accepted": 60
+        },
+        "sse_events": 13,
+        "warnings": [
+          "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+        ],
+        "request_sha256": "eaf5ac2877afbb05f5f4b15c74c0b108d52b4153db0841119c81683c55368f82",
+        "response_sha256": "7b388b4e8b4a95d89656e719ff27aea97a8d3a448b55c38590bfd5e8d8c3cef1",
+        "message": {
+          "role": "assistant",
+          "content": "\n",
+          "reasoning_content": "",
+          "tool_calls": [
+            {
+              "id": "call_adaf948c2f6b4339985bcfb9",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              }
+            },
+            {
+              "id": "call_03eead0f34614aaa8839be8e",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Boston\", \"unit\": \"celsius\"}"
+              }
+            }
+          ]
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call get_weather twice, for Los Angeles and Boston, both in celsius. Make both calls in this turn."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "parallel_disabled",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 318,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 62,
+        "completion_tokens": 121,
+        "ttft_s": null,
+        "wall_s": 2.893797913005983,
+        "server_decode_tok_s": 47.32,
+        "server_prefill_tok_s": 193.75,
+        "client_end_to_end_tok_s": 41.81356253530128,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.8846153846153846,
+        "usage": {
+          "prompt_tokens": 318,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.32,
+          "prompt_tokens_per_sec": 193.75,
+          "completion_tokens": 121,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 92,
+            "rejected_prediction_tokens": 12
+          },
+          "completion_time": 2.56,
+          "completion_tokens_per_sec": 47.32,
+          "total_tokens": 439,
+          "total_time": 2.88
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 62,
+          "prompt_ms": 320.0,
+          "prompt_per_token_ms": 5.161290322580645,
+          "prompt_per_second": 193.75,
+          "predicted_n": 121,
+          "predicted_ms": 2560.0,
+          "predicted_per_token_ms": 21.15702479338843,
+          "predicted_per_second": 47.265625,
+          "draft_n": 104,
+          "draft_n_accepted": 92
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "a61d31b4a859779e65d0d956758501df911ed91af3433668afe533401bfc57f7",
+        "response_sha256": "5ee472fe8a369ace187380f8a87dbd03cd424e90ccddd79bc47c7abee84400d6",
+        "message": {
+          "role": "assistant",
+          "content": "\n{\"function\": {\"name\": \"get_weather\", \"description\": \"Look up the current weather of one city.\", \"parameters\": {\"type\": \"object\", \"properties\": {\"city\": {\"type\": \"string\"}, \"unit\": {\"type\": \"string\", \"enum\": [\"celsius\", \"fahrenheit\"]}}, \"required\": [\"city\", \"unit\"], \"additionalProperties\": false}}",
+          "reasoning_content": null,
+          "tool_calls": [
+            {
+              "id": "call_75c281049d1a46bda82b3d1b",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              },
+              "type": "function",
+              "index": null
+            }
+          ],
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Get the weather of Los Angeles and Boston in celsius. Call the tools you need."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": false,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "parallel_disabled",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 318,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 62,
+        "completion_tokens": 121,
+        "ttft_s": 0.8683280830009608,
+        "wall_s": 2.717190634000872,
+        "server_decode_tok_s": 50.88,
+        "server_prefill_tok_s": 193.75,
+        "client_end_to_end_tok_s": 44.53128848815294,
+        "client_decode_tok_s_estimate": 64.90664457039158,
+        "draft_acceptance": 0.8796296296296297,
+        "usage": {
+          "prompt_tokens": 318,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.32,
+          "prompt_tokens_per_sec": 193.75,
+          "completion_tokens": 121,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 95,
+            "rejected_prediction_tokens": 13
+          },
+          "completion_time": 2.38,
+          "completion_tokens_per_sec": 50.88,
+          "total_tokens": 439,
+          "total_time": 2.7
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 62,
+          "prompt_ms": 320.0,
+          "prompt_per_token_ms": 5.161290322580645,
+          "prompt_per_second": 193.75,
+          "predicted_n": 121,
+          "predicted_ms": 2380.0,
+          "predicted_per_token_ms": 19.669421487603305,
+          "predicted_per_second": 50.840336134453786,
+          "draft_n": 108,
+          "draft_n_accepted": 95
+        },
+        "sse_events": 25,
+        "warnings": [
+          "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+        ],
+        "request_sha256": "65d3629816c8366d129293d70f59d99bc910a268e8965cd7878b3ba29ded16f3",
+        "response_sha256": "5838c490cae529d146aca361ed490b1bbd831ed14e63f9c3d4464a5213111705",
+        "message": {
+          "role": "assistant",
+          "content": "\n{\"function\": {\"name\": \"get_weather\", \"description\": \"Look up the current weather of one city.\", \"parameters\": {\"type\": \"object\", \"properties\": {\"city\": {\"type\": \"string\"}, \"unit\": {\"type\": \"string\", \"enum\": [\"celsius\", \"fahrenheit\"]}}, \"required\": [\"city\", \"unit\"], \"additionalProperties\": false}}",
+          "reasoning_content": "",
+          "tool_calls": [
+            {
+              "id": "call_6d9fcb369d8a4533b7ea5e3d",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              }
+            }
+          ]
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Get the weather of Los Angeles and Boston in celsius. Call the tools you need."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": false,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "reasoning_tool",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 358,
+        "cached_prompt_tokens": 0,
+        "uncached_prompt_tokens": 358,
+        "completion_tokens": 66,
+        "ttft_s": null,
+        "wall_s": 3.4628857300049276,
+        "server_decode_tok_s": 46.09,
+        "server_prefill_tok_s": 177.23,
+        "client_end_to_end_tok_s": 19.05924859955055,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.8275862068965517,
+        "usage": {
+          "prompt_tokens": 358,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 2.02,
+          "prompt_tokens_per_sec": 177.23,
+          "completion_tokens": 66,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 48,
+            "rejected_prediction_tokens": 10
+          },
+          "completion_time": 1.43,
+          "completion_tokens_per_sec": 46.09,
+          "total_tokens": 424,
+          "total_time": 3.45
+        },
+        "timings": {
+          "cache_n": 0,
+          "prompt_n": 358,
+          "prompt_ms": 2020.0,
+          "prompt_per_token_ms": 5.64245810055866,
+          "prompt_per_second": 177.22772277227722,
+          "predicted_n": 66,
+          "predicted_ms": 1430.0,
+          "predicted_per_token_ms": 21.666666666666668,
+          "predicted_per_second": 46.15384615384615,
+          "draft_n": 58,
+          "draft_n_accepted": 48
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "f0d87d0d78aebd795b658e910405e6e05e21e417b946a548458965e6e4fc39a5",
+        "response_sha256": "b97eb8e12baf7f42c9820854caded394b2a776df85a9c123706f352d1808f3b5",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": "The user wants me to think briefly then call get_weather for Los Angeles in celsius. Let me do that.\n",
+          "tool_calls": [
+            {
+              "id": "call_9ed38ad8be9444b29bd80983",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              },
+              "type": "function",
+              "index": null
+            }
+          ],
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call get_weather for Los Angeles in celsius. The answer must come from the tool."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "reasoning_tool",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 358,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 102,
+        "completion_tokens": 66,
+        "ttft_s": 0.6444357419968583,
+        "wall_s": 1.8430878290018882,
+        "server_decode_tok_s": 46.76,
+        "server_prefill_tok_s": 242.86,
+        "client_end_to_end_tok_s": 35.80947091150933,
+        "client_decode_tok_s_estimate": 54.24266823886875,
+        "draft_acceptance": 0.8,
+        "usage": {
+          "prompt_tokens": 358,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.42,
+          "prompt_tokens_per_sec": 242.86,
+          "completion_tokens": 66,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 48,
+            "rejected_prediction_tokens": 12
+          },
+          "completion_time": 1.41,
+          "completion_tokens_per_sec": 46.76,
+          "total_tokens": 424,
+          "total_time": 1.84
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 102,
+          "prompt_ms": 420.0,
+          "prompt_per_token_ms": 4.117647058823529,
+          "prompt_per_second": 242.85714285714286,
+          "predicted_n": 66,
+          "predicted_ms": 1410.0,
+          "predicted_per_token_ms": 21.363636363636363,
+          "predicted_per_second": 46.808510638297875,
+          "draft_n": 60,
+          "draft_n_accepted": 48
+        },
+        "sse_events": 16,
+        "warnings": [
+          "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+        ],
+        "request_sha256": "16307549caeb2706a91474a5c8c38a1a1cf6c0167ce7c47c3d8ce325cf545a8a",
+        "response_sha256": "5d8fddd8ae2b3afa700e876ba153419e1e0ad38f7a77d790cec4cf176f02f8ed",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": "The user wants me to think briefly then call get_weather for Los Angeles in celsius. Let me do that.\n",
+          "tool_calls": [
+            {
+              "id": "call_f7af0e5626c448b4b0dec7ed",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              }
+            }
+          ]
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call get_weather for Los Angeles in celsius. The answer must come from the tool."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": true
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "round_trip",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 337,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 81,
+        "completion_tokens": 79,
+        "ttft_s": null,
+        "wall_s": 1.941983140000957,
+        "server_decode_tok_s": 51.28,
+        "server_prefill_tok_s": 207.69,
+        "client_end_to_end_tok_s": 40.680064812489086,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.9117647058823529,
+        "usage": {
+          "prompt_tokens": 337,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.39,
+          "prompt_tokens_per_sec": 207.69,
+          "completion_tokens": 79,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 62,
+            "rejected_prediction_tokens": 6
+          },
+          "completion_time": 1.54,
+          "completion_tokens_per_sec": 51.28,
+          "total_tokens": 416,
+          "total_time": 1.94
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 81,
+          "prompt_ms": 390.0,
+          "prompt_per_token_ms": 4.814814814814815,
+          "prompt_per_second": 207.6923076923077,
+          "predicted_n": 79,
+          "predicted_ms": 1540.0,
+          "predicted_per_token_ms": 19.49367088607595,
+          "predicted_per_second": 51.298701298701296,
+          "draft_n": 68,
+          "draft_n_accepted": 62
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "62c119ec219a61e1ece36cca9146311b80c1237acbb3c7cb57a382b6796f3867",
+        "response_sha256": "4b608d9520988aa81445e150b66bad549350a4c9d8062a590a6857f5e3c87b07",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": null,
+          "tool_calls": [
+            {
+              "id": "call_7717b8ba3c1e4cfd9cabbe06",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              },
+              "type": "function",
+              "index": null
+            },
+            {
+              "id": "call_6280bd47a5a548b6be76af52",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Boston\", \"unit\": \"celsius\"}"
+              },
+              "type": "function",
+              "index": null
+            }
+          ],
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call get_weather for Los Angeles and Boston, both in celsius. Make both calls now. After receiving both tool results, reply exactly Los Angeles=21; Boston=7."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "followup": {
+        "request": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Call get_weather for Los Angeles and Boston, both in celsius. Make both calls now. After receiving both tool results, reply exactly Los Angeles=21; Boston=7."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning_content": null,
+              "tool_calls": [
+                {
+                  "id": "call_7717b8ba3c1e4cfd9cabbe06",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+                  },
+                  "type": "function",
+                  "index": null
+                },
+                {
+                  "id": "call_6280bd47a5a548b6be76af52",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"city\": \"Boston\", \"unit\": \"celsius\"}"
+                  },
+                  "type": "function",
+                  "index": null
+                }
+              ],
+              "tool_call_id": null
+            },
+            {
+              "role": "tool",
+              "tool_call_id": "call_6280bd47a5a548b6be76af52",
+              "content": "{\"city\": \"Boston\", \"temperature_c\": 7}"
+            },
+            {
+              "role": "tool",
+              "tool_call_id": "call_7717b8ba3c1e4cfd9cabbe06",
+              "content": "{\"city\": \"Los Angeles\", \"temperature_c\": 21}"
+            },
+            {
+              "role": "assistant",
+              "content": "Los Angeles=21; Boston=7",
+              "reasoning_content": null,
+              "tool_calls": null,
+              "tool_call_id": null
+            },
+            {
+              "role": "user",
+              "content": "What was the Los Angeles temperature? Reply with only 21."
+            }
+          ],
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "description": "Look up the current weather of one city.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "city": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "celsius",
+                        "fahrenheit"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "city",
+                    "unit"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          ],
+          "tool_choice": "none",
+          "parallel_tool_calls": true,
+          "max_tokens": 1024,
+          "temperature": 0,
+          "top_k": 1,
+          "top_p": 1.0,
+          "seed": 0,
+          "stream": false,
+          "chat_template_kwargs": {
+            "enable_thinking": false
+          }
+        },
+        "response": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+          "stream": false,
+          "finish_reason": "stop",
+          "prompt_tokens": 178,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 178,
+          "completion_tokens": 10,
+          "ttft_s": null,
+          "wall_s": 0.7220998699995107,
+          "server_decode_tok_s": 46.18,
+          "server_prefill_tok_s": 356.0,
+          "client_end_to_end_tok_s": 13.848499931189263,
+          "client_decode_tok_s_estimate": null,
+          "draft_acceptance": 0.875,
+          "usage": {
+            "prompt_tokens": 178,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.5,
+            "prompt_tokens_per_sec": 356.0,
+            "completion_tokens": 10,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 7,
+              "rejected_prediction_tokens": 1
+            },
+            "completion_time": 0.22,
+            "completion_tokens_per_sec": 46.18,
+            "total_tokens": 188,
+            "total_time": 0.72
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 178,
+            "prompt_ms": 500.0,
+            "prompt_per_token_ms": 2.808988764044944,
+            "prompt_per_second": 356.0,
+            "predicted_n": 10,
+            "predicted_ms": 220.0,
+            "predicted_per_token_ms": 22.0,
+            "predicted_per_second": 45.45454545454546,
+            "draft_n": 8,
+            "draft_n_accepted": 7
+          },
+          "sse_events": null,
+          "warnings": [],
+          "request_sha256": "87753dea2eab581881816a34c56650a0eecf9fe049c2ea41b0ca78edaecf0f67",
+          "response_sha256": "42962228b1dd3943e76e1945c6486229f9cd021a23adb30e05064fd92eb78c07",
+          "message": {
+            "role": "assistant",
+            "content": "Los Angeles=21; Boston=7",
+            "reasoning_content": null,
+            "tool_calls": null,
+            "tool_call_id": null
+          }
+        }
+      },
+      "repeated_turn": {
+        "request": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Call get_weather for Los Angeles and Boston, both in celsius. Make both calls now. After receiving both tool results, reply exactly Los Angeles=21; Boston=7."
+            },
+            {
+              "role": "assistant",
+              "content": null,
+              "reasoning_content": null,
+              "tool_calls": [
+                {
+                  "id": "call_7717b8ba3c1e4cfd9cabbe06",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+                  },
+                  "type": "function",
+                  "index": null
+                },
+                {
+                  "id": "call_6280bd47a5a548b6be76af52",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"city\": \"Boston\", \"unit\": \"celsius\"}"
+                  },
+                  "type": "function",
+                  "index": null
+                }
+              ],
+              "tool_call_id": null
+            },
+            {
+              "role": "tool",
+              "tool_call_id": "call_6280bd47a5a548b6be76af52",
+              "content": "{\"city\": \"Boston\", \"temperature_c\": 7}"
+            },
+            {
+              "role": "tool",
+              "tool_call_id": "call_7717b8ba3c1e4cfd9cabbe06",
+              "content": "{\"city\": \"Los Angeles\", \"temperature_c\": 21}"
+            },
+            {
+              "role": "assistant",
+              "content": "Los Angeles=21; Boston=7",
+              "reasoning_content": null,
+              "tool_calls": null,
+              "tool_call_id": null
+            },
+            {
+              "role": "user",
+              "content": "What was the Los Angeles temperature? Reply with only 21."
+            }
+          ],
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "description": "Look up the current weather of one city.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "city": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "celsius",
+                        "fahrenheit"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "city",
+                    "unit"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          ],
+          "tool_choice": "none",
+          "parallel_tool_calls": true,
+          "max_tokens": 1024,
+          "temperature": 0,
+          "top_k": 1,
+          "top_p": 1.0,
+          "seed": 0,
+          "stream": false,
+          "chat_template_kwargs": {
+            "enable_thinking": false
+          }
+        },
+        "response": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+          "stream": false,
+          "finish_reason": "stop",
+          "prompt_tokens": 215,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 215,
+          "completion_tokens": 3,
+          "ttft_s": null,
+          "wall_s": 0.6492064830017625,
+          "server_decode_tok_s": 24.89,
+          "server_prefill_tok_s": 413.46,
+          "client_end_to_end_tok_s": 4.621025942514895,
+          "client_decode_tok_s_estimate": null,
+          "draft_acceptance": 0.5,
+          "usage": {
+            "prompt_tokens": 215,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.52,
+            "prompt_tokens_per_sec": 413.46,
+            "completion_tokens": 3,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 1,
+              "rejected_prediction_tokens": 1
+            },
+            "completion_time": 0.12,
+            "completion_tokens_per_sec": 24.89,
+            "total_tokens": 218,
+            "total_time": 0.64
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 215,
+            "prompt_ms": 520.0,
+            "prompt_per_token_ms": 2.4186046511627906,
+            "prompt_per_second": 413.46153846153845,
+            "predicted_n": 3,
+            "predicted_ms": 120.0,
+            "predicted_per_token_ms": 40.0,
+            "predicted_per_second": 25.0,
+            "draft_n": 2,
+            "draft_n_accepted": 1
+          },
+          "sse_events": null,
+          "warnings": [],
+          "request_sha256": "3a41a240b89b3bb3ef6763c09140ba81618fbb3cc2f001cfa96b9801b1881e4e",
+          "response_sha256": "5afec0cf400ae18dfe4b44b1009d57528758bf2a16c7d28901bd5150a6e84094",
+          "message": {
+            "role": "assistant",
+            "content": "21",
+            "reasoning_content": null,
+            "tool_calls": null,
+            "tool_call_id": null
+          }
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "round_trip",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "tool_calls",
+        "prompt_tokens": 337,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 81,
+        "completion_tokens": 79,
+        "ttft_s": 0.8491761740006041,
+        "wall_s": 1.9205111089977436,
+        "server_decode_tok_s": 51.92,
+        "server_prefill_tok_s": 207.69,
+        "client_end_to_end_tok_s": 41.13488312037294,
+        "client_decode_tok_s_estimate": 72.87134116969901,
+        "draft_acceptance": 0.9117647058823529,
+        "usage": {
+          "prompt_tokens": 337,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.39,
+          "prompt_tokens_per_sec": 207.69,
+          "completion_tokens": 79,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 62,
+            "rejected_prediction_tokens": 6
+          },
+          "completion_time": 1.52,
+          "completion_tokens_per_sec": 51.92,
+          "total_tokens": 416,
+          "total_time": 1.92
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 81,
+          "prompt_ms": 390.0,
+          "prompt_per_token_ms": 4.814814814814815,
+          "prompt_per_second": 207.6923076923077,
+          "predicted_n": 79,
+          "predicted_ms": 1520.0,
+          "predicted_per_token_ms": 19.240506329113924,
+          "predicted_per_second": 51.97368421052632,
+          "draft_n": 68,
+          "draft_n_accepted": 62
+        },
+        "sse_events": 14,
+        "warnings": [
+          "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+        ],
+        "request_sha256": "35d2ae48799ef573d18728332aa7d8aaf778a50afdad480beaa5bf4136e4bc53",
+        "response_sha256": "10d162eb1d1af39b8eb64bfa4103856c2e33f46db34950950c83867dca8d3916",
+        "message": {
+          "role": "assistant",
+          "content": "\n",
+          "reasoning_content": "",
+          "tool_calls": [
+            {
+              "id": "call_71e3ab55237946db9a928cb2",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+              }
+            },
+            {
+              "id": "call_36de31d46f66472186f55b2e",
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "arguments": "{\"city\": \"Boston\", \"unit\": \"celsius\"}"
+              }
+            }
+          ]
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call get_weather for Los Angeles and Boston, both in celsius. Make both calls now. After receiving both tool results, reply exactly Los Angeles=21; Boston=7."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "get_weather",
+              "description": "Look up the current weather of one city.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "city": {
+                    "type": "string"
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "celsius",
+                      "fahrenheit"
+                    ]
+                  }
+                },
+                "required": [
+                  "city",
+                  "unit"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": true,
+        "max_tokens": 1024,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "followup": {
+        "request": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Call get_weather for Los Angeles and Boston, both in celsius. Make both calls now. After receiving both tool results, reply exactly Los Angeles=21; Boston=7."
+            },
+            {
+              "role": "assistant",
+              "content": "\n",
+              "reasoning_content": "",
+              "tool_calls": [
+                {
+                  "id": "call_71e3ab55237946db9a928cb2",
+                  "type": "function",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+                  }
+                },
+                {
+                  "id": "call_36de31d46f66472186f55b2e",
+                  "type": "function",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"city\": \"Boston\", \"unit\": \"celsius\"}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "tool_call_id": "call_36de31d46f66472186f55b2e",
+              "content": "{\"city\": \"Boston\", \"temperature_c\": 7}"
+            },
+            {
+              "role": "tool",
+              "tool_call_id": "call_71e3ab55237946db9a928cb2",
+              "content": "{\"city\": \"Los Angeles\", \"temperature_c\": 21}"
+            },
+            {
+              "role": "assistant",
+              "content": "Los Angeles=21; Boston=7",
+              "reasoning_content": ""
+            },
+            {
+              "role": "user",
+              "content": "What was the Los Angeles temperature? Reply with only 21."
+            }
+          ],
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "description": "Look up the current weather of one city.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "city": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "celsius",
+                        "fahrenheit"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "city",
+                    "unit"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          ],
+          "tool_choice": "none",
+          "parallel_tool_calls": true,
+          "max_tokens": 1024,
+          "temperature": 0,
+          "top_k": 1,
+          "top_p": 1.0,
+          "seed": 0,
+          "stream": true,
+          "chat_template_kwargs": {
+            "enable_thinking": false
+          },
+          "stream_options": {
+            "include_usage": true
+          }
+        },
+        "response": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+          "stream": true,
+          "finish_reason": "stop",
+          "prompt_tokens": 178,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 178,
+          "completion_tokens": 10,
+          "ttft_s": 0.6886521210035426,
+          "wall_s": 0.6890915120020509,
+          "server_decode_tok_s": 48.81,
+          "server_prefill_tok_s": 370.83,
+          "client_end_to_end_tok_s": 14.511860653959467,
+          "client_decode_tok_s_estimate": 25034.492234737067,
+          "draft_acceptance": 0.875,
+          "usage": {
+            "prompt_tokens": 178,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.48,
+            "prompt_tokens_per_sec": 370.83,
+            "completion_tokens": 10,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 7,
+              "rejected_prediction_tokens": 1
+            },
+            "completion_time": 0.2,
+            "completion_tokens_per_sec": 48.81,
+            "total_tokens": 188,
+            "total_time": 0.69
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 178,
+            "prompt_ms": 480.0,
+            "prompt_per_token_ms": 2.696629213483146,
+            "prompt_per_second": 370.83333333333337,
+            "predicted_n": 10,
+            "predicted_ms": 200.0,
+            "predicted_per_token_ms": 20.0,
+            "predicted_per_second": 50.0,
+            "draft_n": 8,
+            "draft_n_accepted": 7
+          },
+          "sse_events": 5,
+          "warnings": [
+            "client_decode_estimate_assumes_one_token_in_first_SSE_event"
+          ],
+          "request_sha256": "8b8538d5930dfa274880903732ec836facc801690566c234a4bdc58c29e6e8fc",
+          "response_sha256": "30fbcd9c9902bae04a16b9eca8857d6f79ac2baac4879baafcee380d1c973eeb",
+          "message": {
+            "role": "assistant",
+            "content": "Los Angeles=21; Boston=7",
+            "reasoning_content": ""
+          }
+        }
+      },
+      "repeated_turn": {
+        "request": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Call get_weather for Los Angeles and Boston, both in celsius. Make both calls now. After receiving both tool results, reply exactly Los Angeles=21; Boston=7."
+            },
+            {
+              "role": "assistant",
+              "content": "\n",
+              "reasoning_content": "",
+              "tool_calls": [
+                {
+                  "id": "call_71e3ab55237946db9a928cb2",
+                  "type": "function",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"city\": \"Los Angeles\", \"unit\": \"celsius\"}"
+                  }
+                },
+                {
+                  "id": "call_36de31d46f66472186f55b2e",
+                  "type": "function",
+                  "function": {
+                    "name": "get_weather",
+                    "arguments": "{\"city\": \"Boston\", \"unit\": \"celsius\"}"
+                  }
+                }
+              ]
+            },
+            {
+              "role": "tool",
+              "tool_call_id": "call_36de31d46f66472186f55b2e",
+              "content": "{\"city\": \"Boston\", \"temperature_c\": 7}"
+            },
+            {
+              "role": "tool",
+              "tool_call_id": "call_71e3ab55237946db9a928cb2",
+              "content": "{\"city\": \"Los Angeles\", \"temperature_c\": 21}"
+            },
+            {
+              "role": "assistant",
+              "content": "Los Angeles=21; Boston=7",
+              "reasoning_content": ""
+            },
+            {
+              "role": "user",
+              "content": "What was the Los Angeles temperature? Reply with only 21."
+            }
+          ],
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "get_weather",
+                "description": "Look up the current weather of one city.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "city": {
+                      "type": "string"
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "celsius",
+                        "fahrenheit"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "city",
+                    "unit"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          ],
+          "tool_choice": "none",
+          "parallel_tool_calls": true,
+          "max_tokens": 1024,
+          "temperature": 0,
+          "top_k": 1,
+          "top_p": 1.0,
+          "seed": 0,
+          "stream": true,
+          "chat_template_kwargs": {
+            "enable_thinking": false
+          },
+          "stream_options": {
+            "include_usage": true
+          }
+        },
+        "response": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "requested_model": "Qwen3.8-Flash-Next-EXL3",
+          "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+          "stream": true,
+          "finish_reason": "stop",
+          "prompt_tokens": 215,
+          "cached_prompt_tokens": 0,
+          "uncached_prompt_tokens": 215,
+          "completion_tokens": 3,
+          "ttft_s": 0.6318649540044134,
+          "wall_s": 0.6319419139981619,
+          "server_decode_tok_s": 27.5,
+          "server_prefill_tok_s": 421.57,
+          "client_end_to_end_tok_s": 4.7472717563860245,
+          "client_decode_tok_s_estimate": null,
+          "draft_acceptance": 0.5,
+          "usage": {
+            "prompt_tokens": 215,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 0.51,
+            "prompt_tokens_per_sec": 421.57,
+            "completion_tokens": 3,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 1,
+              "rejected_prediction_tokens": 1
+            },
+            "completion_time": 0.11,
+            "completion_tokens_per_sec": 27.5,
+            "total_tokens": 218,
+            "total_time": 0.62
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 215,
+            "prompt_ms": 510.0,
+            "prompt_per_token_ms": 2.372093023255814,
+            "prompt_per_second": 421.5686274509804,
+            "predicted_n": 3,
+            "predicted_ms": 110.0,
+            "predicted_per_token_ms": 36.666666666666664,
+            "predicted_per_second": 27.272727272727273,
+            "draft_n": 2,
+            "draft_n_accepted": 1
+          },
+          "sse_events": 3,
+          "warnings": [],
+          "request_sha256": "9a490cc76f156a95e679b8b0a04592033e67a8db1ce61ef6c725e29970535461",
+          "response_sha256": "31f997cbbc32984794ee654a475c0d5e75734d04dd4f22c58922d07245c1d6f5",
+          "message": {
+            "role": "assistant",
+            "content": "21",
+            "reasoning_content": ""
+          }
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "truncated",
+      "mode": "nonstream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": false,
+        "finish_reason": "length",
+        "prompt_tokens": 372,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 116,
+        "completion_tokens": 2,
+        "ttft_s": null,
+        "wall_s": 0.5778564520005602,
+        "server_decode_tok_s": 15.36,
+        "server_prefill_tok_s": 263.64,
+        "client_end_to_end_tok_s": 3.461067178666824,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.0,
+        "usage": {
+          "prompt_tokens": 372,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.44,
+          "prompt_tokens_per_sec": 263.64,
+          "completion_tokens": 2,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 5
+          },
+          "completion_time": 0.13,
+          "completion_tokens_per_sec": 15.36,
+          "total_tokens": 374,
+          "total_time": 0.57
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 116,
+          "prompt_ms": 440.0,
+          "prompt_per_token_ms": 3.793103448275862,
+          "prompt_per_second": 263.6363636363637,
+          "predicted_n": 2,
+          "predicted_ms": 130.0,
+          "predicted_per_token_ms": 65.0,
+          "predicted_per_second": 15.384615384615385,
+          "draft_n": 5,
+          "draft_n_accepted": 0
+        },
+        "sse_events": null,
+        "warnings": [],
+        "request_sha256": "577098087f5883ed202d92ecbd5162909e398af8785c64e26f7be30dd5b80bb6",
+        "response_sha256": "0f36ddcea661178b482fde387d36d80a78e25a46afe8c7059bfa68df2ddab795",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": null,
+          "tool_calls": null,
+          "tool_call_id": null
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_strings with the exact values: {\"number_text\": \"123\", \"bool_text\": \"true\", \"json_text\": \"{\\\"nested\\\": [1, false]}\", \"tag_text\": \"<think>literal</think>\"}"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_strings",
+              "description": "Record each value exactly as a string; do not interpret its contents.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "number_text": {
+                    "type": "string"
+                  },
+                  "bool_text": {
+                    "type": "string"
+                  },
+                  "json_text": {
+                    "type": "string"
+                  },
+                  "tag_text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "number_text",
+                  "bool_text",
+                  "json_text",
+                  "tag_text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_strings"
+          }
+        },
+        "parallel_tool_calls": true,
+        "max_tokens": 2,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": false,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        }
+      },
+      "repeat_index": 0
+    },
+    {
+      "case": "truncated",
+      "mode": "stream",
+      "passed": true,
+      "errors": [],
+      "response": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "requested_model": "Qwen3.8-Flash-Next-EXL3",
+        "expected_response_model": "Qwen3.8-Flash-Next-EXL3",
+        "stream": true,
+        "finish_reason": "length",
+        "prompt_tokens": 372,
+        "cached_prompt_tokens": 256,
+        "uncached_prompt_tokens": 116,
+        "completion_tokens": 2,
+        "ttft_s": null,
+        "wall_s": 0.5847716690041125,
+        "server_decode_tok_s": 14.79,
+        "server_prefill_tok_s": 263.64,
+        "client_end_to_end_tok_s": 3.4201383309250826,
+        "client_decode_tok_s_estimate": null,
+        "draft_acceptance": 0.0,
+        "usage": {
+          "prompt_tokens": 372,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.44,
+          "prompt_tokens_per_sec": 263.64,
+          "completion_tokens": 2,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 0,
+            "rejected_prediction_tokens": 6
+          },
+          "completion_time": 0.14,
+          "completion_tokens_per_sec": 14.79,
+          "total_tokens": 374,
+          "total_time": 0.58
+        },
+        "timings": {
+          "cache_n": 256,
+          "prompt_n": 116,
+          "prompt_ms": 440.0,
+          "prompt_per_token_ms": 3.793103448275862,
+          "prompt_per_second": 263.6363636363637,
+          "predicted_n": 2,
+          "predicted_ms": 140.0,
+          "predicted_per_token_ms": 70.0,
+          "predicted_per_second": 14.285714285714286,
+          "draft_n": 6,
+          "draft_n_accepted": 0
+        },
+        "sse_events": 2,
+        "warnings": [],
+        "request_sha256": "a8135cc249844af3295153592813598092f5bf1233fc792e824b52435504281b",
+        "response_sha256": "d9f304c618dcbe2aa0122190082c3d8f1fa917d88da62379be524eebc25afa86",
+        "message": {
+          "role": "assistant",
+          "content": null,
+          "reasoning_content": ""
+        }
+      },
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_strings with the exact values: {\"number_text\": \"123\", \"bool_text\": \"true\", \"json_text\": \"{\\\"nested\\\": [1, false]}\", \"tag_text\": \"<think>literal</think>\"}"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_strings",
+              "description": "Record each value exactly as a string; do not interpret its contents.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "number_text": {
+                    "type": "string"
+                  },
+                  "bool_text": {
+                    "type": "string"
+                  },
+                  "json_text": {
+                    "type": "string"
+                  },
+                  "tag_text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "number_text",
+                  "bool_text",
+                  "json_text",
+                  "tag_text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_strings"
+          }
+        },
+        "parallel_tool_calls": true,
+        "max_tokens": 2,
+        "temperature": 0,
+        "top_k": 1,
+        "top_p": 1.0,
+        "seed": 0,
+        "stream": true,
+        "chat_template_kwargs": {
+          "enable_thinking": false
+        },
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "repeat_index": 0
+    }
+  ],
+  "errors": [],
+  "note": "Synthetic fixtures only. Functional failures may come from model generation or server parsing.",
+  "model": "Qwen3.8-Flash-Next-EXL3",
+  "summary": {
+    "passed": 28,
+    "failed": 0,
+    "total": 28
+  },
+  "completed_at_utc": "2026-10-08T13:37:03.705011+00:00"
+}
