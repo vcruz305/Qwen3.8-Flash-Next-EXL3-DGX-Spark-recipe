@@ -191,3 +191,11 @@ These checks cover missing usage, premature stream termination, in-band errors,
 model identity, fragmented tool data, typed arguments, safe config rendering,
 context limits, memory-header classification and refusal to overwrite local work.
 They do not load a model or validate CUDA performance.
+
+## Controlled A/B matrices
+
+Use [run_matrix.py](run_matrix.py) for serial, fresh-server comparisons across
+packs and tuning settings. It records source/model identity, verifies the owned
+listener, preserves failed attempts, and samples host resources. See the
+[matrix guide](matrix.md) for the job format, cleanup behavior, resume rules,
+and the boundary between current launcher runs and the original historical baseline.
