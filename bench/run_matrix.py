@@ -406,7 +406,30 @@ def commands(job, attempt, recipe, python, model):
         yield "tools", [python, str(recipe / "bench/tool_smoke.py"), *common, *flag_args(job["tools"])]
 
 
-def run_job(job, args, identity, env):
+class InterruptState:
+    """Record signals asynchronously; raise only after owned children are registered.
+
+    Checkpoints stay outside cleanup. No signal mask is inherited by children,
+    and additional TERM/INT signals cannot interrupt an owned-group shutdown.
+    """
+    def __init__(self):
+        self.signum = None
+
+    def receive(self, signum, _frame):
+        if self.signum is None:
+            self.signum = signum
+
+    def error(self):
+        return KeyboardInterrupt(f"Received signal {self.signum}")
+
+    def checkpoint(self):
+        if self.signum is not None:
+            raise self.error()
+
+
+def run_job(job, args, identity, env, interrupt=None):
+    checkpoint = interrupt.checkpoint if interrupt is not None else lambda: None
+    checkpoint()
     job_dir = args.output / job["label"]
     job_dir.mkdir(exist_ok=True)
     config = {"job": job, "sources": identity, "resolved_tuning": {k: v for k, v in env.items() if tuning_key(k)},
@@ -440,6 +463,7 @@ def run_job(job, args, identity, env):
     try:
         verify_inputs(job, args, identity, env)
         record["inputs_verified_before_launch_at_utc"] = stamp()
+        checkpoint()
         sampler.tick("before_start")
         server_log = (attempt / "server.log").open("w")
         start = time.monotonic()
@@ -448,8 +472,10 @@ def run_job(job, args, identity, env):
                                   stderr=subprocess.STDOUT, start_new_session=True)
         record["server_pid"] = server.pid
         save()
+        checkpoint()  # Popen has returned and the server is owned by this finally.
         deadline = start + args.ready_timeout
         while time.monotonic() < deadline:
+            checkpoint()
             if server.poll() is not None:
                 raise RuntimeError(f"Server exited during load: {server.returncode}")
             sampler.tick("loading", server.pid)
@@ -489,6 +515,7 @@ def run_job(job, args, identity, env):
         record["state"] = "measuring"
         save()
         for name, command in commands(job, attempt, args.recipe, str(args.runtime / "venv/bin/python"), model):
+            checkpoint()
             if server.poll() is not None:
                 raise RuntimeError("Server exited between measurements")
             destination = attempt / (name + ".json")
@@ -504,7 +531,9 @@ def run_job(job, args, identity, env):
                                           stderr=subprocess.STDOUT, start_new_session=True)
                 began = time.monotonic()
                 try:
+                    checkpoint()  # The client assignment precedes this cleanup boundary.
                     while client.poll() is None:
+                        checkpoint()
                         if time.monotonic() - began > args.client_timeout:
                             client_record["timed_out"] = True
                             break
@@ -519,9 +548,11 @@ def run_job(job, args, identity, env):
                         raise
                     finally:
                         client_record["wall_seconds"] = time.monotonic() - began
+            checkpoint()  # Client cleanup is complete before delivering a signal.
             client_record["completed_report"] = destination.is_file() and bool(
                 json.loads(destination.read_text()).get("completed_at_utc"))
             save()
+        checkpoint()
         verify_inputs(job, args, identity, env)
         record["inputs_verified_after_measurements_at_utc"] = stamp()
         if env.get("GPU_LOCK_FILE"):
@@ -548,6 +579,11 @@ def run_job(job, args, identity, env):
             record.update(state="cleanup_failed", passed=False)
         if record.get("server_exit_before_cleanup") is not None:
             record["passed"] = False
+        if interrupt is not None and interrupt.signum is not None:
+            interrupted = interrupt.error()
+            record.update(passed=False, signal=interrupt.signum, error=str(interrupted))
+            if record["state"] != "cleanup_failed":
+                record["state"] = "interrupted"
         record["ended_at_utc"] = stamp()
         if record["state"] != "interrupted":
             record["finished_at_utc"] = record["ended_at_utc"]
@@ -579,25 +615,32 @@ def main():
     if len({job["label"] for job in jobs}) != len(jobs):
         parser.error("Job labels must be unique")
     args.output.mkdir(parents=True, exist_ok=True)
-    def interrupt(signum, _frame):
-        signal.signal(signal.SIGTERM, signal.SIG_IGN)
-        signal.signal(signal.SIGINT, signal.SIG_IGN)
-        raise KeyboardInterrupt(f"Received signal {signum}; stopping owned processes")
-    signal.signal(signal.SIGTERM, interrupt)
-    signal.signal(signal.SIGINT, interrupt)
-    with (args.output / ".controller.lock").open("a") as output_lock, Path(
-            f"/tmp/qwen-experiment-8899-{os.getuid()}.lock").open("a") as port_lock:
-        fcntl.flock(output_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        fcntl.flock(port_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-        identity = source_identity(args.recipe, args.runtime)
-        environments = [resolved_env(args.recipe, args.runtime, job) for job in jobs]
-        records = []
-        for job, env in zip(jobs, environments):
-            record = run_job(job, args, identity, env)
-            records.append(record)
-            if record["state"] == "cleanup_failed":
-                break  # Ownership/cleanup uncertainty must never overlap the next job.
-        return 0 if len(records) == len(jobs) and all(record["passed"] for record in records) else 1
+    interrupt = InterruptState()
+    previous = {sig: signal.getsignal(sig) for sig in (signal.SIGTERM, signal.SIGINT)}
+    for sig in previous:
+        signal.signal(sig, interrupt.receive)
+    try:
+        with (args.output / ".controller.lock").open("a") as output_lock, Path(
+                f"/tmp/qwen-experiment-8899-{os.getuid()}.lock").open("a") as port_lock:
+            fcntl.flock(output_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            fcntl.flock(port_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            interrupt.checkpoint()
+            identity = source_identity(args.recipe, args.runtime)
+            environments = []
+            for job in jobs:
+                interrupt.checkpoint()
+                environments.append(resolved_env(args.recipe, args.runtime, job))
+            records = []
+            for job, env in zip(jobs, environments):
+                record = run_job(job, args, identity, env, interrupt=interrupt)
+                interrupt.checkpoint()
+                records.append(record)
+                if record["state"] == "cleanup_failed":
+                    break  # Ownership/cleanup uncertainty must never overlap the next job.
+            return 0 if len(records) == len(jobs) and all(record["passed"] for record in records) else 1
+    finally:
+        for sig, handler in previous.items():
+            signal.signal(sig, handler)
 
 
 if __name__ == "__main__":
