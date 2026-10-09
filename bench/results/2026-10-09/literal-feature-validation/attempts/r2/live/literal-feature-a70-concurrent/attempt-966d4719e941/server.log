@@ -1,0 +1,680 @@
+==> profile concurrent: 262144 tokens per request, 262144 shared tokens, 4 jobs, ngram_ram=false, chunk=2048, draft=mtp/5
+==> the pool holds fewer than 4 full-length requests; shorter requests can still overlap
+exllamav3 1.6.0.post1 (fork) at /home/cruzspark/qwen38-exl3-20261008/exllamav3/exllamav3
+build fingerprint verified: 243f414eb2fc
+==> config: /home/cruzspark/qwen-followup-20261009/results/literal-feature-a70-r2/literal-feature-a70-concurrent/attempt-966d4719e941/state/config.yml
+==> memory estimate: 63.2 GiB (non-ngram weights 48.7, ngram stream 30.4, K/V 3.25, scales 0.20, QSA 1.02, slack 10); MemAvailable 118.2 GiB. Estimate only.
+deployment snapshot: /home/cruzspark/qwen-followup-20261009/results/literal-feature-a70-r2/literal-feature-a70-concurrent/attempt-966d4719e941/state/deployment.json
+==> TabbyAPI a70ae1fa on http://127.0.0.1:8899/v1, model id: Qwen3.8-Flash-Next-EXL3
+00:34:14.708 INFO:     Using config file
+                       /home/cruzspark/qwen-followup-20261009/results/literal-fe
+                       ature-a70-r2/literal-feature-a70-concurrent/attempt-966d4
+                       719e941/state/config.yml
+00:34:14.713 INFO:     The 'config.yml' file cannot be found
+00:34:15.733 INFO:     Sampler overrides (inline): temperature 1.0, top_k 20,
+                       top_p 0.95, min_p 0.0
+00:34:15.738 INFO:     exllamav3 version: 1.6.0.post1
+00:34:17.221 INFO:     The provided model has vision capabilities, vision is
+                       disabled in config.
+00:34:17.228 INFO:     Using main model MTP component for drafting
+00:34:17.229 INFO:     Disabling GPU split because one GPU is in use.
+00:34:17.229 INFO:     Context: max_seq_len 262,144 tokens (configured),
+                       cache_size 262,144 tokens
+00:34:17.277 INFO:     Using template "chat_template" for chat completions.
+00:34:17.278 INFO:     Response parsing: tool format qwen3_coder (config),
+                       reasoning tags <think> </think> (template)
+00:34:18.418 INFO:     Loading model
+                       /home/cruzspark/models/flashnext-exl3-3.05bpw (manual GPU
+                       split)
+Loading draft modules ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 3/3   0:00:00
+Loading model modules ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 53/53 0:00:00
+Warming up            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 18/18 0:00:00
+00:34:59.054 INFO:     Warmup finished in 15.2 s
+00:34:59.233 INFO:     Model loaded in 42.0 s
+
+00:34:59.233 WARNING:  Disabling authentication makes your instance vulnerable.
+                       Set the `disable_auth` flag to False in config.yml if you
+                       want to share this instance with others.
+00:34:59.234 WARNING:  With authentication disabled and `allowed_origins` left
+                       at ["*"], any website open in a browser on this machine
+                       can send requests to this instance and read the
+                       responses, including admin endpoints. Set
+                       `network.allowed_origins` to your own frontends (or [])
+                       unless you use a browser-based frontend that needs it.
+00:34:59.235 INFO:     Serving OAI API on http://127.0.0.1:8899 (docs at
+                       http://127.0.0.1:8899/redoc)
+00:35:00.900 INFO:     #4 chat/completions: 348 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:04.656 INFO:     #4 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:04.657 INFO:     #4 chat/completions: 55 tokens generated at 47.7 T/s ·
+                       prompt 348 tokens, none cached, 348 new in 2.60 s (134
+                       T/s) · first token 2.60 s, total 3.76 s · draft 36/95
+                       accepted (38%)
+00:35:05.917 INFO:     #5 chat/completions: 352 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:07.317 INFO:     #5 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:07.318 INFO:     #5 chat/completions: 45 tokens generated at 66.1 T/s ·
+                       prompt 352 tokens, 73% cached, 96 new in 0.71 s · first
+                       token 0.71 s, total 1.40 s · draft 34/55 accepted (62%)
+00:35:07.342 INFO:     #6 chat/completions (stream): 348 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:09.064 INFO:     #6 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:09.065 INFO:     #6 chat/completions (stream): 55 tokens generated at 53.7
+                       T/s · prompt 348 tokens, 74% cached, 92 new in 0.69 s ·
+                       first token 0.69 s, total 1.72 s · draft 36/89 accepted
+                       (40%)
+00:35:09.089 INFO:     #7 chat/completions (stream): 352 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:10.497 INFO:     #7 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:10.498 INFO:     #7 chat/completions (stream): 45 tokens generated at 64.8
+                       T/s · prompt 352 tokens, 73% cached, 96 new in 0.71 s ·
+                       first token 0.71 s, total 1.41 s · draft 28/31 accepted
+                       (90%)
+00:35:10.518 INFO:     #8 chat/completions: 348 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:12.141 INFO:     #8 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:12.142 INFO:     #8 chat/completions: 55 tokens generated at 59.5 T/s ·
+                       prompt 348 tokens, 74% cached, 92 new in 0.69 s · first
+                       token 0.70 s, total 1.62 s · draft 33/44 accepted (75%)
+00:35:12.154 INFO:     #9 chat/completions: 352 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:13.460 INFO:     #9 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:13.461 INFO:     #9 chat/completions: 45 tokens generated at 75.4 T/s ·
+                       prompt 352 tokens, 73% cached, 96 new in 0.70 s · first
+                       token 0.70 s, total 1.30 s · draft 33/39 accepted (85%)
+00:35:13.474 INFO:     #10 chat/completions (stream): 348 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:15.374 INFO:     #10 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:15.375 INFO:     #10 chat/completions (stream): 64 tokens generated at
+                       53.0 T/s · prompt 348 tokens, 74% cached, 92 new in 0.69
+                       s · first token 0.69 s, total 1.90 s · draft 37/61
+                       accepted (61%)
+00:35:15.389 INFO:     #11 chat/completions (stream): 352 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:16.684 INFO:     #11 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:16.685 INFO:     #11 chat/completions (stream): 45 tokens generated at
+                       76.3 T/s · prompt 352 tokens, 73% cached, 96 new in 0.70
+                       s · first token 0.70 s, total 1.29 s · draft 33/41
+                       accepted (80%)
+00:35:16.706 INFO:     #12 chat/completions: 348 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:18.484 INFO:     #12 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:18.485 INFO:     #12 chat/completions: 56 tokens generated at 51.7 T/s ·
+                       prompt 348 tokens, 74% cached, 92 new in 0.69 s · first
+                       token 0.69 s, total 1.78 s · draft 31/57 accepted (54%)
+00:35:18.510 INFO:     #13 chat/completions: 352 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:19.774 INFO:     #13 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:19.775 INFO:     #13 chat/completions: 45 tokens generated at 81.5 T/s ·
+                       prompt 352 tokens, 73% cached, 96 new in 0.71 s · first
+                       token 0.71 s, total 1.27 s · draft 34/40 accepted (85%)
+00:35:19.796 INFO:     #14 chat/completions (stream): 348 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:24.533 INFO:     #14 chat/completions (stream): 256 tokens generated at
+                       63.3 T/s · prompt 348 tokens, 74% cached, 92 new in 0.68
+                       s · first token 0.68 s, total 4.73 s · draft 161/224
+                       accepted (72%) · max_tokens reached
+00:35:24.547 INFO:     #15 chat/completions (stream): 352 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:25.841 INFO:     #15 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:25.842 INFO:     #15 chat/completions (stream): 45 tokens generated at
+                       77.5 T/s · prompt 352 tokens, 73% cached, 96 new in 0.71
+                       s · first token 0.71 s, total 1.30 s · draft 34/45
+                       accepted (76%)
+00:35:25.863 INFO:     #16 chat/completions: 348 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:27.629 INFO:     #16 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:27.630 INFO:     #16 chat/completions: 63 tokens generated at 58.5 T/s ·
+                       prompt 348 tokens, 74% cached, 92 new in 0.68 s · first
+                       token 0.68 s, total 1.76 s · draft 40/63 accepted (63%)
+00:35:27.653 INFO:     #17 chat/completions: 352 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:28.943 INFO:     #17 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:28.944 INFO:     #17 chat/completions: 45 tokens generated at 77.4 T/s ·
+                       prompt 352 tokens, 73% cached, 96 new in 0.70 s · first
+                       token 0.70 s, total 1.29 s · draft 34/46 accepted (74%)
+00:35:28.967 INFO:     #18 chat/completions (stream): 348 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:30.663 INFO:     #18 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:30.664 INFO:     #18 chat/completions (stream): 63 tokens generated at
+                       63.0 T/s · prompt 348 tokens, 74% cached, 92 new in 0.69
+                       s · first token 0.69 s, total 1.70 s · draft 40/60
+                       accepted (67%)
+00:35:30.687 INFO:     #19 chat/completions (stream): 352 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:31.984 INFO:     #19 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:31.985 INFO:     #19 chat/completions (stream): 45 tokens generated at
+                       77.0 T/s · prompt 352 tokens, 73% cached, 96 new in 0.71
+                       s · first token 0.71 s, total 1.30 s · draft 34/46
+                       accepted (74%)
+00:35:32.007 INFO:     #20 chat/completions: 348 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:33.554 INFO:     #20 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:33.555 INFO:     #20 chat/completions: 55 tokens generated at 65.8 T/s ·
+                       prompt 348 tokens, 74% cached, 92 new in 0.71 s · first
+                       token 0.71 s, total 1.55 s · draft 37/47 accepted (79%)
+00:35:33.570 INFO:     #21 chat/completions: 356 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:35.213 INFO:     #21 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:35.214 INFO:     #21 chat/completions: 64 tokens generated at 71.7 T/s ·
+                       prompt 356 tokens, 72% cached, 100 new in 0.74 s · first
+                       token 0.74 s, total 1.64 s · draft 47/65 accepted (72%)
+00:35:35.228 INFO:     #22 chat/completions (stream): 348 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:37.658 INFO:     #22 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:37.659 INFO:     #22 chat/completions (stream): 103 tokens generated at
+                       59.8 T/s · prompt 348 tokens, 74% cached, 92 new in 0.70
+                       s · first token 0.70 s, total 2.43 s · draft 67/102
+                       accepted (66%)
+00:35:37.675 INFO:     #23 chat/completions (stream): 356 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:39.270 INFO:     #23 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:39.271 INFO:     #23 chat/completions (stream): 64 tokens generated at
+                       75.0 T/s · prompt 356 tokens, 72% cached, 100 new in 0.74
+                       s · first token 0.74 s, total 1.60 s · draft 47/65
+                       accepted (72%)
+00:35:39.295 INFO:     #24 chat/completions: 310 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:42.622 INFO:     #24 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:42.623 INFO:     #24 chat/completions: 31 tokens generated at 54.5 T/s ·
+                       prompt 310 tokens, none cached, 310 new in 2.76 s (112
+                       T/s) · first token 2.76 s, total 3.33 s · draft 19/31
+                       accepted (61%)
+00:35:42.648 INFO:     #25 chat/completions: 322 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:43.751 INFO:     #25 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:43.752 INFO:     #25 chat/completions: 42 tokens generated at 80.3 T/s ·
+                       prompt 322 tokens, 80% cached, 66 new in 0.57 s · first
+                       token 0.57 s, total 1.10 s · draft 33/37 accepted (89%)
+00:35:43.778 INFO:     #26 chat/completions (stream): 310 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:44.789 INFO:     #26 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:44.790 INFO:     #26 chat/completions (stream): 31 tokens generated at
+                       63.4 T/s · prompt 310 tokens, 83% cached, 54 new in 0.51
+                       s · first token 0.52 s, total 1.00 s · draft 20/29
+                       accepted (69%)
+00:35:44.814 INFO:     #27 chat/completions (stream): 322 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:45.908 INFO:     #27 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:45.909 INFO:     #27 chat/completions (stream): 42 tokens generated at
+                       81.2 T/s · prompt 322 tokens, 80% cached, 66 new in 0.57
+                       s · first token 0.57 s, total 1.09 s · draft 33/37
+                       accepted (89%)
+00:35:45.933 INFO:     #28 chat/completions: 311 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:47.046 INFO:     #28 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:47.046 INFO:     #28 chat/completions: 41 tokens generated at 69.8 T/s ·
+                       prompt 311 tokens, 82% cached, 55 new in 0.52 s · first
+                       token 0.52 s, total 1.11 s · draft 29/36 accepted (81%)
+00:35:47.072 INFO:     #29 chat/completions: 327 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:48.366 INFO:     #29 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:48.367 INFO:     #29 chat/completions: 47 tokens generated at 67.2 T/s ·
+                       prompt 327 tokens, 78% cached, 71 new in 0.59 s · first
+                       token 0.59 s, total 1.29 s · draft 34/47 accepted (72%)
+00:35:48.390 INFO:     #30 chat/completions (stream): 311 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:49.474 INFO:     #30 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:49.475 INFO:     #30 chat/completions (stream): 41 tokens generated at
+                       73.5 T/s · prompt 311 tokens, 82% cached, 55 new in 0.52
+                       s · first token 0.52 s, total 1.08 s · draft 29/36
+                       accepted (81%)
+00:35:49.503 INFO:     #31 chat/completions (stream): 327 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:50.752 INFO:     #31 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:50.753 INFO:     #31 chat/completions (stream): 47 tokens generated at
+                       71.4 T/s · prompt 327 tokens, 78% cached, 71 new in 0.59
+                       s · first token 0.59 s, total 1.25 s · draft 34/47
+                       accepted (72%)
+00:35:50.778 INFO:     #32 chat/completions: 352 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:52.570 INFO:     #32 chat/completions: parsed 1 tool call (qwen3_coder)
+00:35:52.571 INFO:     #32 chat/completions: 66 tokens generated at 62.2 T/s ·
+                       prompt 352 tokens, 73% cached, 96 new in 0.72 s · first
+                       token 0.72 s, total 1.79 s · draft 44/67 accepted (66%)
+00:35:52.589 INFO:     #33 chat/completions: 356 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:35:56.961 INFO:     #33 chat/completions: 256 tokens generated at 70.6 T/s ·
+                       prompt 356 tokens, 72% cached, 100 new in 0.74 s · first
+                       token 0.74 s, total 4.37 s · draft 176/198 accepted (89%)
+                       · max_tokens reached
+00:35:56.987 INFO:     #34 chat/completions (stream): 352 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:35:58.777 INFO:     #34 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:35:58.778 INFO:     #34 chat/completions (stream): 66 tokens generated at
+                       62.6 T/s · prompt 352 tokens, 73% cached, 96 new in 0.73
+                       s · first token 0.73 s, total 1.79 s · draft 45/75
+                       accepted (60%)
+00:35:58.805 INFO:     #35 chat/completions (stream): 356 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:36:00.600 INFO:     #35 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:36:00.601 INFO:     #35 chat/completions (stream): 66 tokens generated at
+                       62.9 T/s · prompt 356 tokens, 72% cached, 100 new in 0.74
+                       s · first token 0.74 s, total 1.79 s · draft 46/73
+                       accepted (63%)
+00:36:00.620 INFO:     #36 chat/completions: 323 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:36:01.910 INFO:     #36 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:01.910 INFO:     #36 chat/completions: 41 tokens generated at 58.8 T/s ·
+                       prompt 323 tokens, 79% cached, 67 new in 0.59 s · first
+                       token 0.59 s, total 1.29 s · draft 27/43 accepted (63%)
+00:36:01.942 INFO:     #37 chat/completions: 333 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:36:03.227 INFO:     #37 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:03.228 INFO:     #37 chat/completions: 46 tokens generated at 70.0 T/s ·
+                       prompt 333 tokens, 77% cached, 77 new in 0.62 s · first
+                       token 0.62 s, total 1.28 s · draft 34/47 accepted (72%)
+00:36:03.259 INFO:     #38 chat/completions (stream): 323 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:36:04.507 INFO:     #38 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:36:04.508 INFO:     #38 chat/completions (stream): 41 tokens generated at
+                       62.5 T/s · prompt 323 tokens, 79% cached, 67 new in 0.59
+                       s · first token 0.59 s, total 1.25 s · draft 27/43
+                       accepted (63%)
+00:36:04.538 INFO:     #39 chat/completions (stream): 333 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:36:05.790 INFO:     #39 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:36:05.791 INFO:     #39 chat/completions (stream): 46 tokens generated at
+                       73.1 T/s · prompt 333 tokens, 77% cached, 77 new in 0.62
+                       s · first token 0.63 s, total 1.25 s · draft 34/46
+                       accepted (74%)
+00:36:05.818 INFO:     #40 chat/completions: 393 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:36:07.800 INFO:     #40 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:07.801 INFO:     #40 chat/completions: 66 tokens generated at 57.2 T/s ·
+                       prompt 393 tokens, 65% cached, 137 new in 0.82 s · first
+                       token 0.82 s, total 1.98 s · draft 42/73 accepted (58%)
+00:36:07.829 INFO:     #41 chat/completions: 407 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:36:09.817 INFO:     #41 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:09.818 INFO:     #41 chat/completions: 77 tokens generated at 67.9 T/s ·
+                       prompt 407 tokens, 63% cached, 151 new in 0.85 s · first
+                       token 0.85 s, total 1.99 s · draft 55/77 accepted (71%)
+00:36:09.852 INFO:     #42 chat/completions (stream): 393 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:36:11.508 INFO:     #42 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:36:11.509 INFO:     #42 chat/completions (stream): 56 tokens generated at
+                       66.6 T/s · prompt 393 tokens, 65% cached, 137 new in 0.81
+                       s · first token 0.81 s, total 1.66 s · draft 38/53
+                       accepted (72%)
+00:36:11.535 INFO:     #43 chat/completions (stream): 407 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:36:12.829 ERROR:    Sent to request: The model stopped without a complete
+                       call required by tool_choice. Retry the request or
+                       inspect the model output.
+00:36:12.863 INFO:     #44 chat/completions: 325 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:36:12.866 INFO:     #46 chat/completions: 332 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:36:12.871 INFO:     #45 chat/completions (stream): 363 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:36:14.925 INFO:     #47 chat/completions (stream): 361 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:36:14.926 INFO:     #43 chat/completions (stream): 24 tokens generated at
+                       55.9 T/s · prompt 407 tokens, 63% cached, 151 new in 0.85
+                       s · first token 0.86 s, total 1.28 s · draft 15/28
+                       accepted (54%)
+00:36:17.182 INFO:     #44 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:17.300 INFO:     #46 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:17.440 INFO:     #44 chat/completions: 43 tokens generated at 18.6 T/s ·
+                       prompt 325 tokens, 79% cached, 69 new in 1.98 s · first
+                       token 2.00 s, total 4.31 s · draft 20/23 accepted (87%)
+00:36:17.597 INFO:     #46 chat/completions: 46 tokens generated at 19.0 T/s ·
+                       prompt 332 tokens, 77% cached, 76 new in 1.39 s · queued
+                       0.61 s, first token 2.00 s, total 4.43 s · draft 21/25
+                       accepted (84%)
+00:36:17.847 INFO:     #45 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:36:17.847 INFO:     #47 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:36:17.848 INFO:     #45 chat/completions (stream): 73 tokens generated at
+                       24.5 T/s · prompt 363 tokens, 71% cached, 107 new in 0.78
+                       s · queued 1.22 s, first token 2.00 s, total 4.98 s ·
+                       draft 40/46 accepted (87%)
+00:36:17.849 INFO:     #47 chat/completions (stream): 71 tokens generated at
+                       33.0 T/s · prompt 361 tokens, 71% cached, 105 new in 0.76
+                       s · first token 0.77 s, total 2.92 s · draft 39/45
+                       accepted (87%)
+00:36:17.886 INFO:     #48 chat/completions: 3,964 prompt tokens · temperature:
+                       0, greedy (req), max_tokens: 256 (req), grammar_string
+                       (req)
+00:36:25.716 INFO:     #48 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:25.717 INFO:     #48 chat/completions: 29 tokens generated at 59.9 T/s ·
+                       prompt 3,964 tokens, 6% cached, 3,708 new in 7.34 s (505
+                       T/s) · first token 7.34 s, total 7.83 s · draft 21/27
+                       accepted (78%)
+00:36:25.768 INFO:     #49 chat/completions (stream): 3,968 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:36:33.335 INFO:     #49 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:36:33.336 INFO:     #49 chat/completions (stream): 33 tokens generated at
+                       76.7 T/s · prompt 3,968 tokens, 6% cached, 3,712 new in
+                       7.13 s (521 T/s) · first token 7.13 s, total 7.57 s ·
+                       draft 25/29 accepted (86%)
+00:36:33.383 INFO:     #50 chat/completions: 3,968 prompt tokens · temperature:
+                       0, greedy (req), max_tokens: 256 (req), grammar_string
+                       (req)
+00:36:34.562 INFO:     #50 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:34.563 INFO:     #50 chat/completions: 33 tokens generated at 78.4 T/s ·
+                       prompt 3,968 tokens, 97% cached, 128 new in 0.75 s ·
+                       first token 0.75 s, total 1.18 s · draft 25/29 accepted
+                       (86%)
+00:36:34.606 INFO:     #51 chat/completions: 3,971 prompt tokens · temperature:
+                       0, greedy (req), max_tokens: 256 (req), grammar_string
+                       (req)
+00:36:42.721 INFO:     #51 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:42.722 INFO:     #51 chat/completions: 35 tokens generated at 78.9 T/s ·
+                       prompt 3,971 tokens, 6% cached, 3,715 new in 7.67 s (484
+                       T/s) · first token 7.67 s, total 8.12 s · draft 27/30
+                       accepted (90%)
+00:36:42.754 INFO:     #52 chat/completions (stream): 3,965 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 256 (req),
+                       grammar_string (req)
+00:36:50.191 INFO:     #52 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:36:50.192 INFO:     #52 chat/completions (stream): 27 tokens generated at
+                       69.5 T/s · prompt 3,965 tokens, 6% cached, 3,709 new in
+                       7.04 s (527 T/s) · first token 7.05 s, total 7.43 s ·
+                       draft 20/25 accepted (80%)
+00:36:50.225 INFO:     #53 chat/completions: 3,965 prompt tokens · temperature:
+                       0, greedy (req), max_tokens: 256 (req), grammar_string
+                       (req)
+00:36:51.375 INFO:     #53 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:51.376 INFO:     #53 chat/completions: 27 tokens generated at 71.7 T/s ·
+                       prompt 3,965 tokens, 97% cached, 125 new in 0.77 s ·
+                       first token 0.77 s, total 1.15 s · draft 20/25 accepted
+                       (80%)
+00:36:51.524 INFO:     #62 chat/completions: 310 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:36:52.530 INFO:     #62 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:52.531 INFO:     #62 chat/completions: 31 tokens generated at 66.2 T/s ·
+                       prompt 310 tokens, 83% cached, 54 new in 0.53 s · first
+                       token 0.53 s, total 1.00 s · draft 22/30 accepted (73%)
+00:36:52.561 INFO:     #63 chat/completions: 310 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:36:53.553 INFO:     #63 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:53.553 INFO:     #63 chat/completions: 31 tokens generated at 68.7 T/s ·
+                       prompt 310 tokens, 83% cached, 54 new in 0.53 s · first
+                       token 0.53 s, total 0.99 s · draft 22/30 accepted (73%)
+00:36:53.574 INFO:     #64 chat/completions: 310 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 256 (req), grammar_string (req)
+00:36:54.556 INFO:     #64 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:54.556 INFO:     #64 chat/completions: 31 tokens generated at 69.5 T/s ·
+                       prompt 310 tokens, 83% cached, 54 new in 0.53 s · first
+                       token 0.54 s, total 0.98 s · draft 22/29 accepted (76%)
+00:36:54.877 INFO:     #66 chat/completions: 317 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req), grammar_string (req)
+00:36:58.038 INFO:     #66 chat/completions: parsed 1 tool call (qwen3_coder)
+00:36:58.039 INFO:     #66 chat/completions: 40 tokens generated at 74.7 T/s ·
+                       prompt 317 tokens, none cached, 317 new in 2.62 s (121
+                       T/s) · first token 2.62 s, total 3.16 s · draft 31/36
+                       accepted (86%)
+00:36:58.047 INFO:     #67 chat/completions (stream): 317 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req),
+                       grammar_string (req)
+00:36:59.146 INFO:     #67 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:36:59.147 INFO:     #67 chat/completions (stream): 40 tokens generated at
+                       78.4 T/s · prompt 317 tokens, 81% cached, 61 new in 0.58
+                       s · first token 0.59 s, total 1.10 s · draft 31/35
+                       accepted (89%)
+00:36:59.153 INFO:     #68 chat/completions: 281 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req), grammar_string (req)
+00:37:01.644 INFO:     #68 chat/completions: parsed 1 tool call (qwen3_coder)
+00:37:01.645 INFO:     #68 chat/completions: 14 tokens generated at 69.3 T/s ·
+                       prompt 281 tokens, none cached, 281 new in 2.29 s (123
+                       T/s) · first token 2.29 s, total 2.49 s · draft 10/12
+                       accepted (83%)
+00:37:01.653 INFO:     #69 chat/completions (stream): 281 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req),
+                       grammar_string (req)
+00:37:02.154 INFO:     #69 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:37:02.155 INFO:     #69 chat/completions (stream): 14 tokens generated at
+                       73.1 T/s · prompt 281 tokens, 91% cached, 25 new in 0.30
+                       s · first token 0.30 s, total 0.50 s · draft 10/12
+                       accepted (83%)
+00:37:02.161 INFO:     #70 chat/completions: 374 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req), grammar_string (req)
+00:37:06.003 INFO:     #70 chat/completions: parsed 1 tool call (qwen3_coder)
+00:37:06.004 INFO:     #70 chat/completions: 76 tokens generated at 80.0 T/s ·
+                       prompt 374 tokens, none cached, 374 new in 2.89 s (129
+                       T/s) · first token 2.89 s, total 3.84 s · draft 60/68
+                       accepted (88%)
+00:37:06.012 INFO:     #71 chat/completions (stream): 374 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req),
+                       grammar_string (req)
+00:37:07.745 INFO:     #71 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:37:07.746 INFO:     #71 chat/completions (stream): 76 tokens generated at
+                       82.2 T/s · prompt 374 tokens, 68% cached, 118 new in 0.80
+                       s · first token 0.80 s, total 1.73 s · draft 60/68
+                       accepted (88%)
+00:37:07.753 INFO:     #72 chat/completions: 556 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req), grammar_string (req)
+00:37:12.239 INFO:     #72 chat/completions: parsed 1 tool call (qwen3_coder)
+00:37:12.240 INFO:     #72 chat/completions: 105 tokens generated at 82.8 T/s ·
+                       prompt 556 tokens, none cached, 556 new in 3.21 s (173
+                       T/s) · first token 3.21 s, total 4.48 s · draft 85/90
+                       accepted (94%)
+00:37:12.249 INFO:     #73 chat/completions (stream): 556 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req),
+                       grammar_string (req)
+00:37:13.901 INFO:     #73 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:37:13.902 INFO:     #73 chat/completions (stream): 105 tokens generated at
+                       85.5 T/s · prompt 556 tokens, 92% cached, 44 new in 0.42
+                       s · first token 0.42 s, total 1.65 s · draft 85/90
+                       accepted (94%)
+00:37:13.907 INFO:     #74 chat/completions: 362 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req), grammar_string (req)
+00:37:17.413 INFO:     #74 chat/completions: parsed 1 tool call (qwen3_coder)
+00:37:17.414 INFO:     #74 chat/completions: 40 tokens generated at 77.2 T/s ·
+                       prompt 362 tokens, none cached, 362 new in 2.98 s (121
+                       T/s) · first token 2.98 s, total 3.50 s · draft 31/35
+                       accepted (89%)
+00:37:17.419 INFO:     #75 chat/completions (stream): 362 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req),
+                       grammar_string (req)
+00:37:18.691 INFO:     #75 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:37:18.691 INFO:     #75 chat/completions (stream): 40 tokens generated at
+                       79.6 T/s · prompt 362 tokens, 71% cached, 106 new in 0.76
+                       s · first token 0.76 s, total 1.27 s · draft 31/35
+                       accepted (89%)
+00:37:18.696 INFO:     #76 chat/completions: 311 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req), grammar_string (req)
+00:37:19.778 INFO:     #76 chat/completions: parsed 1 tool call (qwen3_coder)
+00:37:19.779 INFO:     #76 chat/completions: 40 tokens generated at 76.5 T/s ·
+                       prompt 311 tokens, 82% cached, 55 new in 0.55 s · first
+                       token 0.55 s, total 1.08 s · draft 31/35 accepted (89%)
+00:37:19.786 INFO:     #77 chat/completions (stream): 311 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req),
+                       grammar_string (req)
+00:37:20.849 INFO:     #77 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:37:20.850 INFO:     #77 chat/completions (stream): 40 tokens generated at
+                       78.9 T/s · prompt 311 tokens, 82% cached, 55 new in 0.55
+                       s · first token 0.55 s, total 1.06 s · draft 31/35
+                       accepted (89%)
+00:37:20.855 INFO:     #78 chat/completions: 289 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req), grammar_string (req)
+00:37:23.554 INFO:     #78 chat/completions: parsed 1 tool call (qwen3_coder)
+00:37:23.555 INFO:     #78 chat/completions: 14 tokens generated at 62.6 T/s ·
+                       prompt 289 tokens, none cached, 289 new in 2.47 s (117
+                       T/s) · first token 2.47 s, total 2.70 s · draft 9/12
+                       accepted (75%)
+00:37:23.561 INFO:     #79 chat/completions (stream): 289 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req),
+                       grammar_string (req)
+00:37:24.102 INFO:     #79 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:37:24.103 INFO:     #79 chat/completions (stream): 14 tokens generated at
+                       66.4 T/s · prompt 289 tokens, 89% cached, 33 new in 0.32
+                       s · first token 0.32 s, total 0.54 s · draft 9/12
+                       accepted (75%)
+00:37:24.109 INFO:     #80 chat/completions: 331 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req), grammar_string (req)
+00:37:25.342 INFO:     #80 chat/completions: parsed 1 tool call (qwen3_coder)
+00:37:25.343 INFO:     #80 chat/completions: 40 tokens generated at 70.9 T/s ·
+                       prompt 331 tokens, 77% cached, 75 new in 0.66 s · first
+                       token 0.66 s, total 1.23 s · draft 30/37 accepted (81%)
+00:37:25.349 INFO:     #81 chat/completions (stream): 331 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req),
+                       grammar_string (req)
+00:37:26.563 INFO:     #81 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:37:26.564 INFO:     #81 chat/completions (stream): 40 tokens generated at
+                       73.2 T/s · prompt 331 tokens, 77% cached, 75 new in 0.66
+                       s · first token 0.66 s, total 1.21 s · draft 30/37
+                       accepted (81%)
+00:37:26.578 INFO:     #82 chat/completions: 22 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req)
+00:37:26.894 INFO:     #82 chat/completions: 2 tokens generated at 58.3 T/s ·
+                       prompt 22 tokens, none cached, 22 new in 0.28 s · first
+                       token 0.28 s, total 0.32 s · draft 1/1 accepted (100%)
+00:37:26.898 INFO:     #83 chat/completions (stream): 22 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req)
+00:37:27.215 INFO:     #83 chat/completions (stream): 2 tokens generated at 57.8
+                       T/s · prompt 22 tokens, none cached, 22 new in 0.28 s ·
+                       first token 0.28 s, total 0.32 s · draft 1/1 accepted
+                       (100%)
+00:37:27.223 INFO:     #84 chat/completions: 323 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req), grammar_string (req)
+00:37:28.859 INFO:     #84 chat/completions: parsed 2 tool calls (qwen3_coder)
+00:37:28.860 INFO:     #84 chat/completions: 79 tokens generated at 78.4 T/s ·
+                       prompt 323 tokens, 79% cached, 67 new in 0.62 s · first
+                       token 0.62 s, total 1.63 s · draft 62/68 accepted (91%)
+00:37:28.870 INFO:     #85 chat/completions (stream): 323 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req),
+                       grammar_string (req)
+00:37:30.463 INFO:     #85 chat/completions (stream): parsed 2 tool calls
+                       (qwen3_coder)
+00:37:30.464 INFO:     #85 chat/completions (stream): 79 tokens generated at
+                       81.8 T/s · prompt 323 tokens, 79% cached, 67 new in 0.62
+                       s · first token 0.62 s, total 1.59 s · draft 62/68
+                       accepted (91%)
+00:37:30.474 INFO:     #86 chat/completions: 318 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req), grammar_string (req)
+00:37:32.311 INFO:     #86 chat/completions: parsed 1 tool call (qwen3_coder)
+00:37:32.312 INFO:     #86 chat/completions: 85 tokens generated at 68.1 T/s ·
+                       prompt 318 tokens, 81% cached, 62 new in 0.58 s · first
+                       token 0.59 s, total 1.83 s · draft 61/75 accepted (81%)
+00:37:32.322 INFO:     #87 chat/completions (stream): 318 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req),
+                       grammar_string (req)
+00:37:34.186 INFO:     #87 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:37:34.187 INFO:     #87 chat/completions (stream): 85 tokens generated at
+                       66.7 T/s · prompt 318 tokens, 81% cached, 62 new in 0.58
+                       s · first token 0.58 s, total 1.86 s · draft 60/77
+                       accepted (78%)
+00:37:34.195 INFO:     #88 chat/completions: 358 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req), grammar_string (req)
+00:37:37.897 INFO:     #88 chat/completions: parsed 1 tool call (qwen3_coder)
+00:37:37.898 INFO:     #88 chat/completions: 64 tokens generated at 70.3 T/s ·
+                       prompt 358 tokens, none cached, 358 new in 2.79 s (128
+                       T/s) · first token 2.79 s, total 3.70 s · draft 46/59
+                       accepted (78%)
+00:37:37.907 INFO:     #89 chat/completions (stream): 358 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req),
+                       grammar_string (req)
+00:37:39.579 INFO:     #89 chat/completions (stream): parsed 1 tool call
+                       (qwen3_coder)
+00:37:39.580 INFO:     #89 chat/completions (stream): 64 tokens generated at
+                       70.6 T/s · prompt 358 tokens, 72% cached, 102 new in 0.76
+                       s · first token 0.76 s, total 1.67 s · draft 46/59
+                       accepted (78%)
+00:37:39.599 INFO:     #90 chat/completions: 337 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req), grammar_string (req)
+00:37:41.274 INFO:     #90 chat/completions: parsed 2 tool calls (qwen3_coder)
+00:37:41.274 INFO:     #90 chat/completions: 79 tokens generated at 81.5 T/s ·
+                       prompt 337 tokens, 76% cached, 81 new in 0.70 s · first
+                       token 0.70 s, total 1.67 s · draft 62/69 accepted (90%)
+00:37:41.277 INFO:     #91 chat/completions: 178 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req)
+00:37:42.312 INFO:     #91 chat/completions: 10 tokens generated at 70.6 T/s ·
+                       prompt 178 tokens, none cached, 178 new in 0.89 s · first
+                       token 0.89 s, total 1.03 s · draft 7/8 accepted (88%)
+00:37:42.314 INFO:     #92 chat/completions: 215 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 512 (req)
+00:37:43.351 INFO:     #92 chat/completions: 3 tokens generated at 41.7 T/s ·
+                       prompt 215 tokens, none cached, 215 new in 0.96 s · first
+                       token 0.96 s, total 1.03 s · draft 1/2 accepted (50%)
+00:37:43.360 INFO:     #93 chat/completions (stream): 337 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req),
+                       grammar_string (req)
+00:37:45.041 INFO:     #93 chat/completions (stream): parsed 2 tool calls
+                       (qwen3_coder)
+00:37:45.041 INFO:     #93 chat/completions (stream): 79 tokens generated at
+                       80.7 T/s · prompt 337 tokens, 76% cached, 81 new in 0.69
+                       s · first token 0.69 s, total 1.67 s · draft 62/69
+                       accepted (90%)
+00:37:45.045 INFO:     #94 chat/completions (stream): 178 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req)
+00:37:46.050 INFO:     #94 chat/completions (stream): 10 tokens generated at
+                       78.9 T/s · prompt 178 tokens, none cached, 178 new in
+                       0.87 s · first token 0.87 s, total 1.00 s · draft 7/8
+                       accepted (88%)
+00:37:46.054 INFO:     #95 chat/completions (stream): 215 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 512 (req)
+00:37:47.084 INFO:     #95 chat/completions (stream): 3 tokens generated at 42.3
+                       T/s · prompt 215 tokens, none cached, 215 new in 0.96 s ·
+                       first token 0.96 s, total 1.03 s · draft 1/2 accepted
+                       (50%)
+00:37:47.090 INFO:     #96 chat/completions: 372 prompt tokens · temperature: 0,
+                       greedy (req), max_tokens: 2 (req), grammar_string (req)
+00:37:47.979 INFO:     #96 chat/completions: 2 tokens generated at 22.3 T/s ·
+                       prompt 372 tokens, 69% cached, 116 new in 0.79 s · first
+                       token 0.79 s, total 0.88 s · draft 0/6 accepted (0%) ·
+                       max_tokens reached
+00:37:47.986 INFO:     #97 chat/completions (stream): 372 prompt tokens ·
+                       temperature: 0, greedy (req), max_tokens: 2 (req),
+                       grammar_string (req)
+00:37:48.882 INFO:     #97 chat/completions (stream): 2 tokens generated at 22.6
+                       T/s · prompt 372 tokens, 69% cached, 116 new in 0.80 s ·
+                       first token 0.80 s, total 0.89 s · draft 0/6 accepted
+                       (0%) · max_tokens reached
+00:37:49.686 WARNING:  Shutdown signal called. Exiting gracefully.
+00:37:50.944 INFO:     Model unloaded.

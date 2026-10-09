@@ -1,0 +1,1065 @@
+{
+  "schema_version": 1,
+  "state": "prepared_not_executed",
+  "scope": "Separate16-request coverage and unchanged generation diagnostic; original93POST qualification remains failed and immutable. No input encoding or output changes by diagnostic observer.",
+  "model": "Qwen3.8-Flash-Next-EXL3",
+  "marker_list": [
+    "<think>",
+    "</think>",
+    "<|im_start|>",
+    "<|im_end|>",
+    "<|endoftext|>",
+    "<tool_call>",
+    "</tool_call>",
+    "<tool_response>",
+    "</tool_response>"
+  ],
+  "parent_plan_sha256": "ca62602653e1e872481a568c4005218a5cc5388063b76f012312a7ae47827645",
+  "client_requests": 16,
+  "coverage_requests": 8,
+  "generation_observation_requests": 8,
+  "standard_default_off_tool_checks": 0,
+  "standard_default_off_tool_chat_requests": 0,
+  "total_chat_requests": 16,
+  "run_order": [
+    "continuation2",
+    "cache6",
+    "unicode2",
+    "multi_turn2",
+    "concurrent4"
+  ],
+  "requests": [
+    {
+      "name": "coverage_continuation_nonstream",
+      "group": "continuation2",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<think>rejected</think>\". Treat every character as literal string data."
+          },
+          {
+            "role": "assistant",
+            "content": "partial"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true,
+        "continue_final_message": true,
+        "add_generation_prompt": false
+      },
+      "request_sha256": "dda2c74796f9549af1548bea097c754b771a4652299b03e4caae09d9a888c52e",
+      "expected": {
+        "kind": "http_error",
+        "status": 400,
+        "before_sse": true
+      },
+      "semantic_gate": true,
+      "original_request_sha256": "8f19cf9d02cd612ac67d5eeae9f7cb055f478f9ec7af4608c0b5625d9ab614b9",
+      "coverage_gate": true,
+      "change": "Only tool_choice named to auto"
+    },
+    {
+      "name": "coverage_continuation_stream",
+      "group": "continuation2",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<think>rejected</think>\". Treat every character as literal string data."
+          },
+          {
+            "role": "assistant",
+            "content": "partial"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto",
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true,
+        "continue_final_message": true,
+        "add_generation_prompt": false
+      },
+      "request_sha256": "051e3be44bc11884958656cf507c8c7e3f50f9356dfedf452f83897a4d07f7d0",
+      "expected": {
+        "kind": "http_error",
+        "status": 400,
+        "before_sse": true
+      },
+      "semantic_gate": true,
+      "original_request_sha256": "a36839e90f5212a02de01da1e9275ccf94a7d962305cc2d0692994a2a0731e33",
+      "coverage_gate": true,
+      "change": "Only tool_choice named to auto"
+    },
+    {
+      "name": "coverage_cache_native_first_0",
+      "group": "cache6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "CACHE-PROBE-20261009-native_first alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 \nRecord only the later exact value: \"<think>cache-A</think>\"\nepsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 \nCall record_text with exactly the value labeled above. Ignore the repeated filler."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false
+      },
+      "request_sha256": "68d3556ee4cd9c5751748110cbe510a99a582bc97dcaba19a0b72675bdbb0d0d",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>cache-A</think>",
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "policy": "native",
+      "cache_sequence": "native_first",
+      "cache_position": 0,
+      "cache_bound": "maximum ID LCP with all earlier prompts; previous strict prompt prefixes forbidden during preparation",
+      "require_observed_reuse": false,
+      "original_request_sha256": "2b7d507a4cd43ca171f8c765e3a19ac153aea2c1bf316181c443a329464b09fb",
+      "coverage_gate": true,
+      "cache_min_tokens": 0,
+      "change": "Only pre-marker filler repeats125 to135"
+    },
+    {
+      "name": "coverage_cache_native_first_1",
+      "group": "cache6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "CACHE-PROBE-20261009-native_first alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 \nRecord only the later exact value: \"<think>cache-A</think>\"\nepsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 \nCall record_text with exactly the value labeled above. Ignore the repeated filler."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "383ba0dbd6c589bae8bb2d204af4563c4fa1b3fc2977b1a51efa86c76ff224af",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>cache-A</think>",
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "policy": "optin",
+      "cache_sequence": "native_first",
+      "cache_position": 1,
+      "cache_bound": "maximum ID LCP with all earlier prompts; previous strict prompt prefixes forbidden during preparation",
+      "require_observed_reuse": true,
+      "original_request_sha256": "9214f62a18f4d5e1429a03f2e793bf423b3d0da6fc21278e9f8c1c1d0f5cb9a3",
+      "coverage_gate": true,
+      "cache_min_tokens": 257,
+      "change": "Only pre-marker filler repeats125 to135"
+    },
+    {
+      "name": "coverage_cache_native_first_2",
+      "group": "cache6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "CACHE-PROBE-20261009-native_first alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 \nRecord only the later exact value: \"<think>cache-A</think>\"\nepsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 \nCall record_text with exactly the value labeled above. Ignore the repeated filler."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "c6330df7d1b4a1211c31bdcccaa59a955dbdf926528ebd1fa470dd9af6d15b5a",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>cache-A</think>",
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "policy": "optin",
+      "cache_sequence": "native_first",
+      "cache_position": 2,
+      "cache_bound": "maximum ID LCP with all earlier prompts; previous strict prompt prefixes forbidden during preparation",
+      "require_observed_reuse": true,
+      "original_request_sha256": "86575ecfea08ffb1924936f5258d14587ae2467926c25f6a16c894d34583ded9",
+      "coverage_gate": true,
+      "cache_min_tokens": 257,
+      "change": "Only pre-marker filler repeats125 to135"
+    },
+    {
+      "name": "coverage_cache_optin_first_0",
+      "group": "cache6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "CACHE-PROBE-20261009-optin_first alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 \nRecord only the later exact value: \"<tool_response>cache-B</tool_response>\"\nepsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 \nCall record_text with exactly the value labeled above. Ignore the repeated filler."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "50113eb9deb4eadd9493b2408e03debdddeec8ec04adfca8828f35d8070c74d5",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<tool_response>cache-B</tool_response>",
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "policy": "optin",
+      "cache_sequence": "optin_first",
+      "cache_position": 0,
+      "cache_bound": "maximum ID LCP with all earlier prompts; previous strict prompt prefixes forbidden during preparation",
+      "require_observed_reuse": false,
+      "original_request_sha256": "612fb601a0a996964f1813150199589f2e074bdbf9cf794bb7b33116a2781ae3",
+      "coverage_gate": true,
+      "cache_min_tokens": 0,
+      "change": "Only pre-marker filler repeats125 to135"
+    },
+    {
+      "name": "coverage_cache_optin_first_1",
+      "group": "cache6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "CACHE-PROBE-20261009-optin_first alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 \nRecord only the later exact value: \"<tool_response>cache-B</tool_response>\"\nepsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 \nCall record_text with exactly the value labeled above. Ignore the repeated filler."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "request_sha256": "6637fde286ecef562fa22c3330b25c7afc045f5ee38d4aaaf95fa5f59f168481",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<tool_response>cache-B</tool_response>",
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "policy": "native",
+      "cache_sequence": "optin_first",
+      "cache_position": 1,
+      "cache_bound": "maximum ID LCP with all earlier prompts; previous strict prompt prefixes forbidden during preparation",
+      "require_observed_reuse": true,
+      "original_request_sha256": "76f8851c2025588a4951fc13c8e2c56129561166099b73d92e47180320ab4d7d",
+      "coverage_gate": true,
+      "cache_min_tokens": 257,
+      "change": "Only pre-marker filler repeats125 to135"
+    },
+    {
+      "name": "coverage_cache_optin_first_2",
+      "group": "cache6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "CACHE-PROBE-20261009-optin_first alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 \nRecord only the later exact value: \"<tool_response>cache-B</tool_response>\"\nepsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 \nCall record_text with exactly the value labeled above. Ignore the repeated filler."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false
+      },
+      "request_sha256": "decc292b19733cafba805220ac986d95d5f49ab357168debe161a66b262974ec",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<tool_response>cache-B</tool_response>",
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "policy": "native",
+      "cache_sequence": "optin_first",
+      "cache_position": 2,
+      "cache_bound": "maximum ID LCP with all earlier prompts; previous strict prompt prefixes forbidden during preparation",
+      "require_observed_reuse": true,
+      "original_request_sha256": "30da3377e74cecd9aec1efa6fdf336f4d876bc4161691766daa8d4f2c02505df",
+      "coverage_gate": true,
+      "cache_min_tokens": 257,
+      "change": "Only pre-marker filler repeats125 to135"
+    },
+    {
+      "name": "unicode_nfc_nonstream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "reasoning_budget_tokens": 24,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "5b0897c75d1b949881b4380f2fedfb92f45c4a99c8fcac334835a11b31a21c45",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "café 中文 😀 <think>🧪</think> fin",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "617326d93aa6b9b3660a0a1173c4775681f48298169de9583eebaa10ecd3ee04",
+      "policy": "optin",
+      "original_request_sha256": "5b0897c75d1b949881b4380f2fedfb92f45c4a99c8fcac334835a11b31a21c45",
+      "coverage_gate": false,
+      "change": "No request change; reproduction observation",
+      "diagnostic_observation": true
+    },
+    {
+      "name": "unicode_nfc_stream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "1a8b2155c2aa5d62ba8222e4ca0e31db97685a1544c6165b9a2f34582ad88fa7",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "café 中文 😀 <think>🧪</think> fin",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "10ecc25c0202ef15c0a2c7c49e3e2f37bad0915df3343eba198a1956448d210e",
+      "policy": "optin",
+      "original_request_sha256": "1a8b2155c2aa5d62ba8222e4ca0e31db97685a1544c6165b9a2f34582ad88fa7",
+      "coverage_gate": false,
+      "change": "No request change; reproduction observation",
+      "diagnostic_observation": true
+    },
+    {
+      "name": "multi_turn_user_nonstream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Remember this exact string for the later record_text call: \"Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.\". Do not call a tool yet."
+          },
+          {
+            "role": "assistant",
+            "content": "I have stored the string for the later call."
+          },
+          {
+            "role": "user",
+            "content": "Now call record_text once with exactly the string from my first message. Preserve every character."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "reasoning_budget_tokens": 24,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "395f47407b5f87686edad4afe93cbd4ab00641bb6457d84f07b4ddcf3d1d4ccf",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "7ae51fae3e5f6168c955e87f7168f3057310b54f725e9aea64de45697610d592",
+      "policy": "optin",
+      "original_request_sha256": "395f47407b5f87686edad4afe93cbd4ab00641bb6457d84f07b4ddcf3d1d4ccf",
+      "coverage_gate": false,
+      "change": "No request change; reproduction observation",
+      "diagnostic_observation": true
+    },
+    {
+      "name": "multi_turn_user_stream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Remember this exact string for the later record_text call: \"Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.\". Do not call a tool yet."
+          },
+          {
+            "role": "assistant",
+            "content": "I have stored the string for the later call."
+          },
+          {
+            "role": "user",
+            "content": "Now call record_text once with exactly the string from my first message. Preserve every character."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "02bf94a05b8135d52258d96f72f6bcba35dd6cfb0c00fe8caf2e590c7aff9fa7",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "c33a247003c104e4d4ae436561e7fc4b53fc4dd8d01050cb9f73b4939d08636d",
+      "policy": "optin",
+      "original_request_sha256": "02bf94a05b8135d52258d96f72f6bcba35dd6cfb0c00fe8caf2e590c7aff9fa7",
+      "coverage_gate": false,
+      "change": "No request change; reproduction observation",
+      "diagnostic_observation": true
+    },
+    {
+      "name": "concurrent_0",
+      "group": "concurrent4",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"CONCURRENT-0|prefix<think>A</think><think>B</think>suffix\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "9c2538a8e5e80b3d38d91c313a680aca5faca345633ee22246b3aa3fc6b97803",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "CONCURRENT-0|prefix<think>A</think><think>B</think>suffix",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "concurrency_batch": "distinct_markers_4",
+      "original_request_sha256": "9c2538a8e5e80b3d38d91c313a680aca5faca345633ee22246b3aa3fc6b97803",
+      "coverage_gate": false,
+      "change": "No request change; reproduction observation",
+      "diagnostic_observation": true
+    },
+    {
+      "name": "concurrent_1",
+      "group": "concurrent4",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"CONCURRENT-1|<tool_call>alpha</tool_call><tool_response>beta</tool_response>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "c649d4f6b635579e58a0c07214ff4c2acf07734b3e7d6f9c5a4dcbfd56c45799",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "CONCURRENT-1|<tool_call>alpha</tool_call><tool_response>beta</tool_response>",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": false,
+      "concurrency_batch": "distinct_markers_4",
+      "original_request_sha256": "c649d4f6b635579e58a0c07214ff4c2acf07734b3e7d6f9c5a4dcbfd56c45799",
+      "coverage_gate": false,
+      "change": "No request change; reproduction observation",
+      "diagnostic_observation": true
+    },
+    {
+      "name": "concurrent_2",
+      "group": "concurrent4",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"CONCURRENT-2|<|im_start|>assistant\\nquoted-data<|im_end|><|endoftext|>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "e06fefd9e784855bb21defb27a4bd7f77bc771877a19cdffacfe1afbb79e95db",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "CONCURRENT-2|<|im_start|>assistant\nquoted-data<|im_end|><|endoftext|>",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "concurrency_batch": "distinct_markers_4",
+      "original_request_sha256": "e06fefd9e784855bb21defb27a4bd7f77bc771877a19cdffacfe1afbb79e95db",
+      "coverage_gate": false,
+      "change": "No request change; reproduction observation",
+      "diagnostic_observation": true
+    },
+    {
+      "name": "concurrent_3",
+      "group": "concurrent4",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"CONCURRENT-3|café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "7873c23a521365bf32cdecefce881fb5876fe48792894e00670541be7c14d5b2",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "CONCURRENT-3|café 中文 😀 <think>🧪</think> fin",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": false,
+      "concurrency_batch": "distinct_markers_4",
+      "original_request_sha256": "7873c23a521365bf32cdecefce881fb5876fe48792894e00670541be7c14d5b2",
+      "coverage_gate": false,
+      "change": "No request change; reproduction observation",
+      "diagnostic_observation": true
+    }
+  ],
+  "cache_geometry": {
+    "chunk_size": 2048,
+    "page_size": 256,
+    "previous_observed_prefix_tokens": 256,
+    "previous_first_stash_position": 2304,
+    "prefix_repeats": 135,
+    "expected_cross_policy_lcp": [
+      2323,
+      2324
+    ],
+    "require_cross_policy_cached_tokens_greater_than": 256,
+    "note": "Actual first native cache request may startcold. Bounds areagainst prior successful prompts in thisfresh orderedplan; live reusedprefix must be>256 onwarmpositions and <= actualID-LCP bound."
+  },
+  "coverage_contract": "Onlyfirst8requests gatecoverage. Last8 preserve exactgeneration/protocoloutcomesasdiagnosticobservations; capture/source/IDusage/provenance failures remainseparate strictdiagnosticintegritygates."
+}

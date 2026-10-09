@@ -12,6 +12,8 @@ Use a compatible, validated recipe checkout containing the strict clients and th
 
 Schedule exclusive access to the GPU. Stop a previously running service through its own supervisor before the experiment. Port8899 must be free; the runner refuses a busy loopback port and never takes over an existing server. It uses a separate session/process group and an unguessable environment token for each job, and verifies membership before signaling. Unknown ownership or failed cleanup halts the matrix before a subsequent model is loaded.
 
+Set `GPU_LOCK_FILE` inside each job's `env` to make its live server cooperate with another supervisor using the same persistent lock file. The path is included in resolved configuration and drift checks; an ambient shell assignment is removed with other tuning overrides. Each server holds the lock through its final process exit, but the runner does not hold it between jobs. Keep the whole experiment window exclusively scheduled. If an outer controller already holds that flock, leave this option unset in the child to avoid competing with your own lock. See [shared GPU ownership](../docs/service.md#shared-gpu-ownership). The selected recipe must expose the `acquire_gpu_lock` launcher capability; a requested lock with an older launcher is rejected before starting the server. Before each client and after measurements, the runner verifies that server FD 8 references the requested device/inode and that Linux reports an exclusive `FLOCK ADVISORY WRITE` on that descriptor. These observations are retained in the result alongside the deployment setting. This checks cooperating process ownership; a process that ignores the lock or replaces it between observations remains outside that protection.
+
 The runner fixes the API at `http://127.0.0.1:8899/v1` with local authentication disabled. Network, component and state paths are controller-owned. This is a local experiment workflow; it does not configure a LAN deployment.
 
 ## Define comparable jobs
@@ -123,6 +125,13 @@ The controller checks recipe/runtime identities, package versions, recipe/client
 
 Cleanup sends SIGTERM only to the token-verified owned group, waits up to30seconds, then allows a bounded five-second SIGKILL cleanup. Both clients and server have retained ownership tokens. This experiment cleanup deadline differs from the permanent service's90-second stop policy. Sparse memory/power samples are observations and can miss peaks; preserve sampling errors and avoid claiming a guaranteed capacity or maximum power from them.
 
+The controller records TERM/INT signals and delivers interruption at checkpoints
+after each child has been registered. A first signal during shutdown, or
+repeated signals while cleanup is running, cannot skip the owned groups.
+Children inherit no blocked signal mask from this handling. Interruption
+remains bounded by the current operation and the ordinary cleanup deadlines;
+it does not allow the next model to start before cleanup completes.
+
 ### Resume and failure behavior
 
 A finished output is never overwritten silently. `--resume` accepts it only when the normalized job, source/package identities, recipe/client hashes, resolved tuning and controller limits match. It preserves a finished failed attempt too; it does not retry it as if it had never happened. For an independent repeat or a retry of a completed failure, use a new destination or label.
@@ -140,7 +149,20 @@ The original recipe revision6fbc0a2 used a different launcher contract. It emits
 ## CPU verification
 
 ```bash
-python3 -m unittest discover -s bench -p test_run_matrix.py -v
+python3 -m unittest discover -s bench -p 'test_run_matrix*.py' -v
 ```
 
-The20 existing regressions cover command routing, strict settings, alias expectations, model/default/source drift, literal loader order, output/resume integrity, busy-port refusal, bounded sampling, interrupted/failed clients and owned cleanup. Server/API/GPU operations are mocked; one test sources a temporary synthetic Bash environment and the membership test parses a synthetic `/proc` fixture. The original publication test changed only the adjacent controller filename and was checked from a relocated directory. `test_prompt_templates.py` adds file/config drift, actual loaded-content and optional real Tabby renderer checks for the external-template support.
+The 33 matrix regressions cover command routing, strict settings, alias
+expectations, model/default/source drift, literal loader order, output/resume
+integrity, busy-port refusal, bounded sampling, shared GPU-lock descriptors,
+and owned cleanup. The 26 main cases include real CPU file/flock and Bash
+checks alongside mocked server/API operations. Seven signal cases use real
+local child processes and deliver TERM/INT during launch registration and
+finalization, including repeated signals and an unrelated process group.
+These CPU tests load no model and make no GPU or live API requests.
+`test_prompt_templates.py` separately adds file/config drift, actual loaded
+content, and optional real Tabby renderer checks for external templates.
+
+The [October 9 report](../VALIDATION_2026-10-09.md#cooperative-gpu-ownership)
+links the actual GPU-lock serving gate and the separately qualified matrix
+interruption fix. Completed and interrupted attempts remain distinct evidence.

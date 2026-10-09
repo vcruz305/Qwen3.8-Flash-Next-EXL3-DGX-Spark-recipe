@@ -1,0 +1,210 @@
+{
+  "clients": [
+    {
+      "actual_completion_tokens": 1200,
+      "case": "code",
+      "cleanup": {
+        "exit_code": 0,
+        "owned_group_empty": true,
+        "signals": [],
+        "wall_seconds": 0.00953386900073383
+      },
+      "command": [
+        "/home/cruzspark/qwen38-exl3/venv/bin/python",
+        "/home/cruzspark/qwen-spark-recipe/bench/bench_v1.py",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--response-model",
+        "flashnext-exl3-3.05bpw",
+        "--suite",
+        "code",
+        "--max-tokens",
+        "400",
+        "--warmup",
+        "1",
+        "--repeat",
+        "3",
+        "--cache-mode",
+        "cold",
+        "--context-tokens",
+        "0",
+        "--run-id",
+        "overnight-v1",
+        "--timeout",
+        "180",
+        "--label",
+        "A-old-engine-old-server",
+        "--metadata",
+        "/home/cruzspark/qwen-followup-20261009/results/flat305-confirmation-f6e384ce/A-old-engine-old-server/deployment.json",
+        "--output",
+        "/home/cruzspark/qwen-followup-20261009/results/flat305-confirmation-f6e384ce/A-old-engine-old-server/code.json"
+      ],
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-09T06:52:45.797105+00:00",
+      "measured": 3,
+      "passed": true,
+      "pid": 344143,
+      "report_sha256": "d9e0f2f210977ae826be6d7f7ff1d5fd5ab12d42ae3c1954f28a3c5d2753993e",
+      "started_at_utc": "2026-10-09T06:52:22.469536+00:00",
+      "timed_out": false,
+      "warmup": 1
+    },
+    {
+      "actual_completion_tokens": 1200,
+      "case": "prose",
+      "cleanup": {
+        "exit_code": 0,
+        "owned_group_empty": true,
+        "signals": [],
+        "wall_seconds": 0.022819190999143757
+      },
+      "command": [
+        "/home/cruzspark/qwen38-exl3/venv/bin/python",
+        "/home/cruzspark/qwen-spark-recipe/bench/bench_v1.py",
+        "--base-url",
+        "http://127.0.0.1:8899/v1",
+        "--model",
+        "Qwen3.8-Flash-Next-EXL3",
+        "--response-model",
+        "flashnext-exl3-3.05bpw",
+        "--suite",
+        "prose",
+        "--max-tokens",
+        "400",
+        "--warmup",
+        "1",
+        "--repeat",
+        "3",
+        "--cache-mode",
+        "cold",
+        "--context-tokens",
+        "0",
+        "--run-id",
+        "overnight-v1",
+        "--timeout",
+        "180",
+        "--label",
+        "A-old-engine-old-server",
+        "--metadata",
+        "/home/cruzspark/qwen-followup-20261009/results/flat305-confirmation-f6e384ce/A-old-engine-old-server/deployment.json",
+        "--output",
+        "/home/cruzspark/qwen-followup-20261009/results/flat305-confirmation-f6e384ce/A-old-engine-old-server/prose.json"
+      ],
+      "exit_code": 0,
+      "finished_at_utc": "2026-10-09T06:53:18.094349+00:00",
+      "measured": 3,
+      "passed": true,
+      "pid": 344588,
+      "report_sha256": "36ceab6e0cc5d3e545e9afe7808bf98933e5fbb84db8468d5a376198b3ee93a3",
+      "started_at_utc": "2026-10-09T06:52:45.926004+00:00",
+      "timed_out": false,
+      "warmup": 1
+    }
+  ],
+  "current_model": {
+    "created": 1791528742,
+    "id": "flashnext-exl3-3.05bpw",
+    "logging": null,
+    "meta": {
+      "n_ctx": 262144,
+      "n_ctx_train": 262144,
+      "n_embd": 2560,
+      "n_vocab": 248320,
+      "size": 84986510810
+    },
+    "object": "model",
+    "owned_by": "tabbyAPI",
+    "parameters": {
+      "cache_mode": "8,8",
+      "cache_size": 262144,
+      "chunk_size": 2048,
+      "draft": null,
+      "max_batch_size": 1,
+      "max_seq_len": 262144,
+      "prompt_template": "chat_template",
+      "prompt_template_content": "{%- set image_count = namespace(value=0) %}\n{%- set video_count = namespace(value=0) %}\n{%- macro render_content(content, do_vision_count, is_system_content=false) %}\n    {%- if content is string %}\n        {{- content }}\n    {%- elif content is iterable and content is not mapping %}\n        {%- for item in content %}\n            {%- if 'image' in item or 'image_url' in item or item.type == 'image' %}\n                {%- if is_system_content %}\n                    {{- raise_exception('System message cannot contain images.') }}\n                {%- endif %}\n                {%- if do_vision_count %}\n                    {%- set image_count.value = image_count.value + 1 %}\n                {%- endif %}\n                {%- if add_vision_id %}\n                    {{- 'Picture ' ~ image_count.value ~ ': ' }}\n                {%- endif %}\n                {{- '<|vision_start|><|image_pad|><|vision_end|>' }}\n            {%- elif 'video' in item or item.type == 'video' %}\n                {%- if is_system_content %}\n                    {{- raise_exception('System message cannot contain videos.') }}\n                {%- endif %}\n                {%- if do_vision_count %}\n                    {%- set video_count.value = video_count.value + 1 %}\n                {%- endif %}\n                {%- if add_vision_id %}\n                    {{- 'Video ' ~ video_count.value ~ ': ' }}\n                {%- endif %}\n                {{- '<|vision_start|><|video_pad|><|vision_end|>' }}\n            {%- elif 'text' in item %}\n                {{- item.text }}\n            {%- else %}\n                {{- raise_exception('Unexpected item type in content.') }}\n            {%- endif %}\n        {%- endfor %}\n    {%- elif content is none or content is undefined %}\n        {{- '' }}\n    {%- else %}\n        {{- raise_exception('Unexpected content type.') }}\n    {%- endif %}\n{%- endmacro %}\n{%- if not messages %}\n    {{- raise_exception('No messages provided.') }}\n{%- endif %}\n{%- set reasoning_instructions = '' %}\n{%- if enable_thinking is undefined or enable_thinking is true %}\n    {%- set resolved_reasoning_effort = reasoning_effort|default('xhigh') %}\n    {%- if resolved_reasoning_effort not in ('xhigh', 'medium', 'low') %}\n        {{- raise_exception('Unexpected reasoning effort ' ~ reasoning_effort ~ '. Supported types are xhigh (default), medium, and low.') }}\n    {%- endif %}\n    {%- if resolved_reasoning_effort == 'xhigh' %}\n        {%- set reasoning_instructions = 'Reasoning effort is set to xhigh. Please think carefully through the task, validate key assumptions, consider plausible alternatives, and prioritize correctness, consistency, and clarity in the final answer.' %}\n    {%- elif resolved_reasoning_effort == 'low' %}\n        {%- set reasoning_instructions = 'Reasoning effort is set to low. Keep your thinking brief and focused, moving directly to the conclusion without unnecessary elaboration.' %}\n    {%- endif %}\n{%- endif %}\n{%- if tools and tools is iterable and tools is not mapping %}\n    {{- '<|im_start|>system\\n' }}\n    {%- if reasoning_instructions %}\n        {{- reasoning_instructions + '\\n\\n' }}\n    {%- endif %}\n    {{- \"# Tools\\n\\nYou have access to the following functions:\\n\\n<tools>\" }}\n    {%- for tool in tools %}\n        {{- \"\\n\" }}\n        {{- tool | tojson }}\n    {%- endfor %}\n    {{- \"\\n</tools>\" }}\n    {{- '\\n\\nIf you choose to call a function ONLY reply in the following format with NO suffix:\\n\\n<tool_call>\\n<function=example_function_name>\\n<parameter=example_parameter_1>\\nvalue_1\\n</parameter>\\n<parameter=example_parameter_2>\\nThis is the value for the second parameter\\nthat can span\\nmultiple lines\\n</parameter>\\n</function>\\n</tool_call>\\n\\n<IMPORTANT>\\nReminder:\\n- Function calls MUST follow the specified format: an inner <function=...></function> block must be nested within <tool_call></tool_call> XML tags\\n- Required parameters MUST be specified\\n- You may provide optional reasoning for your function call in natural language BEFORE the function call, but NOT after\\n- If there is no function call available, answer the question like normal with your current knowledge and do not tell the user about function calls\\n</IMPORTANT>' }}\n    {%- if messages[0].role == 'system' %}\n        {%- set content = render_content(messages[0].content, false, true)|trim %}\n        {%- if content %}\n            {{- '\\n\\n' + content }}\n        {%- endif %}\n    {%- endif %}\n    {{- '<|im_end|>\\n' }}\n{%- else %}\n    {%- if messages[0].role == 'system' %}\n        {%- set content = render_content(messages[0].content, false, true)|trim %}\n        {%- if content %}\n            {{- '<|im_start|>system\\n' + (reasoning_instructions + '\\n\\n' if reasoning_instructions else '')  + content + '<|im_end|>\\n' }}\n        {%- elif reasoning_instructions %}\n            {{- '<|im_start|>system\\n' + reasoning_instructions + '<|im_end|>\\n' }}\n        {%- endif %}\n    {%- elif reasoning_instructions %}\n        {{- '<|im_start|>system\\n' + reasoning_instructions + '<|im_end|>\\n' }}\n    {%- endif %}\n{%- endif %}\n{%- set ns = namespace(multi_step_tool=true, last_query_index=messages|length - 1) %}\n{%- for message in messages[::-1] %}\n    {%- set index = (messages|length - 1) - loop.index0 %}\n    {%- if ns.multi_step_tool and message.role == \"user\" %}\n        {%- set content = render_content(message.content, false)|trim %}\n        {%- if not(content.startswith('<tool_response>') and content.endswith('</tool_response>')) %}\n            {%- set ns.multi_step_tool = false %}\n            {%- set ns.last_query_index = index %}\n        {%- endif %}\n    {%- endif %}\n{%- endfor %}\n{%- if ns.multi_step_tool %}\n    {{- raise_exception('No user query found in messages.') }}\n{%- endif %}\n{%- for message in messages %}\n    {%- set content = render_content(message.content, true)|trim %}\n    {%- if message.role == \"system\" %}\n        {%- if not loop.first %}\n            {{- raise_exception('System message must be at the beginning.') }}\n        {%- endif %}\n    {%- elif message.role == \"user\" %}\n        {{- '<|im_start|>' + message.role + '\\n' + content + '<|im_end|>' + '\\n' }}\n    {%- elif message.role == \"assistant\" %}\n        {%- set reasoning_content = '' %}\n        {%- if message.reasoning_content is string %}\n            {%- set reasoning_content = message.reasoning_content %}\n        {%- endif %}\n        {%- set reasoning_content = reasoning_content|trim %}\n        {%- if preserve_thinking is undefined or preserve_thinking is true or loop.index0 > ns.last_query_index %}\n            {{- '<|im_start|>' + message.role + '\\n<think>\\n' + reasoning_content + '\\n</think>\\n\\n' + content }}\n        {%- else %}\n            {{- '<|im_start|>' + message.role + '\\n' + content }}\n        {%- endif %}\n        {%- if message.tool_calls and message.tool_calls is iterable and message.tool_calls is not mapping %}\n            {%- for tool_call in message.tool_calls %}\n                {%- if tool_call.function is defined %}\n                    {%- set tool_call = tool_call.function %}\n                {%- endif %}\n                {%- if loop.first %}\n                    {%- if content|trim %}\n                        {{- '\\n\\n<tool_call>\\n<function=' + tool_call.name + '>\\n' }}\n                    {%- else %}\n                        {{- '<tool_call>\\n<function=' + tool_call.name + '>\\n' }}\n                    {%- endif %}\n                {%- else %}\n                    {{- '\\n<tool_call>\\n<function=' + tool_call.name + '>\\n' }}\n                {%- endif %}\n                {%- if tool_call.arguments is defined and tool_call.arguments != '' %}\n                    {%- for args_name, args_value in tool_call.arguments|items %}\n                        {{- '<parameter=' + args_name + '>\\n' }}\n                        {%- set args_value = args_value | string if args_value is string else args_value | tojson | safe %}\n                        {{- args_value }}\n                        {{- '\\n</parameter>\\n' }}\n                    {%- endfor %}\n                {%- endif %}\n                {{- '</function>\\n</tool_call>' }}\n            {%- endfor %}\n        {%- endif %}\n        {{- '<|im_end|>\\n' }}\n    {%- elif message.role == \"tool\" %}\n        {%- if loop.previtem and loop.previtem.role != \"tool\" %}\n            {{- '<|im_start|>user' }}\n        {%- endif %}\n        {{- '\\n<tool_response>\\n' }}\n        {{- content }}\n        {{- '\\n</tool_response>' }}\n        {%- if not loop.last and loop.nextitem.role != \"tool\" %}\n            {{- '<|im_end|>\\n' }}\n        {%- elif loop.last %}\n            {{- '<|im_end|>\\n' }}\n        {%- endif %}\n    {%- else %}\n        {{- raise_exception('Unexpected message role.') }}\n    {%- endif %}\n{%- endfor %}\n{%- if add_generation_prompt %}\n    {{- '<|im_start|>assistant\\n' }}\n    {%- if enable_thinking is defined and enable_thinking is false %}\n        {{- '<think>\\n\\n</think>\\n\\n' }}\n    {%- else %}\n        {{- '<think>\\n' }}\n    {%- endif %}\n{%- endif %}",
+      "rope_alpha": 1.0,
+      "rope_scale": 1.0,
+      "use_vision": false
+    }
+  },
+  "deployment_sha256": "25bd0ca9ab7be15588c5949d9a55526a74035e65c82a0f225ec549e804a3c7ca",
+  "finished_at_utc": "2026-10-09T06:53:20.557180+00:00",
+  "label": "A-old-engine-old-server",
+  "load_wall_seconds": 40.687100717997964,
+  "models": {
+    "data": [
+      {
+        "created": 1791528742,
+        "id": "Qwen3.8-Flash-Next-EXL3",
+        "logging": null,
+        "meta": {
+          "n_ctx": null,
+          "n_ctx_train": 262144,
+          "n_embd": 2560,
+          "n_vocab": 248320,
+          "size": 0
+        },
+        "object": "model",
+        "owned_by": "tabbyAPI",
+        "parameters": null
+      }
+    ],
+    "object": "list"
+  },
+  "ownership_token": "9460884e1a014273aa45ec87ca488c81",
+  "passed": true,
+  "server_cleanup": {
+    "exit_before_cleanup": null,
+    "exit_code": 0,
+    "owned_group_empty": true,
+    "signals": [
+      "SIGTERM"
+    ],
+    "unexpected_exit": false,
+    "wall_seconds": 2.312354256002436
+  },
+  "server_command": [
+    "bash",
+    "/home/cruzspark/qwen-spark-recipe/exllamav3-tabby/serve.sh"
+  ],
+  "server_pid": 341969,
+  "sources": {
+    "controller_sha256": "48281d5b51b1b64509385548c6f41f34909c328070274fcb4a06945ddcc44586",
+    "engine": {
+      "commit": "94ba01d50a13fa9ff672473f2d0eef8b51a71e99",
+      "path": "/home/cruzspark/qwen38-exl3/exllamav3",
+      "tracked_changes": "",
+      "tracked_diff_sha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+    },
+    "files_sha256": {
+      "bench/api_client.py": "a834cd1ac95e1519a5a14856819c762a581d22ee1e61df5f4d57ca5f4c054adc",
+      "bench/bench_v1.py": "c60542c8d9c972a2f1d2ba66edf67a716e3b65e989952d94ed174008876f1191",
+      "bench/concurrency.py": "619efc805c3d4b3705947c0f67ac72c130086506f574ff04fb60b4323508a993",
+      "bench/tool_smoke.py": "666d7e4540637ad6dcaa13012b0bd3c57733f469a47587a17f0debedbc52d312",
+      "exllamav3-tabby/env.sh": "d0151eabb8244fd30ba77a98bc28100da8ff67049ca4fea8291a05cb6b4a463e",
+      "exllamav3-tabby/serve.sh": "84778406cc224dc8be68dcc2a9e8c71bff6330914ecc6d6fb1a79944d08176d9",
+      "exllamav3-tabby/tabby-config.yml": "b99ca974843b85340bc1d5caaa636c33ce65c672e03f84d964a9291036b12bb9",
+      "exllamav3-tabby/tools/model_memory.py": "f740d7212b2d38d73434922e2fc6f4577a1576c5bf5b70cc720f512c4800acac",
+      "exllamav3-tabby/tools/runtime_state.py": "5d29871fe7c8cfd831a479ea12ecb879d96078c44fccf65663dd8f20728aaff2"
+    },
+    "packages_sha256": "13817c88e4ebacb9a2cd37c44e59bf798ad5f85ddd3989229521541348d2932d",
+    "recipe": {
+      "commit": "a8c72bdf811646f413fdc03a4e49811a2753d0cf",
+      "path": "/home/cruzspark/qwen-spark-recipe",
+      "tracked_changes": "",
+      "tracked_diff_sha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+    },
+    "runtime": "/home/cruzspark/qwen38-exl3",
+    "server": {
+      "commit": "816c32195887aaecea1c64528f2921566766259b",
+      "path": "/home/cruzspark/qwen38-exl3/tabbyAPI",
+      "tracked_changes": "",
+      "tracked_diff_sha256": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126"
+    }
+  },
+  "started_at_utc": "2026-10-09T06:51:41.359801+00:00",
+  "state": "completed"
+}

@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "reviewed_at_utc": "2026-10-09T08:10:39.508903+00:00",
+  "mode": "independent source-only read; no tests, API, service, GPU or source mutation",
+  "files": {
+    "verify_followup_service.py": "fe93a81011a58c5e710b9066a4a6add3b6e6ddcefa68fb69fca24ee3e8ac7344",
+    "install_service_gpu_lock.py": "2a799cb201369a2de30eebc58473e32aea84b5bfed55e916fa7b8c59c7af1d9f"
+  },
+  "findings": [
+    {
+      "source": "verify_followup_service.py",
+      "earlier_sha256": "df29aa93bfa25e4836a756d01434a01fb51a3626e7bf080827c8cf86cb9dadef",
+      "issue": "Inherited ready_new executes two raw API calls before the first explicit FD8 lock check.",
+      "resolution": "Current fe93 revision adds stable MainPID/invocation, unit_owner and FD8 lock admission before ready_new."
+    }
+  ],
+  "cleared_scope": [
+    "Exact source/service-env and preserved original runtime preflight; main-or-exact Tabby policy.",
+    "Two inherited raw transport calls followed by unchanged five-case OpenAI SDK CLI/report contract.",
+    "Record-only signal handling through child registration/poll/finalization; frozen SDK source creates no child processes.",
+    "Installer preserves every original environment byte, adds only GPU_LOCK_FILE, holds the persistent inode flock, writes private exclusive backup and atomically replaces the exact old file."
+  ],
+  "remaining_scope": "Prepared only; parent owns actual deployment, standby-unit start/stop and final live verification."
+}

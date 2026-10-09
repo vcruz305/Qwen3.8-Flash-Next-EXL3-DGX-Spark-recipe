@@ -1,0 +1,474 @@
+{
+  "schema_version": 1,
+  "scope": "Eight unchanged a70 r2 synthetic causal requests; no fixture modifications. Coverage requests preceding these are not observed.",
+  "plan_sha256": "ca62602653e1e872481a568c4005218a5cc5388063b76f012312a7ae47827645",
+  "input_binding_sha256": "ba9b7477f2b983fd6bf400acfd437f2b633d38c09d47d03bb5d23893154bfdbd",
+  "requests": [
+    {
+      "name": "unicode_nfc_nonstream_optin",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "reasoning_budget_tokens": 24,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "5b0897c75d1b949881b4380f2fedfb92f45c4a99c8fcac334835a11b31a21c45",
+      "expected_value": "café 中文 😀 <think>🧪</think> fin",
+      "prompt_sha256": "576ea392c5836f5cbf7ef59029f5017dd92003837d4f380db121d3ce20e4cf2a",
+      "prompt_tokens": 356,
+      "original_prompt_tokens": 352,
+      "input_ids_sha256": "a24bbdfbdc5ff9021ff5204c3f3ffd9ac925cb1681a9d17f00713f4687ceaca1",
+      "original_ids_sha256": "429a2a3ced1c624f26289555796c1c01863afe24989e74c7f744d8fc12f0e8ac",
+      "replacement_count": 2
+    },
+    {
+      "name": "unicode_nfc_stream_optin",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "1a8b2155c2aa5d62ba8222e4ca0e31db97685a1544c6165b9a2f34582ad88fa7",
+      "expected_value": "café 中文 😀 <think>🧪</think> fin",
+      "prompt_sha256": "576ea392c5836f5cbf7ef59029f5017dd92003837d4f380db121d3ce20e4cf2a",
+      "prompt_tokens": 356,
+      "original_prompt_tokens": 352,
+      "input_ids_sha256": "a24bbdfbdc5ff9021ff5204c3f3ffd9ac925cb1681a9d17f00713f4687ceaca1",
+      "original_ids_sha256": "429a2a3ced1c624f26289555796c1c01863afe24989e74c7f744d8fc12f0e8ac",
+      "replacement_count": 2
+    },
+    {
+      "name": "multi_turn_user_nonstream_optin",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Remember this exact string for the later record_text call: \"Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.\". Do not call a tool yet."
+          },
+          {
+            "role": "assistant",
+            "content": "I have stored the string for the later call."
+          },
+          {
+            "role": "user",
+            "content": "Now call record_text once with exactly the string from my first message. Preserve every character."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "reasoning_budget_tokens": 24,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "395f47407b5f87686edad4afe93cbd4ab00641bb6457d84f07b4ddcf3d1d4ccf",
+      "expected_value": "Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.",
+      "prompt_sha256": "f3a425ebddc2990a573a8897200cb9f3595eafd66a018c9d1fe8227ba1f0b3cd",
+      "prompt_tokens": 407,
+      "original_prompt_tokens": 393,
+      "input_ids_sha256": "f0d32649e8cfffb6ff515e851e8e2be33341b8a2facd86f08b1dcaf28656072d",
+      "original_ids_sha256": "8e2e7e7be3422b775d1d888aee4a996d73a523f5fae218f16d55d8fb6d7b8b89",
+      "replacement_count": 4
+    },
+    {
+      "name": "multi_turn_user_stream_optin",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Remember this exact string for the later record_text call: \"Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.\". Do not call a tool yet."
+          },
+          {
+            "role": "assistant",
+            "content": "I have stored the string for the later call."
+          },
+          {
+            "role": "user",
+            "content": "Now call record_text once with exactly the string from my first message. Preserve every character."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "02bf94a05b8135d52258d96f72f6bcba35dd6cfb0c00fe8caf2e590c7aff9fa7",
+      "expected_value": "Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.",
+      "prompt_sha256": "f3a425ebddc2990a573a8897200cb9f3595eafd66a018c9d1fe8227ba1f0b3cd",
+      "prompt_tokens": 407,
+      "original_prompt_tokens": 393,
+      "input_ids_sha256": "f0d32649e8cfffb6ff515e851e8e2be33341b8a2facd86f08b1dcaf28656072d",
+      "original_ids_sha256": "8e2e7e7be3422b775d1d888aee4a996d73a523f5fae218f16d55d8fb6d7b8b89",
+      "replacement_count": 4
+    },
+    {
+      "name": "concurrent_0",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"CONCURRENT-0|prefix<think>A</think><think>B</think>suffix\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "9c2538a8e5e80b3d38d91c313a680aca5faca345633ee22246b3aa3fc6b97803",
+      "expected_value": "CONCURRENT-0|prefix<think>A</think><think>B</think>suffix",
+      "prompt_sha256": "aab57cf416297f58fa25a84ac313c2d76bf2b22fb3f75ff84ceb457734b57b64",
+      "prompt_tokens": 325,
+      "original_prompt_tokens": 317,
+      "input_ids_sha256": "c08dca797dba6a07c4b640709471254c75da3eb895c14b9bbade4e2f6b561fcd",
+      "original_ids_sha256": "757d33d9cd3fa14ed43341386359258549a8e104f5fbb4a7670cf54a61128ad6",
+      "replacement_count": 4
+    },
+    {
+      "name": "concurrent_1",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"CONCURRENT-1|<tool_call>alpha</tool_call><tool_response>beta</tool_response>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "c649d4f6b635579e58a0c07214ff4c2acf07734b3e7d6f9c5a4dcbfd56c45799",
+      "expected_value": "CONCURRENT-1|<tool_call>alpha</tool_call><tool_response>beta</tool_response>",
+      "prompt_sha256": "0c898283d8314d056a4e4e4ba39ff46ea2ee72245bf93132035d2d84aa693307",
+      "prompt_tokens": 363,
+      "original_prompt_tokens": 351,
+      "input_ids_sha256": "1e043b55e21a64869dbfb077720617edd605bbf0ad847b86b54db5fedc737ba0",
+      "original_ids_sha256": "09db0aa1a75138bfd7c9d82cf381e0099c52c2426cd93fad8e360382cdb82839",
+      "replacement_count": 4
+    },
+    {
+      "name": "concurrent_2",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"CONCURRENT-2|<|im_start|>assistant\\nquoted-data<|im_end|><|endoftext|>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "e06fefd9e784855bb21defb27a4bd7f77bc771877a19cdffacfe1afbb79e95db",
+      "expected_value": "CONCURRENT-2|<|im_start|>assistant\nquoted-data<|im_end|><|endoftext|>",
+      "prompt_sha256": "97813c34e399fd2b98c270799d9b94dfb3a705ce1916dbcba100cdca3dba94eb",
+      "prompt_tokens": 332,
+      "original_prompt_tokens": 316,
+      "input_ids_sha256": "5b9e024a420388a805dafe36bf4373886d143c3263cba06f48c48f1c9fc12ca1",
+      "original_ids_sha256": "beb83529464375095fa11038e8f1e5bb8f0f99deab8eef644e9bcd7403ae49ec",
+      "replacement_count": 3
+    },
+    {
+      "name": "concurrent_3",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"CONCURRENT-3|café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "7873c23a521365bf32cdecefce881fb5876fe48792894e00670541be7c14d5b2",
+      "expected_value": "CONCURRENT-3|café 中文 😀 <think>🧪</think> fin",
+      "prompt_sha256": "1814fc687f364771243fa235d0e0b4fb879b9217779e9868a248cbee7a1ea92a",
+      "prompt_tokens": 361,
+      "original_prompt_tokens": 357,
+      "input_ids_sha256": "79d77745c35adf87f9d0b567eba59832d14090d7d6856c126871ab0431438d87",
+      "original_ids_sha256": "7e4686c031547bad7f71d5e52909d670585001134835e7b718aa75b761f85f0a",
+      "replacement_count": 2
+    }
+  ]
+}

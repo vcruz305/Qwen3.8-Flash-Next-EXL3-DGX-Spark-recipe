@@ -80,6 +80,11 @@ can mask the model's normal marker tokens.
 When the template starts in a reasoning phase, the grammar applies after that
 phase closes. In forced modes, tool examples inside reasoning remain reasoning
 text; following reasoning, only calls and bounded layout whitespace are allowed.
+With the supported producer handoff, required/named requests suppress implicit
+model end tokens during initial reasoning and restore normal stopping at the
+content transition. Explicit caller stop IDs and overlapping stop strings retain
+priority, and the overall token limit remains in force. This prevents implicit
+EOS from bypassing a required call; it does not guarantee correct argument values.
 Automatic mode preserves the configured `tool_calls_in_reasoning` behavior,
 reasoning effort and reasoning budget. Its grammar governs the content phase.
 
@@ -150,6 +155,11 @@ not a universal exact-copy guarantee. Validate returned values before executing
 a tool that depends on exact literal content. The parser's preservation of
 emitted argument bytes and the model's selection of those bytes are separate
 checks.
+
+The [October 9 follow-up](../VALIDATION_2026-10-09.md#mandatory-tool-stop-handling)
+separately traces premature stopping, tests the producer-side stop fix, and
+retains the remaining wrong-value results. Its experimental literal-input
+option is not part of the stable server recipe.
 
 ## Argument types and literal content
 

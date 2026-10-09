@@ -1,0 +1,241 @@
+diff --git a/bench/matrix.md b/bench/matrix.md
+index 9f058fa..9f4b781 100644
+--- a/bench/matrix.md
++++ b/bench/matrix.md
+@@ -12,6 +12,8 @@ Use a compatible, validated recipe checkout containing the strict clients and th
+ 
+ Schedule exclusive access to the GPU. Stop a previously running service through its own supervisor before the experiment. Port8899 must be free; the runner refuses a busy loopback port and never takes over an existing server. It uses a separate session/process group and an unguessable environment token for each job, and verifies membership before signaling. Unknown ownership or failed cleanup halts the matrix before a subsequent model is loaded.
+ 
++Set `GPU_LOCK_FILE` inside each job's `env` to make its live server cooperate with another supervisor using the same persistent lock file. The path is included in resolved configuration and drift checks; an ambient shell assignment is removed with other tuning overrides. Each server holds the lock through its final process exit, but the runner does not hold it between jobs. Keep the whole experiment window exclusively scheduled. If an outer controller already holds that flock, leave this option unset in the child to avoid competing with your own lock. See [shared GPU ownership](../docs/service.md#shared-gpu-ownership). The selected recipe must expose the `acquire_gpu_lock` launcher capability; a requested lock with an older launcher is rejected before starting the server. Before each client and after measurements, the runner verifies that server FD 8 references the requested device/inode and that Linux reports an exclusive `FLOCK ADVISORY WRITE` on that descriptor. These observations are retained in the result alongside the deployment setting. This checks cooperating process ownership; a process that ignores the lock or replaces it between observations remains outside that protection.
++
+ The runner fixes the API at `http://127.0.0.1:8899/v1` with local authentication disabled. Network, component and state paths are controller-owned. This is a local experiment workflow; it does not configure a LAN deployment.
+ 
+ ## Define comparable jobs
+diff --git a/bench/run_matrix.py b/bench/run_matrix.py
+index 5183909..89d22a7 100644
+--- a/bench/run_matrix.py
++++ b/bench/run_matrix.py
+@@ -35,6 +35,7 @@ from pathlib import Path
+ import re
+ import signal
+ import socket
++import stat
+ import subprocess
+ import sys
+ import time
+@@ -46,7 +47,7 @@ BASE = "http://127.0.0.1:8899/v1"
+ TUNING = set(("PROFILE NGRAM_RAM BIGCORES OMP_NUM_THREADS MKL_NUM_THREADS CHUNK_SIZE "
+               "CACHE_SIZE MAX_SEQ_LEN MAX_BATCH_SIZE DRAFT_MODE DRAFT_NUM_TOKENS "
+               "DYNAMIC_DRAFT SYSMEM_RECURRENT_CACHE VISION REASONING TOOL_FORMAT "
+-              "SERVED_NAME CUDA_HOME TORCH_CUDA_ARCH_LIST PROMPT_TEMPLATE").split())
++              "SERVED_NAME CUDA_HOME TORCH_CUDA_ARCH_LIST PROMPT_TEMPLATE GPU_LOCK_FILE").split())
+ CONTROLLED = set(("RECIPE_HOME VENV EXL3_SRC TABBY_DIR STATE_DIR MODEL_DIR MODEL_PARENT "
+                   "MODEL_NAME HOST PORT DISABLE_AUTH DRY_RUN PYTHON_BIN TABBY_REF TABBY_REPO").split())
+ SETTINGS = {
+@@ -229,7 +230,10 @@ def resolved_env(recipe, runtime, job):
+                MODEL_DIR=job["model_path"], HOST="127.0.0.1", PORT="8899",
+                DISABLE_AUTH="true", DRY_RUN="0", PYTHONUNBUFFERED="1")
+     # Source current recipe defaults; no engine SHA, Tabby ref or version is embedded here.
+-    data = subprocess.check_output(["bash", "-c", 'set -a; source "$1"; env -0',
++    probe = ('set -a; source "$1" || exit; '
++             'if [[ -n "${GPU_LOCK_FILE:-}" ]] && ! declare -F acquire_gpu_lock >/dev/null; then '
++             'printf "%s\\n" "selected recipe does not support GPU_LOCK_FILE" >&2; exit 1; fi; env -0')
++    data = subprocess.check_output(["bash", "-c", probe,
+                                     "recipe-env", str(recipe / "exllamav3-tabby/env.sh")],
+                                    env=env, timeout=30)
+     return dict(item.decode().split("=", 1) for item in data.split(b"\0") if item)
+@@ -271,6 +275,40 @@ def require_owned_listener(pid):
+         raise RuntimeError("Ready API socket is not owned by the launched server")
+ 
+ 
++def verify_gpu_lock(pid, env):
++    """Observe the launcher's cooperative flock; never acquire or alter it."""
++    requested = env.get("GPU_LOCK_FILE", "")
++    if not requested:
++        return None
++    path = Path(requested)
++    if not path.is_absolute():
++        raise ValueError("Requested GPU lock path is not absolute")
++    before = path.lstat()
++    if not stat.S_ISREG(before.st_mode):
++        raise ValueError("Requested GPU lock is no longer a regular nonsymlink file")
++    descriptor = Path(f"/proc/{pid}/fd/8").stat()
++    identity = (before.st_dev, before.st_ino)
++    if (descriptor.st_dev, descriptor.st_ino) != identity:
++        raise ValueError("Server FD8 does not reference the requested GPU lock inode")
++    lines = Path(f"/proc/{pid}/fdinfo/8").read_text().splitlines()
++    held = []
++    for line in lines:
++        match = re.fullmatch(
++            r"lock:\s+\d+:\s+FLOCK\s+ADVISORY\s+WRITE\s+-?\d+\s+"
++            r"([0-9a-fA-F]+):([0-9a-fA-F]+):(\d+)\s+0\s+EOF", line)
++        if match and (int(match[1], 16), int(match[2], 16), int(match[3])) == (
++                os.major(before.st_dev), os.minor(before.st_dev), before.st_ino):
++            held.append(line)
++    if len(held) != 1:
++        raise ValueError("Server FD8 lacks the requested exclusive cooperative flock")
++    after = path.lstat()
++    if not stat.S_ISREG(after.st_mode) or (after.st_dev, after.st_ino) != identity:
++        raise ValueError("GPU lock path changed during ownership verification")
++    return {"checked_at_utc": stamp(), "path": requested, "server_pid": pid,
++            "descriptor": 8, "device": before.st_dev, "inode": before.st_ino,
++            "fdinfo_lock": held[0]}
++
++
+ def get_json(endpoint):
+     request = urllib.request.Request(BASE + endpoint)
+     if os.environ.get("API_KEY"):
+@@ -444,6 +482,10 @@ def run_job(job, args, identity, env):
+         record["deployment_sha256"] = digest(deployment)
+         verify_inputs(job, args, identity, env)
+         record["inputs_verified_before_measurements_at_utc"] = stamp()
++        if env.get("GPU_LOCK_FILE"):
++            if deployment.get("environment", {}).get("GPU_LOCK_FILE") != env["GPU_LOCK_FILE"]:
++                raise ValueError("Deployment snapshot does not record the requested GPU lock")
++            record["gpu_lock_before_measurements"] = verify_gpu_lock(server.pid, env)
+         record["state"] = "measuring"
+         save()
+         for name, command in commands(job, attempt, args.recipe, str(args.runtime / "venv/bin/python"), model):
+@@ -453,6 +495,8 @@ def run_job(job, args, identity, env):
+             command += ["--output", str(destination)]
+             client_record = {"name": name, "command": command, "started_at_utc": stamp(),
+                              "output": str(destination), "metadata": str(attempt / "deployment.json")}
++            if env.get("GPU_LOCK_FILE"):
++                client_record["gpu_lock_before"] = verify_gpu_lock(server.pid, env)
+             record["clients"].append(client_record)
+             save()
+             with (attempt / (name + ".log")).open("w") as log:
+@@ -480,6 +524,8 @@ def run_job(job, args, identity, env):
+             save()
+         verify_inputs(job, args, identity, env)
+         record["inputs_verified_after_measurements_at_utc"] = stamp()
++        if env.get("GPU_LOCK_FILE"):
++            record["gpu_lock_after_measurements"] = verify_gpu_lock(server.pid, env)
+         record["passed"] = bool(record["clients"]) and all(
+             row["exit_code"] == 0 and row["completed_report"] and not row.get("timed_out")
+             for row in record["clients"])
+diff --git a/bench/test_run_matrix.py b/bench/test_run_matrix.py
+index 5aa778d..d7aaf85 100644
+--- a/bench/test_run_matrix.py
++++ b/bench/test_run_matrix.py
+@@ -1,6 +1,10 @@
+-"""Offline controller tests: no server launch, network call, GPU access, or Spark mutation."""
++"""Offline contracts; harmless local children only, no server/network/GPU/Spark access."""
+ import importlib.util
+ import json
++import os
++import select
++import shutil
++import sys
+ from pathlib import Path
+ import subprocess
+ import tempfile
+@@ -46,7 +50,7 @@ class ControllerTests(unittest.TestCase):
+         if command[0] == "bash":
+             state = Path(kwargs["env"]["STATE_DIR"])
+             state.mkdir()
+-            metadata = {"model": {"resolved_path": str(self.pack)},
++            metadata = {"model": {"resolved_path": str(self.pack)}, "environment": kwargs["env"],
+                         **{k: {"commit": v["commit"]} for k, v in self.identity.items()}}
+             (state / "deployment.json").write_text(json.dumps(metadata))
+             return self.server
+@@ -114,6 +118,99 @@ class ControllerTests(unittest.TestCase):
+         self.assertEqual(env["HOST"], "127.0.0.1")
+         self.assertEqual(env["PORT"], "8899")
+ 
++    def test_gpu_lock_is_explicit_resolved_configuration_and_drift_is_rejected(self):
++        requested = str(self.root / "gpu.lock")
++        job = controller.normalize({"label": "shared-lock", "model_path": str(self.pack),
++            "env": {"PROFILE": "single", "NGRAM_RAM": False, "GPU_LOCK_FILE": requested},
++            "tool_cases": ["auto"]})
++        (self.recipe / "exllamav3-tabby/env.sh").write_text(
++            'GPU_LOCK_FILE="${GPU_LOCK_FILE:-}"\nacquire_gpu_lock() { :; }\n')
++        with patch.dict(controller.os.environ, {"GPU_LOCK_FILE": "/ambient-owner.lock"}):
++            env = controller.resolved_env(self.recipe, self.runtime, job)
++            default_env = controller.resolved_env(self.recipe, self.runtime, self.job)
++        self.assertEqual(env["GPU_LOCK_FILE"], requested)
++        self.assertEqual(default_env["GPU_LOCK_FILE"], "")
++        self.assertFalse(Path(requested).exists())
++        with patch.object(controller, "source_identity", return_value=self.identity), \
++             patch.object(controller, "resolved_env", return_value=env) as resolved:
++            controller.verify_inputs(job, self.args, self.identity, env)
++            resolved.return_value = dict(env, GPU_LOCK_FILE=requested + ".changed")
++            with self.assertRaisesRegex(ValueError, "defaults changed"):
++                controller.verify_inputs(job, self.args, self.identity, env)
++
++    def test_requested_lock_rejects_older_recipe_before_launch_or_lock_creation(self):
++        # Historical launchers can inherit this variable while never acquiring it.
++        (self.recipe / "exllamav3-tabby/env.sh").write_text('GPU_LOCK_FILE="${GPU_LOCK_FILE:-}"\n')
++        requested = self.root / "shared.lock"
++        job = dict(self.job, env=dict(self.job["env"], GPU_LOCK_FILE=str(requested)))
++        with self.assertRaises(subprocess.CalledProcessError):
++            controller.resolved_env(self.recipe, self.runtime, job)
++        self.assertFalse(requested.exists())
++        self.assertEqual(controller.resolved_env(self.recipe, self.runtime, self.job)["GPU_LOCK_FILE"], "")
++
++    def test_lock_ownership_failure_stops_before_clients_and_cleans_owned_server(self):
++        self.env["GPU_LOCK_FILE"] = str(self.root / "requested.lock")
++        cleanup = Mock(return_value={"exit_code": -15, "signals": ["SIGTERM"]})
++        with patch.object(controller, "verify_gpu_lock", side_effect=ValueError("missing actual flock")):
++            result = self.execute(stop_owned=cleanup)
++        self.assertFalse(result["passed"])
++        self.assertEqual(result["state"], "failed")
++        self.assertEqual(result["clients"], [])
++        cleanup.assert_called_once_with(self.server, unittest.mock.ANY)
++
++    def test_lock_evidence_is_recorded_before_each_client_and_after_measurement(self):
++        self.env["GPU_LOCK_FILE"] = str(self.root / "requested.lock")
++        evidence = {"path": self.env["GPU_LOCK_FILE"], "descriptor": 8, "inode": 42}
++        with patch.object(controller, "verify_gpu_lock", return_value=evidence) as verify:
++            result = self.execute()
++        self.assertTrue(result["passed"])
++        self.assertEqual(verify.call_count, 3)
++        self.assertEqual(result["gpu_lock_before_measurements"], evidence)
++        self.assertEqual(result["clients"][0]["gpu_lock_before"], evidence)
++        self.assertEqual(result["gpu_lock_after_measurements"], evidence)
++
++    def test_unset_lock_does_not_inspect_proc(self):
++        with patch.object(controller.Path, "lstat", side_effect=AssertionError("unexpected filesystem read")):
++            self.assertIsNone(controller.verify_gpu_lock(999999, {}))
++
++    @unittest.skipUnless(shutil.which("bash") and shutil.which("flock") and Path("/proc/self/fdinfo").is_dir(),
++                         "requires Linux procfs, bash and flock")
++    def test_actual_inherited_flock_rejects_wrong_inode_replacement_and_unlocked_fd(self):
++        requested = self.root / "actual shared.lock"
++        other = self.root / "other.lock"
++        other.touch()
++        program = ('import fcntl,sys; print("READY",flush=True); '
++                   'sys.stdin.readline(); fcntl.flock(8,fcntl.LOCK_UN); '
++                   'print("UNLOCKED",flush=True); sys.stdin.readline()')
++        child = subprocess.Popen(
++            ["bash", "-euc", 'source "$1"; acquire_gpu_lock; shift; exec "$@"', "lock-test",
++             str(HERE.parent / "exllamav3-tabby/env.sh"), sys.executable, "-u", "-c", program],
++            env={**os.environ, "GPU_LOCK_FILE": str(requested), "STATE_DIR": str(self.root / "state")},
++            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
++        try:
++            self.assertTrue(select.select([child.stdout], [], [], 5)[0], "child did not become ready")
++            self.assertEqual(child.stdout.readline().strip(), "READY")
++            evidence = controller.verify_gpu_lock(child.pid, {"GPU_LOCK_FILE": str(requested)})
++            self.assertEqual(evidence["inode"], requested.stat().st_ino)
++            self.assertIn("FLOCK", evidence["fdinfo_lock"])
++            with self.assertRaisesRegex(ValueError, "inode"):
++                controller.verify_gpu_lock(child.pid, {"GPU_LOCK_FILE": str(other)})
++            retained = self.root / "retained-inode"
++            requested.rename(retained); requested.touch()
++            with self.assertRaisesRegex(ValueError, "inode"):
++                controller.verify_gpu_lock(child.pid, {"GPU_LOCK_FILE": str(requested)})
++            requested.unlink(); retained.rename(requested)
++            child.stdin.write("unlock\n"); child.stdin.flush()
++            self.assertTrue(select.select([child.stdout], [], [], 5)[0], "child did not unlock")
++            self.assertEqual(child.stdout.readline().strip(), "UNLOCKED")
++            with self.assertRaisesRegex(ValueError, "exclusive cooperative flock"):
++                controller.verify_gpu_lock(child.pid, {"GPU_LOCK_FILE": str(requested)})
++            child.communicate("exit\n", timeout=5)
++            self.assertEqual(child.returncode, 0)
++        finally:
++            if child.poll() is None:
++                child.kill(); child.communicate(timeout=5)
++
+     def test_success_captures_actual_exits_and_resume_preserves_artifacts(self):
+         first = self.execute()
+         self.assertTrue(first["passed"])

@@ -1,0 +1,30 @@
+{
+  "base_commit": "f650bb5389e0a273549e47d4d26a765760c013e1",
+  "reviewed_uncommitted_files": {
+    "backends/exllamav3/model.py": "515d6c3a6741872b91766c5574f8d00487e55a9c9e0d8c96460182f350281a64",
+    "backends/exllamav3/reasoning.py": "7ce66535c3abce442f5e768520e1ebb0f1aa49836796cf421196a937ca2467a9",
+    "endpoints/OAI/utils/chat_completion.py": "b49e810d9fb19874bf6141cd41ad47e900585ecfd4ae9af53edcaabd9c3a0ef1",
+    "tests/test_mandatory_tool_eos.py": "18b86918a6950f7e352567cc65429bfcf2aa4f0fea24a1ea292197ed419d40ab",
+    "docs/10.-Tool-Calling.md": "08731f0963fd95ac947982d0358a8202974b29615a2f7a9428d02cea1f16a0b4"
+  },
+  "source_review_passed": true,
+  "new_cpu_tests": 11,
+  "subtests": 40,
+  "command": "CUDA_VISIBLE_DEVICES='' PYTHONPATH=/home/vcruz/src/qwen-overnight-20261008/tabbyapi-agent/.venv-tools/lib/python3.10/site-packages:. /usr/bin/python3 -m pytest --noconftest -q tests/test_mandatory_tool_eos.py",
+  "log_sha256": "84715a60676a73bb256215bfa9f57cd66fa9842443a5780481354d0ec14f542d",
+  "native_source_proof": {
+    "tests": 8,
+    "report": "mandatory-eos-native-cpu-first.json",
+    "sha256": "095dab427c036ab59a02583e7e3755102021e5a663eb3f652b8a411c6f392d97"
+  },
+  "checked": [
+    "required/named initial reasoning with supported producer guard only",
+    "explicit stops distinguished before implicit appending",
+    "conservative full/partial string overlaps preserved",
+    "existing caller/reasoning bans and sampler overrides copied without mutation",
+    "natural/forced synchronous handoff restores content sampler",
+    "max-token limits and default/auto/content/legacy behavior",
+    "same request reused without implicit-EOS contamination"
+  ],
+  "limitations": "No live inference, GPU numerical or throughput gate in this peer review."
+}

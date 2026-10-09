@@ -1,0 +1,2612 @@
+{
+  "schema_version": 1,
+  "kind": "literal_feature_causal_requests",
+  "started_at_utc": "2026-10-09T07:58:50.435213+00:00",
+  "completed_at_utc": "2026-10-09T07:59:08.564466+00:00",
+  "passed": true,
+  "scope": "Eight unchanged original r2 requests; model errors, length and string mismatches are retained observations. Raw capture integrity is independently assessed after collection.",
+  "metadata_source": {
+    "path": "/home/cruzspark/qwen-followup-20261009/results/literal-feature-diagnostic-a70/literal-feature-a70-diagnostic/attempt-11bc19532926/deployment.json",
+    "sha256": "3cd2dee9baf3fbc0362162a13e0c0e9958a1129ab59fcd8b3df4a59575873a28"
+  },
+  "expected_requests_sha256": "74e477ee1917f64264205cd1cac9665058ec2476fe5b49b2289d3fe857bcc52c",
+  "client_sha256": "c06c5e3e2274ba39b03a0935115024bb198ec4179ae26a7c0b7b80b3929c9f94",
+  "results": [
+    {
+      "name": "unicode_nfc_nonstream_optin",
+      "request_sha256": "5b0897c75d1b949881b4380f2fedfb92f45c4a99c8fcac334835a11b31a21c45",
+      "trace": {
+        "index": 0,
+        "path": "/chat/completions",
+        "request": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Call record_text with exactly this string value for text: \"café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+            }
+          ],
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "record_text",
+                "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          ],
+          "tool_choice": {
+            "type": "function",
+            "function": {
+              "name": "record_text"
+            }
+          },
+          "parallel_tool_calls": false,
+          "enable_thinking": true,
+          "temperature": 0,
+          "top_k": 1,
+          "max_tokens": 256,
+          "stream": false,
+          "reasoning_budget_tokens": 24,
+          "literal_user_control_tokens": true
+        },
+        "status": 200,
+        "stream": false,
+        "frames": [],
+        "done": false,
+        "client_aborted": false,
+        "content_type": "application/json",
+        "body": {
+          "id": "cmpl-b4af666c16ae4779a0f8670271193ba1",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "tool_calls",
+              "eos_reason": "stop_token",
+              "stop_str": "<|im_end|>",
+              "message": {
+                "role": "assistant",
+                "content": null,
+                "reasoning_content": "We need to respond by calling record_text with exact string: \"café 中文 😀 🧪",
+                "tool_calls": [
+                  {
+                    "id": "call_3dc0ac98dbe844afb7e8cebe",
+                    "function": {
+                      "name": "record_text",
+                      "arguments": "{\"text\": \"café 中文 😀 <think>🧪</think> fin\"}"
+                    },
+                    "type": "function",
+                    "index": null
+                  }
+                ],
+                "tool_call_id": null
+              },
+              "logprobs": null
+            }
+          ],
+          "created": 1791532734,
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "object": "chat.completion",
+          "usage": {
+            "prompt_tokens": 356,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 2.83,
+            "prompt_tokens_per_sec": 125.8,
+            "completion_tokens": 68,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 46,
+              "rejected_prediction_tokens": 64
+            },
+            "completion_time": 1.32,
+            "completion_tokens_per_sec": 51.53,
+            "total_tokens": 424,
+            "total_time": 4.15
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 356,
+            "prompt_ms": 2830.0,
+            "prompt_per_token_ms": 7.949438202247191,
+            "prompt_per_second": 125.79505300353357,
+            "predicted_n": 68,
+            "predicted_ms": 1320.0,
+            "predicted_per_token_ms": 19.41176470588235,
+            "predicted_per_second": 51.515151515151516,
+            "draft_n": 110,
+            "draft_n_accepted": 46
+          }
+        },
+        "wall_seconds": 4.191485354000179
+      },
+      "started_monotonic_ns": 36360730885572,
+      "finished_monotonic_ns": 36364922497470,
+      "semantic_passed": true,
+      "collection_complete": true,
+      "response_id": "cmpl-b4af666c16ae4779a0f8670271193ba1",
+      "result": {
+        "id": "cmpl-b4af666c16ae4779a0f8670271193ba1",
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "We need to respond by calling record_text with exact string: \"café 中文 😀 🧪",
+        "tool_calls": [
+          {
+            "id": "call_3dc0ac98dbe844afb7e8cebe",
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "arguments": "{\"text\": \"café 中文 😀 <think>🧪</think> fin\"}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls",
+        "usage": {
+          "prompt_tokens": 356,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 2.83,
+          "prompt_tokens_per_sec": 125.8,
+          "completion_tokens": 68,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 46,
+            "rejected_prediction_tokens": 64
+          },
+          "completion_time": 1.32,
+          "completion_tokens_per_sec": 51.53,
+          "total_tokens": 424,
+          "total_time": 4.15
+        },
+        "wall_seconds": 4.191485354000179
+      },
+      "input_usage_verified": true,
+      "argument": {
+        "text": "café 中文 😀 <think>🧪</think> fin"
+      }
+    },
+    {
+      "name": "unicode_nfc_stream_optin",
+      "request_sha256": "1a8b2155c2aa5d62ba8222e4ca0e31db97685a1544c6165b9a2f34582ad88fa7",
+      "trace": {
+        "index": 0,
+        "path": "/chat/completions",
+        "request": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Call record_text with exactly this string value for text: \"café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+            }
+          ],
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "record_text",
+                "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          ],
+          "tool_choice": {
+            "type": "function",
+            "function": {
+              "name": "record_text"
+            }
+          },
+          "parallel_tool_calls": false,
+          "enable_thinking": true,
+          "temperature": 0,
+          "top_k": 1,
+          "max_tokens": 256,
+          "stream": true,
+          "reasoning_budget_tokens": 24,
+          "stream_options": {
+            "include_usage": true
+          },
+          "literal_user_control_tokens": true
+        },
+        "status": 200,
+        "stream": true,
+        "frames": [
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532734,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "role": "assistant"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532735,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": "We need to respond by"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532735,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " calling record"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532735,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": "_text with exact"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532735,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " string:"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532735,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " \"café 中文"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532735,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " 😀"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532735,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " "
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532735,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": "🧪"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532736,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "id": "call_c01744e7e178413f81ef0ab6",
+                      "type": "function",
+                      "function": {
+                        "name": "record_text",
+                        "arguments": "{"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532736,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "\"text\": \"café"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532736,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": " 中文"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532736,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": " 😀"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532736,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": " <think>"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532736,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "🧪</think>"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532736,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": " fin"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532736,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "\"}"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+            "object": "chat.completion.chunk",
+            "created": 1791532736,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {},
+                "finish_reason": "tool_calls"
+              }
+            ],
+            "usage": {
+              "prompt_tokens": 356,
+              "prompt_tokens_details": {
+                "cached_tokens": 256
+              },
+              "prompt_time": 0.74,
+              "prompt_tokens_per_sec": 135.14,
+              "completion_tokens": 68,
+              "completion_tokens_details": {
+                "accepted_prediction_tokens": 41,
+                "rejected_prediction_tokens": 32
+              },
+              "completion_time": 1.25,
+              "completion_tokens_per_sec": 54.36,
+              "total_tokens": 424,
+              "total_time": 2.0
+            },
+            "model": "Qwen3.8-Flash-Next-EXL3",
+            "timings": {
+              "cache_n": 256,
+              "prompt_n": 100,
+              "prompt_ms": 740.0,
+              "prompt_per_token_ms": 7.4,
+              "prompt_per_second": 135.13513513513513,
+              "predicted_n": 68,
+              "predicted_ms": 1250.0,
+              "predicted_per_token_ms": 18.38235294117647,
+              "predicted_per_second": 54.400000000000006,
+              "draft_n": 73,
+              "draft_n_accepted": 41
+            }
+          }
+        ],
+        "done": true,
+        "client_aborted": false,
+        "content_type": "text/event-stream; charset=utf-8",
+        "wall_seconds": 2.0254735100024845
+      },
+      "started_monotonic_ns": 36364927226363,
+      "finished_monotonic_ns": 36366952774593,
+      "semantic_passed": true,
+      "collection_complete": true,
+      "response_id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+      "result": {
+        "id": "chatcmpl-e11f28ccdbe44a9390348ae2220439b9",
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "We need to respond by calling record_text with exact string: \"café 中文 😀 🧪",
+        "tool_calls": [
+          {
+            "id": "call_c01744e7e178413f81ef0ab6",
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "arguments": "{\"text\": \"café 中文 😀 <think>🧪</think> fin\"}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls",
+        "usage": {
+          "prompt_tokens": 356,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.74,
+          "prompt_tokens_per_sec": 135.14,
+          "completion_tokens": 68,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 41,
+            "rejected_prediction_tokens": 32
+          },
+          "completion_time": 1.25,
+          "completion_tokens_per_sec": 54.36,
+          "total_tokens": 424,
+          "total_time": 2.0
+        },
+        "wall_seconds": 2.0254735100024845
+      },
+      "input_usage_verified": true,
+      "argument": {
+        "text": "café 中文 😀 <think>🧪</think> fin"
+      }
+    },
+    {
+      "name": "multi_turn_user_nonstream_optin",
+      "request_sha256": "395f47407b5f87686edad4afe93cbd4ab00641bb6457d84f07b4ddcf3d1d4ccf",
+      "trace": {
+        "index": 0,
+        "path": "/chat/completions",
+        "request": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Remember this exact string for the later record_text call: \"Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.\". Do not call a tool yet."
+            },
+            {
+              "role": "assistant",
+              "content": "I have stored the string for the later call."
+            },
+            {
+              "role": "user",
+              "content": "Now call record_text once with exactly the string from my first message. Preserve every character."
+            }
+          ],
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "record_text",
+                "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          ],
+          "tool_choice": {
+            "type": "function",
+            "function": {
+              "name": "record_text"
+            }
+          },
+          "parallel_tool_calls": false,
+          "enable_thinking": true,
+          "temperature": 0,
+          "top_k": 1,
+          "max_tokens": 256,
+          "stream": false,
+          "reasoning_budget_tokens": 24,
+          "literal_user_control_tokens": true
+        },
+        "status": 200,
+        "stream": false,
+        "frames": [],
+        "done": false,
+        "client_aborted": false,
+        "content_type": "application/json",
+        "body": {
+          "id": "cmpl-0686f00d378a439898dc40631391b4e8",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "tool_calls",
+              "eos_reason": "stop_token",
+              "stop_str": "<|im_end|>",
+              "message": {
+                "role": "assistant",
+                "content": null,
+                "reasoning_content": "We need answer to user: call record_text once with exactly string from first message: \"Remembered <|im",
+                "tool_calls": [
+                  {
+                    "id": "call_ef433702973e476a8c73aff4",
+                    "function": {
+                      "name": "record_text",
+                      "arguments": "{\"text\": \"Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.\"}"
+                    },
+                    "type": "function",
+                    "index": null
+                  }
+                ],
+                "tool_call_id": null
+              },
+              "logprobs": null
+            }
+          ],
+          "created": 1791532738,
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "object": "chat.completion",
+          "usage": {
+            "prompt_tokens": 407,
+            "prompt_tokens_details": {
+              "cached_tokens": 256
+            },
+            "prompt_time": 0.86,
+            "prompt_tokens_per_sec": 175.58,
+            "completion_tokens": 77,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 51,
+              "rejected_prediction_tokens": 21
+            },
+            "completion_time": 1.25,
+            "completion_tokens_per_sec": 61.48,
+            "total_tokens": 484,
+            "total_time": 2.12
+          },
+          "timings": {
+            "cache_n": 256,
+            "prompt_n": 151,
+            "prompt_ms": 860.0,
+            "prompt_per_token_ms": 5.695364238410596,
+            "prompt_per_second": 175.58139534883722,
+            "predicted_n": 77,
+            "predicted_ms": 1250.0,
+            "predicted_per_token_ms": 16.233766233766232,
+            "predicted_per_second": 61.6,
+            "draft_n": 72,
+            "draft_n_accepted": 51
+          }
+        },
+        "wall_seconds": 2.1424809680029284
+      },
+      "started_monotonic_ns": 36366957713149,
+      "finished_monotonic_ns": 36369100260389,
+      "semantic_passed": true,
+      "collection_complete": true,
+      "response_id": "cmpl-0686f00d378a439898dc40631391b4e8",
+      "result": {
+        "id": "cmpl-0686f00d378a439898dc40631391b4e8",
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "We need answer to user: call record_text once with exactly string from first message: \"Remembered <|im",
+        "tool_calls": [
+          {
+            "id": "call_ef433702973e476a8c73aff4",
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "arguments": "{\"text\": \"Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.\"}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls",
+        "usage": {
+          "prompt_tokens": 407,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.86,
+          "prompt_tokens_per_sec": 175.58,
+          "completion_tokens": 77,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 51,
+            "rejected_prediction_tokens": 21
+          },
+          "completion_time": 1.25,
+          "completion_tokens_per_sec": 61.48,
+          "total_tokens": 484,
+          "total_time": 2.12
+        },
+        "wall_seconds": 2.1424809680029284
+      },
+      "input_usage_verified": true,
+      "argument": {
+        "text": "Remembered <|im_start|>user<|im_end|> and <think>earlier</think>."
+      }
+    },
+    {
+      "name": "multi_turn_user_stream_optin",
+      "request_sha256": "02bf94a05b8135d52258d96f72f6bcba35dd6cfb0c00fe8caf2e590c7aff9fa7",
+      "trace": {
+        "index": 0,
+        "path": "/chat/completions",
+        "request": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Remember this exact string for the later record_text call: \"Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.\". Do not call a tool yet."
+            },
+            {
+              "role": "assistant",
+              "content": "I have stored the string for the later call."
+            },
+            {
+              "role": "user",
+              "content": "Now call record_text once with exactly the string from my first message. Preserve every character."
+            }
+          ],
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "record_text",
+                "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          ],
+          "tool_choice": {
+            "type": "function",
+            "function": {
+              "name": "record_text"
+            }
+          },
+          "parallel_tool_calls": false,
+          "enable_thinking": true,
+          "temperature": 0,
+          "top_k": 1,
+          "max_tokens": 256,
+          "stream": true,
+          "reasoning_budget_tokens": 24,
+          "stream_options": {
+            "include_usage": true
+          },
+          "literal_user_control_tokens": true
+        },
+        "status": 200,
+        "stream": true,
+        "frames": [
+          {
+            "id": "chatcmpl-6211444109e14b80a1c1c490e8c3ada7",
+            "object": "chat.completion.chunk",
+            "created": 1791532738,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "role": "assistant"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-6211444109e14b80a1c1c490e8c3ada7",
+            "object": "chat.completion.chunk",
+            "created": 1791532739,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": "We"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-6211444109e14b80a1c1c490e8c3ada7",
+            "object": "chat.completion.chunk",
+            "created": 1791532739,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " need answer"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-6211444109e14b80a1c1c490e8c3ada7",
+            "object": "chat.completion.chunk",
+            "created": 1791532739,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " to"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-6211444109e14b80a1c1c490e8c3ada7",
+            "object": "chat.completion.chunk",
+            "created": 1791532739,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " user: call"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-6211444109e14b80a1c1c490e8c3ada7",
+            "object": "chat.completion.chunk",
+            "created": 1791532739,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " record_text once with exactly"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-6211444109e14b80a1c1c490e8c3ada7",
+            "object": "chat.completion.chunk",
+            "created": 1791532739,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " string from"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-6211444109e14b80a1c1c490e8c3ada7",
+            "object": "chat.completion.chunk",
+            "created": 1791532740,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " first message:"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-6211444109e14b80a1c1c490e8c3ada7",
+            "object": "chat.completion.chunk",
+            "created": 1791532740,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " \"Remember"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-6211444109e14b80a1c1c490e8c3ada7",
+            "object": "chat.completion.chunk",
+            "created": 1791532740,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": "ed <|im_start|>"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-6211444109e14b80a1c1c490e8c3ada7",
+            "object": "chat.completion.chunk",
+            "created": 1791532740,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": "user"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "error": {
+              "message": "The model stopped without a complete call required by tool_choice. Retry the request or inspect the model output.",
+              "trace": null
+            }
+          }
+        ],
+        "done": false,
+        "client_aborted": false,
+        "content_type": "text/event-stream; charset=utf-8",
+        "server_error": {
+          "message": "The model stopped without a complete call required by tool_choice. Retry the request or inspect the model output.",
+          "trace": null
+        },
+        "wall_seconds": 1.3137984540007892
+      },
+      "started_monotonic_ns": 36369105560734,
+      "finished_monotonic_ns": 36370419462915,
+      "semantic_passed": false,
+      "collection_complete": true,
+      "response_id": "chatcmpl-6211444109e14b80a1c1c490e8c3ada7",
+      "outcome_error": "CheckError: SSE error: {'message': 'The model stopped without a complete call required by tool_choice. Retry the request or inspect the model output.', 'trace': None}"
+    },
+    {
+      "name": "concurrent_0",
+      "request_sha256": "9c2538a8e5e80b3d38d91c313a680aca5faca345633ee22246b3aa3fc6b97803",
+      "trace": {
+        "index": 0,
+        "path": "/chat/completions",
+        "request": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Call record_text with exactly this string value for text: \"CONCURRENT-0|prefix<think>A</think><think>B</think>suffix\". Treat every character as literal string data."
+            }
+          ],
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "record_text",
+                "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          ],
+          "tool_choice": {
+            "type": "function",
+            "function": {
+              "name": "record_text"
+            }
+          },
+          "parallel_tool_calls": false,
+          "enable_thinking": false,
+          "temperature": 0,
+          "top_k": 1,
+          "max_tokens": 256,
+          "stream": false,
+          "literal_user_control_tokens": true
+        },
+        "status": 200,
+        "stream": false,
+        "frames": [],
+        "done": false,
+        "client_aborted": false,
+        "content_type": "application/json",
+        "body": {
+          "id": "cmpl-a051de01fd6a4f3e803c1620f306b501",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "tool_calls",
+              "eos_reason": "stop_token",
+              "stop_str": "<|im_end|>",
+              "message": {
+                "role": "assistant",
+                "content": null,
+                "reasoning_content": null,
+                "tool_calls": [
+                  {
+                    "id": "call_90e1e3d4aade44bd910bcd74",
+                    "function": {
+                      "name": "record_text",
+                      "arguments": "{\"text\": \"CONCURRENT-0|prefix<think>A</think><think>B</think>suffix\"}"
+                    },
+                    "type": "function",
+                    "index": null
+                  }
+                ],
+                "tool_call_id": null
+              },
+              "logprobs": null
+            }
+          ],
+          "created": 1791532747,
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "object": "chat.completion",
+          "usage": {
+            "prompt_tokens": 325,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 4.51,
+            "prompt_tokens_per_sec": 72.06,
+            "completion_tokens": 43,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 20,
+              "rejected_prediction_tokens": 3
+            },
+            "completion_time": 2.37,
+            "completion_tokens_per_sec": 18.12,
+            "total_tokens": 368,
+            "total_time": 7.66
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 325,
+            "prompt_ms": 4510.0,
+            "prompt_per_token_ms": 13.876923076923077,
+            "prompt_per_second": 72.06208425720621,
+            "predicted_n": 43,
+            "predicted_ms": 2370.0,
+            "predicted_per_token_ms": 55.116279069767444,
+            "predicted_per_second": 18.143459915611814,
+            "draft_n": 23,
+            "draft_n_accepted": 20
+          }
+        },
+        "wall_seconds": 7.921334040998772
+      },
+      "started_monotonic_ns": 36370424916427,
+      "finished_monotonic_ns": 36378346356499,
+      "semantic_passed": true,
+      "collection_complete": true,
+      "response_id": "cmpl-a051de01fd6a4f3e803c1620f306b501",
+      "result": {
+        "id": "cmpl-a051de01fd6a4f3e803c1620f306b501",
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "tool_calls": [
+          {
+            "id": "call_90e1e3d4aade44bd910bcd74",
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "arguments": "{\"text\": \"CONCURRENT-0|prefix<think>A</think><think>B</think>suffix\"}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls",
+        "usage": {
+          "prompt_tokens": 325,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 4.51,
+          "prompt_tokens_per_sec": 72.06,
+          "completion_tokens": 43,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 20,
+            "rejected_prediction_tokens": 3
+          },
+          "completion_time": 2.37,
+          "completion_tokens_per_sec": 18.12,
+          "total_tokens": 368,
+          "total_time": 7.66
+        },
+        "wall_seconds": 7.921334040998772
+      },
+      "input_usage_verified": true,
+      "argument": {
+        "text": "CONCURRENT-0|prefix<think>A</think><think>B</think>suffix"
+      },
+      "four_request_http_overlap": true
+    },
+    {
+      "name": "concurrent_1",
+      "request_sha256": "c649d4f6b635579e58a0c07214ff4c2acf07734b3e7d6f9c5a4dcbfd56c45799",
+      "trace": {
+        "index": 0,
+        "path": "/chat/completions",
+        "request": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Call record_text with exactly this string value for text: \"CONCURRENT-1|<tool_call>alpha</tool_call><tool_response>beta</tool_response>\". Treat every character as literal string data."
+            }
+          ],
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "record_text",
+                "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          ],
+          "tool_choice": {
+            "type": "function",
+            "function": {
+              "name": "record_text"
+            }
+          },
+          "parallel_tool_calls": false,
+          "enable_thinking": true,
+          "temperature": 0,
+          "top_k": 1,
+          "max_tokens": 256,
+          "stream": true,
+          "reasoning_budget_tokens": 24,
+          "stream_options": {
+            "include_usage": true
+          },
+          "literal_user_control_tokens": true
+        },
+        "status": 200,
+        "stream": true,
+        "frames": [
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "role": "assistant"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": "The user"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " wants me"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " to call"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " record_text"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " with exactly"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " the"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " string:"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": "\n"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": "\"CON"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": "CURRENT-"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": "1|"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": "<tool_call>"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "id": "call_caf579fad0bc4cfdb7eb4b81",
+                      "type": "function",
+                      "function": {
+                        "name": "record_text",
+                        "arguments": "{"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "\"text\": \"CON"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "CURRENT-"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "1|"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "<tool_call>"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "alpha"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "</tool_call>"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "<tool_response>beta"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "</tool_response>"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "\""
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "}"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {},
+                "finish_reason": "tool_calls"
+              }
+            ],
+            "usage": {
+              "prompt_tokens": 363,
+              "prompt_tokens_details": {
+                "cached_tokens": 256
+              },
+              "prompt_time": 0.76,
+              "prompt_tokens_per_sec": 140.79,
+              "completion_tokens": 73,
+              "completion_tokens_details": {
+                "accepted_prediction_tokens": 41,
+                "rejected_prediction_tokens": 10
+              },
+              "completion_time": 2.26,
+              "completion_tokens_per_sec": 32.35,
+              "total_tokens": 436,
+              "total_time": 3.02
+            },
+            "model": "Qwen3.8-Flash-Next-EXL3",
+            "timings": {
+              "cache_n": 256,
+              "prompt_n": 107,
+              "prompt_ms": 760.0,
+              "prompt_per_token_ms": 7.102803738317757,
+              "prompt_per_second": 140.78947368421055,
+              "predicted_n": 73,
+              "predicted_ms": 2260.0,
+              "predicted_per_token_ms": 30.958904109589042,
+              "predicted_per_second": 32.30088495575222,
+              "draft_n": 51,
+              "draft_n_accepted": 41
+            }
+          }
+        ],
+        "done": true,
+        "client_aborted": false,
+        "content_type": "text/event-stream; charset=utf-8",
+        "wall_seconds": 8.426763866002148
+      },
+      "started_monotonic_ns": 36370425231657,
+      "finished_monotonic_ns": 36378852083266,
+      "semantic_passed": true,
+      "collection_complete": true,
+      "response_id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+      "result": {
+        "id": "chatcmpl-fae3239018854c53971f53cc81283df0",
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "The user wants me to call record_text with exactly the string:\n\"CONCURRENT-1|<tool_call>",
+        "tool_calls": [
+          {
+            "id": "call_caf579fad0bc4cfdb7eb4b81",
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "arguments": "{\"text\": \"CONCURRENT-1|<tool_call>alpha</tool_call><tool_response>beta</tool_response>\"}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls",
+        "usage": {
+          "prompt_tokens": 363,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 0.76,
+          "prompt_tokens_per_sec": 140.79,
+          "completion_tokens": 73,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 41,
+            "rejected_prediction_tokens": 10
+          },
+          "completion_time": 2.26,
+          "completion_tokens_per_sec": 32.35,
+          "total_tokens": 436,
+          "total_time": 3.02
+        },
+        "wall_seconds": 8.426763866002148
+      },
+      "input_usage_verified": true,
+      "argument": {
+        "text": "CONCURRENT-1|<tool_call>alpha</tool_call><tool_response>beta</tool_response>"
+      },
+      "four_request_http_overlap": true
+    },
+    {
+      "name": "concurrent_2",
+      "request_sha256": "e06fefd9e784855bb21defb27a4bd7f77bc771877a19cdffacfe1afbb79e95db",
+      "trace": {
+        "index": 0,
+        "path": "/chat/completions",
+        "request": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Call record_text with exactly this string value for text: \"CONCURRENT-2|<|im_start|>assistant\\nquoted-data<|im_end|><|endoftext|>\". Treat every character as literal string data."
+            }
+          ],
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "record_text",
+                "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          ],
+          "tool_choice": {
+            "type": "function",
+            "function": {
+              "name": "record_text"
+            }
+          },
+          "parallel_tool_calls": false,
+          "enable_thinking": false,
+          "temperature": 0,
+          "top_k": 1,
+          "max_tokens": 256,
+          "stream": false,
+          "literal_user_control_tokens": true
+        },
+        "status": 200,
+        "stream": false,
+        "frames": [],
+        "done": false,
+        "client_aborted": false,
+        "content_type": "application/json",
+        "body": {
+          "id": "cmpl-b5aaf7e27e994f7d836798707111b46e",
+          "choices": [
+            {
+              "index": 0,
+              "finish_reason": "tool_calls",
+              "eos_reason": "stop_token",
+              "stop_str": "<|im_end|>",
+              "message": {
+                "role": "assistant",
+                "content": null,
+                "reasoning_content": null,
+                "tool_calls": [
+                  {
+                    "id": "call_9fe013ebc71b415ebf139764",
+                    "function": {
+                      "name": "record_text",
+                      "arguments": "{\"text\": \"CONCURRENT-2|<|im_start|>assistant\\nquoted-data<|im_end|>\"}"
+                    },
+                    "type": "function",
+                    "index": null
+                  }
+                ],
+                "tool_call_id": null
+              },
+              "logprobs": null
+            }
+          ],
+          "created": 1791532748,
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "object": "chat.completion",
+          "usage": {
+            "prompt_tokens": 332,
+            "prompt_tokens_details": {
+              "cached_tokens": 0
+            },
+            "prompt_time": 2.4,
+            "prompt_tokens_per_sec": 138.33,
+            "completion_tokens": 46,
+            "completion_tokens_details": {
+              "accepted_prediction_tokens": 21,
+              "rejected_prediction_tokens": 4
+            },
+            "completion_time": 2.51,
+            "completion_tokens_per_sec": 18.33,
+            "total_tokens": 378,
+            "total_time": 7.8
+          },
+          "timings": {
+            "cache_n": 0,
+            "prompt_n": 332,
+            "prompt_ms": 2400.0,
+            "prompt_per_token_ms": 7.228915662650603,
+            "prompt_per_second": 138.33333333333334,
+            "predicted_n": 46,
+            "predicted_ms": 2510.0,
+            "predicted_per_token_ms": 54.56521739130435,
+            "predicted_per_second": 18.32669322709163,
+            "draft_n": 25,
+            "draft_n_accepted": 21
+          }
+        },
+        "wall_seconds": 8.07883687299909
+      },
+      "started_monotonic_ns": 36370425524647,
+      "finished_monotonic_ns": 36378504443247,
+      "semantic_passed": false,
+      "collection_complete": true,
+      "response_id": "cmpl-b5aaf7e27e994f7d836798707111b46e",
+      "result": {
+        "id": "cmpl-b5aaf7e27e994f7d836798707111b46e",
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "",
+        "tool_calls": [
+          {
+            "id": "call_9fe013ebc71b415ebf139764",
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "arguments": "{\"text\": \"CONCURRENT-2|<|im_start|>assistant\\nquoted-data<|im_end|>\"}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls",
+        "usage": {
+          "prompt_tokens": 332,
+          "prompt_tokens_details": {
+            "cached_tokens": 0
+          },
+          "prompt_time": 2.4,
+          "prompt_tokens_per_sec": 138.33,
+          "completion_tokens": 46,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 21,
+            "rejected_prediction_tokens": 4
+          },
+          "completion_time": 2.51,
+          "completion_tokens_per_sec": 18.33,
+          "total_tokens": 378,
+          "total_time": 7.8
+        },
+        "wall_seconds": 8.07883687299909
+      },
+      "input_usage_verified": true,
+      "argument": {
+        "text": "CONCURRENT-2|<|im_start|>assistant\nquoted-data<|im_end|>"
+      },
+      "outcome_error": "ValueError: Exact string differs",
+      "four_request_http_overlap": true
+    },
+    {
+      "name": "concurrent_3",
+      "request_sha256": "7873c23a521365bf32cdecefce881fb5876fe48792894e00670541be7c14d5b2",
+      "trace": {
+        "index": 0,
+        "path": "/chat/completions",
+        "request": {
+          "model": "Qwen3.8-Flash-Next-EXL3",
+          "messages": [
+            {
+              "role": "user",
+              "content": "Call record_text with exactly this string value for text: \"CONCURRENT-3|café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+            }
+          ],
+          "tools": [
+            {
+              "type": "function",
+              "function": {
+                "name": "record_text",
+                "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+                "parameters": {
+                  "type": "object",
+                  "properties": {
+                    "text": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "text"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          ],
+          "tool_choice": {
+            "type": "function",
+            "function": {
+              "name": "record_text"
+            }
+          },
+          "parallel_tool_calls": false,
+          "enable_thinking": true,
+          "temperature": 0,
+          "top_k": 1,
+          "max_tokens": 256,
+          "stream": true,
+          "reasoning_budget_tokens": 24,
+          "stream_options": {
+            "include_usage": true
+          },
+          "literal_user_control_tokens": true
+        },
+        "status": 200,
+        "stream": true,
+        "frames": [
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532740,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "role": "assistant"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532745,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": "The user wants me to call"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " record_text"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " with an"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " exact string"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": ". I"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " need to"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " preserve every"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " character literally"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": ", including"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532746,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "reasoning_content": " the café"
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "id": "call_1fad5994c1ee4c368e7c8075",
+                      "type": "function",
+                      "function": {
+                        "name": "record_text",
+                        "arguments": "{"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "\"text\": \"CON"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "CURRENT-"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "3|"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "café"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": " 中文"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": " 😀"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532747,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": " "
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "<think>"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "🧪"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "</think> fin"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "\""
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {
+                  "tool_calls": [
+                    {
+                      "index": 0,
+                      "function": {
+                        "arguments": "}"
+                      }
+                    }
+                  ]
+                },
+                "finish_reason": null
+              }
+            ],
+            "model": "Qwen3.8-Flash-Next-EXL3"
+          },
+          {
+            "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+            "object": "chat.completion.chunk",
+            "created": 1791532748,
+            "choices": [
+              {
+                "index": 0,
+                "delta": {},
+                "finish_reason": "tool_calls"
+              }
+            ],
+            "usage": {
+              "prompt_tokens": 361,
+              "prompt_tokens_details": {
+                "cached_tokens": 256
+              },
+              "prompt_time": 3.99,
+              "prompt_tokens_per_sec": 26.32,
+              "completion_tokens": 71,
+              "completion_tokens_details": {
+                "accepted_prediction_tokens": 40,
+                "rejected_prediction_tokens": 5
+              },
+              "completion_time": 4.2,
+              "completion_tokens_per_sec": 16.92,
+              "total_tokens": 432,
+              "total_time": 8.2
+            },
+            "model": "Qwen3.8-Flash-Next-EXL3",
+            "timings": {
+              "cache_n": 256,
+              "prompt_n": 105,
+              "prompt_ms": 3990.0,
+              "prompt_per_token_ms": 38.0,
+              "prompt_per_second": 26.31578947368421,
+              "predicted_n": 71,
+              "predicted_ms": 4200.0,
+              "predicted_per_token_ms": 59.15492957746479,
+              "predicted_per_second": 16.904761904761905,
+              "draft_n": 45,
+              "draft_n_accepted": 40
+            }
+          }
+        ],
+        "done": true,
+        "client_aborted": false,
+        "content_type": "text/event-stream; charset=utf-8",
+        "wall_seconds": 8.365287162996538
+      },
+      "started_monotonic_ns": 36370424774988,
+      "finished_monotonic_ns": 36378790150231,
+      "semantic_passed": true,
+      "collection_complete": true,
+      "response_id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+      "result": {
+        "id": "chatcmpl-97216c24b0594d7db7fae7a0b257f924",
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "role": "assistant",
+        "content": "",
+        "reasoning_content": "The user wants me to call record_text with an exact string. I need to preserve every character literally, including the café",
+        "tool_calls": [
+          {
+            "id": "call_1fad5994c1ee4c368e7c8075",
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "arguments": "{\"text\": \"CONCURRENT-3|café 中文 😀 <think>🧪</think> fin\"}"
+            }
+          }
+        ],
+        "finish_reason": "tool_calls",
+        "usage": {
+          "prompt_tokens": 361,
+          "prompt_tokens_details": {
+            "cached_tokens": 256
+          },
+          "prompt_time": 3.99,
+          "prompt_tokens_per_sec": 26.32,
+          "completion_tokens": 71,
+          "completion_tokens_details": {
+            "accepted_prediction_tokens": 40,
+            "rejected_prediction_tokens": 5
+          },
+          "completion_time": 4.2,
+          "completion_tokens_per_sec": 16.92,
+          "total_tokens": 432,
+          "total_time": 8.2
+        },
+        "wall_seconds": 8.365287162996538
+      },
+      "input_usage_verified": true,
+      "argument": {
+        "text": "CONCURRENT-3|café 中文 😀 <think>🧪</think> fin"
+      },
+      "four_request_http_overlap": true
+    }
+  ],
+  "summary": {
+    "total": 8,
+    "collection_complete": 8,
+    "semantic_passed": 6,
+    "semantic_failed": 2,
+    "four_request_http_overlap": true,
+    "distinct_response_ids": true
+  }
+}
