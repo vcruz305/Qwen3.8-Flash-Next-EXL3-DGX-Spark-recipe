@@ -113,6 +113,10 @@ Useful overrides include `MODEL_DIR`, `PROFILE`, `CACHE_SIZE`,
 `DRAFT_NUM_TOKENS`, `DYNAMIC_DRAFT`, and `DRAFT_MODE=mtp|disabled`.
 Keep `MAX_SEQ_LEN` at or below the trained 262,144-token window. Use a distinct
 `STATE_DIR` for each server; the launcher locks it against concurrent rewrites.
+For a GPU shared with another supervisor, set `GPU_LOCK_FILE` to the same absolute
+lock-file path that supervisor uses. The optional lock stays held for the server
+lifetime and refuses a conflicting start before runtime verification or model load.
+See [shared GPU ownership](docs/service.md#shared-gpu-ownership).
 
 Preview a configuration without starting the model or changing live state:
 

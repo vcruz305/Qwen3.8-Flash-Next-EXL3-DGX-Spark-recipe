@@ -58,6 +58,10 @@ each pack. Do not rewrite or requantize the weight files to make them fit.
 
 Each live server needs its own `STATE_DIR`; the launcher holds a lock to prevent
 one process from rewriting another process's config and model view.
+On a host with a cooperating GPU supervisor, `GPU_LOCK_FILE=/absolute/shared.lock`
+adds a separate process-lifetime GPU lock. All participants must use the same file;
+keep it in place. A controller already holding that lock must leave this child
+option unset. Preview mode neither acquires nor creates the GPU lock.
 
 ## Verify you are on the right runtime
 

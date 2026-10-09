@@ -100,6 +100,40 @@ loginctl show-user "$(id -un)" -p Linger
 
 `Linger=yes` needs no change. If it is `no` and unattended boot is required, the host operator can enable lingering for that account. These templates make no host-policy change and require no sudo for user-owned installation. See [loginctl's lingering documentation](https://github.com/systemd/systemd/blob/main/man/loginctl.xml).
 
+## Shared GPU ownership
+
+For a host that also runs another model supervisor, set the optional
+`GPU_LOCK_FILE` to the same persistent absolute lock file used by that supervisor.
+For example, this Spark's REXL3 manager uses:
+
+```text
+GPU_LOCK_FILE=/home/cruzspark/redsnow-gpu.lock
+```
+
+Add the literal assignment to the installed `service.env`, or export it before a
+foreground launch. The parent directory must already exist. The launcher accepts
+a regular file or creates one; it rejects symlinks, special files, relative paths,
+and its own per-state `serve.lock`.
+
+The launcher acquires this lock before runtime verification, model-view changes,
+cache dropping or model loading. A conflicting start exits with an error naming
+the shared file. Once acquired, the lock survives `exec` into Tabby and releases
+when that server exits. Opening it preserves existing file contents. The separate
+`STATE_DIR/serve.lock` still protects the rendered config and model view.
+
+This is cooperative exclusion: every participating supervisor must use the same
+file. Keep the file in place while any participant is running; deleting or
+replacing it changes the inode and breaks coordination. The lock does not inspect
+or stop unrelated GPU processes. Use the incumbent supervisor's own drain/stop
+operation, verify that it released the GPU, and then start the intended server.
+
+A benchmark controller that already owns the shared lock should leave
+`GPU_LOCK_FILE` unset for its child launcher. Acquiring it again through a separate
+file descriptor would conflict with the controller's own lock. `DRY_RUN=1` reports
+the requested path without opening or acquiring it; a preview is not an ownership
+or permission check. Leaving `GPU_LOCK_FILE` unset preserves the ordinary launcher
+behavior.
+
 ## Per-invocation state and readiness
 
 The installed drop-in replaces the base unit's `ExecStart` with the invocation wrapper. The wrapper requires systemd's 32-character `INVOCATION_ID`, appends it to the configured state base, creates that directory exclusively with mode 0700, writes `start.json`, then `exec`s the normal recipe launcher. That preserves the service MainPID across the wrapper transition. It refuses a repeated invocation directory rather than overwriting another start's evidence.

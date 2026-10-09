@@ -96,6 +96,7 @@ else
   command -v flock >/dev/null || die "flock is required (util-linux)"
   exec 9>"$STATE_DIR/serve.lock"
   flock -n 9 || die "another recipe server holds $STATE_DIR/serve.lock; use a separate STATE_DIR for another instance"
+  acquire_gpu_lock
   verify_runtime
   [[ -f "$TABBY_DIR/main.py" ]] || die "no TabbyAPI at $TABBY_DIR. Run setup.sh."
   verify_pack
@@ -109,7 +110,7 @@ fi
 
 export STATE_DIR HOST PORT DISABLE_AUTH MODEL_PARENT MODEL_NAME MAX_SEQ_LEN CACHE_SIZE MAX_BATCH_SIZE \
        NGRAM_RAM VISION DRAFT_MODE DRAFT_NUM_TOKENS DYNAMIC_DRAFT CHUNK_SIZE SYSMEM_RECURRENT_CACHE \
-       REASONING TOOL_FORMAT PROMPT_TEMPLATE PROFILE BIGCORES
+       REASONING TOOL_FORMAT PROMPT_TEMPLATE PROFILE BIGCORES GPU_LOCK_FILE
 RENDER_PY="$VENV/bin/python"; [[ -x "$RENDER_PY" ]] || RENDER_PY="$PYTHON_BIN"
 "$RENDER_PY" - "$RECIPE_EXL3_DIR/tabby-config.yml" "$CONFIG" "$TABBY_DIR" <<'PY'
 import json, os, pathlib, string, sys
@@ -142,6 +143,7 @@ if [[ -n "$BIGCORES" ]]; then
   CMD=(taskset -c "$BIGCORES" "${CMD[@]}")
 fi
 if [[ "$DRY_RUN" == 1 ]]; then
+  if [[ -n "$GPU_LOCK_FILE" ]]; then printf '# GPU_LOCK_FILE=%q; preview does not acquire the lock\n' "$GPU_LOCK_FILE"; fi
   printf 'EXL3_INT8_GEMV=%q EXL3_MOE_COOP_WIDE=%q EXL3_GR_INT8=%q EXL3_MTP_HEAD_N=%q EXL3_DRAFT_CONFIDENCE=%q\n' \
     "$EXL3_INT8_GEMV" "$EXL3_MOE_COOP_WIDE" "$EXL3_GR_INT8" "$EXL3_MTP_HEAD_N" "$EXL3_DRAFT_CONFIDENCE"
   printf 'cd %q && ' "$TABBY_DIR"; printf '%q ' "${CMD[@]}"; printf '\n'

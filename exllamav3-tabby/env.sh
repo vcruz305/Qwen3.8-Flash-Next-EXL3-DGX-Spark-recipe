@@ -18,6 +18,8 @@ VENV="${VENV:-$RECIPE_HOME/venv}"
 EXL3_SRC="${EXL3_SRC:-$RECIPE_HOME/exllamav3}"
 TABBY_DIR="${TABBY_DIR:-$RECIPE_HOME/tabbyAPI}"
 STATE_DIR="${STATE_DIR:-$RECIPE_HOME/state}"
+# Optional shared GPU ownership with another cooperating launcher or supervisor.
+GPU_LOCK_FILE="${GPU_LOCK_FILE:-}"
 MODEL_DIR="${MODEL_DIR:-$HOME/models/Qwen3.8-Flash-Next-EXL3}"
 
 # Toolchain.
@@ -64,6 +66,25 @@ BUILD_STATE="$VENV/.qwen38-recipe-runtime.json"
 
 die() { echo "error: $*" >&2; exit 1; }
 say() { echo "==> $*" >&2; }
+
+
+# Use the same persistent absolute lock file as other GPU supervisors. Append
+# preserves any owner metadata; FD 8 remains open through the final server exec.
+# The per-STATE_DIR lock on FD 9 independently protects this launcher's files.
+acquire_gpu_lock() {
+  [[ -n "$GPU_LOCK_FILE" ]] || return 0
+  [[ "$GPU_LOCK_FILE" == /* && "$GPU_LOCK_FILE" != *$'\n'* ]] \
+    || die "GPU_LOCK_FILE must be an absolute path without newlines"
+  [[ ! -L "$GPU_LOCK_FILE" ]] || die "GPU_LOCK_FILE must not be a symlink"
+  [[ ! -e "$GPU_LOCK_FILE" || -f "$GPU_LOCK_FILE" ]] \
+    || die "GPU_LOCK_FILE must be a regular file"
+  [[ -d "$(dirname "$GPU_LOCK_FILE")" ]] || die "GPU_LOCK_FILE parent directory does not exist"
+  [[ ! "$GPU_LOCK_FILE" -ef "$STATE_DIR/serve.lock" ]] \
+    || die "GPU_LOCK_FILE must differ from the per-STATE_DIR serve.lock"
+  command -v flock >/dev/null || die "flock is required (util-linux)"
+  exec 8>>"$GPU_LOCK_FILE" || die "cannot open GPU_LOCK_FILE: $GPU_LOCK_FILE"
+  flock -n 8 || die "another GPU supervisor holds $GPU_LOCK_FILE; stop its owned model before starting this server"
+}
 
 # Refuse to run on anything but the fork. Agents most often go wrong by picking up a stock
 # exllamav3 wheel or a different venv, so check the actual imported module, not just a path.

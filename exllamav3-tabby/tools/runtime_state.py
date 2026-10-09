@@ -135,7 +135,7 @@ def snapshot(args):
     environment = {
         key: value for key, value in os.environ.items()
         if key.startswith("EXL3_") or key in {
-            "TORCH_CUDA_ARCH_LIST", "CUDA_HOME", "BIGCORES", "OMP_NUM_THREADS",
+            "TORCH_CUDA_ARCH_LIST", "CUDA_HOME", "BIGCORES", "OMP_NUM_THREADS", "GPU_LOCK_FILE",
             "PROFILE", "CHUNK_SIZE", "CACHE_SIZE", "MAX_SEQ_LEN", "MAX_BATCH_SIZE",
             "NGRAM_RAM", "DRAFT_NUM_TOKENS", "DRAFT_MODE", "PROMPT_TEMPLATE",
         }
