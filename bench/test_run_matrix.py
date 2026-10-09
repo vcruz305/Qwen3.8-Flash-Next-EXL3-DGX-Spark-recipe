@@ -1,6 +1,10 @@
-"""Offline controller tests: no server launch, network call, GPU access, or Spark mutation."""
+"""Offline contracts; harmless local children only, no server/network/GPU/Spark access."""
 import importlib.util
 import json
+import os
+import select
+import shutil
+import sys
 from pathlib import Path
 import subprocess
 import tempfile
@@ -46,7 +50,7 @@ class ControllerTests(unittest.TestCase):
         if command[0] == "bash":
             state = Path(kwargs["env"]["STATE_DIR"])
             state.mkdir()
-            metadata = {"model": {"resolved_path": str(self.pack)},
+            metadata = {"model": {"resolved_path": str(self.pack)}, "environment": kwargs["env"],
                         **{k: {"commit": v["commit"]} for k, v in self.identity.items()}}
             (state / "deployment.json").write_text(json.dumps(metadata))
             return self.server
@@ -113,6 +117,99 @@ class ControllerTests(unittest.TestCase):
         self.assertNotIn("CACHE_SIZE", env)
         self.assertEqual(env["HOST"], "127.0.0.1")
         self.assertEqual(env["PORT"], "8899")
+
+    def test_gpu_lock_is_explicit_resolved_configuration_and_drift_is_rejected(self):
+        requested = str(self.root / "gpu.lock")
+        job = controller.normalize({"label": "shared-lock", "model_path": str(self.pack),
+            "env": {"PROFILE": "single", "NGRAM_RAM": False, "GPU_LOCK_FILE": requested},
+            "tool_cases": ["auto"]})
+        (self.recipe / "exllamav3-tabby/env.sh").write_text(
+            'GPU_LOCK_FILE="${GPU_LOCK_FILE:-}"\nacquire_gpu_lock() { :; }\n')
+        with patch.dict(controller.os.environ, {"GPU_LOCK_FILE": "/ambient-owner.lock"}):
+            env = controller.resolved_env(self.recipe, self.runtime, job)
+            default_env = controller.resolved_env(self.recipe, self.runtime, self.job)
+        self.assertEqual(env["GPU_LOCK_FILE"], requested)
+        self.assertEqual(default_env["GPU_LOCK_FILE"], "")
+        self.assertFalse(Path(requested).exists())
+        with patch.object(controller, "source_identity", return_value=self.identity), \
+             patch.object(controller, "resolved_env", return_value=env) as resolved:
+            controller.verify_inputs(job, self.args, self.identity, env)
+            resolved.return_value = dict(env, GPU_LOCK_FILE=requested + ".changed")
+            with self.assertRaisesRegex(ValueError, "defaults changed"):
+                controller.verify_inputs(job, self.args, self.identity, env)
+
+    def test_requested_lock_rejects_older_recipe_before_launch_or_lock_creation(self):
+        # Historical launchers can inherit this variable while never acquiring it.
+        (self.recipe / "exllamav3-tabby/env.sh").write_text('GPU_LOCK_FILE="${GPU_LOCK_FILE:-}"\n')
+        requested = self.root / "shared.lock"
+        job = dict(self.job, env=dict(self.job["env"], GPU_LOCK_FILE=str(requested)))
+        with self.assertRaises(subprocess.CalledProcessError):
+            controller.resolved_env(self.recipe, self.runtime, job)
+        self.assertFalse(requested.exists())
+        self.assertEqual(controller.resolved_env(self.recipe, self.runtime, self.job)["GPU_LOCK_FILE"], "")
+
+    def test_lock_ownership_failure_stops_before_clients_and_cleans_owned_server(self):
+        self.env["GPU_LOCK_FILE"] = str(self.root / "requested.lock")
+        cleanup = Mock(return_value={"exit_code": -15, "signals": ["SIGTERM"]})
+        with patch.object(controller, "verify_gpu_lock", side_effect=ValueError("missing actual flock")):
+            result = self.execute(stop_owned=cleanup)
+        self.assertFalse(result["passed"])
+        self.assertEqual(result["state"], "failed")
+        self.assertEqual(result["clients"], [])
+        cleanup.assert_called_once_with(self.server, unittest.mock.ANY)
+
+    def test_lock_evidence_is_recorded_before_each_client_and_after_measurement(self):
+        self.env["GPU_LOCK_FILE"] = str(self.root / "requested.lock")
+        evidence = {"path": self.env["GPU_LOCK_FILE"], "descriptor": 8, "inode": 42}
+        with patch.object(controller, "verify_gpu_lock", return_value=evidence) as verify:
+            result = self.execute()
+        self.assertTrue(result["passed"])
+        self.assertEqual(verify.call_count, 3)
+        self.assertEqual(result["gpu_lock_before_measurements"], evidence)
+        self.assertEqual(result["clients"][0]["gpu_lock_before"], evidence)
+        self.assertEqual(result["gpu_lock_after_measurements"], evidence)
+
+    def test_unset_lock_does_not_inspect_proc(self):
+        with patch.object(controller.Path, "lstat", side_effect=AssertionError("unexpected filesystem read")):
+            self.assertIsNone(controller.verify_gpu_lock(999999, {}))
+
+    @unittest.skipUnless(shutil.which("bash") and shutil.which("flock") and Path("/proc/self/fdinfo").is_dir(),
+                         "requires Linux procfs, bash and flock")
+    def test_actual_inherited_flock_rejects_wrong_inode_replacement_and_unlocked_fd(self):
+        requested = self.root / "actual shared.lock"
+        other = self.root / "other.lock"
+        other.touch()
+        program = ('import fcntl,sys; print("READY",flush=True); '
+                   'sys.stdin.readline(); fcntl.flock(8,fcntl.LOCK_UN); '
+                   'print("UNLOCKED",flush=True); sys.stdin.readline()')
+        child = subprocess.Popen(
+            ["bash", "-euc", 'source "$1"; acquire_gpu_lock; shift; exec "$@"', "lock-test",
+             str(HERE.parent / "exllamav3-tabby/env.sh"), sys.executable, "-u", "-c", program],
+            env={**os.environ, "GPU_LOCK_FILE": str(requested), "STATE_DIR": str(self.root / "state")},
+            stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        try:
+            self.assertTrue(select.select([child.stdout], [], [], 5)[0], "child did not become ready")
+            self.assertEqual(child.stdout.readline().strip(), "READY")
+            evidence = controller.verify_gpu_lock(child.pid, {"GPU_LOCK_FILE": str(requested)})
+            self.assertEqual(evidence["inode"], requested.stat().st_ino)
+            self.assertIn("FLOCK", evidence["fdinfo_lock"])
+            with self.assertRaisesRegex(ValueError, "inode"):
+                controller.verify_gpu_lock(child.pid, {"GPU_LOCK_FILE": str(other)})
+            retained = self.root / "retained-inode"
+            requested.rename(retained); requested.touch()
+            with self.assertRaisesRegex(ValueError, "inode"):
+                controller.verify_gpu_lock(child.pid, {"GPU_LOCK_FILE": str(requested)})
+            requested.unlink(); retained.rename(requested)
+            child.stdin.write("unlock\n"); child.stdin.flush()
+            self.assertTrue(select.select([child.stdout], [], [], 5)[0], "child did not unlock")
+            self.assertEqual(child.stdout.readline().strip(), "UNLOCKED")
+            with self.assertRaisesRegex(ValueError, "exclusive cooperative flock"):
+                controller.verify_gpu_lock(child.pid, {"GPU_LOCK_FILE": str(requested)})
+            child.communicate("exit\n", timeout=5)
+            self.assertEqual(child.returncode, 0)
+        finally:
+            if child.poll() is None:
+                child.kill(); child.communicate(timeout=5)
 
     def test_success_captures_actual_exits_and_resume_preserves_artifacts(self):
         first = self.execute()

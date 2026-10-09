@@ -35,6 +35,7 @@ from pathlib import Path
 import re
 import signal
 import socket
+import stat
 import subprocess
 import sys
 import time
@@ -46,7 +47,7 @@ BASE = "http://127.0.0.1:8899/v1"
 TUNING = set(("PROFILE NGRAM_RAM BIGCORES OMP_NUM_THREADS MKL_NUM_THREADS CHUNK_SIZE "
               "CACHE_SIZE MAX_SEQ_LEN MAX_BATCH_SIZE DRAFT_MODE DRAFT_NUM_TOKENS "
               "DYNAMIC_DRAFT SYSMEM_RECURRENT_CACHE VISION REASONING TOOL_FORMAT "
-              "SERVED_NAME CUDA_HOME TORCH_CUDA_ARCH_LIST PROMPT_TEMPLATE").split())
+              "SERVED_NAME CUDA_HOME TORCH_CUDA_ARCH_LIST PROMPT_TEMPLATE GPU_LOCK_FILE").split())
 CONTROLLED = set(("RECIPE_HOME VENV EXL3_SRC TABBY_DIR STATE_DIR MODEL_DIR MODEL_PARENT "
                   "MODEL_NAME HOST PORT DISABLE_AUTH DRY_RUN PYTHON_BIN TABBY_REF TABBY_REPO").split())
 SETTINGS = {
@@ -229,7 +230,10 @@ def resolved_env(recipe, runtime, job):
                MODEL_DIR=job["model_path"], HOST="127.0.0.1", PORT="8899",
                DISABLE_AUTH="true", DRY_RUN="0", PYTHONUNBUFFERED="1")
     # Source current recipe defaults; no engine SHA, Tabby ref or version is embedded here.
-    data = subprocess.check_output(["bash", "-c", 'set -a; source "$1"; env -0',
+    probe = ('set -a; source "$1" || exit; '
+             'if [[ -n "${GPU_LOCK_FILE:-}" ]] && ! declare -F acquire_gpu_lock >/dev/null; then '
+             'printf "%s\\n" "selected recipe does not support GPU_LOCK_FILE" >&2; exit 1; fi; env -0')
+    data = subprocess.check_output(["bash", "-c", probe,
                                     "recipe-env", str(recipe / "exllamav3-tabby/env.sh")],
                                    env=env, timeout=30)
     return dict(item.decode().split("=", 1) for item in data.split(b"\0") if item)
@@ -269,6 +273,40 @@ def require_owned_listener(pid):
             pass
     if not listeners & descriptors:
         raise RuntimeError("Ready API socket is not owned by the launched server")
+
+
+def verify_gpu_lock(pid, env):
+    """Observe the launcher's cooperative flock; never acquire or alter it."""
+    requested = env.get("GPU_LOCK_FILE", "")
+    if not requested:
+        return None
+    path = Path(requested)
+    if not path.is_absolute():
+        raise ValueError("Requested GPU lock path is not absolute")
+    before = path.lstat()
+    if not stat.S_ISREG(before.st_mode):
+        raise ValueError("Requested GPU lock is no longer a regular nonsymlink file")
+    descriptor = Path(f"/proc/{pid}/fd/8").stat()
+    identity = (before.st_dev, before.st_ino)
+    if (descriptor.st_dev, descriptor.st_ino) != identity:
+        raise ValueError("Server FD8 does not reference the requested GPU lock inode")
+    lines = Path(f"/proc/{pid}/fdinfo/8").read_text().splitlines()
+    held = []
+    for line in lines:
+        match = re.fullmatch(
+            r"lock:\s+\d+:\s+FLOCK\s+ADVISORY\s+WRITE\s+-?\d+\s+"
+            r"([0-9a-fA-F]+):([0-9a-fA-F]+):(\d+)\s+0\s+EOF", line)
+        if match and (int(match[1], 16), int(match[2], 16), int(match[3])) == (
+                os.major(before.st_dev), os.minor(before.st_dev), before.st_ino):
+            held.append(line)
+    if len(held) != 1:
+        raise ValueError("Server FD8 lacks the requested exclusive cooperative flock")
+    after = path.lstat()
+    if not stat.S_ISREG(after.st_mode) or (after.st_dev, after.st_ino) != identity:
+        raise ValueError("GPU lock path changed during ownership verification")
+    return {"checked_at_utc": stamp(), "path": requested, "server_pid": pid,
+            "descriptor": 8, "device": before.st_dev, "inode": before.st_ino,
+            "fdinfo_lock": held[0]}
 
 
 def get_json(endpoint):
@@ -444,6 +482,10 @@ def run_job(job, args, identity, env):
         record["deployment_sha256"] = digest(deployment)
         verify_inputs(job, args, identity, env)
         record["inputs_verified_before_measurements_at_utc"] = stamp()
+        if env.get("GPU_LOCK_FILE"):
+            if deployment.get("environment", {}).get("GPU_LOCK_FILE") != env["GPU_LOCK_FILE"]:
+                raise ValueError("Deployment snapshot does not record the requested GPU lock")
+            record["gpu_lock_before_measurements"] = verify_gpu_lock(server.pid, env)
         record["state"] = "measuring"
         save()
         for name, command in commands(job, attempt, args.recipe, str(args.runtime / "venv/bin/python"), model):
@@ -453,6 +495,8 @@ def run_job(job, args, identity, env):
             command += ["--output", str(destination)]
             client_record = {"name": name, "command": command, "started_at_utc": stamp(),
                              "output": str(destination), "metadata": str(attempt / "deployment.json")}
+            if env.get("GPU_LOCK_FILE"):
+                client_record["gpu_lock_before"] = verify_gpu_lock(server.pid, env)
             record["clients"].append(client_record)
             save()
             with (attempt / (name + ".log")).open("w") as log:
@@ -480,6 +524,8 @@ def run_job(job, args, identity, env):
             save()
         verify_inputs(job, args, identity, env)
         record["inputs_verified_after_measurements_at_utc"] = stamp()
+        if env.get("GPU_LOCK_FILE"):
+            record["gpu_lock_after_measurements"] = verify_gpu_lock(server.pid, env)
         record["passed"] = bool(record["clients"]) and all(
             row["exit_code"] == 0 and row["completed_report"] and not row.get("timed_out")
             for row in record["clients"])
