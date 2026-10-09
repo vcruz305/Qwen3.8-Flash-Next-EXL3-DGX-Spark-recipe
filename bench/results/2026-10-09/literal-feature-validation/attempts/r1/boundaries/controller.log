@@ -1,0 +1,23 @@
+W1009 00:26:59.761000 436230 /home/cruzspark/qwen38-exl3-20261008/venv/lib/python3.12/site-packages/torch/utils/cpp_extension.py:178] No CUDA runtime is found, using CUDA_HOME='/usr/local/cuda'
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+AssertionError
+Traceback (most recent call last):
+  File "/home/cruzspark/qwen-followup-20261009/measurement/literal-feature-validation/controller.py", line 218, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ^^^^^^
+  File "/home/cruzspark/qwen-followup-20261009/measurement/literal-feature-validation/controller.py", line 217, in main
+    return run(a)
+           ^^^^^^
+  File "/home/cruzspark/qwen-followup-20261009/measurement/literal-feature-validation/controller.py", line 154, in run
+    imported=json.loads(command([str(args.runtime/'venv/bin/python'),'-c',code],cwd=args.runtime/'tabbyAPI',env=probe_env))
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/cruzspark/qwen-followup-20261009/measurement/literal-feature-validation/controller.py", line 20, in command
+    def command(argv,**kwargs):return subprocess.check_output(argv,text=True,timeout=30,**kwargs).strip()
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 466, in check_output
+    return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['/home/cruzspark/qwen-followup-20261009/literal-candidate-runtime/venv/bin/python', '-c', "import json,sys,pathlib,torch,exllamav3; import common.model; from endpoints.OAI.types.chat_completion import ChatCompletionRequest; from common import literal_user_tokens as mod; assert not torch.cuda.is_initialized(); assert 'sitecustomize' not in sys.modules; assert ChatCompletionRequest(messages=[{'role':'user','content':'plain'}]).literal_user_control_tokens is False; print(json.dumps({'engine_file':exllamav3.__file__,'literal_module':mod.__file__,'markers':sorted(mod.LITERAL_USER_CONTROL_MARKERS),'cuda_initialized':torch.cuda.is_initialized(),'sitecustomize_loaded':'sitecustomize' in sys.modules}))"]' returned non-zero exit status 1.

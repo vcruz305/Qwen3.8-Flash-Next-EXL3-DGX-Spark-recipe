@@ -125,6 +125,13 @@ The controller checks recipe/runtime identities, package versions, recipe/client
 
 Cleanup sends SIGTERM only to the token-verified owned group, waits up to30seconds, then allows a bounded five-second SIGKILL cleanup. Both clients and server have retained ownership tokens. This experiment cleanup deadline differs from the permanent service's90-second stop policy. Sparse memory/power samples are observations and can miss peaks; preserve sampling errors and avoid claiming a guaranteed capacity or maximum power from them.
 
+The controller records TERM/INT signals and delivers interruption at checkpoints
+after each child has been registered. A first signal during shutdown, or
+repeated signals while cleanup is running, cannot skip the owned groups.
+Children inherit no blocked signal mask from this handling. Interruption
+remains bounded by the current operation and the ordinary cleanup deadlines;
+it does not allow the next model to start before cleanup completes.
+
 ### Resume and failure behavior
 
 A finished output is never overwritten silently. `--resume` accepts it only when the normalized job, source/package identities, recipe/client hashes, resolved tuning and controller limits match. It preserves a finished failed attempt too; it does not retry it as if it had never happened. For an independent repeat or a retry of a completed failure, use a new destination or label.
@@ -142,7 +149,20 @@ The original recipe revision6fbc0a2 used a different launcher contract. It emits
 ## CPU verification
 
 ```bash
-python3 -m unittest discover -s bench -p test_run_matrix.py -v
+python3 -m unittest discover -s bench -p 'test_run_matrix*.py' -v
 ```
 
-The20 existing regressions cover command routing, strict settings, alias expectations, model/default/source drift, literal loader order, output/resume integrity, busy-port refusal, bounded sampling, interrupted/failed clients and owned cleanup. Server/API/GPU operations are mocked; one test sources a temporary synthetic Bash environment and the membership test parses a synthetic `/proc` fixture. The original publication test changed only the adjacent controller filename and was checked from a relocated directory. `test_prompt_templates.py` adds file/config drift, actual loaded-content and optional real Tabby renderer checks for the external-template support.
+The 33 matrix regressions cover command routing, strict settings, alias
+expectations, model/default/source drift, literal loader order, output/resume
+integrity, busy-port refusal, bounded sampling, shared GPU-lock descriptors,
+and owned cleanup. The 26 main cases include real CPU file/flock and Bash
+checks alongside mocked server/API operations. Seven signal cases use real
+local child processes and deliver TERM/INT during launch registration and
+finalization, including repeated signals and an unrelated process group.
+These CPU tests load no model and make no GPU or live API requests.
+`test_prompt_templates.py` separately adds file/config drift, actual loaded
+content, and optional real Tabby renderer checks for external templates.
+
+The [October 9 report](../VALIDATION_2026-10-09.md#cooperative-gpu-ownership)
+links the actual GPU-lock serving gate and the separately qualified matrix
+interruption fix. Completed and interrupted attempts remain distinct evidence.

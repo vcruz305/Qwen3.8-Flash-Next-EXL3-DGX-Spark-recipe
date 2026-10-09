@@ -12,8 +12,9 @@ The exact engine pin lives in [env.sh](exllamav3-tabby/env.sh). TabbyAPI follows
 the fork's `main`; setup and each launch record the exact commits they use.
 
 **Start here:** [quick start](#quick-start), [tool calling](docs/tool-calling.md),
-[benchmark instructions](bench/README.md), and
-[October validation report](VALIDATION_2026-10-08.md).
+[benchmark instructions](bench/README.md),
+[October 8 validation](VALIDATION_2026-10-08.md), and
+[October 9 follow-up](VALIDATION_2026-10-09.md).
 AI agents should first read [AGENTS.md](AGENTS.md).
 
 ## Quick start
@@ -192,7 +193,7 @@ loaded for each run.
 
 ## Measured results
 
-Final source confirmation on the Spark uses engine `24f0dece3` and TabbyAPI
+The October 8 source confirmation on the Spark used engine `24f0dece3` and TabbyAPI
 `5a4f3ef`, 2,048-token chunks, K8/V8 storage, dynamic MTP depth 5 and confidence
 0.6. These are median **server decode tokens/second**, three measured 400-token
 outputs per workload after one warmup:
@@ -204,8 +205,12 @@ outputs per workload after one warmup:
 | SAGE 4.15 / disk | 48.78 → 52.39 | 46.48 → 49.73 | 30.75 → 34.36 |
 | Cyber Frost 3.87 / disk, template changed | 41.13 → 45.75 | 34.63 → 44.28 | 32.09 → 34.36 |
 
-SAGE improves approximately **7–12%** in this confirmation. The flat packs show
-small single-request regressions; the update is not a uniform speedup.
+SAGE improved approximately **7–12%** in this confirmation. The flat packs
+showed small single-request regressions in that collection. The October 9
+controlled repeat did not reproduce those slowdowns; its short sequential
+measurements also do not establish a broad speedup. See the
+[follow-up performance checks](VALIDATION_2026-10-09.md#fresh-flat-pack-performance-checks)
+for the same-day engine/server attribution and matched-output comparisons.
 Cyber's corrected template honors `enable_thinking:false`, changing its actual
 prompt and generated work, so its row is a behavior/configuration comparison.
 The report separately preserves matched-template Cyber kernel controls.
@@ -295,7 +300,8 @@ This does not replace an actual memory-fit test.
 |---|---|
 | [exllamav3-tabby/](exllamav3-tabby/) | Supported setup, launchers, configuration and runtime checks |
 | [bench/](bench/) | Strict API benchmarks, tool/SDK checks and long-context retrieval |
-| [VALIDATION_2026-10-08.md](VALIDATION_2026-10-08.md) | October hardware measurements and validation evidence |
+| [VALIDATION_2026-10-08.md](VALIDATION_2026-10-08.md) | October 8 hardware measurements and validation evidence |
+| [VALIDATION_2026-10-09.md](VALIDATION_2026-10-09.md) | Follow-up performance attribution, tool-stop fix, and GPU ownership/cleanup |
 | [HISTORICAL_BENCHMARKS.md](HISTORICAL_BENCHMARKS.md) | Earlier measurements and tuning research |
 | [docs/tool-calling.md](docs/tool-calling.md) | Qwen tool semantics and examples |
 | [docs/service.md](docs/service.md) | Persistent deployment and rollback |

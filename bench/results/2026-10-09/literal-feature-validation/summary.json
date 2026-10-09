@@ -1,0 +1,290 @@
+{
+  "schema_version": 1,
+  "scope": "Completed original candidate qualification, including failed preflight attempt. No later diagnostic included; not a deployment or broad exact-copy success claim.",
+  "sources": {
+    "tabby": "a70ae1fa9e457e478c3d96bdc84012a3cb331796",
+    "engine": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+    "recipe": "254b2b03027f25094845dc31f5f87739f3584d2e"
+  },
+  "cpu": {
+    "completed": true,
+    "source_commit": "a70ae1fa9e457e478c3d96bdc84012a3cb331796",
+    "spark_cpu": {
+      "passed": 419,
+      "skipped": 0,
+      "subtests_passed": 5210,
+      "seconds": 5.48,
+      "cuda_visible_devices": "",
+      "setup_exit": 0,
+      "package_list_exit": 0,
+      "all_recorded_log_sha256_verified": true
+    },
+    "wsl_cpu": {
+      "passed": 403,
+      "skipped": 2,
+      "subtests_passed": 5210,
+      "scope": "CPU-only venv intentionally lacks native engine; Spark suite includes those tests"
+    },
+    "focused": {
+      "passed": 21,
+      "subtests_passed": 51
+    },
+    "actual_qwen": {
+      "pairs": 23,
+      "rows": 46,
+      "expected_literal_400": 1,
+      "shared_complete_prefix_pages": 7
+    },
+    "independent_interleaved_cache_proof": {
+      "plans": 4,
+      "real_cpu_tensors": true,
+      "cuda_initialized": false
+    },
+    "source_byte_limit": "Peer review predates removal of one trailing test-file space; production/docs/helper bytes unchanged and binding preserves that explicit adjustment. Final focused suite reran."
+  },
+  "r1": {
+    "model_loads": 0,
+    "chat_posts": 0,
+    "original_record_state": "preflight",
+    "status_note": "Controller exited without terminal status after rejecting stock Ubuntu sitecustomize. Record unchanged; collection verifies absent PID and no attempt/client artifacts."
+  },
+  "r2": {
+    "started_at_utc": "2026-10-09T07:34:07.683831+00:00",
+    "finished_at_utc": "2026-10-09T07:37:52.092261+00:00",
+    "completed": true,
+    "passed": false,
+    "logical_checks": 89,
+    "passed_checks": 84,
+    "failed_checks": 5,
+    "chat_posts": 93,
+    "feature_checks": {
+      "total": 61,
+      "passed": 56,
+      "failed": 5,
+      "native_semantic_observations_failed": 20,
+      "semantic_gate_failures": 2,
+      "protocol_failures": 3,
+      "actual_chat_requests": 61,
+      "duplicate_response_ids": false
+    },
+    "tool_checks": {
+      "passed": 28,
+      "failed": 0,
+      "total": 28
+    },
+    "tool_chat_posts": 32,
+    "groups": {
+      "known8": {
+        "checks": 16,
+        "passed": 16,
+        "failed": 0,
+        "protocol_passed": 16,
+        "gated_semantic_failures": 0,
+        "observational_semantic_failures": 8
+      },
+      "heldout6": {
+        "checks": 24,
+        "passed": 22,
+        "failed": 2,
+        "protocol_passed": 23,
+        "gated_semantic_failures": 1,
+        "observational_semantic_failures": 10
+      },
+      "concurrent4": {
+        "checks": 4,
+        "passed": 3,
+        "failed": 1,
+        "protocol_passed": 4,
+        "gated_semantic_failures": 1,
+        "observational_semantic_failures": 0
+      },
+      "cache6": {
+        "checks": 6,
+        "passed": 6,
+        "failed": 0,
+        "protocol_passed": 6,
+        "gated_semantic_failures": 0,
+        "observational_semantic_failures": 2
+      },
+      "errors8": {
+        "checks": 8,
+        "passed": 6,
+        "failed": 2,
+        "protocol_passed": 6,
+        "gated_semantic_failures": 0,
+        "observational_semantic_failures": 0
+      },
+      "no_marker3": {
+        "checks": 3,
+        "passed": 3,
+        "failed": 0,
+        "protocol_passed": 3,
+        "gated_semantic_failures": 0,
+        "observational_semantic_failures": 0
+      }
+    },
+    "failed_rows": [
+      {
+        "name": "unicode_nfc_nonstream_optin",
+        "classification": "substantive generation failure",
+        "detail": "HTTP200 length finish at256 completion tokens; no complete record_text call."
+      },
+      {
+        "name": "multi_turn_user_stream_optin",
+        "classification": "substantive generation/protocol failure",
+        "detail": "HTTP200 SSE server error: model stopped without a complete call required by tool_choice."
+      },
+      {
+        "name": "concurrent_2",
+        "classification": "substantive exact-copy failure",
+        "detail": "Complete record_text call omitted trailing <|endoftext|>; original run has no native token observation and does not establish where omission occurred."
+      },
+      {
+        "name": "continuation_nonstream",
+        "classification": "original harness condition failure",
+        "detail": "Actual HTTP400 and detail equal prepared response, but frozen client also required a literal_user_control_tokens prefix. Named tool_choice hit an earlier continuation incompatibility; the feature-specific continuation guard was not reached."
+      },
+      {
+        "name": "continuation_stream",
+        "classification": "original harness condition failure",
+        "detail": "Same earlier HTTP400 and frozen-client prefix mismatch. Preserved as failed in original qualification; no relabeling."
+      }
+    ],
+    "known_fixture_exact": {
+      "native": {
+        "passed": 0,
+        "total": 8
+      },
+      "optin": {
+        "passed": 8,
+        "total": 8
+      }
+    },
+    "heldout_exact": {
+      "native": {
+        "passed": 2,
+        "total": 12
+      },
+      "optin": {
+        "passed": 10,
+        "total": 12
+      }
+    },
+    "concurrent4": {
+      "exact": 3,
+      "total": 4,
+      "actual_request_interval_overlap": true,
+      "all_reported_overlap": true,
+      "distinct_ids": 4
+    },
+    "cache": [
+      {
+        "name": "cache_native_first_0",
+        "passed": true,
+        "actual_cached_tokens": 256,
+        "maximum_expected_lcp_tokens": 274,
+        "positive_reuse": true,
+        "prompt_tokens": 3964
+      },
+      {
+        "name": "cache_native_first_1",
+        "passed": true,
+        "actual_cached_tokens": 256,
+        "maximum_expected_lcp_tokens": 2173,
+        "positive_reuse": true,
+        "prompt_tokens": 3968
+      },
+      {
+        "name": "cache_native_first_2",
+        "passed": true,
+        "actual_cached_tokens": 3840,
+        "maximum_expected_lcp_tokens": 3968,
+        "positive_reuse": true,
+        "prompt_tokens": 3968
+      },
+      {
+        "name": "cache_optin_first_0",
+        "passed": true,
+        "actual_cached_tokens": 256,
+        "maximum_expected_lcp_tokens": 287,
+        "positive_reuse": true,
+        "prompt_tokens": 3971
+      },
+      {
+        "name": "cache_optin_first_1",
+        "passed": true,
+        "actual_cached_tokens": 256,
+        "maximum_expected_lcp_tokens": 2174,
+        "positive_reuse": true,
+        "prompt_tokens": 3965
+      },
+      {
+        "name": "cache_optin_first_2",
+        "passed": true,
+        "actual_cached_tokens": 3840,
+        "maximum_expected_lcp_tokens": 3965,
+        "positive_reuse": true,
+        "prompt_tokens": 3965
+      }
+    ],
+    "cache_scope": "Bounds and same-policy repeat reuse3840 observed; cross-policy probes reuse only256 and do not prove2048/2304 recurrent checkpoint reuse.",
+    "no_marker_checks": 3,
+    "native_semantic_failures_are_observations": 20,
+    "available_usage_counts_match_prepared_ids": 52,
+    "server_cleanup": {
+      "exit_code": 0,
+      "signals": [
+        "SIGTERM"
+      ]
+    },
+    "outer_owned_cleanup": [
+      {
+        "exit_before_outer_cleanup": 0,
+        "exit_code": 0,
+        "owned_group_empty": true,
+        "pid": 448905,
+        "signals": []
+      },
+      {
+        "exit_before_outer_cleanup": 1,
+        "exit_code": 1,
+        "owned_group_empty": true,
+        "pid": 446946,
+        "signals": []
+      },
+      {
+        "exit_before_outer_cleanup": 0,
+        "exit_code": 0,
+        "owned_group_empty": true,
+        "pid": 445094,
+        "signals": []
+      }
+    ],
+    "owner_gate_after": {
+      "at_utc": "2026-10-09T07:37:52.054306+00:00",
+      "gpu": "",
+      "manager": {
+        "ActiveState": "inactive",
+        "LoadState": "loaded",
+        "MainPID": "0"
+      },
+      "qwen": {
+        "ActiveState": "inactive",
+        "MainPID": "0"
+      },
+      "qwen_enabled": "disabled"
+    }
+  },
+  "frozen_method": {
+    "plan_sha256": "ca62602653e1e872481a568c4005218a5cc5388063b76f012312a7ae47827645",
+    "input_binding_sha256": "ba9b7477f2b983fd6bf400acfd437f2b633d38c09d47d03bb5d23893154bfdbd",
+    "client_sha256": "84e5ac0f85540592a52208010f2c3731de0e51e0f0958ab626c8694dcdb98b11",
+    "offline_original_assessor_rows_replayed": 61
+  },
+  "limitations": [
+    "Default-off input tokenization feature, not a guarantee of generated exact copying.",
+    "Inputs and full ID sequences archived; no native output-ID trace installed in r2.",
+    "No reasoning-boundary repair, stochastic reasoning, or Unicode decoder attribution established by these failures.",
+    "Runtime logs/timings are correctness evidence, not controlled throughput benchmarks."
+  ]
+}

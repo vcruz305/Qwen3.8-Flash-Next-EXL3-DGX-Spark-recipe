@@ -1,0 +1,50 @@
+{
+  "reviewer": "engine_review",
+  "at_utc": "2026-10-09T07:06:44.087440+00:00",
+  "cleared_for_candidate_commit": true,
+  "production_source_changed_by_reviewer": false,
+  "sources": {
+    "common/literal_user_tokens.py": "7687416d599c651d0cd22a892908bd51264721133c4f9fd160fcb51bd76b0907",
+    "backends/exllamav3/model.py": "e13b45a65fb42ece09874a827172001039fbfba4ebe104227d35bf8fd217a244",
+    "endpoints/OAI/types/chat_completion.py": "4491c7e7d9da29d353dced1d85ab58ddbcf52010c87d54d121ece8a20cba90d5",
+    "endpoints/OAI/utils/chat_completion.py": "6ad0fc4d84f1845826c86b992d6e0d3b4028a3b712923269e912f2e9eaa80947",
+    "tests/test_literal_user_tokens.py": "e3cb11f08cc25d9dc67c35596ceb65bc55c6ad19813df6994f4c8c26ea4510bb",
+    "tests/check_literal_user_tokens.py": "2e0f3220aa246e644ea78095ab459417edd08d7a594c6894761f2e660b953228",
+    "docs/literal-user-control-tokens.md": "4100fe43b2fbdf1d77866e598bff138ff209b275770c0d51e1383884256c9a29",
+    "base_commit": "f650bb5389e0a273549e47d4d26a765760c013e1"
+  },
+  "sources_unchanged_during_review": true,
+  "scope": [
+    "Default false retains native input IDs and does not use alternate tokenizer/provenance helper.",
+    "StrictBool API validation rejects nonbooleans with422; unsupported backend/tokenizer/provenance rejects400 before generation or SSE.",
+    "PrivateAttr is not API injectable/serialized; cleared before render and preserved immutably by per-choice deep copies.",
+    "Detached nonce render proves user-content spans; native system/assistant/tool controls and response prefixes stay outside rewrite.",
+    "BOS removal adjusts spans before plan preparation; BOS insertion revalidated in apply; required rewrites reject continued messages.",
+    "Context precheck and generator apply the same verified plan before lengths/cache checks and AsyncJob input construction.",
+    "Exact24 token-content chained page keys distinguish native/literal inputs after the first changed page; recurrent/CPU tiers use those keys, partial matching compares actual IDs.",
+    "Shared native tokenizer remains unchanged; cached helper has no per-request prompt state; four interleaved immutable plans pass independent actual-tokenizer/torch CPU proof.",
+    "Docs explicitly limit nine markers, user string content, exact roundtrips and semantic guarantees; raw-completion/token-encoding endpoints do not expose the option."
+  ],
+  "focused_tests": {
+    "command": "OLD/tabbyapi-agent/.venv-tools/bin/python -m pytest -q tests/test_literal_user_tokens.py",
+    "tests_passed": 21,
+    "subtests_passed": 51,
+    "seconds": 2.9,
+    "log_sha256": "833fb06d0b3b801af1518477060d3f95eaf48ecf17671ddc3fbe11cded3ffb8f"
+  },
+  "actual_qwen_utility": {
+    "passed": true,
+    "rows": 46,
+    "native_literal_pairs": 23,
+    "expected_literal_rejections": 1,
+    "reason": "NFD-normalized prompt does not preserve rendered bytes exactly; native path retains behavior",
+    "shared_complete_prefix_pages": 7,
+    "report_sha256": "861a5cdef713081fddcda4184cee8dc6b9f41409812d328b374f9a088daddc6d",
+    "launch_metadata_sha256": "5852393b0011fba55ed22c97a41f276b380b7aef16ff3a03456e7c8c02391148"
+  },
+  "independent_four_plan_cpu_cache_proof_sha256": "b75f37ba9b498db75a5dc9b9b68c37f7e41f7d3ea7eb2584def907bc1ff055a3",
+  "limitations": [
+    "CPU/source/cache-key review only; final opt-in semantics, interleaved serving and live cache usage require scheduled GPU validation.",
+    "No model weights, GPU operations, API requests, service/lifecycle actions or production edits occurred in this review."
+  ]
+}

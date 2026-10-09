@@ -1,0 +1,39 @@
+{
+  "at": "2026-10-09T06:07:10.428639+00:00",
+  "checks": [
+    {
+      "command": [
+        "bash",
+        "-n",
+        "exllamav3-tabby/env.sh",
+        "exllamav3-tabby/serve.sh"
+      ],
+      "returncode": 0,
+      "output": ""
+    },
+    {
+      "command": [
+        "python3",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "bench",
+        "-p",
+        "test_recipe_gpu_lock.py",
+        "-v"
+      ],
+      "returncode": 0,
+      "output": "test_contention_refuses_before_runtime_or_live_file_changes (test_recipe_gpu_lock.CooperativeGPULockTests) ... ok\ntest_dry_run_does_not_acquire_or_create_gpu_lock (test_recipe_gpu_lock.CooperativeGPULockTests) ... ok\ntest_invalid_lock_paths_refuse_without_opening_special_files (test_recipe_gpu_lock.CooperativeGPULockTests) ... ok\ntest_lock_survives_exec_and_is_released_on_server_exit (test_recipe_gpu_lock.CooperativeGPULockTests) ... ok\ntest_unset_option_retains_runtime_preflight (test_recipe_gpu_lock.CooperativeGPULockTests) ... ok\n\n----------------------------------------------------------------------\nRan 5 tests in 0.257s\n\nOK\n"
+    },
+    {
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "returncode": 0,
+      "output": ""
+    }
+  ]
+}

@@ -1,0 +1,990 @@
+commit a70ae1fa9e457e478c3d96bdc84012a3cb331796
+Author:     Victor Angel Cruz <16494159+vcruz305@users.noreply.github.com>
+AuthorDate: Fri Oct 9 00:07:38 2026 -0700
+Commit:     Victor Angel Cruz <16494159+vcruz305@users.noreply.github.com>
+CommitDate: Fri Oct 9 00:07:38 2026 -0700
+
+    Add opt-in literal control-token encoding for user text
+
+diff --git a/backends/exllamav3/model.py b/backends/exllamav3/model.py
+index 86f564d..4e8db0b 100644
+--- a/backends/exllamav3/model.py
++++ b/backends/exllamav3/model.py
+@@ -1177,6 +1177,7 @@ class ExllamaV3Container:
+             self.config = None
+             self.cache = None
+             self.tokenizer = None
++            self._literal_user_token_encoder = None
+ 
+             if self.use_draft_model:
+                 self.draft_model.unload()
+@@ -1204,6 +1205,19 @@ class ExllamaV3Container:
+                 async with self.load_condition:
+                     self.load_condition.notify_all()
+ 
++    def prepare_literal_user_token_plan(self, prompt, spans):
++        from common.literal_user_tokens import LiteralUserTokenEncoder
++        encoder = getattr(self, "_literal_user_token_encoder", None)
++        if encoder is None or encoder.native_tokenizer is not self.tokenizer:
++            encoder = LiteralUserTokenEncoder(self.tokenizer)
++            self._literal_user_token_encoder = encoder
++        plan = encoder.prepare(prompt, spans)
++        # Verify the native backend mapping before the request reaches context
++        # accounting. Later consumers recheck the same request-local binding.
++        original = self.tokenizer.encode(prompt, add_bos=False, encode_special_tokens=True)
++        plan.apply(original, prompt, self.tokenizer)
++        return plan
++
+     def encode_tokens(self, text: str, **kwargs) -> List[int]:
+         """
+         Encodes a string of text into a list of token IDs.
+@@ -1219,16 +1233,18 @@ class ExllamaV3Container:
+         mm_embeddings: MultimodalEmbeddingWrapper = kwargs.get("embeddings")
+         mm_embeddings_content = mm_embeddings.content if mm_embeddings else []
+ 
+-        return (
+-            self.tokenizer.encode(
+-                text,
+-                add_bos=unwrap(kwargs.get("add_bos_token"), self.hf_model.add_bos_token()),
+-                encode_special_tokens=unwrap(kwargs.get("encode_special_tokens"), True),
+-                embeddings=mm_embeddings_content,
+-            )
+-            .flatten()
+-            .tolist()
++        add_bos = unwrap(kwargs.get("add_bos_token"), self.hf_model.add_bos_token())
++        encoded = self.tokenizer.encode(
++            text,
++            add_bos=add_bos,
++            encode_special_tokens=unwrap(kwargs.get("encode_special_tokens"), True),
++            embeddings=mm_embeddings_content,
+         )
++        plan = kwargs.get("literal_user_token_plan")
++        if plan is not None:
++            encoded = plan.apply(encoded, text, self.tokenizer, add_bos=add_bos,
++                                 embeddings=mm_embeddings_content)
++        return encoded.flatten().tolist()
+ 
+     def decode_tokens(self, ids: List[int], **kwargs) -> str:
+         """
+@@ -1278,6 +1294,7 @@ class ExllamaV3Container:
+                 prompt,
+                 add_bos_token=unwrap(params.add_bos_token, self.hf_model.add_bos_token()),
+                 embeddings=mm_embeddings,
++                literal_user_token_plan=getattr(params, "_literal_user_token_plan", None),
+             )
+         )
+         max_tokens = unwrap(params.max_tokens, 0)
+@@ -1794,6 +1811,13 @@ class ExllamaV3Container:
+             for prompt in prompts
+         ]
+ 
++        literal_plan = getattr(params, "_literal_user_token_plan", None)
++        if literal_plan is not None:
++            input_ids = [literal_plan.apply(ids, text, self.tokenizer,
++                                            add_bos=add_bos_token,
++                                            embeddings=mm_embeddings_content)
++                         for text, ids in zip(prompts, input_ids)]
++
+         # The first index will always be the positive prompt
+         context_len = input_ids[0].size(dim=-1)
+ 
+diff --git a/common/literal_user_tokens.py b/common/literal_user_tokens.py
+new file mode 100644
+index 0000000..92b49bd
+--- /dev/null
++++ b/common/literal_user_tokens.py
+@@ -0,0 +1,190 @@
++"""Request-local literal encoding of qualified control markers in user text.
++
++This changes model input IDs, not rendered text or generated output. The native
++shared tokenizer is never modified. Template provenance and token roundtrips
++must be proved before a plan can reach generation.
++"""
++from copy import deepcopy
++from dataclasses import dataclass
++import json
++import secrets
++from typing import Sequence
++
++
++LITERAL_USER_CONTROL_MARKERS = frozenset({
++    "<think>", "</think>", "<|im_start|>", "<|im_end|>", "<|endoftext|>",
++    "<tool_call>", "</tool_call>", "<tool_response>", "</tool_response>",
++})
++
++
++class LiteralUserTokenError(ValueError):
++    """The requested literal user-token policy cannot be proved safe to apply."""
++
++
++def targeted_user_indices(messages, markers):
++    return [i for i, message in enumerate(messages)
++            if message.get("role") == "user"
++            and isinstance(message.get("content"), str)
++            and any(marker in message["content"] for marker in markers)]
++
++
++async def locate_literal_user_spans(template, template_vars, prompt, markers):
++    """Prove exact user provenance using a separate nonce-bracketed render.
++
++    Edge whitespace stays outside the sentinels so trimming templates can keep
++    their existing behavior. The interior and the entire restored render must
++    still agree exactly; transformed, duplicated or omitted data is rejected.
++    """
++    indices = targeted_user_indices(template_vars["messages"], markers)
++    if not indices:
++        return ()
++    detached = deepcopy(template_vars)
++    occupied = prompt + repr(template_vars)
++    for _ in range(4):
++        nonce = secrets.token_hex(16)
++        if nonce not in occupied:
++            break
++    else:
++        raise LiteralUserTokenError("Could not establish unique user-text boundaries")
++    boundaries = []
++    for index in indices:
++        content = detached["messages"][index]["content"]
++        left = len(content) - len(content.lstrip())
++        right = len(content.rstrip())
++        core = content[left:right]
++        start = f"__TABBY_USER_{nonce}_{index}_START__"
++        end = f"__TABBY_USER_{nonce}_{index}_END__"
++        detached["messages"][index]["content"] = (
++            content[:left] + start + core + end + content[right:]
++        )
++        boundaries.append((start, end, core))
++    probe = await template.render(detached)
++    located = []
++    for start, end, core in boundaries:
++        if probe.count(start) != 1 or probe.count(end) != 1:
++            raise LiteralUserTokenError("Template duplicated, omitted or transformed user boundaries")
++        left = probe.index(start)
++        right = probe.index(end)
++        if right < left + len(start) or probe[left + len(start):right] != core:
++            raise LiteralUserTokenError("Template transformed protected user text")
++        located.append((left, right + len(end), start, end, core))
++    located.sort()
++    restored = []
++    spans = []
++    cursor = 0
++    length = 0
++    for left, right, start, end, core in located:
++        if left < cursor:
++            raise LiteralUserTokenError("Template produced overlapping user boundaries")
++        unchanged = probe[cursor:left]
++        restored.extend((unchanged, core))
++        length += len(unchanged)
++        spans.append((length, length + len(core)))
++        length += len(core)
++        cursor = right
++    restored.append(probe[cursor:])
++    if "".join(restored) != prompt:
++        raise LiteralUserTokenError("Template probe did not restore the original prompt exactly")
++    return tuple(spans)
++
++
++def recognized_markers(native_tokenizer):
++    backend = getattr(native_tokenizer, "tokenizer", None)
++    if backend is None or not hasattr(backend, "get_added_tokens_decoder"):
++        raise LiteralUserTokenError("This backend cannot prove literal user-token mappings")
++    from tokenizers import models
++    if not isinstance(getattr(backend, "model", None), models.BPE):
++        raise LiteralUserTokenError("Literal user control tokens require a supported BPE tokenizer")
++    if backend.padding or backend.truncation:
++        raise LiteralUserTokenError("Literal user control tokens require unpadded, untruncated input")
++    markers = frozenset(token.content for token in backend.get_added_tokens_decoder().values()
++                        if token.content in LITERAL_USER_CONTROL_MARKERS)
++    if not markers:
++        raise LiteralUserTokenError("Tokenizer has no supported added control markers")
++    return markers
++
++
++@dataclass(frozen=True)
++class LiteralUserTokenPlan:
++    prompt: str
++    tokenizer_identity: int
++    original_ids: tuple[int, ...]
++    changed_ids: tuple[int, ...]
++    replacement_count: int
++
++    def apply(self, encoded, prompt, native_tokenizer, *, add_bos=False, embeddings=None):
++        if prompt != self.prompt or id(native_tokenizer) != self.tokenizer_identity:
++            raise LiteralUserTokenError("Literal user-token plan no longer matches this prompt/tokenizer")
++        if embeddings:
++            raise LiteralUserTokenError("Literal user-token plans do not support multimodal embeddings")
++        prefix = ()
++        if add_bos and native_tokenizer.bos_token_id is not None:
++            prefix = (native_tokenizer.bos_token_id,)
++        expected = prefix + self.original_ids
++        if (encoded.device.type != "cpu" or tuple(encoded.shape) != (1, len(expected))
++                or tuple(encoded.reshape(-1).tolist()) != expected):
++            raise LiteralUserTokenError("Native prompt IDs differ from the verified literal user-token plan")
++        if self.original_ids == self.changed_ids:
++            return encoded
++        return encoded.new_tensor(prefix + self.changed_ids).reshape(1, -1)
++
++
++class LiteralUserTokenEncoder:
++    """Immutable model helper; all prompt-specific state lives in returned plans."""
++    def __init__(self, native_tokenizer):
++        from tokenizers import Tokenizer
++        self.native_tokenizer = native_tokenizer
++        backend = getattr(native_tokenizer, "tokenizer", None)
++        if backend is None or not hasattr(backend, "to_str"):
++            raise LiteralUserTokenError("This backend cannot prove literal user-token mappings")
++        source = json.loads(backend.to_str())
++        if source.get("model", {}).get("type") != "BPE":
++            raise LiteralUserTokenError("Literal user control tokens require a supported BPE tokenizer")
++        if source.get("padding") or source.get("truncation"):
++            raise LiteralUserTokenError("Literal user control tokens require unpadded, untruncated input")
++        self.baseline = Tokenizer.from_str(json.dumps(source))
++        self.baseline.encode_special_tokens = False
++        self.added = self.baseline.get_added_tokens_decoder()
++        self.selected = {i: token for i, token in self.added.items()
++                         if token.content in LITERAL_USER_CONTROL_MARKERS}
++        ordinary_source = dict(source, added_tokens=[])
++        self.ordinary = Tokenizer.from_str(json.dumps(ordinary_source))
++
++    def prepare(self, prompt: str, spans: Sequence[tuple[int, int]]):
++        previous = 0
++        for left, right in spans:
++            if not (type(left) is int and type(right) is int
++                    and previous <= left < right <= len(prompt)):
++                raise LiteralUserTokenError("Invalid protected user spans")
++            previous = right
++        encoded = self.baseline.encode(prompt, add_special_tokens=False)
++        changed = []
++        replacements = 0
++        span_index = 0
++        for token_id, (left, right) in zip(encoded.ids, encoded.offsets):
++            while span_index < len(spans) and spans[span_index][1] <= left:
++                span_index += 1
++            overlap = (span_index < len(spans) and left < spans[span_index][1]
++                       and right > spans[span_index][0])
++            if token_id not in self.selected or not overlap:
++                changed.append(token_id)
++                continue
++            start, end = spans[span_index]
++            if not (start <= left < right <= end):
++                raise LiteralUserTokenError("A control token crosses a protected user boundary")
++            token = self.selected[token_id]
++            piece = prompt[left:right]
++            if (piece != token.content or token.normalized or token.lstrip
++                    or token.rstrip or token.single_word):
++                raise LiteralUserTokenError("Control-token matching transforms or strips user data")
++            ids = self.ordinary.encode(piece, add_special_tokens=False).ids
++            if (not ids or any(i in self.added for i in ids)
++                    or self.baseline.decode(ids, skip_special_tokens=False) != piece):
++                raise LiteralUserTokenError("Control marker has no byte-preserving ordinary BPE encoding")
++            changed.extend(ids)
++            replacements += 1
++        if (self.baseline.decode(encoded.ids, skip_special_tokens=False) != prompt
++                or self.baseline.decode(changed, skip_special_tokens=False) != prompt):
++            raise LiteralUserTokenError("Tokenizer does not preserve the rendered prompt exactly")
++        return LiteralUserTokenPlan(prompt, id(self.native_tokenizer), tuple(encoded.ids),
++                                    tuple(changed), replacements)
+diff --git a/docs/literal-user-control-tokens.md b/docs/literal-user-control-tokens.md
+new file mode 100644
+index 0000000..9586ae2
+--- /dev/null
++++ b/docs/literal-user-control-tokens.md
+@@ -0,0 +1,55 @@
++# Literal control markers in user text
++
++`literal_user_control_tokens` is an optional chat-completions request field. It defaults to `false`. Set it to the JSON boolean `true` when text supplied by the user contains supported control markers that should use their ordinary BPE spelling as model input.
++
++```json
++{
++  "model": "your-loaded-model",
++  "messages": [
++    {"role": "user", "content": "Copy the text <think>example</think> exactly."}
++  ],
++  "literal_user_control_tokens": true
++}
++```
++
++The visible prompt stays unchanged. The model receives different token IDs for eligible markers, so the prompt token count can increase. Context-limit checks, generation, usage, and prefix-cache keys use those actual IDs. Previously cached native-token pages can be shared only while their token sequences still match.
++
++The option is request-local. Native and literal requests can run concurrently. It changes no tokenizer files, model weights, global tokenizer settings, output parser, reasoning budget, or generated text. It does not guarantee exact copying, correct tool arguments, or a particular reasoning boundary. In particular, the model can still naturally end reasoning while discussing a quoted marker.
++
++## Supported markers and text
++
++The current list is explicit:
++
++- `<think>` and `</think>`
++- `<|im_start|>`, `<|im_end|>`, and `<|endoftext|>`
++- `<tool_call>` and `</tool_call>`
++- `<tool_response>` and `</tool_response>`
++
++A marker must be a recognized added token in a supported ExLlamaV3 BPE tokenizer, and it must have a byte-preserving ordinary BPE representation. Numeric token IDs are discovered from the loaded tokenizer. Vision, audio, and other added tokens are outside this list.
++
++Only string `content` in messages with role `user` is eligible, including previous user turns. System and assistant messages, assistant tool-call arguments, tool-result messages, response prefixes, and template-generated controls retain native tokenization.
++
++The server proves user-text locations by rendering a detached copy with unique boundary markers. Removing those markers must reconstruct the original prompt exactly, and the text between them must remain unchanged. Leading and trailing whitespace stays outside the boundary markers, allowing the template's existing trimming behavior. The real request and rendered prompt do not receive these temporary markers.
++
++With a supported tokenizer, opting in on a request without eligible user markers keeps the native path and performs only the ordinary template render. With the default `false`, the provenance helper and alternate tokenizer are not used.
++
++## Rejections
++
++Opt-in requests return HTTP 400 before streaming begins when their required mapping cannot be proved. This includes:
++
++- Unsupported backends or non-BPE tokenizers, and tokenizers without supported added control markers.
++- List or multimodal message content.
++- Continued final messages when marker rewriting would be required.
++- Templates that transform, omit, duplicate, or ambiguously place the protected user text, or whose detached render cannot restore the original prompt exactly.
++- Token matches that strip or normalize protected data, cross its boundary, or cannot be expanded without changing decoded text.
++- Rendered prompts that the native and expanded token sequences do not both decode exactly. For example, a tokenizer that normalizes a decomposed Unicode sequence may reject that marker-bearing prompt. The default native request retains its existing behavior.
++
++Invalid flag types, such as the string `"true"`, numeric `1`, or `null`, produce the usual request-validation HTTP 422. Use JSON `true` or `false`.
++
++The raw-completions and token-encoding APIs do not expose this chat-specific option. Internal token plans are private request state and are excluded from request serialization.
++
++## Validation
++
++`tests/test_literal_user_tokens.py` covers request validation, default identity, template provenance, whitespace, Unicode, multiple roles and turns, concurrent plans, BOS/prefix preservation, actual backend context and generation inputs, and early client errors.
++
++`python -m tests.check_literal_user_tokens --tokenizer-directory MODEL_ASSETS --engine-source ENGINE_CHECKOUT --output NEW_REPORT.json` performs CPU-only checks with a downloaded tokenizer/template and source-extracted native encoding and cache-page hashing methods. It requires CPU-capable PyTorch and the normal server test dependencies; it does not load weights or run inference. It refuses to overwrite its report. Live semantic and concurrent-serving validation are separate requirements before deploying a candidate.
+diff --git a/endpoints/OAI/types/chat_completion.py b/endpoints/OAI/types/chat_completion.py
+index b6caf4c..c4de089 100644
+--- a/endpoints/OAI/types/chat_completion.py
++++ b/endpoints/OAI/types/chat_completion.py
+@@ -1,4 +1,4 @@
+-from pydantic import AliasChoices, BaseModel, Field, field_validator
++from pydantic import AliasChoices, BaseModel, Field, PrivateAttr, StrictBool, field_validator
+ from time import time
+ from typing import Literal, Union, List, Optional, Dict
+ from uuid import uuid4
+@@ -79,6 +79,19 @@ class ReasoningOptions(BaseModel):
+ class ChatCompletionRequest(CommonCompletionRequest):
+     messages: List[ChatCompletionMessage]
+     prompt_template: Optional[str] = None
++    literal_user_control_tokens: StrictBool = Field(
++        default=False,
++        description=(
++            "Opt in to ordinary BPE encoding of supported chat/reasoning/tool control "
++            "markers in user string content. Changes input token IDs and token counts, "
++            "while preserving rendered text, template controls and other message roles. "
++            "Requires provable user spans and a supported ExLlamaV3 BPE tokenizer; "
++            "multimodal content, continued messages and ambiguous/transformed templates "
++            "are rejected when applicable. Default false. Does not change output parsing "
++            "or guarantee literal copying."
++        ),
++    )
++    _literal_user_token_plan: object = PrivateAttr(default=None)
+     add_generation_prompt: Optional[bool] = True
+     template_vars: Optional[dict] = Field(
+         default={},
+diff --git a/endpoints/OAI/utils/chat_completion.py b/endpoints/OAI/utils/chat_completion.py
+index 9d22ad5..ceb214f 100644
+--- a/endpoints/OAI/utils/chat_completion.py
++++ b/endpoints/OAI/utils/chat_completion.py
+@@ -17,6 +17,12 @@ from common.logger import xlogger
+ import re
+ 
+ from common import model
++from common.literal_user_tokens import (
++    LiteralUserTokenError,
++    locate_literal_user_spans,
++    recognized_markers,
++    targeted_user_indices,
++)
+ from common.multimodal import MultimodalEmbeddingWrapper
+ from common.networking import (
+     get_context_length_generator_error,
+@@ -522,6 +528,7 @@ async def apply_chat_template(data: ChatCompletionRequest):
+     Template stop strings can be overriden by sampler overrides if force is true.
+     """
+ 
++    data._literal_user_token_plan = None
+     tool_format = getattr(model.container, "tool_format", None)
+     nullable_guidance = nullable_guidance_eligible(data, tool_format)
+     forced_choice = prepare_forced_tool_choice(
+@@ -545,6 +552,18 @@ async def apply_chat_template(data: ChatCompletionRequest):
+         functions = with_nullable_xml_guidance(functions)
+ 
+     try:
++        literal_markers = ()
++        if data.literal_user_control_tokens:
++            if any(isinstance(message.content, list) for message in data.messages):
++                raise LiteralUserTokenError("Literal user control tokens require string-only chat content")
++            if not callable(getattr(model.container, "prepare_literal_user_token_plan", None)):
++                raise LiteralUserTokenError("Literal user control tokens require a supporting backend")
++            supported_markers = recognized_markers(getattr(model.container, "tokenizer", None))
++            messages = [message.model_dump(exclude_none=True) for message in data.messages]
++            if targeted_user_indices(messages, supported_markers):
++                if data.continue_final_message:
++                    raise LiteralUserTokenError("Literal user control tokens do not support continued messages")
++                literal_markers = supported_markers
+         data.template_vars = resolve_template_vars(data, model.container)
+         data.template_vars.update(
+             {
+@@ -570,6 +589,12 @@ async def apply_chat_template(data: ChatCompletionRequest):
+             data.messages, data.template_vars
+         )
+ 
++        literal_spans = ()
++        if literal_markers:
++            literal_spans = await locate_literal_user_spans(
++                model.container.prompt_template, template_vars, prompt, literal_markers
++            )
++
+         if continued_message_text is not None:
+             prompt = _cut_prompt_at_continue_tag(prompt, continued_message_text)
+ 
+@@ -592,9 +617,22 @@ async def apply_chat_template(data: ChatCompletionRequest):
+         bos_token = template_vars.get("bos_token")
+         if bos_token and model.container.hf_model.add_bos_token() and prompt.startswith(bos_token):
+             prompt = prompt.removeprefix(bos_token)
+-
++            if literal_spans:
++                if any(left < len(bos_token) for left, _ in literal_spans):
++                    raise LiteralUserTokenError("BOS removal overlaps protected user text")
++                literal_spans = tuple((left - len(bos_token), right - len(bos_token))
++                                      for left, right in literal_spans)
++
++        if literal_spans:
++            if mm_embeddings and mm_embeddings.content:
++                raise LiteralUserTokenError("Literal user control tokens do not support multimodal embeddings")
++            data._literal_user_token_plan = model.container.prepare_literal_user_token_plan(
++                prompt, literal_spans
++            )
+         return prompt, mm_embeddings
+ 
++    except LiteralUserTokenError as exc:
++        raise HTTPException(400, f"literal_user_control_tokens: {exc}") from exc
+     except KeyError as exc:
+         error_message = handle_request_error(
+             "Could not find a Conversation from prompt template "
+diff --git a/tests/check_literal_user_tokens.py b/tests/check_literal_user_tokens.py
+new file mode 100644
+index 0000000..705ad74
+--- /dev/null
++++ b/tests/check_literal_user_tokens.py
+@@ -0,0 +1,145 @@
++"""CPU-only actual-tokenizer/template/native-encode and cache-key qualification.
++
++Pass downloaded tokenizer assets and an engine source checkout. Native encode
++methods/constructor prefix and Sequence.prepare/hash are executed from that
++source with CPU tensors; CUDA-heavy imports and model loading are not used.
++"""
++from __future__ import annotations
++import __future__
++import argparse,ast,asyncio,hashlib,json,os,re,subprocess
++from copy import deepcopy
++from pathlib import Path
++from types import SimpleNamespace
++from unittest.mock import patch
++from fastapi import HTTPException
++import torch
++from tokenizers import Tokenizer as HFTokenizer, models
++from common.literal_user_tokens import LITERAL_USER_CONTROL_MARKERS
++from common.templating import PromptTemplate
++from endpoints.OAI.utils import chat_completion as cc
++from tests.test_literal_user_tokens import container, request
++
++
++def sha(p):return hashlib.sha256(p.read_bytes()).hexdigest()
++def digest(ids):return hashlib.sha256(json.dumps(list(ids),separators=(',',':')).encode()).hexdigest()
++def read_json(path):
++    p=Path(path);return json.loads(p.read_text()) if p.exists() else {}
++
++def native_tokenizer(source, assets):
++    tree=ast.parse(source.read_text());cls=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='Tokenizer')
++    names={'__init__','encode_part_base','encode_part','encode_special_or_unspecial','encode'}
++    methods=[deepcopy(n) for n in cls.body if isinstance(n,ast.FunctionDef) and n.name in names]
++    assert {n.name for n in methods}==names
++    init=next(n for n in methods if n.name=='__init__')
++    stops=[i for i,n in enumerate(init.body) if isinstance(n,ast.If) and 'models.Unigram' in ast.unparse(n.test)]
++    assert len(stops)==1;init.body=init.body[:stops[0]]
++    module=ast.Module(body=[ast.ClassDef(name='Native',bases=[],keywords=[],body=methods,decorator_list=[])],type_ignores=[])
++    ns={'torch':torch,'os':os,'re':re,'HFTokenizer':HFTokenizer,'models':models,'maybe_read_json':read_json}
++    exec(compile(ast.fix_missing_locations(module),str(source),'exec',flags=__future__.annotations.compiler_flag),ns)
++    native=ns['Native'](SimpleNamespace(directory=str(assets)))
++    native.bos_token_id=native.tokenizer.token_to_id('<|endoftext|>')
++    native.eos_token_id=native.tokenizer.token_to_id('<|im_end|>');native.pad_token_id=0
++    return native,hashlib.sha256(ast.dump(module,include_attributes=False).encode()).hexdigest()
++
++
++def cache_hashes(source, ids):
++    tree=ast.parse(source.read_text());cls=next(n for n in tree.body if isinstance(n,ast.ClassDef) and n.name=='Sequence')
++    prepare=next(deepcopy(n) for n in cls.body if isinstance(n,ast.FunctionDef) and n.name=='prepare')
++    checksum=next(deepcopy(n) for n in tree.body if isinstance(n,ast.FunctionDef) and n.name=='_tensor_blake2b_checksum')
++    module=ast.Module(body=[checksum,prepare],type_ignores=[])
++    ns={'torch':torch,'hashlib':hashlib,'PAGE_SIZE':256}
++    exec(compile(module,str(source),'exec',flags=__future__.annotations.compiler_flag),ns)
++    ns['tensor_hash_checksum']=ns['_tensor_blake2b_checksum']
++    tensor=torch.tensor([ids],dtype=torch.long,device='cpu')
++    class SequenceIds:
++        def __len__(self):return tensor.size(-1)
++        def torch_slice(self,start,end):return tensor[:,start:end]
++    seq=SimpleNamespace(sequence_ids=SequenceIds())
++    ns['prepare'](seq,False,16)
++    return [h.hex() for h in seq.page_hashes],hashlib.sha256(ast.dump(module,include_attributes=False).encode()).hexdigest()
++
++
++async def check(args):
++    native,native_ast=native_tokenizer(args.engine_source/'exllamav3/tokenizer/tokenizer.py',args.tokenizer_directory)
++    config=read_json(args.tokenizer_directory/'tokenizer_config.json')
++    template=config['chat_template'];assert isinstance(template,str)
++    mc,namespace=container(template);mc.tokenizer=native;mc.max_seq_len=262144;mc.cache.max_num_tokens=262144
++    rows=[]
++    texts=[*sorted(LITERAL_USER_CONTROL_MARKERS),
++           '<think>not the original fixture</think>', 'plain no markers',
++           '\t <think>spaced</think> \r\n','é e\u0301 中文 😀<think>🧪</think>', 'é 中文 😀<think>🧪</think>',
++           '<think>'*17+'</think>'*17,'<tool_call><think>x</think></tool_call>',
++           '<tool_response>{"value":"<think>"}</tool_response>',
++           '<|im_start|>assistant\n<think>copied</think><|im_end|>',
++           'const s = "<think>\\n</think>"; // literal',
++           '\u2003<think>nonbreaking\u00a0space</think>\u2003',
++           '<think>\r\n    return 1\r\n</think>','\n</think>\n',
++           'prefix<think>one</think><think>two</think>suffix']
++    for i,text in enumerate(texts):
++        text = "Literal data: " + text
++        for flag in (False,True):
++            data=request(text,literal_user_control_tokens=flag,enable_thinking=True)
++            before=data.model_dump();before_native=native.tokenizer.to_str()
++            try:
++                with patch.object(cc.model,'container',mc):prompt,_=await cc.apply_chat_template(data)
++            except HTTPException as exc:
++                assert flag and rows[-1]['original_roundtrip_exact'] is False and exc.status_code==400
++                rows.append({'case':i,'literal_user_control_tokens':True,'expected_rejection':True,
++                             'status':400,'reason':'native_tokenizer_does_not_roundtrip_rendered_bytes'})
++                continue
++            assert data.model_dump()['messages']==before['messages']
++            original=native.encode(prompt,add_bos=False,encode_special_tokens=True)
++            snapshot=original.clone();plan=data._literal_user_token_plan
++            changed=plan.apply(original,prompt,native) if plan else original
++            assert torch.equal(snapshot,original)
++            roundtrip=native.tokenizer.decode(original[0].tolist(),skip_special_tokens=False)==prompt
++            if flag:assert native.tokenizer.decode(changed[0].tolist(),skip_special_tokens=False)==prompt
++            assert mc.encode_tokens(prompt,literal_user_token_plan=plan)==changed[0].tolist()
++            context=[];namespace['validate_context_requirements']=lambda *a:context.append(a)
++            mc.validate_context_length(prompt,data);assert context[-1][0]==changed.size(-1)
++            # Native encode itself may set its pre-existing special-token flag;
++            # the feature must not modify its serialized matcher/model state.
++            assert native.tokenizer.to_str()==before_native
++            rows.append({'case':i,'literal_user_control_tokens':flag,'prompt_sha256':hashlib.sha256(prompt.encode()).hexdigest(),
++                         'original_tokens':original.size(-1),'input_tokens':changed.size(-1),'original_roundtrip_exact':roundtrip,
++                         'original_ids_sha256':digest(original[0].tolist()),'input_ids_sha256':digest(changed[0].tolist()),
++                         'replacements':plan.replacement_count if plan else 0,'context_checked_tokens':context[-1][0]})
++    for i in range(0,len(rows),2):
++        a,b=rows[i:i+2]
++        if b.get('expected_rejection'):assert a['original_roundtrip_exact'] is False
++        else:assert a['prompt_sha256']==b['prompt_sha256'] and a['input_ids_sha256']==b['original_ids_sha256']
++    # Interleaved roles: tool result and assistant history retain native markers.
++    value='<think>history</think>'
++    messages=[{'role':'user','content':value},{'role':'assistant','content':'ack'},
++              {'role':'tool','content':value},{'role':'user','content':'second '+value}]
++    data=request(messages=messages,literal_user_control_tokens=True)
++    with patch.object(cc.model,'container',mc):prompt,_=await cc.apply_chat_template(data)
++    plan=data._literal_user_token_plan;assert plan.replacement_count==4
++    # Cache hashes operate on real changed token pages, with a long shared prefix.
++    text='abcdefgh0123456789 '*150+'<think>cache marker</think>'+' lmnop9876543210'*150
++    data=request(text,literal_user_control_tokens=True)
++    with patch.object(cc.model,'container',mc):prompt,_=await cc.apply_chat_template(data)
++    plan=data._literal_user_token_plan
++    first=next(i for i,(a,b) in enumerate(zip(plan.original_ids,plan.changed_ids)) if a!=b)
++    source=args.engine_source/'exllamav3/generator/pagetable.py'
++    old_hashes,cache_ast=cache_hashes(source,list(plan.original_ids));new_hashes,_=cache_hashes(source,list(plan.changed_ids))
++    shared=first//256;assert shared>=1 and min(len(old_hashes),len(new_hashes))>shared
++    assert old_hashes[:shared]==new_hashes[:shared]
++    assert all(a!=b for a,b in zip(old_hashes[shared:],new_hashes[shared:]))
++    root=Path(__file__).resolve().parents[1]
++    paths=['common/literal_user_tokens.py','endpoints/OAI/types/chat_completion.py','endpoints/OAI/utils/chat_completion.py','backends/exllamav3/model.py','tests/check_literal_user_tokens.py','tests/test_literal_user_tokens.py']
++    return {'passed':True,'scope':'CPU source/template/tokenization and cache-key contracts, no inference or semantic guarantee.',
++      'source_commit':subprocess.check_output(['git','-C',str(root),'rev-parse','HEAD'],text=True).strip(),
++      'source_files':{p:sha(root/p) for p in paths},'engine_source_files':{str(p):sha(p) for p in (args.engine_source/'exllamav3/tokenizer/tokenizer.py',source)},
++      'tokenizer_sha256':sha(args.tokenizer_directory/'tokenizer.json'),'template_config_sha256':sha(args.tokenizer_directory/'tokenizer_config.json'),
++      'native_methods_ast_sha256':native_ast,'cache_methods_ast_sha256':cache_ast,'cases':rows,'case_count':len(rows),'expected_rejections':sum(bool(r.get('expected_rejection')) for r in rows),
++      'multi_role_replacements':4,'cache':{'first_changed_id':first,'shared_complete_pages':shared,'native_page_hashes':old_hashes,'literal_page_hashes':new_hashes}}
++
++
++def main():
++    p=argparse.ArgumentParser(description=__doc__);p.add_argument('--tokenizer-directory',type=Path,required=True);p.add_argument('--engine-source',type=Path,required=True);p.add_argument('--output',type=Path,required=True);args=p.parse_args()
++    if args.output.exists() or args.output.is_symlink():p.error('Refusing existing output')
++    report=asyncio.run(check(args))
++    with args.output.open('x') as f:json.dump(report,f,indent=2,ensure_ascii=False);f.write('\n')
++    print(json.dumps({'passed':True,'case_count':report['case_count'],'shared_complete_pages':report['cache']['shared_complete_pages'],'output':str(args.output),'sha256':sha(args.output)}))
++if __name__=='__main__':main()
+diff --git a/tests/test_literal_user_tokens.py b/tests/test_literal_user_tokens.py
+new file mode 100644
+index 0000000..ef3823b
+--- /dev/null
++++ b/tests/test_literal_user_tokens.py
+@@ -0,0 +1,375 @@
++"""CPU contracts for opt-in user-data tokenization, provenance and native input flow."""
++from __future__ import annotations
++import __future__
++import ast
++import asyncio
++from copy import deepcopy
++from pathlib import Path
++from types import MethodType, SimpleNamespace
++import unittest
++from unittest.mock import AsyncMock, Mock, patch
++
++from fastapi import HTTPException
++from pydantic import ValidationError
++from tokenizers import AddedToken, Tokenizer, decoders, models, normalizers, pre_tokenizers
++import common.model  # Resolve the existing model/endpoint import cycle.
++from common.literal_user_tokens import (
++    LITERAL_USER_CONTROL_MARKERS, LiteralUserTokenEncoder, LiteralUserTokenError,
++    locate_literal_user_spans,
++)
++from common.templating import PromptTemplate
++from endpoints.OAI.types.chat_completion import ChatCompletionRequest
++from endpoints.OAI.utils import chat_completion as cc
++
++MARKERS = sorted(LITERAL_USER_CONTROL_MARKERS)
++TEMPLATE = ("{{ bos_token }}{% for m in messages %}<|im_start|>{{m.role}}\n"
++            "{{m.content}}<|im_end|>\n{% endfor %}"
++            "{% if add_generation_prompt %}<|im_start|>assistant\n<think>\n{% endif %}")
++
++
++class CpuIds:
++    def __init__(self, values):
++        self.values = list(values)
++        self.shape = (1, len(self.values))
++        self.device = SimpleNamespace(type="cpu")
++    def reshape(self, *_): return self
++    def flatten(self): return self
++    def tolist(self): return list(self.values)
++    def new_tensor(self, values): return CpuIds(values)
++    def size(self, dim): return self.shape[dim]
++
++
++def hf_tokenizer(extra=()):
++    vocab = {piece: i for i, piece in enumerate(sorted(pre_tokenizers.ByteLevel.alphabet()))}
++    tok = Tokenizer(models.BPE(vocab=vocab, merges=[]))
++    tok.pre_tokenizer = pre_tokenizers.ByteLevel(add_prefix_space=False, use_regex=True)
++    tok.decoder = decoders.ByteLevel()
++    tok.add_tokens([AddedToken(m, normalized=False, special=m.startswith("<|"))
++                    for m in MARKERS + ["<BOS>", "<|image_pad|>"]])
++    if extra: tok.add_tokens(list(extra))
++    return tok
++
++
++class NativeTokenizer:
++    def __init__(self, tokenizer=None):
++        self.tokenizer = tokenizer or hf_tokenizer()
++        self.bos_token_id = self.tokenizer.token_to_id("<BOS>")
++        self.eos_token_id = self.tokenizer.token_to_id("<|im_end|>")
++        self.calls = []
++    def encode(self, text, *, add_bos=False, encode_special_tokens=True, embeddings=None):
++        self.calls.append((text, add_bos, encode_special_tokens, embeddings))
++        ids = self.tokenizer.encode(text, add_special_tokens=False).ids
++        return CpuIds(([self.bos_token_id] if add_bos else []) + ids)
++    def single_id(self, text): return self.tokenizer.token_to_id(text)
++
++
++def backend_methods():
++    path = Path(__file__).parents[1] / "backends/exllamav3/model.py"
++    tree = ast.parse(path.read_text())
++    cls = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == "ExllamaV3Container")
++    names = {"prepare_literal_user_token_plan", "encode_tokens", "validate_context_length"}
++    methods = [deepcopy(n) for n in cls.body if isinstance(n, ast.FunctionDef) and n.name in names]
++    assert {n.name for n in methods} == names
++    ns = {"unwrap": lambda value, default: default if value is None else value,
++          "validate_context_requirements": lambda *args: None}
++    exec(compile(ast.Module(body=methods, type_ignores=[]), str(path), "exec",
++                 flags=__future__.annotations.compiler_flag), ns)
++    return ns
++
++
++def container(template=TEMPLATE, bos=False):
++    ns = backend_methods()
++    mc = SimpleNamespace(
++        prompt_template=PromptTemplate("cpu", template), tokenizer=NativeTokenizer(),
++        use_vision=False, tool_format=None, template_vars_default={}, template_vars_force={},
++        hf_model=SimpleNamespace(add_bos_token=lambda: bos),
++        get_special_tokens=lambda: {"bos_token": "<BOS>" if bos else "", "eos_token": "<|im_end|>",
++                                    "pad_token": "", "unk_token": ""},
++        max_seq_len=4096, cache=SimpleNamespace(max_num_tokens=4096),
++        generator=SimpleNamespace(generator=SimpleNamespace(recurrent_cache=None)),
++        job_max_rq_tokens=lambda n: n,
++    )
++    for name in ("prepare_literal_user_token_plan", "encode_tokens", "validate_context_length"):
++        setattr(mc, name, MethodType(ns[name], mc))
++    return mc, ns
++
++
++def request(text="<think>literal</think>", **kwargs):
++    kwargs.setdefault("messages", [{"role": "user", "content": text}])
++    return ChatCompletionRequest(**kwargs)
++
++
++async def render(mc, data):
++    with patch.object(cc.model, "container", mc):
++        return await cc.apply_chat_template(data)
++
++
++class RequestAndDefaultTests(unittest.IsolatedAsyncioTestCase):
++    async def test_default_off_is_identical_and_never_constructs_helper_or_probe(self):
++        for flag in (None, False):
++            mc, _ = container()
++            data = request(**({} if flag is None else {"literal_user_control_tokens": flag}))
++            calls = []
++            original = mc.prompt_template.render
++            async def counted(values): calls.append(deepcopy(values)); return await original(values)
++            mc.prompt_template.render = counted
++            prompt, _ = await render(mc, data)
++            self.assertEqual(len(calls), 1)
++            self.assertIsNone(data._literal_user_token_plan)
++            self.assertFalse(hasattr(mc, "_literal_user_token_encoder"))
++            self.assertEqual(mc.encode_tokens(prompt), mc.tokenizer.encode(prompt).values)
++            self.assertIn(mc.tokenizer.single_id("<think>"), mc.encode_tokens(prompt))
++
++    async def test_enabled_without_user_markers_has_one_render_and_native_ids(self):
++        for messages in (
++            [{"role":"user", "content":"hello 😀"}],
++            [{"role":"system", "content":"<think>control</think>"}, {"role":"user", "content":"hello"}],
++            [{"role":"user", "content":"hello"}, {"role":"assistant", "content":"<think>old</think>"},
++             {"role":"tool", "content":"<think>result</think>"}],
++        ):
++            mc,_=container();data=request(messages=messages,literal_user_control_tokens=True)
++            with patch.object(mc.prompt_template,"render",wraps=mc.prompt_template.render) as mocked:
++                prompt,_=await render(mc,data)
++            self.assertEqual(mocked.call_count,1);self.assertIsNone(data._literal_user_token_plan)
++            self.assertFalse(hasattr(mc,"_literal_user_token_encoder"))
++            self.assertEqual(mc.encode_tokens(prompt),mc.tokenizer.encode(prompt).values)
++
++    def test_strict_boolean_and_unreachable_private_plan(self):
++        for bad in ("true","false",1,0,None,[],{}):
++            with self.subTest(bad=bad),self.assertRaises(ValidationError):
++                request(literal_user_control_tokens=bad)
++        data=request(literal_user_control_tokens=True, _literal_user_token_plan={"changed_ids":[1]})
++        self.assertIsNone(data._literal_user_token_plan)
++        data._literal_user_token_plan=object()
++        self.assertNotIn("_literal_user_token_plan",data.model_dump())
++        self.assertNotIn("_literal_user_token_plan",data.model_dump_json())
++        self.assertNotIn("_literal_user_token_plan",data.model_json_schema()["properties"])
++
++    async def test_invalid_boolean_uses_http422_request_validation(self):
++        import httpx
++        from fastapi import FastAPI
++        app=FastAPI()
++        @app.post("/chat")
++        async def accept(data:ChatCompletionRequest):return {"accepted":True}
++        async with httpx.AsyncClient(transport=httpx.ASGITransport(app=app),base_url="http://cpu") as client:
++            for bad in ("true","false",1,0,None):
++                response=await client.post("/chat",json={"messages":[{"role":"user","content":"hello"}],"literal_user_control_tokens":bad})
++                self.assertEqual(response.status_code,422)
++            for good in (False,True):
++                response=await client.post("/chat",json={"messages":[{"role":"user","content":"hello"}],"literal_user_control_tokens":good})
++                self.assertEqual(response.status_code,200)
++
++    async def test_existing_plan_is_cleared_on_a_new_render(self):
++        mc,_=container();data=request(literal_user_control_tokens=True)
++        await render(mc,data);self.assertIsNotNone(data._literal_user_token_plan)
++        data.literal_user_control_tokens=False
++        await render(mc,data);self.assertIsNone(data._literal_user_token_plan)
++
++
++class ProvenanceTests(unittest.IsolatedAsyncioTestCase):
++    async def test_unicode_whitespace_repeated_markers_and_trim(self):
++        texts=["<think>x</think>","  <think>x</think>  ","\t\r\n<think>\n</think>\r\n",
++               "é e\u0301 😀 中文 <think>λ</think>","<think>"*8+"</think>"*8,
++               "<think></think><|im_start|><|im_end|><|endoftext|>",
++               "<tool_call><tool_response>literal</tool_response></tool_call>",
++               "`<think>` quoted \"</think>\" \u0000", "\u2003<think>\u00a0x</think>\u2003"]
++        for transform in ("m.content","m.content|trim"):
++            for text in texts:
++                with self.subTest(transform=transform,text=text):
++                    mc,_=container(TEMPLATE.replace("m.content}}",transform+"}}"))
++                    data=request(text,literal_user_control_tokens=True)
++                    before=data.model_dump()
++                    prompt,_=await render(mc,data);plan=data._literal_user_token_plan
++                    self.assertIsNotNone(plan)
++                    self.assertEqual(data.messages[0].content,text)
++                    self.assertEqual(mc.tokenizer.tokenizer.decode(plan.changed_ids,skip_special_tokens=False),prompt)
++                    self.assertEqual(mc.tokenizer.tokenizer.decode(plan.original_ids,skip_special_tokens=False),prompt)
++                    self.assertGreater(plan.replacement_count,0)
++                    self.assertEqual(before["messages"],data.model_dump()["messages"])
++
++    async def test_multi_turn_duplicate_user_text_and_non_user_text_are_isolated(self):
++        text="<think>same</think>"
++        messages=[{"role":"system","content":text},{"role":"user","content":text},
++                  {"role":"assistant","content":text},{"role":"tool","content":text},
++                  {"role":"user","content":text}]
++        mc,_=container();data=request(messages=messages,literal_user_control_tokens=True)
++        prompt,_=await render(mc,data);plan=data._literal_user_token_plan
++        self.assertEqual(plan.replacement_count,4)
++        start=mc.tokenizer.single_id("<think>");end=mc.tokenizer.single_id("</think>")
++        self.assertEqual(plan.original_ids.count(start)-plan.changed_ids.count(start),2)
++        self.assertEqual(plan.original_ids.count(end)-plan.changed_ids.count(end),2)
++        self.assertEqual(plan.changed_ids.count(start),4) # system/assistant/tool plus generation marker
++        self.assertEqual(plan.changed_ids.count(end),3)
++
++    async def test_bos_and_response_prefix_preserve_native_controls(self):
++        mc,_=container(bos=True);data=request(literal_user_control_tokens=True,response_prefix="</think><tool_call>")
++        prompt,_=await render(mc,data);plan=data._literal_user_token_plan
++        self.assertFalse(prompt.startswith("<BOS>"));self.assertTrue(prompt.endswith("</think><tool_call>"))
++        actual=mc.encode_tokens(prompt,add_bos_token=True,literal_user_token_plan=plan)
++        self.assertEqual(actual,[mc.tokenizer.bos_token_id,*plan.changed_ids])
++        self.assertEqual(plan.changed_ids[-2:],(mc.tokenizer.single_id("</think>"),mc.tokenizer.single_id("<tool_call>")))
++
++    async def test_transformed_duplicated_omitted_and_context_sensitive_templates_fail_closed(self):
++        variants=[TEMPLATE.replace("m.content}}","m.content|upper}}"),
++                  TEMPLATE.replace("m.content}}","m.content|replace('literal','changed')}}"),
++                  TEMPLATE.replace("{{m.content}}","{{m.content}}{{m.content}}"),
++                  TEMPLATE.replace("{{m.content}}","omitted"),
++                  TEMPLATE.replace("{{m.content}}","{{m.content|tojson}}"),
++                  TEMPLATE.replace("{{m.content}}","{{m.content|length}}:{{m.content}}")]
++        for template in variants:
++            with self.subTest(template=template):
++                mc,_=container(template);data=request('quoted "<think>literal</think>"\n',literal_user_control_tokens=True)
++                with self.assertRaises(HTTPException) as ctx: await render(mc,data)
++                self.assertEqual(ctx.exception.status_code,400)
++                self.assertIn("literal_user_control_tokens",ctx.exception.detail)
++                self.assertIsNone(data._literal_user_token_plan)
++
++    async def test_multimodal_and_continuation_reject_before_plan(self):
++        cases=[request(messages=[{"role":"user","content":[{"type":"text","text":"<think>"}]}],literal_user_control_tokens=True),
++               request(messages=[{"role":"user","content":[{"type":"image_url","image_url":{"url":"never-read"}}]}],literal_user_control_tokens=True),
++               request(messages=[{"role":"user","content":"<think>x</think>"},{"role":"assistant","content":"partial"}],literal_user_control_tokens=True,continue_final_message=True,add_generation_prompt=False)]
++        for data in cases:
++            mc,_=container()
++            with self.assertRaises(HTTPException) as ctx: await render(mc,data)
++            self.assertEqual(ctx.exception.status_code,400)
++
++    async def test_nonce_collision_is_rejected_without_logging_data(self):
++        mc,_=container();data=request("<think>"+"f"*32,literal_user_control_tokens=True)
++        with patch("common.literal_user_tokens.secrets.token_hex",return_value="f"*32):
++            with self.assertRaises(HTTPException) as ctx: await render(mc,data)
++        self.assertNotIn("f"*32,ctx.exception.detail)
++
++    async def test_concurrent_distinct_requests_have_immutable_independent_plans(self):
++        mc,_=container();native_state=mc.tokenizer.tokenizer.to_str()
++        texts=["A<think>x</think>","B<|im_start|>","C<tool_call></tool_call>","D<tool_response>中文</tool_response>"]
++        data=[request(t,literal_user_control_tokens=True) for t in texts]
++        with patch.object(cc.model,"container",mc):
++            rendered=await asyncio.gather(*(cc.apply_chat_template(d) for d in data))
++        self.assertEqual(mc.tokenizer.tokenizer.to_str(),native_state)
++        self.assertEqual(len({id(d._literal_user_token_plan) for d in data}),4)
++        for d,(prompt,_) in zip(data,rendered):
++            plan=d._literal_user_token_plan
++            self.assertEqual(mc.encode_tokens(prompt,literal_user_token_plan=plan),list(plan.changed_ids))
++            with self.assertRaises(LiteralUserTokenError):plan.apply(mc.tokenizer.encode(prompt+"wrong"),prompt+"wrong",mc.tokenizer)
++            with self.assertRaises((AttributeError,TypeError)):plan.changed_ids=()
++
++
++
++    async def test_unsupported_backend_or_tokenizer_reject_even_without_markers(self):
++        for bad in ("backend", "tokenizer", "wordlevel", "no_markers"):
++            for text in ("hello", "<think>x</think>"):
++                mc,_=container()
++                if bad=="backend":mc.prepare_literal_user_token_plan=None
++                elif bad=="tokenizer":mc.tokenizer=None
++                elif bad=="wordlevel":mc.tokenizer.tokenizer=Tokenizer(models.WordLevel({"<unk>":0},unk_token="<unk>"))
++                else:mc.tokenizer.tokenizer=Tokenizer(models.BPE(vocab={"a":0},merges=[]))
++                with self.subTest(bad=bad,text=text),self.assertRaises(HTTPException) as ctx:
++                    await render(mc,request(text,literal_user_control_tokens=True))
++                self.assertEqual(ctx.exception.status_code,400)
++
++    async def test_actual_chat_handler_rejects_before_stream_headers_in_both_modes(self):
++        from endpoints.OAI import router as endpoint
++        for stream in (False,True):
++            for bad in ("template","backend","multimodal","continuation"):
++                mc,_=container(TEMPLATE.replace("{{m.content}}","{{m.content|upper}}") if bad=="template" else TEMPLATE)
++                mc.model_dir=Path("cpu-model")
++                if bad=="backend":mc.prepare_literal_user_token_plan=None
++                kwargs={"stream":stream,"literal_user_control_tokens":True}
++                if bad=="multimodal":kwargs["messages"]=[{"role":"user","content":[{"type":"text","text":"<think>"}]}]
++                if bad=="continuation":kwargs.update(messages=[{"role":"user","content":"<think>"},{"role":"assistant","content":"partial"}],continue_final_message=True,add_generation_prompt=False)
++                data=request(**kwargs)
++                req=SimpleNamespace(json=AsyncMock(return_value=data.model_dump()),state=SimpleNamespace(id="cpu"))
++                with patch.object(cc.model,"container",mc),patch.object(endpoint,"load_lock",asyncio.Lock()), \
++                     patch.object(endpoint,"check_model_container",AsyncMock()), \
++                     patch.object(endpoint,"EventSourceResponse",Mock()) as sse, \
++                     patch.object(endpoint,"generate_chat_completion",AsyncMock()) as generate, \
++                     patch.object(endpoint,"write_chat_completion_prompt_log",AsyncMock()):
++                    with self.subTest(stream=stream,bad=bad),self.assertRaises(HTTPException) as ctx:
++                        await endpoint.chat_completion_request(req,data)
++                self.assertEqual(ctx.exception.status_code,400)
++                sse.assert_not_called();generate.assert_not_called()
++
++
++    async def test_interleaved_native_and_literal_same_prompt_and_deep_copies(self):
++        mc,_=container();text="<think>copy</think>";original_state=mc.tokenizer.tokenizer.to_str()
++        data=[request(text,literal_user_control_tokens=flag) for flag in (False,True,True,False)]
++        with patch.object(cc.model,"container",mc):
++            rendered=await asyncio.gather(*(cc.apply_chat_template(d) for d in data))
++        self.assertEqual(len({p for p,_ in rendered}),1)
++        prompt=rendered[0][0];native=mc.tokenizer.encode(prompt)
++        native_before=list(native.values)
++        for d in data:
++            copied=d.model_copy(deep=True)
++            self.assertEqual(copied._literal_user_token_plan,d._literal_user_token_plan)
++            ids=mc.encode_tokens(prompt,literal_user_token_plan=copied._literal_user_token_plan)
++            if d.literal_user_control_tokens:self.assertNotEqual(ids,native_before)
++            else:self.assertEqual(ids,native_before)
++        self.assertEqual(native.values,native_before)
++        self.assertEqual(mc.tokenizer.tokenizer.to_str(),original_state)
++
++
++
++class EncodingProofTests(unittest.TestCase):
++    def test_expansion_leaves_every_outside_id_unchanged_and_excludes_other_added_tokens(self):
++        native=NativeTokenizer();encoder=LiteralUserTokenEncoder(native)
++        user=" ".join(MARKERS)+" <|image_pad|>"
++        prompt="<think>"+user+"</think>";plan=encoder.prepare(prompt,((7,7+len(user)),))
++        self.assertEqual(plan.replacement_count,len(MARKERS))
++        self.assertEqual(plan.changed_ids[0],native.single_id("<think>"))
++        self.assertEqual(plan.changed_ids[-1],native.single_id("</think>"))
++        self.assertIn(native.single_id("<|image_pad|>"),plan.changed_ids)
++        self.assertEqual(encoder.baseline.decode(plan.changed_ids,skip_special_tokens=False),prompt)
++
++    def test_partial_boundary_and_uncertain_matching_reject(self):
++        native=NativeTokenizer();encoder=LiteralUserTokenEncoder(native)
++        with self.assertRaises(LiteralUserTokenError):encoder.prepare("<think>",((1,7),))
++        for kwargs in ({"lstrip":True},{"rstrip":True},{"normalized":True},{"single_word":True}):
++            tok=hf_tokenizer([AddedToken("<think>",**kwargs)]);enc=LiteralUserTokenEncoder(NativeTokenizer(tok))
++            with self.subTest(kwargs=kwargs),self.assertRaises(LiteralUserTokenError):
++                enc.prepare(" <think> ",((0,9),))
++
++    def test_non_roundtrip_or_non_bpe_tokenizer_reject(self):
++        tok=hf_tokenizer();tok.normalizer=normalizers.NFKC()
++        with self.assertRaises(LiteralUserTokenError):
++            LiteralUserTokenEncoder(NativeTokenizer(tok)).prepare("e\u0301<think>",((0,9),))
++        word=Tokenizer(models.WordLevel({"<unk>":0},unk_token="<unk>"))
++        with self.assertRaises(LiteralUserTokenError):LiteralUserTokenEncoder(NativeTokenizer(word))
++
++    def test_native_id_mismatch_wrong_model_embeddings_and_non_cpu_reject(self):
++        native=NativeTokenizer();plan=LiteralUserTokenEncoder(native).prepare("<think>",((0,7),))
++        encoded=native.encode("<think>")
++        for value,tokenizer,kwargs in [(CpuIds([0]),native,{}),(encoded,NativeTokenizer(),{}),(encoded,native,{"embeddings":[1]})]:
++            with self.assertRaises(LiteralUserTokenError):plan.apply(value,"<think>",tokenizer,**kwargs)
++        encoded.device.type="cuda"
++        with self.assertRaises(LiteralUserTokenError):plan.apply(encoded,"<think>",native)
++
++
++class BackendAccountingTests(unittest.IsolatedAsyncioTestCase):
++    async def test_context_check_uses_changed_ids_and_same_plan_as_generator(self):
++        from tests.test_reasoning_budget import BackendArmingTests
++        mc,ns=container();data=request(literal_user_control_tokens=True,max_tokens=10)
++        prompt,_=await render(mc,data);plan=data._literal_user_token_plan
++        seen=[];ns["validate_context_requirements"]=lambda *args: seen.append(args)
++        mc.validate_context_length(prompt,data)
++        self.assertEqual(seen[0][0],len(plan.changed_ids))
++        backend,params,disconnect,events,jobs,_=BackendArmingTests().backend()
++        backend.tokenizer=mc.tokenizer;backend.reasoning=False
++        params._literal_user_token_plan=plan
++        result=[item async for item in backend.stream_generate("id",prompt,params,disconnect)]
++        self.assertEqual(jobs[0].creation["input_ids"][0].values,list(plan.changed_ids))
++        self.assertEqual(result,[{"finish_reason":"stop"}])
++
++    async def test_expansion_can_cross_context_limit_before_job_creation(self):
++        from common.errors import ContextLengthExceededError
++        from common.errors import validate_context_requirements
++        mc,ns=container();data=request("<think>"*12,literal_user_control_tokens=True,max_tokens=1)
++        prompt,_=await render(mc,data);plan=data._literal_user_token_plan
++        self.assertGreater(len(plan.changed_ids),len(plan.original_ids))
++        mc.max_seq_len=len(plan.original_ids)+2
++        ns["validate_context_requirements"]=validate_context_requirements
++        with self.assertRaises(ContextLengthExceededError):mc.validate_context_length(prompt,data)
++        data._literal_user_token_plan=None
++        mc.validate_context_length(prompt,data)
++
++
++if __name__=="__main__":unittest.main()

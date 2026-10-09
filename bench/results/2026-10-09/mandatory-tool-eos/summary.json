@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "scope": "Independent required/named initial-reasoning EOS fix. CPU/source qualification only in this archive; no literal-input option required.",
+  "base": "f650bb5389e0a273549e47d4d26a765760c013e1",
+  "eos_only": {
+    "commit": "fd8cbeb1fbb3cec4d2141558d5cfd63a500d50c4",
+    "tree": "a23da975775eb951fb0c51c6acfa883f95890862",
+    "branch": "followup/mandatory-tool-eos-20261009",
+    "source_files": {
+      "backends/exllamav3/model.py": "515d6c3a6741872b91766c5574f8d00487e55a9c9e0d8c96460182f350281a64",
+      "backends/exllamav3/reasoning.py": "7ce66535c3abce442f5e768520e1ebb0f1aa49836796cf421196a937ca2467a9",
+      "endpoints/OAI/utils/chat_completion.py": "b49e810d9fb19874bf6141cd41ad47e900585ecfd4ae9af53edcaabd9c3a0ef1",
+      "tests/test_mandatory_tool_eos.py": "18b86918a6950f7e352567cc65429bfcf2aa4f0fea24a1ea292197ed419d40ab",
+      "docs/10.-Tool-Calling.md": "08731f0963fd95ac947982d0358a8202974b29615a2f7a9428d02cea1f16a0b4"
+    }
+  },
+  "combined_diagnostic": {
+    "commit": "f4aadf114b0044fa8cbe1b50241dc80ea7d61583",
+    "tree": "e44983c84dc2b0e31aca594053c22f6db80a1760",
+    "literal_parent": "a70ae1fa9e457e478c3d96bdc84012a3cb331796",
+    "scope": "Clean cherry-pick for unchanged generation8 replay; does not promote literal-input feature."
+  },
+  "engine": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+  "cpu": {
+    "spark_eos_only": {
+      "passed": 409,
+      "skipped": 0,
+      "subtests_passed": 5199,
+      "exit_code": 0,
+      "setup_check_exit_code": 0
+    },
+    "spark_combined": {
+      "passed": 430,
+      "skipped": 0,
+      "subtests_passed": 5250,
+      "exit_code": 0,
+      "setup_check_exit_code": 0
+    },
+    "wsl_eos_only": {
+      "passed": 393,
+      "skipped": 2,
+      "subtests_passed": 5199
+    },
+    "focused_existing_and_new": {
+      "passed": 57,
+      "subtests_passed": 151
+    },
+    "new_independent_peer": {
+      "passed": 11,
+      "subtests_passed": 40
+    },
+    "native_source_peer": {
+      "passed": 8,
+      "independent_rerun_passed": 8
+    }
+  },
+  "counts_note": "These overlapping suites and repeat runs are distinct evidence, not additive unique-test counts. The2 WSL engine-import skips were resolved in the Spark409/430 runs.",
+  "causal_scope": {
+    "native_backend_equal": 8,
+    "multi_turn_stream": "Native im_end248046 at processed position24 while still reasoning, without forcing, phase callback, rewind or decoder call. Required content call was never entered.",
+    "concurrent_2": "Native text already omits trailing endoftext; no248044 sampled and no decoder call. Model argument omission remains outside this fix.",
+    "unicode": "Both original Unicode twins pass in the diagnostic; earlier one-mode length failure remains unreproduced."
+  },
+  "limitations": [
+    "No live candidate result is included here yet.",
+    "Does not enforce exact argument semantics or repair premature reasoning-tag closure.",
+    "Auto/tool-none/content-start/unsupported producer paths retain prior behavior.",
+    "Explicit stop IDs and overlapping stop strings, max_tokens and explicit banned settings retain priority."
+  ]
+}

@@ -1,0 +1,124 @@
+{
+  "at_utc": "2026-10-09T07:52:32.391878+00:00",
+  "model_path": "/home/cruzspark/models/flashnext-exl3-3.05bpw",
+  "files": {
+    "config.json": {
+      "exists": true,
+      "sha256": "92ce0839c71b5a39988299fe38206a32fea50586be54378d424fc0eb035a44c0",
+      "bytes": 5081,
+      "stable_before_after": true,
+      "selected_values": {}
+    },
+    "generation_config.json": {
+      "exists": true,
+      "sha256": "e70c136c1b78ddc1fb0905bac8e733a4dc448d4f852a5dd75143fffc70be550e",
+      "bytes": 202,
+      "stable_before_after": true,
+      "selected_values": {
+        "bos_token_id": 248044,
+        "eos_token_id": [
+          248046,
+          248044
+        ],
+        "pad_token_id": 248044
+      }
+    },
+    "tokenizer_config.json": {
+      "exists": true,
+      "sha256": "b11349aafa7cdc6a320767cf7ceb29ed82f7eda5d65e8e0819e76f0ce947bf27",
+      "bytes": 17928,
+      "stable_before_after": true,
+      "selected_values": {
+        "bos_token": null,
+        "eos_token": "<|im_end|>",
+        "pad_token": "<|endoftext|>",
+        "add_bos_token": false,
+        "control_tokens": {
+          "248044": {
+            "content": "<|endoftext|>",
+            "lstrip": false,
+            "normalized": false,
+            "rstrip": false,
+            "single_word": false,
+            "special": true
+          },
+          "248045": {
+            "content": "<|im_start|>",
+            "lstrip": false,
+            "normalized": false,
+            "rstrip": false,
+            "single_word": false,
+            "special": true
+          },
+          "248046": {
+            "content": "<|im_end|>",
+            "lstrip": false,
+            "normalized": false,
+            "rstrip": false,
+            "single_word": false,
+            "special": true
+          },
+          "248058": {
+            "content": "<tool_call>",
+            "lstrip": false,
+            "normalized": false,
+            "rstrip": false,
+            "single_word": false,
+            "special": false
+          },
+          "248059": {
+            "content": "</tool_call>",
+            "lstrip": false,
+            "normalized": false,
+            "rstrip": false,
+            "single_word": false,
+            "special": false
+          },
+          "248066": {
+            "content": "<tool_response>",
+            "lstrip": false,
+            "normalized": false,
+            "rstrip": false,
+            "single_word": false,
+            "special": false
+          },
+          "248067": {
+            "content": "</tool_response>",
+            "lstrip": false,
+            "normalized": false,
+            "rstrip": false,
+            "single_word": false,
+            "special": false
+          },
+          "248068": {
+            "content": "<think>",
+            "lstrip": false,
+            "normalized": false,
+            "rstrip": false,
+            "single_word": false,
+            "special": false
+          },
+          "248069": {
+            "content": "</think>",
+            "lstrip": false,
+            "normalized": false,
+            "rstrip": false,
+            "single_word": false,
+            "special": false
+          }
+        }
+      }
+    }
+  },
+  "engine_commit": "24f0dece34f09c8d1e2359d6b3b3f7befef7331b",
+  "source_files": {
+    "exllamav3/tokenizer/tokenizer.py": "12b1115b806aedd8dea2eb652a7f9830d50a0056ced8603c1306d311e28e4c3a",
+    "exllamav3/generator/job.py": "dece0b9dc78d556bfc871bd1d81e210b09bdfeb851c3d6093f2b9f822c9f16f7"
+  },
+  "source_path_distinction": {
+    "direct_generation": "Job.receive_sample uses id_to_piece(decode_special_tokens=True); config added-token map preserves248044 marker.",
+    "whole_decode": "Tokenizer.decode_(...,True) removes pad_token_id unconditionally; receive_sample invokes decode for a held buffer ending in U+FFFD.",
+    "stop": "A configured stop token ends generation without emitting the held stop token; a complete call ending later at im_end does not itself establish an earlier endoftext stop.",
+    "attribution_limit": "R2concurrent2 requested/output text is ASCII and completed a call; no claim that Unicode fallback caused its missingmarker. Capture processed native IDs and actual decode calls must distinguish no sampling from decoder or downstream omission."
+  }
+}

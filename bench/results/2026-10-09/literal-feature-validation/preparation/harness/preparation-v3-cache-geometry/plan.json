@@ -1,0 +1,3633 @@
+{
+  "schema_version": 1,
+  "state": "prepared_not_executed",
+  "scope": "Candidate-neutral visible fixtures. Binding actual feature commit/rendered IDs and live controller is required before execution. No diagnostic Python tokenization hook is permitted.",
+  "model": "Qwen3.8-Flash-Next-EXL3",
+  "marker_list": [
+    "<think>",
+    "</think>",
+    "<|im_start|>",
+    "<|im_end|>",
+    "<|endoftext|>",
+    "<tool_call>",
+    "</tool_call>",
+    "<tool_response>",
+    "</tool_response>"
+  ],
+  "source_fixture": {
+    "path": "/home/vcruz/src/qwen-followup-20261009/literal-bpe-observer/reasoning_literal_smoke.py",
+    "sha256": "8f964990d448a75d632c34e4820a426e7de4c3c80d4f4006c2dae3eb379fb054"
+  },
+  "groups": {
+    "known8": 16,
+    "heldout6": 24,
+    "concurrent4": 4,
+    "cache6": 6,
+    "errors8": 8,
+    "no_marker3": 3
+  },
+  "client_requests": 61,
+  "standard_default_off_tool_checks": 28,
+  "requests": [
+    {
+      "name": "known_budget24_required_nonstream_native",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "reasoning_budget_tokens": 24,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false
+      },
+      "request_sha256": "c551ea07439ec45a34340581cf7efe698ef24e61613090a479ef77fb8217f65d",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "c551ea07439ec45a34340581cf7efe698ef24e61613090a479ef77fb8217f65d",
+      "policy": "native"
+    },
+    {
+      "name": "known_budget24_required_nonstream_optin",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "reasoning_budget_tokens": 24,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "7c3ebad1f98882083a666d8d8edb78cdbbdd103d47396837229b856cb3b7dd9b",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "c551ea07439ec45a34340581cf7efe698ef24e61613090a479ef77fb8217f65d",
+      "policy": "optin"
+    },
+    {
+      "name": "known_budget24_required_stream_native",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "reasoning_budget_tokens": 24,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "request_sha256": "f461a39b59a57a92da0c8cf85fce69683c16ab548950bc155b92448e5b8acbd0",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "f461a39b59a57a92da0c8cf85fce69683c16ab548950bc155b92448e5b8acbd0",
+      "policy": "native"
+    },
+    {
+      "name": "known_budget24_required_stream_optin",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "reasoning_budget_tokens": 24,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "c5fe33e315c30d12fd4b0f556e135e1994b6025e16e9cdbd1ca07c25ce98d90a",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "f461a39b59a57a92da0c8cf85fce69683c16ab548950bc155b92448e5b8acbd0",
+      "policy": "optin"
+    },
+    {
+      "name": "known_budget24_named_nonstream_native",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "reasoning_budget_tokens": 24,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false
+      },
+      "request_sha256": "7d3386762ad4a0f1b2f4907b4e43ff1a1893610f8852fd25f8ee23b29bd03915",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "7d3386762ad4a0f1b2f4907b4e43ff1a1893610f8852fd25f8ee23b29bd03915",
+      "policy": "native"
+    },
+    {
+      "name": "known_budget24_named_nonstream_optin",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "reasoning_budget_tokens": 24,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "d448259d27781d414b64cd26eaa25eb40f41eedb45fc2f01902b30dedc8ca899",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "7d3386762ad4a0f1b2f4907b4e43ff1a1893610f8852fd25f8ee23b29bd03915",
+      "policy": "optin"
+    },
+    {
+      "name": "known_budget24_named_stream_native",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "reasoning_budget_tokens": 24,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "request_sha256": "af9fb42fe8fb950c024f2042556d74066359a63aac5016edf7073e4b03d839f8",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "af9fb42fe8fb950c024f2042556d74066359a63aac5016edf7073e4b03d839f8",
+      "policy": "native"
+    },
+    {
+      "name": "known_budget24_named_stream_optin",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "reasoning_budget_tokens": 24,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "e770b8d0d64290cfa6dcab59428eb8b4c77dd588bbaf56b04bbb0f99db94557f",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "af9fb42fe8fb950c024f2042556d74066359a63aac5016edf7073e4b03d839f8",
+      "policy": "optin"
+    },
+    {
+      "name": "known_unbudgeted_required_nonstream_native",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false
+      },
+      "request_sha256": "6f118fc2f4206c55ba53b31ade80a241907fdf388fac869555dfd03cf179fdc1",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "6f118fc2f4206c55ba53b31ade80a241907fdf388fac869555dfd03cf179fdc1",
+      "policy": "native"
+    },
+    {
+      "name": "known_unbudgeted_required_nonstream_optin",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "2b816f7f842463ae9f71f2a3f4227dacd89875422dba11a73fb589301b3a5532",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "6f118fc2f4206c55ba53b31ade80a241907fdf388fac869555dfd03cf179fdc1",
+      "policy": "optin"
+    },
+    {
+      "name": "known_unbudgeted_required_stream_native",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "request_sha256": "850b6c0a95180dcc86c352d0cbab0c3db0312a84e4e1ee1599d863bce770be94",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "850b6c0a95180dcc86c352d0cbab0c3db0312a84e4e1ee1599d863bce770be94",
+      "policy": "native"
+    },
+    {
+      "name": "known_unbudgeted_required_stream_optin",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "required",
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "66fd020562db2e3445c398c3342f9977a6f876a02dabcddb2d5944b2ba0d3caa",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "850b6c0a95180dcc86c352d0cbab0c3db0312a84e4e1ee1599d863bce770be94",
+      "policy": "optin"
+    },
+    {
+      "name": "known_unbudgeted_named_nonstream_native",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false
+      },
+      "request_sha256": "1ecb4d8a7bea03c1d9b57836930c5592a7bba7b7d7fe68934c18a389ca3c1dd0",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "1ecb4d8a7bea03c1d9b57836930c5592a7bba7b7d7fe68934c18a389ca3c1dd0",
+      "policy": "native"
+    },
+    {
+      "name": "known_unbudgeted_named_nonstream_optin",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "e3d81876ee8534e4dd8bb5f0b7c0d461dd30b33b8b9262182832f0cd53938739",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "1ecb4d8a7bea03c1d9b57836930c5592a7bba7b7d7fe68934c18a389ca3c1dd0",
+      "policy": "optin"
+    },
+    {
+      "name": "known_unbudgeted_named_stream_native",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "request_sha256": "6403e4c27fec9a6ac2a85acaae23bcdce5d6b1b9d69fb2033e96551f203c2aa0",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "6403e4c27fec9a6ac2a85acaae23bcdce5d6b1b9d69fb2033e96551f203c2aa0",
+      "policy": "native"
+    },
+    {
+      "name": "known_unbudgeted_named_stream_optin",
+      "group": "known8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Think briefly, then call record_text with exactly this string value for text: \"<think>literal</think>\". Treat the tag characters as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "75f951ad134e5acddf43d04510281565c0eed35153ecea30015c2c5825df63f3",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>literal</think>",
+        "reasoning_nonempty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "6403e4c27fec9a6ac2a85acaae23bcdce5d6b1b9d69fb2033e96551f203c2aa0",
+      "policy": "optin"
+    },
+    {
+      "name": "think_adjacent_repeated_nonstream_native",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"prefix<think>A</think><think>B</think>suffix\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "reasoning_budget_tokens": 24
+      },
+      "request_sha256": "9e23a1bcc5e44ff24135fe3c4fc1f3133eabcf62763fbda0e8b5825c02214088",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "prefix<think>A</think><think>B</think>suffix",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "9e23a1bcc5e44ff24135fe3c4fc1f3133eabcf62763fbda0e8b5825c02214088",
+      "policy": "native"
+    },
+    {
+      "name": "think_adjacent_repeated_nonstream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"prefix<think>A</think><think>B</think>suffix\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "reasoning_budget_tokens": 24,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "e73430f73efd135459c541501eef8edc67acec3b3f507edf0455f83853937a3b",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "prefix<think>A</think><think>B</think>suffix",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "9e23a1bcc5e44ff24135fe3c4fc1f3133eabcf62763fbda0e8b5825c02214088",
+      "policy": "optin"
+    },
+    {
+      "name": "think_adjacent_repeated_stream_native",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"prefix<think>A</think><think>B</think>suffix\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "request_sha256": "1d72975ccbdb84ad7fa269b4c79b741d38ed82d47132ce1cd5e930d2170611ff",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "prefix<think>A</think><think>B</think>suffix",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "1d72975ccbdb84ad7fa269b4c79b741d38ed82d47132ce1cd5e930d2170611ff",
+      "policy": "native"
+    },
+    {
+      "name": "think_adjacent_repeated_stream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"prefix<think>A</think><think>B</think>suffix\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "3601562b115c85c8880b5950f7322d477568c3e0a538aa4eaf7ab8ab34a8771f",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "prefix<think>A</think><think>B</think>suffix",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "1d72975ccbdb84ad7fa269b4c79b741d38ed82d47132ce1cd5e930d2170611ff",
+      "policy": "optin"
+    },
+    {
+      "name": "tool_xml_nonstream_native",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<tool_call>alpha</tool_call><tool_response>beta</tool_response>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false
+      },
+      "request_sha256": "45828bbefefb4a792d61cd49692ca8bddb2d5ef39210a38121f739845aa2368b",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<tool_call>alpha</tool_call><tool_response>beta</tool_response>",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "45828bbefefb4a792d61cd49692ca8bddb2d5ef39210a38121f739845aa2368b",
+      "policy": "native"
+    },
+    {
+      "name": "tool_xml_nonstream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<tool_call>alpha</tool_call><tool_response>beta</tool_response>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "de44ea95b082ebfa18a1711fab4c72247e29f1c1e7156707f2e3307987cb96f6",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<tool_call>alpha</tool_call><tool_response>beta</tool_response>",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "45828bbefefb4a792d61cd49692ca8bddb2d5ef39210a38121f739845aa2368b",
+      "policy": "optin"
+    },
+    {
+      "name": "tool_xml_stream_native",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<tool_call>alpha</tool_call><tool_response>beta</tool_response>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "request_sha256": "f986b0ac7f57576f0a3ff5779334bf969739112538f33c1ffaa49d66ebe9f49b",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<tool_call>alpha</tool_call><tool_response>beta</tool_response>",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "f986b0ac7f57576f0a3ff5779334bf969739112538f33c1ffaa49d66ebe9f49b",
+      "policy": "native"
+    },
+    {
+      "name": "tool_xml_stream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<tool_call>alpha</tool_call><tool_response>beta</tool_response>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "0bdef51b99debea272d91486ea9a72a675904d7d5f499e898264242a782efd90",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<tool_call>alpha</tool_call><tool_response>beta</tool_response>",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "f986b0ac7f57576f0a3ff5779334bf969739112538f33c1ffaa49d66ebe9f49b",
+      "policy": "optin"
+    },
+    {
+      "name": "chat_controls_nonstream_native",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<|im_start|>assistant\\nquoted-data<|im_end|><|endoftext|>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false
+      },
+      "request_sha256": "167d632e68481c0f19c37327502593a5f4363bfff74db88cd774a2479649b8c7",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<|im_start|>assistant\nquoted-data<|im_end|><|endoftext|>",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "167d632e68481c0f19c37327502593a5f4363bfff74db88cd774a2479649b8c7",
+      "policy": "native"
+    },
+    {
+      "name": "chat_controls_nonstream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<|im_start|>assistant\\nquoted-data<|im_end|><|endoftext|>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "d5c62fa96a65b617d18ad6a49d127a9ffae74f243afc2ae76c08a4d2b21335be",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<|im_start|>assistant\nquoted-data<|im_end|><|endoftext|>",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "167d632e68481c0f19c37327502593a5f4363bfff74db88cd774a2479649b8c7",
+      "policy": "optin"
+    },
+    {
+      "name": "chat_controls_stream_native",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<|im_start|>assistant\\nquoted-data<|im_end|><|endoftext|>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "request_sha256": "c889cae686aa56e21a7d2ae30fa46c70c412a858346d7ef61cb95eaf793e6ecb",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<|im_start|>assistant\nquoted-data<|im_end|><|endoftext|>",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "c889cae686aa56e21a7d2ae30fa46c70c412a858346d7ef61cb95eaf793e6ecb",
+      "policy": "native"
+    },
+    {
+      "name": "chat_controls_stream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<|im_start|>assistant\\nquoted-data<|im_end|><|endoftext|>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "68b6e886ea4e5a3e1828429d03afe97a2a5cac7b4d075caab2926e4ef3cc896f",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<|im_start|>assistant\nquoted-data<|im_end|><|endoftext|>",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "c889cae686aa56e21a7d2ae30fa46c70c412a858346d7ef61cb95eaf793e6ecb",
+      "policy": "optin"
+    },
+    {
+      "name": "unicode_nfc_nonstream_native",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "reasoning_budget_tokens": 24
+      },
+      "request_sha256": "617326d93aa6b9b3660a0a1173c4775681f48298169de9583eebaa10ecd3ee04",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "café 中文 😀 <think>🧪</think> fin",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "617326d93aa6b9b3660a0a1173c4775681f48298169de9583eebaa10ecd3ee04",
+      "policy": "native"
+    },
+    {
+      "name": "unicode_nfc_nonstream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "reasoning_budget_tokens": 24,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "5b0897c75d1b949881b4380f2fedfb92f45c4a99c8fcac334835a11b31a21c45",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "café 中文 😀 <think>🧪</think> fin",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "617326d93aa6b9b3660a0a1173c4775681f48298169de9583eebaa10ecd3ee04",
+      "policy": "optin"
+    },
+    {
+      "name": "unicode_nfc_stream_native",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "request_sha256": "10ecc25c0202ef15c0a2c7c49e3e2f37bad0915df3343eba198a1956448d210e",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "café 中文 😀 <think>🧪</think> fin",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "10ecc25c0202ef15c0a2c7c49e3e2f37bad0915df3343eba198a1956448d210e",
+      "policy": "native"
+    },
+    {
+      "name": "unicode_nfc_stream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "1a8b2155c2aa5d62ba8222e4ca0e31db97685a1544c6165b9a2f34582ad88fa7",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "café 中文 😀 <think>🧪</think> fin",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "10ecc25c0202ef15c0a2c7c49e3e2f37bad0915df3343eba198a1956448d210e",
+      "policy": "optin"
+    },
+    {
+      "name": "indented_code_nonstream_native",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"const tag = \\\"<tool_response>alpha</tool_response>\\\";\\n    return \\\"<think>x</think>\\\";\\n\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false
+      },
+      "request_sha256": "2b985b924bb612731788638116896aad98bc77db32633909b3f2886c7a708510",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "const tag = \"<tool_response>alpha</tool_response>\";\n    return \"<think>x</think>\";\n",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "2b985b924bb612731788638116896aad98bc77db32633909b3f2886c7a708510",
+      "policy": "native"
+    },
+    {
+      "name": "indented_code_nonstream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"const tag = \\\"<tool_response>alpha</tool_response>\\\";\\n    return \\\"<think>x</think>\\\";\\n\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "2060205f461f89383a42c2c29b289255a1368519f5775a5d2aed9e5874e23ddf",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "const tag = \"<tool_response>alpha</tool_response>\";\n    return \"<think>x</think>\";\n",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "2b985b924bb612731788638116896aad98bc77db32633909b3f2886c7a708510",
+      "policy": "optin"
+    },
+    {
+      "name": "indented_code_stream_native",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"const tag = \\\"<tool_response>alpha</tool_response>\\\";\\n    return \\\"<think>x</think>\\\";\\n\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "request_sha256": "fdf2ea9c1e9a14e8abc7a25a81519a232de8e54e57c8ab0d218a08ed215401ee",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "const tag = \"<tool_response>alpha</tool_response>\";\n    return \"<think>x</think>\";\n",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "fdf2ea9c1e9a14e8abc7a25a81519a232de8e54e57c8ab0d218a08ed215401ee",
+      "policy": "native"
+    },
+    {
+      "name": "indented_code_stream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"const tag = \\\"<tool_response>alpha</tool_response>\\\";\\n    return \\\"<think>x</think>\\\";\\n\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "506d4c3b3689e94ac6dbff5a86e2508793d9935a92c45eea4e9c0c02d560bb48",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "const tag = \"<tool_response>alpha</tool_response>\";\n    return \"<think>x</think>\";\n",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "fdf2ea9c1e9a14e8abc7a25a81519a232de8e54e57c8ab0d218a08ed215401ee",
+      "policy": "optin"
+    },
+    {
+      "name": "multi_turn_user_nonstream_native",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Remember this exact string for the later record_text call: \"Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.\". Do not call a tool yet."
+          },
+          {
+            "role": "assistant",
+            "content": "I have stored the string for the later call."
+          },
+          {
+            "role": "user",
+            "content": "Now call record_text once with exactly the string from my first message. Preserve every character."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "reasoning_budget_tokens": 24
+      },
+      "request_sha256": "7ae51fae3e5f6168c955e87f7168f3057310b54f725e9aea64de45697610d592",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "7ae51fae3e5f6168c955e87f7168f3057310b54f725e9aea64de45697610d592",
+      "policy": "native"
+    },
+    {
+      "name": "multi_turn_user_nonstream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Remember this exact string for the later record_text call: \"Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.\". Do not call a tool yet."
+          },
+          {
+            "role": "assistant",
+            "content": "I have stored the string for the later call."
+          },
+          {
+            "role": "user",
+            "content": "Now call record_text once with exactly the string from my first message. Preserve every character."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "reasoning_budget_tokens": 24,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "395f47407b5f87686edad4afe93cbd4ab00641bb6457d84f07b4ddcf3d1d4ccf",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "7ae51fae3e5f6168c955e87f7168f3057310b54f725e9aea64de45697610d592",
+      "policy": "optin"
+    },
+    {
+      "name": "multi_turn_user_stream_native",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Remember this exact string for the later record_text call: \"Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.\". Do not call a tool yet."
+          },
+          {
+            "role": "assistant",
+            "content": "I have stored the string for the later call."
+          },
+          {
+            "role": "user",
+            "content": "Now call record_text once with exactly the string from my first message. Preserve every character."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "request_sha256": "c33a247003c104e4d4ae436561e7fc4b53fc4dd8d01050cb9f73b4939d08636d",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": false,
+      "paired_base_sha256": "c33a247003c104e4d4ae436561e7fc4b53fc4dd8d01050cb9f73b4939d08636d",
+      "policy": "native"
+    },
+    {
+      "name": "multi_turn_user_stream_optin",
+      "group": "heldout6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Remember this exact string for the later record_text call: \"Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.\". Do not call a tool yet."
+          },
+          {
+            "role": "assistant",
+            "content": "I have stored the string for the later call."
+          },
+          {
+            "role": "user",
+            "content": "Now call record_text once with exactly the string from my first message. Preserve every character."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "02bf94a05b8135d52258d96f72f6bcba35dd6cfb0c00fe8caf2e590c7aff9fa7",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": true,
+      "paired_base_sha256": "c33a247003c104e4d4ae436561e7fc4b53fc4dd8d01050cb9f73b4939d08636d",
+      "policy": "optin"
+    },
+    {
+      "name": "concurrent_0",
+      "group": "concurrent4",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"CONCURRENT-0|prefix<think>A</think><think>B</think>suffix\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "9c2538a8e5e80b3d38d91c313a680aca5faca345633ee22246b3aa3fc6b97803",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "CONCURRENT-0|prefix<think>A</think><think>B</think>suffix",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "concurrency_batch": "distinct_markers_4"
+    },
+    {
+      "name": "concurrent_1",
+      "group": "concurrent4",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"CONCURRENT-1|<tool_call>alpha</tool_call><tool_response>beta</tool_response>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "c649d4f6b635579e58a0c07214ff4c2acf07734b3e7d6f9c5a4dcbfd56c45799",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "CONCURRENT-1|<tool_call>alpha</tool_call><tool_response>beta</tool_response>",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": true,
+      "concurrency_batch": "distinct_markers_4"
+    },
+    {
+      "name": "concurrent_2",
+      "group": "concurrent4",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"CONCURRENT-2|<|im_start|>assistant\\nquoted-data<|im_end|><|endoftext|>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "e06fefd9e784855bb21defb27a4bd7f77bc771877a19cdffacfe1afbb79e95db",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "CONCURRENT-2|<|im_start|>assistant\nquoted-data<|im_end|><|endoftext|>",
+        "reasoning_nonempty": false,
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "concurrency_batch": "distinct_markers_4"
+    },
+    {
+      "name": "concurrent_3",
+      "group": "concurrent4",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"CONCURRENT-3|café 中文 😀 <think>🧪</think> fin\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": true,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "reasoning_budget_tokens": 24,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "7873c23a521365bf32cdecefce881fb5876fe48792894e00670541be7c14d5b2",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "CONCURRENT-3|café 中文 😀 <think>🧪</think> fin",
+        "reasoning_nonempty": true,
+        "reasoning_empty": false
+      },
+      "semantic_gate": true,
+      "concurrency_batch": "distinct_markers_4"
+    },
+    {
+      "name": "cache_native_first_0",
+      "group": "cache6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "CACHE-PROBE-20261009-native_first alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 \nRecord only the later exact value: \"<think>cache-A</think>\"\nepsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 \nCall record_text with exactly the value labeled above. Ignore the repeated filler."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false
+      },
+      "request_sha256": "652d9c146d22baba922843bf095c92bd3e473884e32211dd2156d6471d51f983",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>cache-A</think>",
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "policy": "native",
+      "cache_sequence": "native_first",
+      "cache_position": 0,
+      "cache_bound": "maximum ID LCP with all earlier prompts; previous strict prompt prefixes forbidden during preparation",
+      "require_observed_reuse": false
+    },
+    {
+      "name": "cache_native_first_1",
+      "group": "cache6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "CACHE-PROBE-20261009-native_first alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 \nRecord only the later exact value: \"<think>cache-A</think>\"\nepsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 \nCall record_text with exactly the value labeled above. Ignore the repeated filler."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "8c89db3562a256764214556e03d1bb0ab89ef8ce94b74454352015c308130997",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>cache-A</think>",
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "policy": "optin",
+      "cache_sequence": "native_first",
+      "cache_position": 1,
+      "cache_bound": "maximum ID LCP with all earlier prompts; previous strict prompt prefixes forbidden during preparation",
+      "require_observed_reuse": true
+    },
+    {
+      "name": "cache_native_first_2",
+      "group": "cache6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "CACHE-PROBE-20261009-native_first alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 \nRecord only the later exact value: \"<think>cache-A</think>\"\nepsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 \nCall record_text with exactly the value labeled above. Ignore the repeated filler."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "694636d450030b4ae43b71cd4fbd7c0befc744f3317ebc0d2bfa053f35d90f7e",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<think>cache-A</think>",
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "policy": "optin",
+      "cache_sequence": "native_first",
+      "cache_position": 2,
+      "cache_bound": "maximum ID LCP with all earlier prompts; previous strict prompt prefixes forbidden during preparation",
+      "require_observed_reuse": true
+    },
+    {
+      "name": "cache_optin_first_0",
+      "group": "cache6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "CACHE-PROBE-20261009-optin_first alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 \nRecord only the later exact value: \"<tool_response>cache-B</tool_response>\"\nepsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 \nCall record_text with exactly the value labeled above. Ignore the repeated filler."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "155bfbe9ccc77481ba10ae555579ef996fdce5ff7915e4c303d9e503189cfbf5",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<tool_response>cache-B</tool_response>",
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "policy": "optin",
+      "cache_sequence": "optin_first",
+      "cache_position": 0,
+      "cache_bound": "maximum ID LCP with all earlier prompts; previous strict prompt prefixes forbidden during preparation",
+      "require_observed_reuse": false
+    },
+    {
+      "name": "cache_optin_first_1",
+      "group": "cache6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "CACHE-PROBE-20261009-optin_first alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 \nRecord only the later exact value: \"<tool_response>cache-B</tool_response>\"\nepsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 \nCall record_text with exactly the value labeled above. Ignore the repeated filler."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        }
+      },
+      "request_sha256": "1f66576ef98849f2bdf58b480e9b986722ad5d2d7f584636b42c3c65683509b8",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<tool_response>cache-B</tool_response>",
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "policy": "native",
+      "cache_sequence": "optin_first",
+      "cache_position": 1,
+      "cache_bound": "maximum ID LCP with all earlier prompts; previous strict prompt prefixes forbidden during preparation",
+      "require_observed_reuse": true
+    },
+    {
+      "name": "cache_optin_first_2",
+      "group": "cache6",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "CACHE-PROBE-20261009-optin_first alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 alpha beta gamma delta 0123456789 \nRecord only the later exact value: \"<tool_response>cache-B</tool_response>\"\nepsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 epsilon zeta eta theta 9876543210 \nCall record_text with exactly the value labeled above. Ignore the repeated filler."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false
+      },
+      "request_sha256": "c81c2700aac1824f5c5e5d8415e5c5805713dbf670da31906768c06c5a8a1f51",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "<tool_response>cache-B</tool_response>",
+        "reasoning_empty": true
+      },
+      "semantic_gate": false,
+      "policy": "native",
+      "cache_sequence": "optin_first",
+      "cache_position": 2,
+      "cache_bound": "maximum ID LCP with all earlier prompts; previous strict prompt prefixes forbidden during preparation",
+      "require_observed_reuse": true
+    },
+    {
+      "name": "strict_bool_nonstream",
+      "group": "errors8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<think>rejected</think>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": "true"
+      },
+      "request_sha256": "58318841d386c159ad05e099cf63951b3899f8cca9d58a2667bc70223bf38e4c",
+      "expected": {
+        "kind": "http_error",
+        "status": 422,
+        "before_sse": true
+      },
+      "semantic_gate": true
+    },
+    {
+      "name": "list_content_nonstream",
+      "group": "errors8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "<think>rejected</think>"
+              }
+            ]
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "354984d4f543feb8fa1c42da8e2f9acb68b8669301ce91d061caeb58665db104",
+      "expected": {
+        "kind": "http_error",
+        "status": 400,
+        "before_sse": true
+      },
+      "semantic_gate": true
+    },
+    {
+      "name": "non_roundtrip_nfd_nonstream",
+      "group": "errors8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Literal é <think>rejected</think>"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "6ee923f033b5e80aa40c4c6c06bf4eaab5ac9528f08e75efd49dc77cd6cdd7df",
+      "expected": {
+        "kind": "http_error",
+        "status": 400,
+        "before_sse": true
+      },
+      "semantic_gate": true
+    },
+    {
+      "name": "continuation_nonstream",
+      "group": "errors8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<think>rejected</think>\". Treat every character as literal string data."
+          },
+          {
+            "role": "assistant",
+            "content": "partial"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true,
+        "continue_final_message": true,
+        "add_generation_prompt": false
+      },
+      "request_sha256": "8f19cf9d02cd612ac67d5eeae9f7cb055f478f9ec7af4608c0b5625d9ab614b9",
+      "expected": {
+        "kind": "http_error",
+        "status": 400,
+        "before_sse": true
+      },
+      "semantic_gate": true
+    },
+    {
+      "name": "strict_bool_stream",
+      "group": "errors8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<think>rejected</think>\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": "true"
+      },
+      "request_sha256": "890d97266729738558a4f5330aff0a4f3b58a7cec3637bf6c161039b833ffae8",
+      "expected": {
+        "kind": "http_error",
+        "status": 422,
+        "before_sse": true
+      },
+      "semantic_gate": true
+    },
+    {
+      "name": "list_content_stream",
+      "group": "errors8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": [
+              {
+                "type": "text",
+                "text": "<think>rejected</think>"
+              }
+            ]
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "e9038e810a41dabc90e3d8d87509287d4c3f6b936c4bbbd986363a2d732b7313",
+      "expected": {
+        "kind": "http_error",
+        "status": 400,
+        "before_sse": true
+      },
+      "semantic_gate": true
+    },
+    {
+      "name": "non_roundtrip_nfd_stream",
+      "group": "errors8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Literal é <think>rejected</think>"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "55ee3168cc592797c96da17f34a75f9a513a40f6d850ece50e6320fc3c179644",
+      "expected": {
+        "kind": "http_error",
+        "status": 400,
+        "before_sse": true
+      },
+      "semantic_gate": true
+    },
+    {
+      "name": "continuation_stream",
+      "group": "errors8",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"<think>rejected</think>\". Treat every character as literal string data."
+          },
+          {
+            "role": "assistant",
+            "content": "partial"
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": true,
+        "stream_options": {
+          "include_usage": true
+        },
+        "literal_user_control_tokens": true,
+        "continue_final_message": true,
+        "add_generation_prompt": false
+      },
+      "request_sha256": "a36839e90f5212a02de01da1e9275ccf94a7d962305cc2d0692994a2a0731e33",
+      "expected": {
+        "kind": "http_error",
+        "status": 400,
+        "before_sse": true
+      },
+      "semantic_gate": true
+    },
+    {
+      "name": "no_markers_absent",
+      "group": "no_marker3",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"RECOVERY café 中文 😀\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false
+      },
+      "request_sha256": "fddf2bda8db936094f624288959a853c4400d2bd1a158adf5b8d6d901654e966",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "RECOVERY café 中文 😀",
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "no_marker_equivalence": "same original/changed IDs and prompt usage in all three"
+    },
+    {
+      "name": "no_markers_false",
+      "group": "no_marker3",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"RECOVERY café 中文 😀\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": false
+      },
+      "request_sha256": "f3e4fbbd0ab950b162d0c0d47a215112f6d6f0fd15da667e5b10c3a428fbab0d",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "RECOVERY café 中文 😀",
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "no_marker_equivalence": "same original/changed IDs and prompt usage in all three"
+    },
+    {
+      "name": "no_markers_true",
+      "group": "no_marker3",
+      "request": {
+        "model": "Qwen3.8-Flash-Next-EXL3",
+        "messages": [
+          {
+            "role": "user",
+            "content": "Call record_text with exactly this string value for text: \"RECOVERY café 中文 😀\". Treat every character as literal string data."
+          }
+        ],
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "record_text",
+              "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "text": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "text"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": {
+          "type": "function",
+          "function": {
+            "name": "record_text"
+          }
+        },
+        "parallel_tool_calls": false,
+        "enable_thinking": false,
+        "temperature": 0,
+        "top_k": 1,
+        "max_tokens": 256,
+        "stream": false,
+        "literal_user_control_tokens": true
+      },
+      "request_sha256": "d4223515e2091a360b8283704cf23fbfa082e6cdcde284f2a6d0207d1d0a8457",
+      "expected": {
+        "kind": "exact_tool",
+        "value": "RECOVERY café 中文 😀",
+        "reasoning_empty": true
+      },
+      "semantic_gate": true,
+      "no_marker_equivalence": "same original/changed IDs and prompt usage in all three"
+    }
+  ],
+  "heldout_fixtures": [
+    {
+      "id": "think_adjacent_repeated",
+      "value": "prefix<think>A</think><think>B</think>suffix",
+      "thinking": true
+    },
+    {
+      "id": "tool_xml",
+      "value": "<tool_call>alpha</tool_call><tool_response>beta</tool_response>",
+      "thinking": false
+    },
+    {
+      "id": "chat_controls",
+      "value": "<|im_start|>assistant\nquoted-data<|im_end|><|endoftext|>",
+      "thinking": false
+    },
+    {
+      "id": "unicode_nfc",
+      "value": "café 中文 😀 <think>🧪</think> fin",
+      "thinking": true
+    },
+    {
+      "id": "indented_code",
+      "value": "const tag = \"<tool_response>alpha</tool_response>\";\n    return \"<think>x</think>\";\n",
+      "thinking": false
+    },
+    {
+      "id": "multi_turn_user",
+      "value": "Remembered <|im_start|>user<|im_end|> and <think>earlier</think>.",
+      "thinking": true
+    }
+  ],
+  "run_order": [
+    "known8_native_and_optin",
+    "heldout6_native_and_optin",
+    "concurrent4",
+    "cache6",
+    "errors8",
+    "no_marker3",
+    "standard_tools28_default_omitted"
+  ],
+  "binding_required": [
+    "exact clean candidate Tabby commit and source-file hashes",
+    "engine24f0 and candidate recipe/controller/client hashes",
+    "actual tokenizer and selected template hashes/content",
+    "CPU-rendered native/opt-in prompt text hashes, full IDs/hashes and expected API prompt counts using production apply_chat_template/plan logic",
+    "deployment config and model audit unchanged",
+    "no PYTHONPATH/sitecustomize diagnostic hooks active",
+    "actual HTTP422 StrictBool route proof retained with source binding"
+  ],
+  "report_contract": [
+    "retain every request/response/SSE frame and response ID",
+    "record actual prompt/cache/completion/total usage and source bound expected prompt tokens",
+    "record exact output string and SHA, never normalize whitespace or Unicode",
+    "separate expected native semantic observations from API/protocol failures and opt-in semantic gates",
+    "concurrent clients have distinct response IDs and exact per-request arguments",
+    "cache upper bounds and positive reuse assessed separately; no unexercised-cache qualification",
+    "preserve failures, exclusive report creation, no semantic retries",
+    "owned outer cleanup and shared lock are controller responsibilities"
+  ],
+  "cache_bound_detail": "Compute maximum token-ID longest common prefix with every earlier input; preparation rejects strict-prefix ambiguity so prior generated suffixes cannot extend the bound. For repeats of the same input the upper bound is its full prompt length. Require cached_tokens<=bound and observed positive reuse in designated warmed probes; record page geometry, do not infer page/window counts from SSE. All61 static feature requests precede the32 tool-suite POSTs on a freshserver, so no dynamic tool-history requests precede cache probes.",
+  "promotion_scope": "Only opt-in known/heldout/concurrent exactness, protocol/usage, no-marker identity, rejection/recovery, observed cache integrity and unchanged tools28 gate the feature. Native controls are diagnostic, not required to improve. One model/template does not qualify unsupported models.",
+  "standard_default_off_tool_chat_requests": 32,
+  "total_chat_requests_including_standard_tools": 93,
+  "total_checks_including_standard_tools": 89
+}

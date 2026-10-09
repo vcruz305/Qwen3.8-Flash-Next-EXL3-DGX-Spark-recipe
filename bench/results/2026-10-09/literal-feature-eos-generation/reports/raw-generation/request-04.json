@@ -1,0 +1,3851 @@
+{
+  "schema_version": 1,
+  "index": 4,
+  "run_label": "literal-feature-eos-generation",
+  "request_id": "663997be79bd4f10b4f125030fd60ba5",
+  "streaming_mode": false,
+  "start_in_reasoning_mode": false,
+  "rendered_prompt": "<|im_start|>system\n# Tools\n\nYou have access to the following functions:\n\n<tools>\n{\"function\": {\"name\": \"record_text\", \"description\": \"Record the exact supplied string, preserving every character. Synthetic; never executed.\", \"parameters\": {\"type\": \"object\", \"properties\": {\"text\": {\"type\": \"string\"}}, \"required\": [\"text\"], \"additionalProperties\": false}}, \"type\": \"function\"}\n</tools>\n\nIf you choose to call a function ONLY reply in the following format with NO suffix:\n\n<tool_call>\n<function=example_function_name>\n<parameter=example_parameter_1>\nvalue_1\n</parameter>\n<parameter=example_parameter_2>\nThis is the value for the second parameter\nthat can span\nmultiple lines\n</parameter>\n</function>\n</tool_call>\n\n<IMPORTANT>\nReminder:\n- Function calls MUST follow the specified format: an inner <function=...></function> block must be nested within <tool_call></tool_call> XML tags\n- Required parameters MUST be specified\n- You may provide optional reasoning for your function call in natural language BEFORE the function call, but NOT after\n- If there is no function call available, answer the question like normal with your current knowledge and do not tell the user about function calls\n</IMPORTANT><|im_end|>\n<|im_start|>user\nCall record_text with exactly this string value for text: \"CONCURRENT-0|prefix<think>A</think><think>B</think>suffix\". Treat every character as literal string data.<|im_end|>\n<|im_start|>assistant\n<think>\n\n</think>\n\n",
+  "rendered_prompt_sha256": "aab57cf416297f58fa25a84ac313c2d76bf2b22fb3f75ff84ceb457734b57b64",
+  "case_name": "concurrent_0",
+  "wire_request_sha256": "9c2538a8e5e80b3d38d91c313a680aca5faca345633ee22246b3aa3fc6b97803",
+  "input_plan": {
+    "original_prompt_tokens": 317,
+    "prompt_tokens": 325,
+    "original_ids_sha256": "757d33d9cd3fa14ed43341386359258549a8e104f5fbb4a7670cf54a61128ad6",
+    "input_ids_sha256": "c08dca797dba6a07c4b640709471254c75da3eb895c14b9bbade4e2f6b561fcd",
+    "replacement_count": 4
+  },
+  "matched_request": {
+    "messages": [
+      {
+        "role": "user",
+        "content": "Call record_text with exactly this string value for text: \"CONCURRENT-0|prefix<think>A</think><think>B</think>suffix\". Treat every character as literal string data."
+      }
+    ],
+    "tools": [
+      {
+        "function": {
+          "name": "record_text",
+          "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "text": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "text"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "type": "function"
+      }
+    ],
+    "model": "Qwen3.8-Flash-Next-EXL3",
+    "tool_choice": {
+      "function": {
+        "name": "record_text"
+      },
+      "type": "function"
+    },
+    "reasoning_budget_tokens": null,
+    "literal_user_control_tokens": true,
+    "parallel_tool_calls": false,
+    "max_tokens": 256,
+    "temperature": 0.0,
+    "top_k": 1,
+    "top_p": 0.95,
+    "n": 1,
+    "stream": false,
+    "template_vars": {
+      "enable_thinking": false,
+      "add_generation_prompt": true,
+      "tools": [
+        {
+          "function": {
+            "name": "record_text",
+            "description": "Record the exact supplied string, preserving every character. Synthetic; never executed.",
+            "parameters": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "text"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "type": "function"
+        }
+      ],
+      "functions": null,
+      "tool_choice": {
+        "function": {
+          "name": "record_text"
+        },
+        "type": "function"
+      },
+      "parallel_tool_calls": false,
+      "messages": [
+        {
+          "role": "user",
+          "content": "Call record_text with exactly this string value for text: \"CONCURRENT-0|prefix<think>A</think><think>B</think>suffix\". Treat every character as literal string data."
+        }
+      ],
+      "bos_token": "<|endoftext|>",
+      "eos_token": "<|endoftext|>",
+      "pad_token": "",
+      "unk_token": null
+    }
+  },
+  "producer_events": [],
+  "producer_events_dropped": 0,
+  "native_sample_events": [
+    {
+      "index": 0,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37485364885756,
+      "payload": {
+        "new_tokens": 0,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          325
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 1,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37485367414653,
+      "payload": {
+        "state": {
+          "new_tokens": 1,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            326
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            248058
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 2,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37486189509691,
+      "payload": {
+        "new_tokens": 1,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          326
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 3,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37486191877100,
+      "payload": {
+        "state": {
+          "new_tokens": 2,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            327
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            198
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 4,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37486192917350,
+      "payload": {
+        "new_tokens": 2,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          327
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 5,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37486193017301,
+      "payload": {
+        "state": {
+          "new_tokens": 3,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            328
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            27
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 6,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487017799187,
+      "payload": {
+        "new_tokens": 3,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          328
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 7,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487020394035,
+      "payload": {
+        "state": {
+          "new_tokens": 4,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            329
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            1628
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 8,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487021892826,
+      "payload": {
+        "new_tokens": 4,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          329
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 9,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487021976361,
+      "payload": {
+        "state": {
+          "new_tokens": 5,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            330
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            28
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 10,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487102041849,
+      "payload": {
+        "new_tokens": 5,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          330
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 11,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487104391643,
+      "payload": {
+        "state": {
+          "new_tokens": 6,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            331
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            8286
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 12,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487105169782,
+      "payload": {
+        "new_tokens": 6,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          331
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 13,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487105242518,
+      "payload": {
+        "state": {
+          "new_tokens": 7,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            332
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            4185
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 14,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487120810597,
+      "payload": {
+        "new_tokens": 7,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          332
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 15,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487169191754,
+      "payload": {
+        "state": {
+          "new_tokens": 8,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            333
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            29
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 16,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487169909045,
+      "payload": {
+        "new_tokens": 8,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          333
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 17,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487169983173,
+      "payload": {
+        "state": {
+          "new_tokens": 9,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            334
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            198
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 18,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487183100820,
+      "payload": {
+        "new_tokens": 9,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          334
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 19,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487230789004,
+      "payload": {
+        "state": {
+          "new_tokens": 10,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            335
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            27
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 20,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487232208404,
+      "payload": {
+        "new_tokens": 10,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          335
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 21,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487232348179,
+      "payload": {
+        "state": {
+          "new_tokens": 11,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            336
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            15704
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 22,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487257121961,
+      "payload": {
+        "new_tokens": 11,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          336
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 23,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487304929633,
+      "payload": {
+        "state": {
+          "new_tokens": 12,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            337
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            46696
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 24,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487307457506,
+      "payload": {
+        "new_tokens": 12,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          337
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 25,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487307558513,
+      "payload": {
+        "state": {
+          "new_tokens": 13,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            338
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            29
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 26,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487324132427,
+      "payload": {
+        "new_tokens": 13,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          338
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 27,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487372248225,
+      "payload": {
+        "state": {
+          "new_tokens": 14,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            339
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            198
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 28,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487374908848,
+      "payload": {
+        "new_tokens": 14,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          339
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 29,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487374984944,
+      "payload": {
+        "state": {
+          "new_tokens": 15,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            340
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            5609
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 30,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487392599395,
+      "payload": {
+        "new_tokens": 15,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          340
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 31,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487443186090,
+      "payload": {
+        "state": {
+          "new_tokens": 16,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            341
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            43208
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 32,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487443429080,
+      "payload": {
+        "new_tokens": 16,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          341
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 33,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487443468104,
+      "payload": {
+        "state": {
+          "new_tokens": 17,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            342
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            12
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 34,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487459616484,
+      "payload": {
+        "new_tokens": 17,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          342
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 35,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487509577023,
+      "payload": {
+        "state": {
+          "new_tokens": 18,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            343
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            15
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 36,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487510098300,
+      "payload": {
+        "new_tokens": 18,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          343
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 37,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487510170619,
+      "payload": {
+        "state": {
+          "new_tokens": 19,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            344
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            91
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 38,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487525334573,
+      "payload": {
+        "new_tokens": 19,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          344
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 39,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487575266936,
+      "payload": {
+        "state": {
+          "new_tokens": 20,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            345
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            11510
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 40,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487576199730,
+      "payload": {
+        "new_tokens": 20,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          345
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 41,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487576269970,
+      "payload": {
+        "state": {
+          "new_tokens": 21,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            346
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            13314
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 42,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487594232803,
+      "payload": {
+        "new_tokens": 21,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          346
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 43,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487644856617,
+      "payload": {
+        "state": {
+          "new_tokens": 22,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            347
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            741
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 44,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487645764612,
+      "payload": {
+        "new_tokens": 22,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          347
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 45,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487645853731,
+      "payload": {
+        "state": {
+          "new_tokens": 23,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            348
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            22733
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 46,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487662425501,
+      "payload": {
+        "new_tokens": 23,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          348
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 47,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487713500096,
+      "payload": {
+        "state": {
+          "new_tokens": 24,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            349
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            510
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 48,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487716217536,
+      "payload": {
+        "new_tokens": 24,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          349
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 49,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487716288815,
+      "payload": {
+        "state": {
+          "new_tokens": 25,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            350
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            26003
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 50,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487734018673,
+      "payload": {
+        "new_tokens": 25,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          350
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 51,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487783606542,
+      "payload": {
+        "state": {
+          "new_tokens": 26,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            351
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            1721
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 52,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487798334163,
+      "payload": {
+        "new_tokens": 26,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          351
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 53,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487848124815,
+      "payload": {
+        "state": {
+          "new_tokens": 27,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            352
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            26003
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 54,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487850756815,
+      "payload": {
+        "new_tokens": 27,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          352
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 55,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487850828318,
+      "payload": {
+        "state": {
+          "new_tokens": 28,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            353
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            35503
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 56,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487867250377,
+      "payload": {
+        "new_tokens": 28,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          353
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 57,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487918136590,
+      "payload": {
+        "state": {
+          "new_tokens": 29,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            354
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            510
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 58,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487920748365,
+      "payload": {
+        "new_tokens": 29,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          354
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 59,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487920817725,
+      "payload": {
+        "state": {
+          "new_tokens": 30,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            355
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            26003
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 60,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487940403492,
+      "payload": {
+        "new_tokens": 30,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          355
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 61,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487990105600,
+      "payload": {
+        "state": {
+          "new_tokens": 31,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            356
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            29
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 62,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37487991166586,
+      "payload": {
+        "new_tokens": 31,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          356
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 63,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37487991257177,
+      "payload": {
+        "state": {
+          "new_tokens": 32,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            357
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            25930
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 64,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37488009624679,
+      "payload": {
+        "new_tokens": 32,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          357
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 65,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37488058750263,
+      "payload": {
+        "state": {
+          "new_tokens": 33,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            358
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            198
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 66,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37488058986518,
+      "payload": {
+        "new_tokens": 33,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          358
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 67,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37488059028597,
+      "payload": {
+        "state": {
+          "new_tokens": 34,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            359
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            510
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 68,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37488076549001,
+      "payload": {
+        "new_tokens": 34,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          359
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 69,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37488126706115,
+      "payload": {
+        "state": {
+          "new_tokens": 35,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            360
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            15704
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 70,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37488129336914,
+      "payload": {
+        "new_tokens": 35,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          360
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 71,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37488129409698,
+      "payload": {
+        "state": {
+          "new_tokens": 36,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            361
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            29
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 72,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37488147121876,
+      "payload": {
+        "new_tokens": 36,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          361
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 73,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37488198604118,
+      "payload": {
+        "state": {
+          "new_tokens": 37,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            362
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            198
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 74,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37488199640095,
+      "payload": {
+        "new_tokens": 37,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          362
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 75,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37488199707471,
+      "payload": {
+        "state": {
+          "new_tokens": 38,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            363
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            510
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 76,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37488213289467,
+      "payload": {
+        "new_tokens": 38,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          363
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 77,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37488263127686,
+      "payload": {
+        "state": {
+          "new_tokens": 39,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            364
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            1628
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 78,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37488263708771,
+      "payload": {
+        "new_tokens": 39,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          364
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 79,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37488263758770,
+      "payload": {
+        "state": {
+          "new_tokens": 40,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            365
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            29
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 80,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37488283887446,
+      "payload": {
+        "new_tokens": 40,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          365
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 81,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37488333400723,
+      "payload": {
+        "state": {
+          "new_tokens": 41,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            366
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            198
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 82,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37488333876368,
+      "payload": {
+        "new_tokens": 41,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          366
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 83,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37488333934848,
+      "payload": {
+        "state": {
+          "new_tokens": 42,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            367
+          ],
+          "held_text": {
+            "text": "",
+            "length": 0,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [],
+            "count": 0,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            248059
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": false,
+        "requeue": false
+      }
+    },
+    {
+      "index": 84,
+      "kind": "native_sample_before",
+      "monotonic_ns": 37488350144059,
+      "payload": {
+        "new_tokens": 42,
+        "rq_new_tokens": 0,
+        "prefix_token_present": false,
+        "checkpoint_rewound": false,
+        "banned_checkpoint_present": false,
+        "forced_ids_present": false,
+        "forced_sample": false,
+        "token_budget_present": false,
+        "filters_suspended": false,
+        "decode_special_tokens": true,
+        "pad_token_id": 248044,
+        "eos_token_id": 248044,
+        "stop_tokens": [
+          248044,
+          248046
+        ],
+        "sequence_lengths": [
+          367
+        ],
+        "held_text": {
+          "text": "",
+          "length": 0,
+          "truncated": false
+        },
+        "held_tokens": {
+          "ids": [],
+          "count": 0,
+          "device": "cpu",
+          "truncated": false
+        }
+      }
+    },
+    {
+      "index": 85,
+      "kind": "native_sample_after",
+      "monotonic_ns": 37488403649872,
+      "payload": {
+        "state": {
+          "new_tokens": 43,
+          "rq_new_tokens": 0,
+          "prefix_token_present": false,
+          "checkpoint_rewound": false,
+          "banned_checkpoint_present": false,
+          "forced_ids_present": false,
+          "forced_sample": false,
+          "token_budget_present": false,
+          "filters_suspended": false,
+          "decode_special_tokens": true,
+          "pad_token_id": 248044,
+          "eos_token_id": 248044,
+          "stop_tokens": [
+            248044,
+            248046
+          ],
+          "sequence_lengths": [
+            368
+          ],
+          "held_text": {
+            "text": "<|im_end|>",
+            "length": 10,
+            "truncated": false
+          },
+          "held_tokens": {
+            "ids": [
+              248046
+            ],
+            "count": 1,
+            "device": "cpu",
+            "truncated": false
+          }
+        },
+        "processed_token": {
+          "ids": [
+            248046
+          ],
+          "count": 1,
+          "device": "cpu",
+          "truncated": false
+        },
+        "eos": true,
+        "requeue": false
+      }
+    }
+  ],
+  "native_sample_events_dropped": 0,
+  "started_monotonic_ns": 37480560612278,
+  "raw_finish": {
+    "native_full_completion": "<tool_call>\n<function=record_text>\n<parameter=text>\nCONCURRENT-0|prefix<think>A</think><think>B</think>suffix\n</parameter>\n</function>\n</tool_call>",
+    "native_full_completion_present": true,
+    "backend_full_response": "<tool_call>\n<function=record_text>\n<parameter=text>\nCONCURRENT-0|prefix<think>A</think><think>B</think>suffix\n</parameter>\n</function>\n</tool_call>",
+    "native_metrics": {
+      "stage": "streaming",
+      "eos": true,
+      "eos_reason": "stop_token",
+      "prompt_tokens": 325,
+      "cached_tokens": 0,
+      "new_tokens": 43,
+      "accepted_draft_tokens": 20,
+      "rejected_draft_tokens": 5,
+      "eos_triggering_token_str": "<|im_end|>",
+      "eos_triggering_string": null
+    },
+    "backend_finish_monotonic_ns": 37488409861354,
+    "returned_metrics": {
+      "gen_tokens": 43,
+      "finish_reason": "stop",
+      "eos_reason": "stop_token",
+      "stop_str": "<|im_end|>",
+      "cached_tokens": 0,
+      "draft_accept": 20,
+      "draft_reject": 5
+    }
+  },
+  "collector_returned_error": false,
+  "native_observer_audit": {
+    "lookup_errors": 0,
+    "observation_errors": 0,
+    "sample_calls": 416,
+    "decode_calls": 12,
+    "decoder_hook_installed": true
+  },
+  "finished_monotonic_ns": 37488410420870,
+  "raised_exception_type": null,
+  "skipped_matching_requests_so_far": 0
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "commit": "a70ae1fa9e457e478c3d96bdc84012a3cb331796",
+  "tree": "0f278f289af73204786e2c08d58e056c2564eadf",
+  "branch": "followup/literal-copy-20261009",
+  "clean": true,
+  "remote_branch_pushed": true,
+  "source_files": {
+    "common/literal_user_tokens.py": "7687416d599c651d0cd22a892908bd51264721133c4f9fd160fcb51bd76b0907",
+    "backends/exllamav3/model.py": "e13b45a65fb42ece09874a827172001039fbfba4ebe104227d35bf8fd217a244",
+    "endpoints/OAI/types/chat_completion.py": "4491c7e7d9da29d353dced1d85ab58ddbcf52010c87d54d121ece8a20cba90d5",
+    "endpoints/OAI/utils/chat_completion.py": "6ad0fc4d84f1845826c86b992d6e0d3b4028a3b712923269e912f2e9eaa80947",
+    "docs/literal-user-control-tokens.md": "4100fe43b2fbdf1d77866e598bff138ff209b275770c0d51e1383884256c9a29",
+    "tests/test_literal_user_tokens.py": "ab847f7bfe1128755f65e89b58a218c8a76e1f096f8d557efdb34ac65be5fcf5",
+    "tests/check_literal_user_tokens.py": "2e0f3220aa246e644ea78095ab459417edd08d7a594c6894761f2e660b953228"
+  },
+  "evidence_files": {
+    "literal-feature-full-cpu-first.log": "46c4913d01b7101dd6abdcdadfbb458a7521f38069fbd42e99f44c925ef1cca1",
+    "literal-feature-focused-final.log": "167cdc695f7d56c7ce9c1f4d5cf9b32163eeed113a29b71678fa943d5ad9a4b9",
+    "literal-feature-qwen-cpu-first.json": "b7ba99fb8c5641168ce225f945ae3ce32c195ee21278481579d77a643a0dea9b",
+    "literal-feature-qwen-cpu-peer.json": "861a5cdef713081fddcda4184cee8dc6b9f41409812d328b374f9a088daddc6d",
+    "literal-feature-final-peer-review.json": "7c8f171317c0f474571a9aff91e05d1c3c6b6442150bd019aa273def351a8b8d",
+    "literal-feature-whitespace-proof.json": "33a257ce81702f2232f4d5f96baa662b81917b57e0c6a105b63c34496cc0e3d4",
+    "literal-cache-peer-cpu.json": "b75f37ba9b498db75a5dc9b9b68c37f7e41f7d3ea7eb2584def907bc1ff055a3",
+    "check_literal_cache_peer_cpu.py": "8623a51d51e46037177535fa1e3a46752d662a7f06cc4ada520dedace3fd0347"
+  },
+  "full_cpu": {
+    "command": "OLD/tabbyapi-agent/.venv-tools/bin/python -m pytest -q tests/test_*.py",
+    "passed": 403,
+    "skipped": 2,
+    "subtests_passed": 5210,
+    "scope": "CPU-only venv; existing engine-import recovery/grammar modules skipped. Exact source selection, not a live serving result."
+  },
+  "final_focused": {
+    "passed": 21,
+    "subtests_passed": 51
+  },
+  "actual_qwen_peer": {
+    "rows": 46,
+    "pairs": 23,
+    "expected_literal_http400": 1,
+    "shared_complete_cache_pages": 7,
+    "actual_native_encoder_and_cache_methods": true
+  },
+  "independent_cache_peer": {
+    "plans": 4,
+    "real_cpu_tensors": true,
+    "gpu_initialized": false
+  },
+  "post_review_change": "One trailing test-source space removed; AST equality proved, focused suite rerun. Runtime/doc/helper bytes are exactly peer-reviewed.",
+  "bundle": {
+    "path": "/home/vcruz/src/qwen-followup-20261009/tabby-literal-a70.bundle",
+    "sha256": "a34098fb18b679461e5b9bf804962fad7784a971a6613399f1bb1a7d29ae5d89",
+    "prerequisite": "f650bb5389e0a273549e47d4d26a765760c013e1"
+  },
+  "limitations": "Default-off candidate only. No production/main deployment. Source-bound heldout/default/concurrent/live cache qualification still pending; no reasoning-boundary repair claim."
+}

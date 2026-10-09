@@ -1,0 +1,309 @@
+diff --git a/bench/run_matrix.py b/bench/run_matrix.py
+index 89d22a7..66be66b 100644
+--- a/bench/run_matrix.py
++++ b/bench/run_matrix.py
+@@ -406,7 +406,30 @@ def commands(job, attempt, recipe, python, model):
+         yield "tools", [python, str(recipe / "bench/tool_smoke.py"), *common, *flag_args(job["tools"])]
+ 
+ 
+-def run_job(job, args, identity, env):
++class InterruptState:
++    """Record signals asynchronously; raise only after owned children are registered.
++
++    Checkpoints stay outside cleanup. No signal mask is inherited by children,
++    and additional TERM/INT signals cannot interrupt an owned-group shutdown.
++    """
++    def __init__(self):
++        self.signum = None
++
++    def receive(self, signum, _frame):
++        if self.signum is None:
++            self.signum = signum
++
++    def error(self):
++        return KeyboardInterrupt(f"Received signal {self.signum}")
++
++    def checkpoint(self):
++        if self.signum is not None:
++            raise self.error()
++
++
++def run_job(job, args, identity, env, interrupt=None):
++    checkpoint = interrupt.checkpoint if interrupt is not None else lambda: None
++    checkpoint()
+     job_dir = args.output / job["label"]
+     job_dir.mkdir(exist_ok=True)
+     config = {"job": job, "sources": identity, "resolved_tuning": {k: v for k, v in env.items() if tuning_key(k)},
+@@ -440,6 +463,7 @@ def run_job(job, args, identity, env):
+     try:
+         verify_inputs(job, args, identity, env)
+         record["inputs_verified_before_launch_at_utc"] = stamp()
++        checkpoint()
+         sampler.tick("before_start")
+         server_log = (attempt / "server.log").open("w")
+         start = time.monotonic()
+@@ -448,8 +472,10 @@ def run_job(job, args, identity, env):
+                                   stderr=subprocess.STDOUT, start_new_session=True)
+         record["server_pid"] = server.pid
+         save()
++        checkpoint()  # Popen has returned and the server is owned by this finally.
+         deadline = start + args.ready_timeout
+         while time.monotonic() < deadline:
++            checkpoint()
+             if server.poll() is not None:
+                 raise RuntimeError(f"Server exited during load: {server.returncode}")
+             sampler.tick("loading", server.pid)
+@@ -489,6 +515,7 @@ def run_job(job, args, identity, env):
+         record["state"] = "measuring"
+         save()
+         for name, command in commands(job, attempt, args.recipe, str(args.runtime / "venv/bin/python"), model):
++            checkpoint()
+             if server.poll() is not None:
+                 raise RuntimeError("Server exited between measurements")
+             destination = attempt / (name + ".json")
+@@ -504,7 +531,9 @@ def run_job(job, args, identity, env):
+                                           stderr=subprocess.STDOUT, start_new_session=True)
+                 began = time.monotonic()
+                 try:
++                    checkpoint()  # The client assignment precedes this cleanup boundary.
+                     while client.poll() is None:
++                        checkpoint()
+                         if time.monotonic() - began > args.client_timeout:
+                             client_record["timed_out"] = True
+                             break
+@@ -519,9 +548,11 @@ def run_job(job, args, identity, env):
+                         raise
+                     finally:
+                         client_record["wall_seconds"] = time.monotonic() - began
++            checkpoint()  # Client cleanup is complete before delivering a signal.
+             client_record["completed_report"] = destination.is_file() and bool(
+                 json.loads(destination.read_text()).get("completed_at_utc"))
+             save()
++        checkpoint()
+         verify_inputs(job, args, identity, env)
+         record["inputs_verified_after_measurements_at_utc"] = stamp()
+         if env.get("GPU_LOCK_FILE"):
+@@ -548,6 +579,11 @@ def run_job(job, args, identity, env):
+             record.update(state="cleanup_failed", passed=False)
+         if record.get("server_exit_before_cleanup") is not None:
+             record["passed"] = False
++        if interrupt is not None and interrupt.signum is not None:
++            interrupted = interrupt.error()
++            record.update(passed=False, signal=interrupt.signum, error=str(interrupted))
++            if record["state"] != "cleanup_failed":
++                record["state"] = "interrupted"
+         record["ended_at_utc"] = stamp()
+         if record["state"] != "interrupted":
+             record["finished_at_utc"] = record["ended_at_utc"]
+@@ -579,25 +615,32 @@ def main():
+     if len({job["label"] for job in jobs}) != len(jobs):
+         parser.error("Job labels must be unique")
+     args.output.mkdir(parents=True, exist_ok=True)
+-    def interrupt(signum, _frame):
+-        signal.signal(signal.SIGTERM, signal.SIG_IGN)
+-        signal.signal(signal.SIGINT, signal.SIG_IGN)
+-        raise KeyboardInterrupt(f"Received signal {signum}; stopping owned processes")
+-    signal.signal(signal.SIGTERM, interrupt)
+-    signal.signal(signal.SIGINT, interrupt)
+-    with (args.output / ".controller.lock").open("a") as output_lock, Path(
+-            f"/tmp/qwen-experiment-8899-{os.getuid()}.lock").open("a") as port_lock:
+-        fcntl.flock(output_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+-        fcntl.flock(port_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+-        identity = source_identity(args.recipe, args.runtime)
+-        environments = [resolved_env(args.recipe, args.runtime, job) for job in jobs]
+-        records = []
+-        for job, env in zip(jobs, environments):
+-            record = run_job(job, args, identity, env)
+-            records.append(record)
+-            if record["state"] == "cleanup_failed":
+-                break  # Ownership/cleanup uncertainty must never overlap the next job.
+-        return 0 if len(records) == len(jobs) and all(record["passed"] for record in records) else 1
++    interrupt = InterruptState()
++    previous = {sig: signal.getsignal(sig) for sig in (signal.SIGTERM, signal.SIGINT)}
++    for sig in previous:
++        signal.signal(sig, interrupt.receive)
++    try:
++        with (args.output / ".controller.lock").open("a") as output_lock, Path(
++                f"/tmp/qwen-experiment-8899-{os.getuid()}.lock").open("a") as port_lock:
++            fcntl.flock(output_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
++            fcntl.flock(port_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
++            interrupt.checkpoint()
++            identity = source_identity(args.recipe, args.runtime)
++            environments = []
++            for job in jobs:
++                interrupt.checkpoint()
++                environments.append(resolved_env(args.recipe, args.runtime, job))
++            records = []
++            for job, env in zip(jobs, environments):
++                record = run_job(job, args, identity, env, interrupt=interrupt)
++                interrupt.checkpoint()
++                records.append(record)
++                if record["state"] == "cleanup_failed":
++                    break  # Ownership/cleanup uncertainty must never overlap the next job.
++            return 0 if len(records) == len(jobs) and all(record["passed"] for record in records) else 1
++    finally:
++        for sig, handler in previous.items():
++            signal.signal(sig, handler)
+ 
+ 
+ if __name__ == "__main__":
+diff --git a/bench/test_run_matrix_signals.py b/bench/test_run_matrix_signals.py
+new file mode 100644
+index 0000000..9f9d20d
+--- /dev/null
++++ b/bench/test_run_matrix_signals.py
+@@ -0,0 +1,154 @@
++"""Real local signal regressions; harmless CPU children, no API/GPU/Spark work."""
++import json
++import os
++from pathlib import Path
++import signal
++import subprocess
++import sys
++import tempfile
++import unittest
++
++HERE = Path(__file__).resolve().parent
++sys.path.insert(0, str(HERE))
++import run_matrix as matrix
++
++# Run the real run_job and stop_owned in an isolated Python process. All source,
++# model, HTTP and resource probes are replaced by the existing offline fixture.
++# Only the children are real; each has its own session and retained owner token.
++DRIVER = r'''
++import json,os,signal,subprocess,sys
++from pathlib import Path
++from unittest.mock import patch
++sys.path.insert(0,sys.argv[1])
++from test_run_matrix import ControllerTests,controller
++mode=sys.argv[2]; inventory=Path(sys.argv[3]); result_path=Path(sys.argv[4])
++f=ControllerTests();f.setUp()
++state=controller.InterruptState(); previous={s:signal.getsignal(s) for s in (signal.SIGTERM,signal.SIGINT)}
++for s in previous:signal.signal(s,state.receive)
++original_popen=subprocess.Popen;original_run=controller.run_job;original_stop=controller.stop_owned
++launched=[];events=[];triggered=False;cleanup_signals=0
++final_line=next(i for i,line in enumerate(Path(controller.__file__).read_text().splitlines(),1) if 'record["server_exit_before_cleanup"] = server.poll()' in line)
++def launch(command,**kwargs):
++ global triggered
++ is_server=command[0]=='bash'
++ program='import time; time.sleep(60)' if is_server or mode=='client_registration' else 'pass'
++ child=original_popen([sys.executable,'-c',program],**kwargs)
++ token=kwargs['env']['QWEN_EXPERIMENT_OWNER'];launched.append((child,token))
++ inventory.write_text(json.dumps([{'pid':c.pid,'token':t} for c,t in launched]))
++ if is_server:
++  f.server=child
++  native_poll=child.poll
++  def poll():
++   global triggered
++   caller=sys._getframe(1)
++   if mode in ('final_poll','repeated_cleanup') and not triggered and caller.f_code.co_filename==controller.__file__ and caller.f_lineno==final_line:
++    triggered=True;events.append('signal_in_final_poll');os.kill(os.getpid(),signal.SIGTERM)
++   return native_poll()
++  child.poll=poll
++ else:f.client=child
++ # Write the ordinary synthetic deployment/client reports with existing fixtures.
++ ControllerTests.mock_launch(f,command,**kwargs)
++ if mode==('server_registration' if is_server else 'client_registration'):
++  triggered=True;events.append('signal_before_assignment');os.kill(os.getpid(),signal.SIGTERM)
++ return child
++f.mock_launch=launch
++def stop(child,token):
++ global cleanup_signals
++ if mode=='repeated_cleanup' and triggered:
++  cleanup_signals+=1
++  # Real first/repeated signals must never abort owned cleanup.
++  os.kill(os.getpid(),signal.SIGINT);os.kill(os.getpid(),signal.SIGTERM)
++ return original_stop(child,token)
++try:
++ with patch.object(controller,'run_job',side_effect=lambda *a,**k:original_run(*a,**k,interrupt=state)):
++  try:f.execute(stop_owned=stop)
++  except KeyboardInterrupt:events.append('propagated_after_cleanup')
++ record=json.loads((f.output/f.job['label']/'result.json').read_text())
++ groups=[controller.group_members(c,t) for c,t in launched]
++ result_path.write_text(json.dumps({'mode':mode,'events':events,'signal':state.signum,'state':record['state'],'passed':record['passed'],'recorded_signal':record.get('signal'),'finished':record.get('finished_at_utc'),'children':len(launched),'groups':groups,'codes':[c.poll() for c,t in launched],'cleanup_signal_rounds':cleanup_signals,'server_cleanup':record.get('server_cleanup'),'clients':record['clients']}))
++finally:
++ for sig,handler in previous.items():signal.signal(sig,handler)
++ for child,token in reversed(launched):
++  if controller.group_members(child,token):os.killpg(child.pid,signal.SIGKILL)
++  child.wait(timeout=5)
++ f.doCleanups()
++'''
++
++
++@unittest.skipUnless(sys.platform.startswith("linux") and Path("/proc").is_dir(), "requires Linux procfs")
++class SignalCleanupTests(unittest.TestCase):
++    def run_case(self, mode):
++        with tempfile.TemporaryDirectory() as directory:
++            inventory = Path(directory) / "children.json"
++            result = Path(directory) / "result.json"
++            try:
++                completed = subprocess.run(
++                    [sys.executable, "-c", DRIVER, str(HERE), mode, str(inventory), str(result)],
++                    capture_output=True, text=True, timeout=15)
++                self.assertEqual(completed.returncode, 0, completed.stdout + completed.stderr)
++                value = json.loads(result.read_text())
++                self.assertEqual(value["state"], "interrupted")
++                self.assertFalse(value["passed"])
++                self.assertEqual(value["signal"], signal.SIGTERM)
++                self.assertEqual(value["recorded_signal"], signal.SIGTERM)
++                self.assertIsNone(value["finished"])
++                self.assertIn("propagated_after_cleanup", value["events"])
++                self.assertTrue(all(not group for group in value["groups"]))
++                self.assertTrue(all(code is not None for code in value["codes"]))
++                self.assertEqual(value["server_cleanup"]["signals"], ["SIGTERM"])
++                return value
++            finally:
++                # Bounded safety cleanup if this regression ever returns early.
++                if inventory.exists():
++                    for row in json.loads(inventory.read_text()):
++                        child = type("Retained", (), {"pid": row["pid"]})()
++                        if matrix.group_members(child, row["token"]):
++                            os.killpg(child.pid, signal.SIGKILL)
++
++    def test_real_sigterm_at_server_popen_registration(self):
++        value = self.run_case("server_registration")
++        self.assertEqual(value["children"], 1)
++        self.assertEqual(value["clients"], [])
++        self.assertIn("signal_before_assignment", value["events"])
++
++    def test_real_sigterm_at_client_popen_registration(self):
++        value = self.run_case("client_registration")
++        self.assertEqual(value["children"], 2)
++        self.assertEqual(value["clients"][0]["signals"], ["SIGTERM"])
++
++    def test_real_sigterm_during_final_server_poll(self):
++        value = self.run_case("final_poll")
++        self.assertEqual(value["children"], 2)
++        self.assertIn("signal_in_final_poll", value["events"])
++
++    def test_repeated_term_and_int_during_cleanup_cannot_escape(self):
++        value = self.run_case("repeated_cleanup")
++        self.assertGreaterEqual(value["cleanup_signal_rounds"], 1)
++        self.assertEqual(value["children"], 2)
++
++    def test_real_unrelated_group_is_not_signalled(self):
++        child = subprocess.Popen([sys.executable, "-c", "import time;time.sleep(60)"],
++            env={**os.environ, "QWEN_EXPERIMENT_OWNER": "unrelated-test-owner"}, start_new_session=True)
++        try:
++            with self.assertRaisesRegex(RuntimeError, "unverified process group"):
++                matrix.stop_owned(child, "different-retained-owner")
++            self.assertIsNone(child.poll())
++        finally:
++            matrix.stop_owned(child, "unrelated-test-owner")
++
++
++class InterruptStateTests(unittest.TestCase):
++    def test_handler_records_without_raising_and_checkpoint_preserves_first_signal(self):
++        state = matrix.InterruptState()
++        state.receive(signal.SIGTERM, None)
++        state.receive(signal.SIGINT, None)
++        self.assertEqual(state.signum, signal.SIGTERM)
++        with self.assertRaises(KeyboardInterrupt):
++            state.checkpoint()
++
++    def test_no_signal_checkpoint_is_noop(self):
++        self.assertIsNone(matrix.InterruptState().checkpoint())
++
++
++if __name__ == "__main__":
++    unittest.main()

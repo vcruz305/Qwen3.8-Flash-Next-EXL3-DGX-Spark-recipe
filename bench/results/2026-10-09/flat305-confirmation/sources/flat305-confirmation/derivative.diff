@@ -1,0 +1,74 @@
+--- used405-73d179bd
++++ scheduled305-f6e384ce
+@@ -1,9 +1,9 @@
+ #!/usr/bin/env python3
+-"""Scheduled, owned three-cell flat4.05 attribution. No installation or ref changes.
++"""Scheduled, owned two-cell flat3.05 RAM confirmation. No installation or ref changes.
+ 
+ The owner must stop REXL3 first. Hold its existing cooperative flock throughout.
+-All cells run the unchanged public launcher/client. B uses the final venv and
+-engine with a separately staged old Tabby checkout. Never edit either venv.
++Both cells run the unchanged public launcher/client. No hybrid cell.
++Never edit either preserved venv.
+ """
+ from __future__ import annotations
+ import argparse, contextlib, fcntl, hashlib, json, os, signal, subprocess, time, types, uuid
+@@ -17,11 +17,11 @@
+ HELPER="48281d5b51b1b64509385548c6f41f34909c328070274fcb4a06945ddcc44586"
+ PARENT="78e990269f0cccb51172e524f87193a5607a0027165d20add1b6b6716b42b589"
+ ALIAS="Qwen3.8-Flash-Next-EXL3"
+-MODEL="/home/cruzspark/models/flashnext-exl3-4.05bpw"
++MODEL="/home/cruzspark/models/flashnext-exl3-3.05bpw"
+ BASE="http://127.0.0.1:8899/v1"
+ LOCK=Path("/home/cruzspark/redsnow-gpu.lock")
+ TUNING={
+- "PROFILE":"single","NGRAM_RAM":"false","MAX_SEQ_LEN":"262144","CACHE_SIZE":"262144",
++ "PROFILE":"single","NGRAM_RAM":"true","MAX_SEQ_LEN":"262144","CACHE_SIZE":"262144",
+  "MAX_BATCH_SIZE":"1","CHUNK_SIZE":"2048","DRAFT_MODE":"mtp","DRAFT_NUM_TOKENS":"5",
+  "DYNAMIC_DRAFT":"true","SYSMEM_RECURRENT_CACHE":"4096","VISION":"false","REASONING":"true",
+  "TOOL_FORMAT":"qwen3_5","SERVED_NAME":ALIAS,"BIGCORES":"5-9,15-19",
+@@ -45,8 +45,6 @@
+  return [
+   {"label":"A-old-engine-old-server","runtime":args.old_runtime,"tabby":args.old_runtime/"tabbyAPI",
+    "engine_sha":OLD_ENGINE,"tabby_sha":OLD_TABBY,"minimum":"1.5.1"},
+-  {"label":"B-new-engine-old-server","runtime":args.new_runtime,"tabby":args.old_tabby,
+-   "engine_sha":NEW_ENGINE,"tabby_sha":OLD_TABBY,"minimum":"1.6.0.post1"},
+   {"label":"C-new-engine-new-server","runtime":args.new_runtime,"tabby":args.new_runtime/"tabbyAPI",
+    "engine_sha":NEW_ENGINE,"tabby_sha":NEW_TABBY,"minimum":"1.6.0.post1"},
+  ]
+@@ -181,7 +179,7 @@
+  cfg=d["config"]["values"]
+  wanted={"network":{"host":"127.0.0.1","port":8899,"disable_auth":True},
+   "model":{"model_name":ALIAS,"model_dir":str(output/"state/models"),"cache_size":262144,"max_seq_len":262144,
+-           "max_batch_size":1,"chunk_size":2048,"cache_mode":"8,8","ngram_ram":False,
++           "max_batch_size":1,"chunk_size":2048,"cache_mode":"8,8","ngram_ram":True,
+            "reasoning":True,"tool_format":"qwen3_5","vision":False},
+   "draft_model":{"draft_mode":"mtp","draft_num_tokens":5,"dynamic_draft":True,"draft_cache_mode":"8,8"}}
+  for section,values in wanted.items():
+@@ -258,7 +256,7 @@
+   state.update(deployment_sha256=sha(output/"deployment.json"),models=models,current_model=current,
+                load_wall_seconds=time.monotonic()-start,state="bench")
+   verify();save()
+-  for case in ("code","devops"):
++  for case in ("code","prose"):
+    verify();parent.require_listener(helper,server)
+    cmd=benchmark_command(args,cell,case,output)
+    row={"case":case,"command":cmd,"started_at_utc":helper.stamp()};state["clients"].append(row);save()
+@@ -306,7 +304,7 @@
+  for key in ("recipe","old_runtime","new_runtime","old_tabby","model_inputs"):
+   setattr(args,key,getattr(args,key).resolve(strict=True))
+  require(args.old_runtime!=args.new_runtime,"Distinct preserved runtimes required")
+- require(args.old_tabby not in (args.old_runtime/"tabbyAPI",args.new_runtime/"tabbyAPI"),"B needs its own isolated old source")
++ require(args.old_tabby not in (args.old_runtime/"tabbyAPI",args.new_runtime/"tabbyAPI"),"Retained CLI path must stay separate from preserved runtimes")
+  require(0<args.ready_timeout<=1200 and 0<args.client_timeout<=600,"Invalid deadlines")
+  args.output=args.output.resolve();require(not args.output.exists(),"Refusing existing output")
+  os.umask(0o077);args.output.mkdir(parents=True)
+@@ -321,7 +319,7 @@
+   if hasattr(args,"lock_inode"):
+    require(LOCK.is_file() and not LOCK.is_symlink() and LOCK.stat().st_ino==args.lock_inode,"GPU lock changed")
+  expected=json.loads((root/"original-fixture.json").read_text())
+- recorded=json.loads(args.model_inputs.read_text())["models"]["405"]
++ recorded=json.loads(args.model_inputs.read_text())["models"]["305"]
+  state={"state":"preflight","passed":False,"started_at_utc":helper.stamp(),"input_sha256":initial,
+         "cells":[],"scope":"Diagnostic source-stack attribution; preserves all numerical compatibility settings."}
+  def save():helper.atomic(args.output/"result.json",state)
