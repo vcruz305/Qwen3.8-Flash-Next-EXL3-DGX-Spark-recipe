@@ -24,7 +24,8 @@ The model id to send in requests is `Qwen3.8-Flash-Next-EXL3`. Check readiness w
 - **Do not install TabbyAPI's `cu12`/`cu13` extras** or run its `start.sh`. Those pull
   x86_64 exllamav3/torch wheels. `setup.sh` installs TabbyAPI's base package into the
   recipe venv on purpose.
-- **Do not pin TabbyAPI** to a commit. The recipe tracks the vcruz305 fork's `main`; re-run `setup.sh` to update.
+- **Do not pin ExLlamaV3 or TabbyAPI** to a commit. The recipe tracks the vcruz305 forks' latest
+  `master` / `main`; re-run `setup.sh` to update. `EXL3_REF=<sha>` is only for reproducing a measured run.
   Exact deployed commits and dependency versions are recorded in the setup/deployment snapshots.
 - **Do not use anything under `vllm-plugin/`** unless the user explicitly asks for vLLM.
   It is a different, slower engine with its own setup, and its `prepare_pack.sh`

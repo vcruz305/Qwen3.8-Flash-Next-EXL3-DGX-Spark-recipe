@@ -115,7 +115,7 @@ use `auto` or `none`.
 
 ## Reasoning budgets and literal boundaries
 
-The pinned engine and updated server coordinate reasoning closure before the
+The engine and server coordinate reasoning closure before the
 next accepted token is sampled. The server supplies a small incremental parser
 at the producer, so a literal `</think>` inside a parameter does not activate the
 content grammar. The consumer still receives the normal ordered token stream.
