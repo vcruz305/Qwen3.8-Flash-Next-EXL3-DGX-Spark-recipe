@@ -6,11 +6,11 @@ in the [top-level README](../README.md#quick-start).
 
 | File | Purpose |
 |---|---|
-| `setup.sh` | Builds the fork at the pinned commit for sm_121 and installs the TabbyAPI fork's `main` into one venv (`~/qwen38-exl3/`). `--check` verifies the runtime path, version, kernels, ABI fingerprint and package consistency |
+| `setup.sh` | Builds the fork's latest master for sm_121 and installs the TabbyAPI fork's `main` into one venv (`~/qwen38-exl3/`). `--check` verifies the runtime path, version, kernels, ABI fingerprint and package consistency |
 | `serve.sh` | **The API.** Renders `tabby-config.yml` and starts TabbyAPI. `PROFILE=concurrent` (default) or `single` |
 | `tabby-config.yml` | TabbyAPI config template (stock keys only) |
 | `chat.sh` | Console chat, the tuned `chat.py` launcher |
-| `env.sh` | Shared defaults: fork pin, paths, GB10 kernel knobs, runtime/pack checks |
+| `env.sh` | Shared defaults: fork branches, paths, GB10 kernel knobs, runtime/pack checks |
 | `drop-model-cache.sh` | Drops the pack's page cache (a GB10 unified-memory trap) |
 | `beta/` | (Beta) minimal one-request-at-a-time OpenAI shim, for A/B only |
 | `tools/runtime_state.py` | Records exact source/toolchain/config provenance; verifies the extension build fingerprint |

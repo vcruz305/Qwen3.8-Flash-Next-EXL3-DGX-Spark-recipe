@@ -8,8 +8,8 @@ for GB10 (`sm_121`, aarch64).
 This recipe supports flat-K and mixed-K EXL3 packs. The October update brings the
 runtime forward to upstream ExLlamaV3 1.6.0, retains the Spark kernels, improves
 Qwen tool calling, and adds reproducible API benchmarks and deployment checks.
-The exact engine pin lives in [env.sh](exllamav3-tabby/env.sh). TabbyAPI follows
-the fork's `main`; setup and each launch record the exact commits they use.
+Both forks track their latest default branch (`exllamav3` master, TabbyAPI `main`);
+setup and each launch record the exact commits they use.
 
 **Start here:** [quick start](#quick-start), [tool calling](docs/tool-calling.md),
 [benchmark instructions](bench/README.md),
@@ -66,7 +66,7 @@ compile kernels. Keep those startup costs separate from warmed inference rates.
 Everything is installed beneath `~/qwen38-exl3` by default. Override
 `RECIPE_HOME` to create a separate installation for an upgrade trial.
 
-- The imported ExLlamaV3 is the fork at the pinned source commit, with the
+- The imported ExLlamaV3 is the fork's latest master as built by setup, with the
   required GB10 kernels and a version of at least `1.6.0.post1`.
 - The build matches the source SHA, Python, PyTorch, CUDA toolkit, compiler and
   GPU architecture. A changed fingerprint triggers a source rebuild.
@@ -86,7 +86,7 @@ Check an existing installation without updating it:
 bash exllamav3-tabby/setup.sh --check
 ```
 
-Re-run `setup.sh` to update TabbyAPI and apply a changed engine pin. For a
+Re-run `setup.sh` to update both forks to their latest commits. For a
 reproducible report, retain `$STATE_DIR/deployment.json` and the benchmark JSON,
 which include the actual source and runtime identities.
 
