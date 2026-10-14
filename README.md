@@ -17,6 +17,13 @@ setup and each launch record the exact commits they use.
 [October 9 follow-up](VALIDATION_2026-10-09.md).
 AI agents should first read [AGENTS.md](AGENTS.md).
 
+## Model
+
+| | Hugging Face |
+|---|---|
+| Checkpoint served | [turboderp/Qwen3.8-Flash-Next-exl3](https://huggingface.co/turboderp/Qwen3.8-Flash-Next-exl3) (pick a bpw branch, e.g. [`3.05bpw_h5_ng5`](https://huggingface.co/turboderp/Qwen3.8-Flash-Next-exl3/tree/3.05bpw_h5_ng5)) |
+| Base model | [Qwen/Qwen3.8-Flash-Next](https://huggingface.co/Qwen/Qwen3.8-Flash-Next) |
+
 ## Quick start
 
 Run these commands on the Spark from a clone of this repository:
