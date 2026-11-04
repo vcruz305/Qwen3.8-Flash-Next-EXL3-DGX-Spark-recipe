@@ -266,6 +266,12 @@ are in [bench/README.md](bench/README.md). A throughput run, a synthetic
 retrieval test and a numerical regression probe answer different questions;
 none certifies general model capability.
 
+## Other hardware
+
+**NVIDIA RTX Spark N1X laptops (Windows on Arm, WSL2):** the same build runs in WSL2 with a CUDA 13.4 toolkit, a
+Python 3.12 venv and the n-gram table streamed from disk; measured decode is 82-90 % of the DGX Spark figures above in
+the laptop's performance mode. See [docs/rtx-spark-n1x.md](docs/rtx-spark-n1x.md).
+
 ## Persistent service and remote access
 
 [The service guide](docs/service.md) provides a user-systemd unit and an
